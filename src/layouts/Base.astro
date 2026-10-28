@@ -1,0 +1,178 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '../styles/global.css';
+import { url, CODE, HF } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  page: 'home' | 'results' | 'training' | 'datasets' | 'experiments' | 'previous';
+}
+const { title, description, page } = Astro.props;
+// in the order a reader needs them: what was recorded, what was done, what came out, how the models learned
+const nav = [
+  { key: 'datasets', href: 'datasets/', label: 'Data' },
+  { key: 'experiments', href: 'experiments/', label: 'Experiments' },
+  { key: 'results', href: 'results/', label: 'Results' },
+  { key: 'training', href: 'training/', label: 'Training' },
+];
+// the August work, one level down; the sub-navigation shows only inside it
+const previous = [
+  { href: 'previous/', label: 'Overview' },
+  { href: 'previous/results/', label: 'Evaluation' },
+  { href: 'previous/data/', label: 'Datasets' },
+  { href: 'previous/report/', label: 'Report' },
+];
+const here = Astro.url.pathname.replace(/\/$/, '');
+const isHere = (href: string) => here === url(href).replace(/\/$/, '');
+const full = page === 'home' ? title : `${title} – Vial sort`;
+const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{full}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={full} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('media/hero.jpg'), Astro.site).href} />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to the content</a>
+    <header class="site-head">
+      <div class="wrap head-row">
+        <a class="mark" href={url('')} aria-label="Vial sort, home">
+          <svg viewBox="0 0 40 16" aria-hidden="true">
+            <rect x="1" y="3" width="38" height="10" rx="5" class="mark-bar" />
+            <circle cx="9" cy="8" r="3.4" style="fill: var(--vial-red)" />
+            <circle cx="20" cy="8" r="3.4" style="fill: var(--vial-lime)" />
+            <circle cx="31" cy="8" r="3.4" style="fill: var(--vial-cyan)" />
+          </svg>
+          <span>Vial sort</span>
+        </a>
+        <nav aria-label="Pages">
+          <ul>
+            {nav.map((n) => (
+              <li><a href={url(n.href)} aria-current={page === n.key ? 'page' : undefined}>{n.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        {page === 'previous'
+          ? <a class="quiet-btn switch" href={url('')}>← Latest work</a>
+          : <a class="quiet-btn switch" href={url('previous/')}>Previous work</a>}
+        <button class="quiet-btn theme" type="button" id="theme-toggle">Dark</button>
+      </div>
+      {page === 'previous' && (
+        <nav class="subnav" aria-label="August 2026 work">
+          <div class="wrap">
+            <span>August 2026, the Thor rig</span>
+            <ul>
+              {previous.map((n) => (
+                <li><a href={url(n.href)} aria-current={isHere(n.href) ? 'page' : undefined}>{n.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      )}
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-foot">
+      <div class="wrap foot-row">
+        <p>
+          Sari Abdan, 2026. Every number on this site is computed from the project's evaluation sheet,
+          training logs and robot recordings when the site is built; none is typed in by hand.
+        </p>
+        <ul>
+          <li><a href={url('previous/report/')}>August report</a></li>
+          <li><a href={`${HF}/sari-abdan`}>Data and models on Hugging Face</a></li>
+          <li><a href={CODE}>Code on GitHub</a></li>
+        </ul>
+        <p class="note">Built {built}.</p>
+      </div>
+    </footer>
+    <script>
+      // Every clip marked data-auto plays, muted and looping, while it is on screen and pauses when it is not,
+      // so a page of thirty clips decodes a few at a time. A tap or click pauses or resumes it.
+      // With reduced motion requested nothing starts on its own and the browser's controls appear.
+      const clips = [...document.querySelectorAll<HTMLVideoElement>('video[data-auto]')];
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) {
+        clips.forEach((v) => { v.controls = true; v.loop = false; });
+      } else if (clips.length) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            const v = e.target as HTMLVideoElement;
+            if (v.dataset.held) continue;
+            if (e.isIntersecting) v.play().catch(() => {});
+            else v.pause();
+          }
+        }, { threshold: 0.35 });
+        clips.forEach((v) => {
+          v.muted = true; v.loop = true;
+          v.title = 'Click to pause or play';
+          v.addEventListener('click', () => {
+            if (v.paused) { delete v.dataset.held; v.play().catch(() => {}); } else { v.dataset.held = '1'; v.pause(); }
+          });
+          io.observe(v);
+        });
+      }
+    </script>
+    <script>
+      const button = document.getElementById('theme-toggle') as HTMLButtonElement;
+      const root = document.documentElement;
+      const dark = () =>
+        root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      const label = () => {
+        button.textContent = dark() ? 'Light' : 'Dark';
+        button.setAttribute('aria-label', dark() ? 'Switch to the light theme' : 'Switch to the dark theme');
+      };
+      label();
+      button.addEventListener('click', () => {
+        const next = dark() ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        label();
+      });
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', label);
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip { position: absolute; left: -999px; top: 0.5rem; padding: 0.4rem 0.8rem; background: var(--ink); color: var(--page); z-index: 10; }
+  .skip:focus { left: 0.5rem; }
+  .site-head { border-bottom: 1px solid var(--rule); }
+  .head-row { display: flex; align-items: center; gap: 1.5rem; min-height: 3.6rem; flex-wrap: wrap; padding-block: 0.4rem; }
+  .mark { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; font-stretch: 125%; font-weight: 650; font-size: 1.05rem; }
+  .mark svg { width: 2.4rem; }
+  .mark-bar { fill: var(--ink); }
+  .head-row > nav { margin-left: auto; }
+  .switch { text-decoration: none; background: var(--raise); border-color: var(--steel); }
+  .switch:hover { border-color: var(--ink); text-decoration: none; }
+  .subnav { border-top: 1px solid var(--rule); background: var(--raise); margin: 0; }
+  .subnav .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.6rem; padding-block: 0.55rem; font-size: var(--step--1); color: var(--ink-2); }
+  .subnav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; list-style: none; margin: 0; padding: 0; }
+  nav ul { display: flex; gap: 1.3rem; list-style: none; margin: 0; padding: 0; }
+  nav a { text-decoration: none; color: var(--ink-2); }
+  nav a:hover { color: var(--ink); text-decoration: underline; }
+  nav a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
+  .site-foot { border-top: 1px solid var(--rule); margin-top: 2rem; padding-block: 2rem 2.6rem; font-size: var(--step--1); color: var(--ink-2); }
+  .foot-row { display: grid; gap: 0.9rem; }
+  .foot-row ul { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; list-style: none; padding: 0; margin: 0; }
+  @media (max-width: 40rem) {
+    .head-row > nav { margin-left: 0; order: 3; width: 100%; }
+    .switch { margin-left: auto; }
+  }
+</style>

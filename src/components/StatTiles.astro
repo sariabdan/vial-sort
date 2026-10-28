@@ -1,0 +1,30 @@
+---
+// Chart 1: the four numbers the report's conclusion leads with, each with its count.
+import evals from '../data/evals.json';
+import { pct } from '../lib/site';
+
+const k = evals.kpi;
+const tiles = [
+  { value: k.complete / k.rollouts, text: 'completed the whole pick-and-place', count: `${k.complete} of ${k.rollouts}` },
+  { value: k.wrong_target / k.rollouts, text: 'acted on the wrong vial or slot', count: `${k.wrong_target} of ${k.rollouts}` },
+  { value: k.missed_first_grasp / k.rollouts, text: 'missed the first grasp of the vial', count: `${k.missed_first_grasp} of ${k.rollouts}` },
+  { value: k.complete_after_first_grasp / k.first_grasp, text: 'completed the move once the first grasp held', count: `${k.complete_after_first_grasp} of ${k.first_grasp}` },
+];
+---
+<ul class="tiles">
+  {tiles.map((t) => (
+    <li>
+      <span class="value">{pct(t.value)}</span>
+      <span class="text">{t.text}</span>
+      <span class="count note">{t.count} rollouts</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem clamp(1rem, 3vw, 2.5rem); }
+  li { display: grid; align-content: start; gap: 0.3rem; padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+  .value { font-size: var(--step-5); font-weight: 600; line-height: 1; font-stretch: 112%; }
+  .text { max-width: 20ch; line-height: 1.35; }
+  @media (max-width: 52rem) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

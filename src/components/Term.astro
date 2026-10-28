@@ -1,0 +1,34 @@
+---
+// A word the site uses in a defined sense. The definition shows on hover and on keyboard focus.
+import { GLOSSARY } from '../lib/glossary';
+interface Props { k: string }
+const { k } = Astro.props;
+const e = GLOSSARY[k];
+if (!e) throw new Error(`no glossary entry "${k}"`);
+---
+<span class="term" tabindex="0" data-def={e.def} aria-label={`${e.term}: ${e.def}`}><slot /></span>
+
+<style is:global>
+  .term { text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: 0.2em; cursor: help; position: relative; }
+  .term:hover::after, .term:focus-visible::after {
+    content: attr(data-def);
+    position: absolute; z-index: 20; left: var(--term-x, 0); top: calc(100% + 0.35rem);
+    width: max-content; max-width: min(22rem, 80vw);
+    padding: 0.55rem 0.7rem; border-radius: 4px;
+    background: var(--raise); color: var(--ink); border: 1px solid var(--rule);
+    box-shadow: 0 4px 14px rgb(0 0 0 / 0.16);
+    font-size: var(--step--1); line-height: 1.45; font-weight: 400; font-stretch: 100%; text-align: left; white-space: normal;
+  }
+</style>
+
+<script>
+  // keep a definition inside the window: shift it left when it would run off the right edge
+  const place = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    const w = Math.min(352, innerWidth * 0.8);
+    const over = r.left + w - (innerWidth - 12);
+    el.style.setProperty('--term-x', over > 0 ? `${-over}px` : '0px');
+  };
+  document.addEventListener('pointerover', (e) => { const t = (e.target as HTMLElement).closest?.('.term'); if (t) place(t as HTMLElement); });
+  document.addEventListener('focusin', (e) => { const t = (e.target as HTMLElement).closest?.('.term'); if (t) place(t as HTMLElement); });
+</script>

@@ -1,0 +1,1575 @@
+{
+ "source": "v5 evaluation: π0.5 (frozen vision-language backbone) at 12k steps, 79 rollouts scored by a person, 22–24 Aug 2026",
+ "stages": [
+  {
+   "key": "missed_pickup",
+   "label": "Missed the pickup"
+  },
+  {
+   "key": "wrong_target",
+   "label": "Wrong vial or slot"
+  },
+  {
+   "key": "missed_drop",
+   "label": "Missed the drop"
+  },
+  {
+   "key": "complete",
+   "label": "Complete"
+  }
+ ],
+ "kpi": {
+  "rollouts": 79,
+  "scenarios": 15,
+  "complete": 20,
+  "wrong_target": 6,
+  "missed_first_grasp": 43,
+  "first_grasp": 36,
+  "complete_after_first_grasp": 16,
+  "released_away": 14,
+  "recovered": 4,
+  "collision": 10,
+  "missed_drop": 15
+ },
+ "trained": {
+  "rollouts": 69,
+  "complete": 16,
+  "scenarios": 13,
+  "lo": 0.1481,
+  "hi": 0.344
+ },
+ "held_out": {
+  "rollouts": 10,
+  "complete": 4,
+  "scenarios": 2,
+  "lo": 0.1682,
+  "hi": 0.6873
+ },
+ "scenarios": [
+  {
+   "task": 1,
+   "move": "L1->R1",
+   "src": "L1",
+   "dst": "R1",
+   "trained": true,
+   "n": 7,
+   "complete": 1,
+   "rate": 0.1429,
+   "lo": 0.0257,
+   "hi": 0.5131,
+   "stages": {
+    "missed_pickup": 5,
+    "wrong_target": 1,
+    "missed_drop": 0,
+    "complete": 1
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260822-185054",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-185221",
+     "secs": 43.5
+    },
+    {
+     "id": "20260822-185322",
+     "secs": 44.2
+    },
+    {
+     "id": "20260822-185435",
+     "secs": 44.3
+    },
+    {
+     "id": "20260822-185547",
+     "secs": 44.2
+    },
+    {
+     "id": "20260822-185645",
+     "secs": 40.6
+    },
+    {
+     "id": "20260822-185751",
+     "secs": 44.1
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 2,
+   "move": "L1->R3",
+   "src": "L1",
+   "dst": "R3",
+   "trained": true,
+   "n": 7,
+   "complete": 0,
+   "rate": 0.0,
+   "lo": 0.0,
+   "hi": 0.3543,
+   "stages": {
+    "missed_pickup": 3,
+    "wrong_target": 0,
+    "missed_drop": 4,
+    "complete": 0
+   },
+   "collision": 3,
+   "captures": [
+    {
+     "id": "20260822-190021",
+     "secs": 44.2
+    },
+    {
+     "id": "20260822-190140",
+     "secs": 44.1
+    },
+    {
+     "id": "20260822-190325",
+     "secs": 43.5
+    },
+    {
+     "id": "20260822-190436",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-190602",
+     "secs": 43.5
+    },
+    {
+     "id": "20260822-190701",
+     "secs": 41.5
+    },
+    {
+     "id": "20260822-190811",
+     "secs": 44.2
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 3,
+   "move": "L5->R3",
+   "src": "L5",
+   "dst": "R3",
+   "trained": false,
+   "n": 5,
+   "complete": 2,
+   "rate": 0.4,
+   "lo": 0.1176,
+   "hi": 0.7693,
+   "stages": {
+    "missed_pickup": 2,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 2
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260822-192636",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-200551",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-200801",
+     "secs": 44.6
+    },
+    {
+     "id": "20260822-201515",
+     "secs": 44.5
+    },
+    {
+     "id": "20260822-201800",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-202030",
+     "secs": 44.0
+    }
+   ],
+   "matched": false
+  },
+  {
+   "task": 4,
+   "move": "L3->R1",
+   "src": "L3",
+   "dst": "R1",
+   "trained": true,
+   "n": 5,
+   "complete": 1,
+   "rate": 0.2,
+   "lo": 0.0362,
+   "hi": 0.6245,
+   "stages": {
+    "missed_pickup": 3,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 1
+   },
+   "collision": 3,
+   "captures": [
+    {
+     "id": "20260822-202446",
+     "secs": 44.2
+    },
+    {
+     "id": "20260822-202620",
+     "secs": 44.1
+    },
+    {
+     "id": "20260822-202754",
+     "secs": 44.0
+    },
+    {
+     "id": "20260822-202936",
+     "secs": 43.6
+    },
+    {
+     "id": "20260822-203116",
+     "secs": 44.4
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 5,
+   "move": "L3->R3",
+   "src": "L3",
+   "dst": "R3",
+   "trained": true,
+   "n": 5,
+   "complete": 0,
+   "rate": 0.0,
+   "lo": 0.0,
+   "hi": 0.4345,
+   "stages": {
+    "missed_pickup": 4,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 0
+   },
+   "collision": 3,
+   "captures": [
+    {
+     "id": "20260822-203426",
+     "secs": 43.6
+    },
+    {
+     "id": "20260822-203605",
+     "secs": 44.2
+    },
+    {
+     "id": "20260822-203734",
+     "secs": 44.3
+    },
+    {
+     "id": "20260822-203846",
+     "secs": 43.7
+    },
+    {
+     "id": "20260822-204027",
+     "secs": 43.6
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 6,
+   "move": "L4->R1",
+   "src": "L4",
+   "dst": "R1",
+   "trained": true,
+   "n": 5,
+   "complete": 1,
+   "rate": 0.2,
+   "lo": 0.0362,
+   "hi": 0.6245,
+   "stages": {
+    "missed_pickup": 3,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 1
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260822-204219",
+     "secs": 26.1
+    },
+    {
+     "id": "20260824-123507",
+     "secs": 44.3
+    },
+    {
+     "id": "20260824-124107",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-143950",
+     "secs": 44.1
+    },
+    {
+     "id": "20260824-144144",
+     "secs": 44.4
+    },
+    {
+     "id": "20260824-144350",
+     "secs": 43.8
+    }
+   ],
+   "matched": false
+  },
+  {
+   "task": 7,
+   "move": "L4->R3",
+   "src": "L4",
+   "dst": "R3",
+   "trained": true,
+   "n": 5,
+   "complete": 1,
+   "rate": 0.2,
+   "lo": 0.0362,
+   "hi": 0.6245,
+   "stages": {
+    "missed_pickup": 3,
+    "wrong_target": 1,
+    "missed_drop": 0,
+    "complete": 1
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-145201",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-145427",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-145625",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-145814",
+     "secs": 44.5
+    },
+    {
+     "id": "20260824-150006",
+     "secs": 44.0
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 8,
+   "move": "L6->R6",
+   "src": "L6",
+   "dst": "R6",
+   "trained": true,
+   "n": 5,
+   "complete": 4,
+   "rate": 0.8,
+   "lo": 0.3755,
+   "hi": 0.9638,
+   "stages": {
+    "missed_pickup": 1,
+    "wrong_target": 0,
+    "missed_drop": 0,
+    "complete": 4
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-150222",
+     "secs": 43.8
+    },
+    {
+     "id": "20260824-150347",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-150523",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-150704",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-150913",
+     "secs": 44.1
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 9,
+   "move": "L3->L6",
+   "src": "L3",
+   "dst": "L6",
+   "trained": true,
+   "n": 5,
+   "complete": 1,
+   "rate": 0.2,
+   "lo": 0.0362,
+   "hi": 0.6245,
+   "stages": {
+    "missed_pickup": 3,
+    "wrong_target": 1,
+    "missed_drop": 0,
+    "complete": 1
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-151120",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-151321",
+     "secs": 44.3
+    },
+    {
+     "id": "20260824-151453",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-151654",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-151844",
+     "secs": 44.2
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 10,
+   "move": "L4->bin",
+   "src": "L4",
+   "dst": "bin",
+   "trained": true,
+   "n": 5,
+   "complete": 0,
+   "rate": 0.0,
+   "lo": 0.0,
+   "hi": 0.4345,
+   "stages": {
+    "missed_pickup": 4,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 0
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-152050",
+     "secs": 42.4
+    },
+    {
+     "id": "20260824-152212",
+     "secs": 42.4
+    },
+    {
+     "id": "20260824-152432",
+     "secs": 42.5
+    },
+    {
+     "id": "20260824-152609",
+     "secs": 42.3
+    },
+    {
+     "id": "20260824-152735",
+     "secs": 42.4
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 11,
+   "move": "R2->bin",
+   "src": "R2",
+   "dst": "bin",
+   "trained": false,
+   "n": 5,
+   "complete": 2,
+   "rate": 0.4,
+   "lo": 0.1176,
+   "hi": 0.7693,
+   "stages": {
+    "missed_pickup": 1,
+    "wrong_target": 0,
+    "missed_drop": 2,
+    "complete": 2
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-153009",
+     "secs": 42.6
+    },
+    {
+     "id": "20260824-153146",
+     "secs": 42.4
+    },
+    {
+     "id": "20260824-153317",
+     "secs": 42.1
+    },
+    {
+     "id": "20260824-153511",
+     "secs": 43.5
+    },
+    {
+     "id": "20260824-153645",
+     "secs": 34.2
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 12,
+   "move": "R1->L3",
+   "src": "R1",
+   "dst": "L3",
+   "trained": true,
+   "n": 5,
+   "complete": 3,
+   "rate": 0.6,
+   "lo": 0.2307,
+   "hi": 0.8824,
+   "stages": {
+    "missed_pickup": 1,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 3
+   },
+   "collision": 1,
+   "captures": [
+    {
+     "id": "20260824-153853",
+     "secs": 43.6
+    },
+    {
+     "id": "20260824-154109",
+     "secs": 43.8
+    },
+    {
+     "id": "20260824-154242",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-154832",
+     "secs": 43.8
+    },
+    {
+     "id": "20260824-155108",
+     "secs": 43.8
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 13,
+   "move": "R3->L3",
+   "src": "R3",
+   "dst": "L3",
+   "trained": true,
+   "n": 5,
+   "complete": 1,
+   "rate": 0.2,
+   "lo": 0.0362,
+   "hi": 0.6245,
+   "stages": {
+    "missed_pickup": 0,
+    "wrong_target": 3,
+    "missed_drop": 1,
+    "complete": 1
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-155409",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-155754",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-155941",
+     "secs": 43.9
+    },
+    {
+     "id": "20260824-160111",
+     "secs": 44.1
+    },
+    {
+     "id": "20260824-160246",
+     "secs": 43.8
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 14,
+   "move": "R3->L6",
+   "src": "R3",
+   "dst": "L6",
+   "trained": true,
+   "n": 5,
+   "complete": 3,
+   "rate": 0.6,
+   "lo": 0.2307,
+   "hi": 0.8824,
+   "stages": {
+    "missed_pickup": 1,
+    "wrong_target": 0,
+    "missed_drop": 1,
+    "complete": 3
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-160427",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-160637",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-160748",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-160851",
+     "secs": 43.9
+    },
+    {
+     "id": "20260824-161034",
+     "secs": 44.0
+    }
+   ],
+   "matched": true
+  },
+  {
+   "task": 15,
+   "move": "R6->L6",
+   "src": "R6",
+   "dst": "L6",
+   "trained": true,
+   "n": 5,
+   "complete": 0,
+   "rate": 0.0,
+   "lo": 0.0,
+   "hi": 0.4345,
+   "stages": {
+    "missed_pickup": 5,
+    "wrong_target": 0,
+    "missed_drop": 0,
+    "complete": 0
+   },
+   "collision": 0,
+   "captures": [
+    {
+     "id": "20260824-161328",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-161519",
+     "secs": 44.0
+    },
+    {
+     "id": "20260824-161620",
+     "secs": 44.2
+    },
+    {
+     "id": "20260824-161735",
+     "secs": 43.9
+    },
+    {
+     "id": "20260824-161936",
+     "secs": 44.0
+    }
+   ],
+   "matched": true
+  }
+ ],
+ "trials": [
+  {
+   "task": 1,
+   "i": 0,
+   "move": "L1->R1",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260822-185054"
+  },
+  {
+   "task": 1,
+   "i": 1,
+   "move": "L1->R1",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "picked wrong vial from source",
+   "capture": "20260822-185221"
+  },
+  {
+   "task": 1,
+   "i": 2,
+   "move": "L1->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then picked but time ended",
+   "capture": "20260822-185322"
+  },
+  {
+   "task": 1,
+   "i": 3,
+   "move": "L1->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then picked but time ended",
+   "capture": "20260822-185435"
+  },
+  {
+   "task": 1,
+   "i": 4,
+   "move": "L1->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "did not pick up",
+   "capture": "20260822-185547"
+  },
+  {
+   "task": 1,
+   "i": 5,
+   "move": "L1->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "did not pick up",
+   "capture": "20260822-185645"
+  },
+  {
+   "task": 1,
+   "i": 6,
+   "move": "L1->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "did not pick up",
+   "capture": "20260822-185751"
+  },
+  {
+   "task": 2,
+   "i": 0,
+   "move": "L1->R3",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-190021"
+  },
+  {
+   "task": 2,
+   "i": 1,
+   "move": "L1->R3",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-190140"
+  },
+  {
+   "task": 2,
+   "i": 2,
+   "move": "L1->R3",
+   "stage": "missed_drop",
+   "collision": true,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-190325"
+  },
+  {
+   "task": 2,
+   "i": 3,
+   "move": "L1->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-190436"
+  },
+  {
+   "task": 2,
+   "i": 4,
+   "move": "L1->R3",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-190602"
+  },
+  {
+   "task": 2,
+   "i": 5,
+   "move": "L1->R3",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-190701"
+  },
+  {
+   "task": 2,
+   "i": 6,
+   "move": "L1->R3",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-190811"
+  },
+  {
+   "task": 3,
+   "i": 0,
+   "move": "L5->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": null
+  },
+  {
+   "task": 3,
+   "i": 1,
+   "move": "L5->R3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then recovered and completed",
+   "capture": null
+  },
+  {
+   "task": 3,
+   "i": 2,
+   "move": "L5->R3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "went to slot 2 right (labeled success)",
+   "capture": null
+  },
+  {
+   "task": 3,
+   "i": 3,
+   "move": "L5->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "homed with arm",
+   "capture": null
+  },
+  {
+   "task": 3,
+   "i": 4,
+   "move": "L5->R3",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": null
+  },
+  {
+   "task": 4,
+   "i": 0,
+   "move": "L3->R1",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-202446"
+  },
+  {
+   "task": 4,
+   "i": 1,
+   "move": "L3->R1",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-202620"
+  },
+  {
+   "task": 4,
+   "i": 2,
+   "move": "L3->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-202754"
+  },
+  {
+   "task": 4,
+   "i": 3,
+   "move": "L3->R1",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260822-202936"
+  },
+  {
+   "task": 4,
+   "i": 4,
+   "move": "L3->R1",
+   "stage": "missed_drop",
+   "collision": true,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-203116"
+  },
+  {
+   "task": 5,
+   "i": 0,
+   "move": "L3->R3",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-203426"
+  },
+  {
+   "task": 5,
+   "i": 1,
+   "move": "L3->R3",
+   "stage": "missed_pickup",
+   "collision": true,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260822-203605"
+  },
+  {
+   "task": 5,
+   "i": 2,
+   "move": "L3->R3",
+   "stage": "missed_drop",
+   "collision": true,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260822-203734"
+  },
+  {
+   "task": 5,
+   "i": 3,
+   "move": "L3->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "homed with it",
+   "capture": "20260822-203846"
+  },
+  {
+   "task": 5,
+   "i": 4,
+   "move": "L3->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "homed with arm",
+   "capture": "20260822-204027"
+  },
+  {
+   "task": 6,
+   "i": 0,
+   "move": "L4->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": null
+  },
+  {
+   "task": 6,
+   "i": 1,
+   "move": "L4->R1",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then recovered and completed",
+   "capture": null
+  },
+  {
+   "task": 6,
+   "i": 2,
+   "move": "L4->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": null
+  },
+  {
+   "task": 6,
+   "i": 3,
+   "move": "L4->R1",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then picked wrong vial and homed",
+   "capture": null
+  },
+  {
+   "task": 6,
+   "i": 4,
+   "move": "L4->R1",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": null
+  },
+  {
+   "task": 7,
+   "i": 0,
+   "move": "L4->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-145201"
+  },
+  {
+   "task": 7,
+   "i": 1,
+   "move": "L4->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "then picked and homed",
+   "capture": "20260824-145427"
+  },
+  {
+   "task": 7,
+   "i": 2,
+   "move": "L4->R3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-145625"
+  },
+  {
+   "task": 7,
+   "i": 3,
+   "move": "L4->R3",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "moved L6 to R2 (wrong)",
+   "capture": "20260824-145814"
+  },
+  {
+   "task": 7,
+   "i": 4,
+   "move": "L4->R3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-150006"
+  },
+  {
+   "task": 8,
+   "i": 0,
+   "move": "L6->R6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-150222"
+  },
+  {
+   "task": 8,
+   "i": 1,
+   "move": "L6->R6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-150347"
+  },
+  {
+   "task": 8,
+   "i": 2,
+   "move": "L6->R6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-150523"
+  },
+  {
+   "task": 8,
+   "i": 3,
+   "move": "L6->R6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then recovered; not recorded",
+   "capture": "20260824-150704"
+  },
+  {
+   "task": 8,
+   "i": 4,
+   "move": "L6->R6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "homed with it",
+   "capture": "20260824-150913"
+  },
+  {
+   "task": 9,
+   "i": 0,
+   "move": "L3->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-151120"
+  },
+  {
+   "task": 9,
+   "i": 1,
+   "move": "L3->L6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-151321"
+  },
+  {
+   "task": 9,
+   "i": 2,
+   "move": "L3->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-151453"
+  },
+  {
+   "task": 9,
+   "i": 3,
+   "move": "L3->L6",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "homed with it",
+   "capture": "20260824-151654"
+  },
+  {
+   "task": 9,
+   "i": 4,
+   "move": "L3->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-151844"
+  },
+  {
+   "task": 10,
+   "i": 0,
+   "move": "L4->bin",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-152050"
+  },
+  {
+   "task": 10,
+   "i": 1,
+   "move": "L4->bin",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-152212"
+  },
+  {
+   "task": 10,
+   "i": 2,
+   "move": "L4->bin",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-152432"
+  },
+  {
+   "task": 10,
+   "i": 3,
+   "move": "L4->bin",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-152609"
+  },
+  {
+   "task": 10,
+   "i": 4,
+   "move": "L4->bin",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-152735"
+  },
+  {
+   "task": 11,
+   "i": 0,
+   "move": "R2->bin",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-153009"
+  },
+  {
+   "task": 11,
+   "i": 1,
+   "move": "R2->bin",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-153146"
+  },
+  {
+   "task": 11,
+   "i": 2,
+   "move": "R2->bin",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-153317"
+  },
+  {
+   "task": 11,
+   "i": 3,
+   "move": "R2->bin",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-153511"
+  },
+  {
+   "task": 11,
+   "i": 4,
+   "move": "R2->bin",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-153645"
+  },
+  {
+   "task": 12,
+   "i": 0,
+   "move": "R1->L3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-153853"
+  },
+  {
+   "task": 12,
+   "i": 1,
+   "move": "R1->L3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-154109"
+  },
+  {
+   "task": 12,
+   "i": 2,
+   "move": "R1->L3",
+   "stage": "missed_drop",
+   "collision": true,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-154242"
+  },
+  {
+   "task": 12,
+   "i": 3,
+   "move": "R1->L3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "dropped in right spot after homing",
+   "capture": "20260824-154832"
+  },
+  {
+   "task": 12,
+   "i": 4,
+   "move": "R1->L3",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "was put in L4",
+   "capture": "20260824-155108"
+  },
+  {
+   "task": 13,
+   "i": 0,
+   "move": "R3->L3",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "was put in R4",
+   "capture": "20260824-155409"
+  },
+  {
+   "task": 13,
+   "i": 1,
+   "move": "R3->L3",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "was put in R4",
+   "capture": "20260824-155754"
+  },
+  {
+   "task": 13,
+   "i": 2,
+   "move": "R3->L3",
+   "stage": "wrong_target",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "was put in R4",
+   "capture": "20260824-155941"
+  },
+  {
+   "task": 13,
+   "i": 3,
+   "move": "R3->L3",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-160111"
+  },
+  {
+   "task": 13,
+   "i": 4,
+   "move": "R3->L3",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-160246"
+  },
+  {
+   "task": 14,
+   "i": 0,
+   "move": "R3->L6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-160427"
+  },
+  {
+   "task": 14,
+   "i": 1,
+   "move": "R3->L6",
+   "stage": "missed_drop",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": true,
+   "note": "",
+   "capture": "20260824-160637"
+  },
+  {
+   "task": 14,
+   "i": 2,
+   "move": "R3->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-160748"
+  },
+  {
+   "task": 14,
+   "i": 3,
+   "move": "R3->L6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "missed then recovered and completed",
+   "capture": "20260824-160851"
+  },
+  {
+   "task": 14,
+   "i": 4,
+   "move": "R3->L6",
+   "stage": "complete",
+   "collision": false,
+   "missed_pickup": false,
+   "missed_drop": false,
+   "note": "perfect",
+   "capture": "20260824-161034"
+  },
+  {
+   "task": 15,
+   "i": 0,
+   "move": "R6->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "picked wrong vial R3",
+   "capture": "20260824-161328"
+  },
+  {
+   "task": 15,
+   "i": 1,
+   "move": "R6->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-161519"
+  },
+  {
+   "task": 15,
+   "i": 2,
+   "move": "R6->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-161620"
+  },
+  {
+   "task": 15,
+   "i": 3,
+   "move": "R6->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "then picked and homed",
+   "capture": "20260824-161735"
+  },
+  {
+   "task": 15,
+   "i": 4,
+   "move": "R6->L6",
+   "stage": "missed_pickup",
+   "collision": false,
+   "missed_pickup": true,
+   "missed_drop": false,
+   "note": "",
+   "capture": "20260824-161936"
+  }
+ ]
+}

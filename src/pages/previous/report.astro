@@ -1,0 +1,78 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/site';
+
+const bibtex = `@misc{abdan2026vialsort,
+  title  = {Language-Conditioned Robotic Vial Sorting with a Vision--Language--Action Policy},
+  author = {Abdan, Sari},
+  year   = {2026},
+  note   = {Project report},
+  url    = {https://sarriabdan-hub.github.io/vial-sort/}
+}`;
+---
+<Base
+  page="previous"
+  title="Report"
+  description="The project report: language-conditioned robotic vial sorting with a vision–language–action policy. Abstract, PDF and citation."
+>
+  <section class="section">
+    <div class="wrap paper">
+      <h1>Language-conditioned robotic vial sorting with a vision–language–action policy</h1>
+      <p class="author">Sari Abdan, project report, 2026</p>
+      <p><a class="pdf" href={url('paper/vial-sort-report.pdf')}>Read the report (PDF)</a></p>
+
+      <h2>Abstract</h2>
+      <div class="abstract">
+        <p>
+          Vision–language models understand scenes and instructions remarkably well, yet turning that
+          understanding into precise physical manipulation remains an open problem. Vision–language–action
+          (VLA) models address it by adding an action generating component to a pretrained vision–language
+          model, but their demonstrations typically involve coarse tasks, such as moving a large object into a
+          bowl, that tolerate millimetres of error. We study a more demanding case: sorting small, translucent
+          plastic vials of three colours between two racks of narrow slots and a discard bin with a low-cost
+          SO-101 arm, where each command names an exact source and destination position. Success requires an
+          accurate grasp of a thin tube, a precise placement into a small hole, and a policy that handles many
+          positions through many phrasings of the prompt.
+        </p>
+        <p>
+          We fine-tune the π0.5 VLA policy, keeping its vision–language backbone frozen and training only its
+          action expert, on 150 teleoperated demonstrations that we release publicly, and we add a
+          deterministic release step for the bin. In 79 autonomous, human-scored rollouts across 15 commands,
+          the policy completes the full pick-and-place in 25% of cases. It acts on the wrong vial or slot in
+          only 8% of rollouts, which shows that the prompts are generally followed, while the initial grasp of
+          the vial is missed in 54% and the vial is released off the destination target in 19%. Precise
+          physical execution is therefore the main limit, and more grasp demonstrations per position together
+          with closed-loop grasp correction are the most direct ways to raise it.
+        </p>
+      </div>
+
+      <h2>Cite</h2>
+      <pre class="bib"><code>{bibtex}</code></pre>
+      <button class="quiet-btn" type="button" id="copy-bib">Copy</button>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const button = document.getElementById('copy-bib') as HTMLButtonElement;
+  const code = document.querySelector('.bib code') as HTMLElement;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(code.textContent ?? '');
+      button.textContent = 'Copied';
+    } catch {
+      button.textContent = 'Select the text to copy it';
+    }
+    setTimeout(() => (button.textContent = 'Copy'), 2000);
+  });
+</script>
+
+<style>
+  .paper { max-width: 48rem; }
+  .paper h1 { font-size: clamp(1.7rem, 3.4vw, var(--step-3)); }
+  .author { margin-top: 0.7rem; color: var(--ink-2); }
+  .pdf { display: inline-block; margin-top: 1.2rem; font-size: var(--step-1); font-stretch: 112%; font-weight: 560; }
+  h2 { margin-top: 2.6rem; margin-bottom: 0.9rem; font-size: var(--step-1); }
+  .abstract p { line-height: 1.6; }
+  .bib { background: var(--raise); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.1rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; margin: 0 0 0.8rem; }
+</style>

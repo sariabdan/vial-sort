@@ -1,0 +1,32 @@
+---
+// The four numbers the home page leads with, each with its n and the checkpoint it comes from. Counts, not
+// rates: the rows are small, and a percentage of five rollouts would look more certain than it is.
+import results from '../data/results.json';
+
+const t = results.tiles;
+const p = t.pi05, f = t.flux, g = t.gate;
+const tiles = [
+  { big: p.grasped_right, of: p.rollouts, text: 'rollouts grasped the right vial', note: `${p.name} (π0.5), ${p.short}.` },
+  { big: p.released, of: p.rollouts, text: 'of those let go at the slot the command asked for', note: 'Read from the arm, not the vial.' },
+  { big: f.grasped_right, of: f.rollouts, text: 'rollouts grasped the right vial', note: `${f.name} (FLUX 3 Action), ${f.short}. ${f.released} of ${f.rollouts} let go at the asked slot.` },
+  { big: g.dest_passed, of: g.checkpoints, text: 'checkpoints read the destination slot in the offline test', note: `The source slot is read from ${g.source_from / 1000}k steps on.` },
+];
+---
+<ul class="tiles">
+  {tiles.map((x) => (
+    <li>
+      <span class="value">{x.big}<span class="of">{` of ${x.of}`}</span></span>
+      <span class="text">{x.text}</span>
+      <span class="note">{x.note}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem clamp(1rem, 3vw, 2.5rem); }
+  li { display: grid; align-content: start; gap: 0.3rem; padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+  .value { font-size: var(--step-5); font-weight: 600; line-height: 1; font-stretch: 112%; white-space: nowrap; }
+  .of { font-size: var(--step-1); font-weight: 500; color: var(--ink-2); font-stretch: 100%; }
+  .text { max-width: 22ch; line-height: 1.35; }
+  @media (max-width: 52rem) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

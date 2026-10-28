@@ -1,0 +1,232 @@
+---
+import Base from '../../layouts/Base.astro';
+import Figure from '../../components/Figure.astro';
+import Funnel from '../../components/Funnel.astro';
+import RackMaps from '../../components/RackMaps.astro';
+import evals from '../../data/evals.json';
+import coverage from '../../data/coverage.json';
+import media from '../../data/media.json';
+import { url, pct, moveLabel } from '../../lib/site';
+import { demoCells, rateCells, type RackMap } from '../../lib/rackmaps';
+
+const k = evals.kpi;
+const stageLabel = Object.fromEntries(evals.stages.map((s) => [s.key, s.label]));
+const scen = [...evals.scenarios].sort((a, b) => b.rate - a.rate || b.n - a.n || a.task - b.task);
+const heldOut = evals.scenarios.filter((s) => !s.trained);
+const counts = [...new Set(evals.scenarios.map((s) => s.n))].sort();
+
+// the gallery: one human-scored trial per outcome, with what the scorer wrote
+const gallery = evals.stages.map((st) => {
+  const g = (media.gallery as Record<string, { capture: string; src: string; poster: string; w: number; h: number }>)[st.key];
+  const trial = evals.trials.find((t) => t.capture === g.capture)!;
+  return { ...g, stage: st.label, move: trial.move, i: trial.i, note: trial.note };
+});
+
+// chart 5's note, read off the data rather than written by hand
+const funnelRows = [
+  { label: 'Rollouts', n: k.rollouts, of: null, color: 'var(--o4-1)' },
+  { label: 'Grasped the vial on the first try', n: k.first_grasp, of: k.rollouts, color: 'var(--o4-2)' },
+  { label: 'Then completed the move', n: k.complete_after_first_grasp, of: k.first_grasp, color: 'var(--o4-4)' },
+];
+// slot-by-slot: demonstrations beside completed rollouts, as source and as destination
+const tally = (key: 'src' | 'dst') => {
+  const by: Record<string, { n: number; ok: number }> = {};
+  for (const s of evals.scenarios) {
+    by[s[key]] ??= { n: 0, ok: 0 };
+    by[s[key]].n += s.n;
+    by[s[key]].ok += s.complete;
+  }
+  return by;
+};
+const bounds = [14, 19, 24, 29];
+const maps: RackMap[] = [
+  { caption: 'Training demonstrations, by the slot they took the vial from', ramp: 'd', cells: demoCells(coverage.per_source, 'as the source', bounds) },
+  { caption: 'Evaluation rollouts completed, by the slot they took the vial from', ramp: 'ob', cells: rateCells(tally('src'), 'as the source', 'completed') },
+  { caption: 'Training demonstrations, by where they put the vial', ramp: 'd', cells: demoCells(coverage.per_destination, 'as the destination', bounds) },
+  { caption: 'Evaluation rollouts completed, by where the vial had to go', ramp: 'ob', cells: rateCells(tally('dst'), 'as the destination', 'completed') },
+];
+const demoOf = (m: string) => (coverage.eval as Record<string, { demos: number }>)[m].demos;
+const unseen = [...evals.scenarios].filter((s) => demoOf(s.move) === 0).sort((a, b) => b.rate - a.rate)[0];
+const drilled = [...evals.scenarios].filter((s) => s.complete === 0).sort((a, b) => demoOf(b.move) - demoOf(a.move))[0];
+const widths = evals.scenarios.map((s) => Math.round((s.hi - s.lo) * 100));
+const [narrow, wide] = [Math.min(...widths), Math.max(...widths)];
+---
+<Base
+  page="previous"
+  title="August evaluation"
+  description="79 human-scored rollouts of the deployed π0.5 policy over 15 vial-sorting commands: where the takes fail, command by command, with every trial on video."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>The August evaluation</h1>
+      <p class="lead">
+        {`π0.5 at 12k steps, with its vision–language backbone frozen, ran ${k.rollouts} times over ` +
+          `${k.scenarios} commands on the Jetson Thor rig, 22–24 August 2026. A person scored every rollout.`}
+      </p>
+      <p class="intro">
+        {`Each command was run ${counts.join(' or ')} times. In ${k.scenarios - heldOut.length} commands the vial ` +
+          `starts in a slot the demonstrations used; in ${heldOut.length} it starts in slot 2 or 5, which no ` +
+          `demonstration used.`} The scorer marked each rollout as a complete success or not, and noted a missed
+        pickup, a missed drop and any collision.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Where the takes are lost</h2>
+      <p>In the order a take happens. The first grasp is the largest loss; getting past it is not enough.</p>
+      <Funnel rows={funnelRows} max={k.rollouts} />
+      <div class="notes-after">
+        <p class="note">
+          {`Another ${k.recovered} rollouts completed after missing the first grasp, so ${k.complete} of ` +
+            `${k.rollouts} (${pct(k.complete / k.rollouts)}) in all. The vial was let go away from its destination ` +
+            `in ${k.missed_drop} rollouts (${pct(k.missed_drop / k.rollouts)}). A collision happened in ` +
+            `${k.collision}, never on its own.`}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Every command</h2>
+      <p>Click a command in either chart to watch its trials below.</p>
+
+      <Figure id="per-move" title="Completed rollouts per command" height={scen.length * 30 + 44}
+        description="The dot is the share of rollouts that completed the move; the line is its 95% Wilson interval. With 5 rollouts a command, the intervals are wide.">
+        <ul class="legend" slot="legend">
+          <li><i style="background: var(--m-pi05); border-radius: 50%"></i>Source slot used in training</li>
+          <li><i style="border: 2px solid var(--m-pi05); border-radius: 50%"></i>Source slot held out of training</li>
+        </ul>
+        <table class="data" slot="table">
+          <thead><tr><th>Command</th><th>Source slot in training</th><th class="r">Rollouts</th><th class="r">Completed</th><th class="r">Rate</th><th class="r">95% interval</th></tr></thead>
+          <tbody>
+            {scen.map((s) => (
+              <tr><td class="move">{moveLabel(s.move)}</td><td>{s.trained ? 'yes' : 'no'}</td><td class="r">{s.n}</td><td class="r">{s.complete}</td><td class="r">{pct(s.rate)}</td><td class="r">{pct(s.lo)}–{pct(s.hi)}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <Fragment slot="notes">
+          <div class="chart pooled" data-chart="per-move-pooled" style="min-height: 76px"></div>
+          <p class="note">
+            {`Pooled, rollouts with a held-out source slot completed more often ` +
+              `(${evals.held_out.complete} of ${evals.held_out.rollouts}) than those with a trained one ` +
+              `(${evals.trained.complete} of ${evals.trained.rollouts}), but the intervals overlap`} and the held-out rate rests on two commands. It is not evidence that the
+            policy generalises; those two slots may simply be easier to grasp.
+          </p>
+        </Fragment>
+      </Figure>
+
+      <Figure id="composition" title="How far each command’s rollouts got" height={scen.length * 30 + 44}
+        description="Each rollout counted once: complete, otherwise a missed pickup, otherwise a missed drop. The rest picked the wrong vial or used the wrong slot.">
+        <ul class="legend" slot="legend">
+          {evals.stages.map((s, i) => <li><i style={`background: var(--o4-${i + 1})`}></i>{s.label}</li>)}
+        </ul>
+        <table class="data" slot="table">
+          <thead><tr><th>Command</th>{evals.stages.map((s) => <th class="r">{s.label}</th>)}<th class="r">Rollouts</th></tr></thead>
+          <tbody>
+            {scen.map((s) => (
+              <tr><td class="move">{moveLabel(s.move)}</td>{evals.stages.map((st) => <td class="r">{s.stages[st.key as keyof typeof s.stages]}</td>)}<td class="r">{s.n}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <p slot="notes" class="note">Ordered left to right by how far the take got, in one blue ramp that stands out more the further the take got.</p>
+      </Figure>
+
+      <div class="watch" id="watch">
+        <div class="watch-head">
+          <h3>Watch the trials</h3>
+          <label>Command
+            <select id="watch-move">
+              {scen.map((s) => <option value={s.move}>{moveLabel(s.move)} ({s.complete} of {s.n})</option>)}
+            </select>
+          </label>
+        </div>
+        <div class="trials" id="watch-trials" role="group" aria-label="Trials of this command"></div>
+        <video id="watch-video" controls muted playsinline preload="none" width="1038" height="260"></video>
+        <p class="note" id="watch-caption" aria-live="polite"></p>
+        <p class="note">
+          Side, top and wrist cameras, as the run was recorded for scoring: about 3.5 frames a second, so motion
+          looks jumpy. Full-rate demonstrations are in the <a href={url('previous/data/')}>August datasets</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>One rollout of each outcome</h2>
+      <p>The side camera of four scored trials.</p>
+      <div class="gallery">
+        {gallery.map((g) => (
+          <figure>
+            <video src={url(g.src)} poster={url(g.poster)} width={g.w} height={g.h} muted loop playsinline data-auto preload="metadata"></video>
+            <figcaption>
+              <strong>{g.stage}</strong>
+              <span class="note"><span class="move">{moveLabel(g.move)}</span>, trial {g.i + 1}.{g.note && ` Scorer’s note: “${g.note}”.`}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Trained on, and done well, slot by slot</h2>
+      <p>
+        {`The ${coverage.episodes} demonstrations against the evaluation, on the rack layout: the bin, the left ` +
+          `rack and the right rack, slots 1 to 6 from left to right as the side camera sees them.`}
+      </p>
+      <ul class="legend">
+        <li>Demonstrations:</li>
+        {['under 15', '15–19', '20–24', '25–29', '30 or more'].map((t, i) => <li><i style={`background: var(--d-${i + 1})`}></i>{t}</li>)}
+      </ul>
+      <ul class="legend">
+        <li>Completed:</li>
+        {['under 20%', '20–39%', '40–59%', '60–79%', '80% or more'].map((t, i) => <li><i style={`background: var(--ob-${i + 1})`}></i>{t}</li>)}
+      </ul>
+      <RackMaps maps={maps} />
+      <p class="note map-note">
+        {`With 5 rollouts a command, success does not follow how many demonstrations a command had. ` +
+          `${moveLabel(unseen.move)} had no demonstration of that exact move and completed ${unseen.complete} of ${unseen.n}; ` +
+          `${moveLabel(drilled.move)} had ${demoOf(drilled.move)} and completed none. Slots 2 and 5 were never a source ` +
+          `in training, and slots 2, 4 and 5 never a destination.`}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What these numbers cannot say</h2>
+      <p>
+        {`Five rollouts a command is enough to see the failure modes, not to rank commands: the intervals ` +
+          `above are ${narrow} to ${wide} percentage points wide.`} The scores come from one person watching each run. The v5 evaluation tests one
+        checkpoint of one recipe on one rig; the <a href={url('results/')}>October results</a> show what the later runs did.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../../charts/results';
+</script>
+
+<style>
+  .intro { margin-top: 1rem; }
+  .notes-after { margin-top: 1.2rem; }
+  .pooled { margin-top: 0.2rem; }
+  .watch { margin-top: clamp(2.5rem, 5vw, 3.5rem); display: grid; gap: 0.8rem; }
+  .watch-head { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; align-items: baseline; }
+  .watch-head label { display: flex; gap: 0.6rem; align-items: baseline; font-size: var(--step--1); color: var(--ink-2); }
+  select { font: inherit; font-size: var(--step-0); color: var(--ink); background: var(--raise); border: 1px solid var(--rule); border-radius: 4px; padding: 0.2rem 0.4rem; }
+  .trials { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  #watch-video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; aspect-ratio: 1038 / 260; }
+  .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4rem clamp(1rem, 2.5vw, 2rem); }
+  .gallery figure { margin: 0; display: grid; gap: 0.55rem; align-content: start; }
+  .gallery video { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .gallery figcaption { display: grid; gap: 0.15rem; }
+  .map-note { margin-top: 1.2rem; }
+  @media (max-width: 60rem) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

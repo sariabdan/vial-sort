@@ -1,0 +1,192 @@
+{
+ "dataset": "vial-sort-v5-ee-rgb",
+ "episodes": 150,
+ "distinct_prompts": 150,
+ "wordings": {
+  "move": "R1->bin",
+  "prompts": [
+   "Bring the tube at hole 1 of the rack on the right into the trash can.",
+   "Carry the test tube in position 1 of the right-side rack to the bin.",
+   "Move the sample tube from slot 1 of the right tube rack over to the trash.",
+   "Move the vial from position 1 of the right rack to the bin.",
+   "Relocate the test tube from spot 1 of the right-side rack to the rubbish bin.",
+   "Take the sample tube at the first slot of the right tube rack into the waste bin.",
+   "Take the vial in slot 1 of the right rack to the trash.",
+   "Transfer the tube from the first slot of the rack on the right over to the waste bin."
+  ]
+ },
+ "demos": {
+  "L1->L3": 4,
+  "L1->L6": 4,
+  "L1->R1": 3,
+  "L1->R3": 1,
+  "L1->R6": 2,
+  "L1->bin": 3,
+  "L3->L1": 6,
+  "L3->L6": 4,
+  "L3->R1": 3,
+  "L3->R6": 2,
+  "L3->bin": 3,
+  "L4->L1": 4,
+  "L4->L6": 6,
+  "L4->R1": 2,
+  "L4->R3": 4,
+  "L4->R6": 2,
+  "L4->bin": 3,
+  "L6->L1": 4,
+  "L6->L3": 5,
+  "L6->R1": 3,
+  "L6->R3": 5,
+  "L6->R6": 3,
+  "L6->bin": 1,
+  "R1->L1": 3,
+  "R1->L6": 3,
+  "R1->R3": 3,
+  "R1->R6": 2,
+  "R1->bin": 8,
+  "R3->L1": 3,
+  "R3->L3": 3,
+  "R3->L6": 1,
+  "R3->R1": 3,
+  "R3->R6": 4,
+  "R3->bin": 5,
+  "R4->L1": 4,
+  "R4->L3": 5,
+  "R4->L6": 1,
+  "R4->R1": 2,
+  "R4->R6": 5,
+  "R4->bin": 4,
+  "R6->L1": 1,
+  "R6->L3": 3,
+  "R6->L6": 1,
+  "R6->R1": 4,
+  "R6->R3": 2,
+  "R6->bin": 3
+ },
+ "per_source": {
+  "L1": 17,
+  "L3": 18,
+  "L4": 21,
+  "L6": 21,
+  "R1": 19,
+  "R3": 19,
+  "R4": 21,
+  "R6": 14
+ },
+ "per_destination": {
+  "L1": 25,
+  "L3": 20,
+  "L6": 20,
+  "R1": 20,
+  "R3": 15,
+  "R6": 20,
+  "bin": 30
+ },
+ "eval": {
+  "L1->R1": {
+   "n": 7,
+   "complete": 1,
+   "demos": 3,
+   "demos_from_source": 17,
+   "demos_to_destination": 20
+  },
+  "L1->R3": {
+   "n": 7,
+   "complete": 0,
+   "demos": 1,
+   "demos_from_source": 17,
+   "demos_to_destination": 15
+  },
+  "L5->R3": {
+   "n": 5,
+   "complete": 2,
+   "demos": 0,
+   "demos_from_source": 0,
+   "demos_to_destination": 15
+  },
+  "L3->R1": {
+   "n": 5,
+   "complete": 1,
+   "demos": 3,
+   "demos_from_source": 18,
+   "demos_to_destination": 20
+  },
+  "L3->R3": {
+   "n": 5,
+   "complete": 0,
+   "demos": 0,
+   "demos_from_source": 18,
+   "demos_to_destination": 15
+  },
+  "L4->R1": {
+   "n": 5,
+   "complete": 1,
+   "demos": 2,
+   "demos_from_source": 21,
+   "demos_to_destination": 20
+  },
+  "L4->R3": {
+   "n": 5,
+   "complete": 1,
+   "demos": 4,
+   "demos_from_source": 21,
+   "demos_to_destination": 15
+  },
+  "L6->R6": {
+   "n": 5,
+   "complete": 4,
+   "demos": 3,
+   "demos_from_source": 21,
+   "demos_to_destination": 20
+  },
+  "L3->L6": {
+   "n": 5,
+   "complete": 1,
+   "demos": 4,
+   "demos_from_source": 18,
+   "demos_to_destination": 20
+  },
+  "L4->bin": {
+   "n": 5,
+   "complete": 0,
+   "demos": 3,
+   "demos_from_source": 21,
+   "demos_to_destination": 30
+  },
+  "R2->bin": {
+   "n": 5,
+   "complete": 2,
+   "demos": 0,
+   "demos_from_source": 0,
+   "demos_to_destination": 30
+  },
+  "R1->L3": {
+   "n": 5,
+   "complete": 3,
+   "demos": 0,
+   "demos_from_source": 19,
+   "demos_to_destination": 20
+  },
+  "R3->L3": {
+   "n": 5,
+   "complete": 1,
+   "demos": 3,
+   "demos_from_source": 19,
+   "demos_to_destination": 20
+  },
+  "R3->L6": {
+   "n": 5,
+   "complete": 3,
+   "demos": 1,
+   "demos_from_source": 19,
+   "demos_to_destination": 20
+  },
+  "R6->L6": {
+   "n": 5,
+   "complete": 0,
+   "demos": 1,
+   "demos_from_source": 14,
+   "demos_to_destination": 20
+  }
+ }
+}

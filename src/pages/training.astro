@@ -1,0 +1,201 @@
+---
+import Base from '../layouts/Base.astro';
+import ModelTable from '../components/ModelTable.astro';
+import StageLegend from '../components/StageLegend.astro';
+import Figure from '../components/Figure.astro';
+import Term from '../components/Term.astro';
+import training from '../data/training.json';
+import gate from '../data/gate.json';
+import results from '../data/results.json';
+import registry from '../data/registry.json';
+import { url, MODELS } from '../lib/site';
+
+const reg = (run: string) => registry.models.find((m) => m.run === run);
+const gc = gate.checkpoints;
+const last = gc[gc.length - 1];
+const leavesHome = gc.every((g) => g.go_ok === g.go_of);
+const bestDest = Math.max(...gc.map((g) => g.dest_frames));
+const sourceFrom = (gc.find((g, i) => gc.slice(i).every((h) => h.source)) ?? last).step;
+const newest = results.tiles.pi05;
+const gated = reg('pi05-canon')!;
+const nameOf = (run: string) => reg(run)?.name ?? run;
+const k = (s: number) => `${s / 1000}k`;
+const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => n + x.takes, 0);
+---
+<Base
+  page="training"
+  title="Training"
+  description="How each October model's loss fell, what its checkpoints did on the robot, and an offline test of what the newest π0.5 model reads from its command."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Training</h1>
+      <p class="lead">
+        How each model’s training loss fell, and, under it, how every checkpoint that was tried on the robot did. Settings are on the
+        {` `}<a href={url('experiments/')}>Experiments page</a>, and the rollouts are compared on the <a href={url('results/')}>Results page</a>.
+      </p>
+      <p class="intro">
+        {`There is no validation loss: every demonstration has its own wording, so the curve cannot show when a model starts to memorise. The robot is the only test, ` +
+          `and the squares under each curve show how far each rollout got. They are scored from the arm, as explained under `}<a href={url('experiments/')}>Experiments</a>.
+      </p>
+      <StageLegend inline />
+    </div>
+  </section>
+
+  {training.runs.map((run) => {
+    const m = reg(run.id)!;
+    return (
+      <section class="section run">
+        <div class="wrap">
+          <header class="run-head">
+            <h2><i style={`background: ${MODELS[run.model].color}`}></i>{m.name}<span class="note">{MODELS[run.model].label}</span></h2>
+            <p>{`${m.what}.`}</p>
+            <dl class="facts">
+              <div><dt>Steps</dt><dd class="num">{k(run.steps)}</dd></div>
+              <div><dt>Training time</dt><dd class="num">{run.hours} h</dd></div>
+              <div><dt>Per step</dt><dd class="num">{run.step_s} s</dd></div>
+              <div><dt>Peak GPU memory</dt><dd class="num">{run.mem_gb} GB</dd></div>
+            </dl>
+          </header>
+          <div class="chart" data-chart={`loss-${run.id}`} style="min-height: 160px"></div>
+          {run.robot.length ? (
+            <>
+              <p class="panel-label">{`On the robot: ${takesOf(run)} scored rollouts, one square each`}</p>
+              <div class="chart" data-chart={`robot-${run.id}`} style="min-height: 80px"></div>
+              <p class="note">Several columns at one checkpoint are separate sessions: sync, RTC, or EMA weights. Hover a square for the session. The table for each checkpoint is on <a href={`${url('experiments/')}#${m.id}`}>{m.name}’s Experiments entry</a>.</p>
+            </>
+          ) : (
+            <p class="note panel-label">Its rollouts ran on an earlier layout of the table that the scorer cannot read, so they are not scored here.</p>
+          )}
+        </div>
+      </section>
+    );
+  })}
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What {gated.name} could read, without the robot</h2>
+      <p>
+        {`An offline test of every saved checkpoint of ${gated.name}, from 1k to ${last.step / 1000}k steps. It is shown frames from the demonstrations and from real ` +
+          `rollouts and asked what motion it would predict. ${leavesHome ? 'It leaves home at every checkpoint. ' : ''}From ${sourceFrom / 1000}k steps on its reach follows the ` +
+          `source slot named in the command. ${bestDest === 0
+            ? `It does not follow the destination slot: it passed none of the ${last.dest_of} destination frames at any checkpoint.`
+            : `It does not follow the destination slot: at no checkpoint did it pass more than ${bestDest} of ${last.dest_of} destination frames.`}`}
+      </p>
+      <Figure id="gate-error" title="Error against the recorded demonstrations" height={240}
+        description="Degrees between the checkpoint's predicted motion while placing and the recorded one, on 15 demonstrations.">
+        <ul class="legend" slot="legend">
+          <li><i style="background: var(--m-pi05)"></i>Insertion error</li>
+          <li><i style="background: var(--steel)"></i>Gripper error</li>
+        </ul>
+        <table class="data" slot="table">
+          <thead><tr><th>Checkpoint</th><th class="r">Insertion error (°)</th><th class="r">Gripper error (°)</th></tr></thead>
+          <tbody>
+            {gc.map((g) => <tr><td class="num">{g.step / 1000}k</td><td class="r">{g.insertion_err}</td><td class="r">{g.gripper_err}</td></tr>)}
+          </tbody>
+        </table>
+        <p slot="notes" class="note">The errors fall steadily. The checks below do not move the same way.</p>
+      </Figure>
+      <div class="table-scroll gate">
+        <table class="data" aria-label="Offline checks by checkpoint">
+          <thead><tr><th>Check</th>{gc.map((g) => <th class="r">{g.step / 1000}k</th>)}</tr></thead>
+          <tbody>
+            <tr>
+              <th scope="row">Leaves home<span class="def">Shown the first frame of nine real rollouts, with the arm at home, does it predict a move away? Counted when all three random seeds do. Frames from the start of a demonstration move 55 to 90°; a model that will sit still moves a few degrees.</span></th>
+              {gc.map((g) => <td class="r"><span class={g.go_ok === g.go_of ? 'ok' : 'bad'}>{g.go_ok}/{g.go_of}</span></td>)}
+            </tr>
+            <tr>
+              <th scope="row">Reach follows the source slot<span class="def">Vials stand in right-rack slots 1, 3 and 6 and the command names each in turn. The predicted shoulder angle 1.7 s ahead must order the slots as the demonstrations do (1 furthest, then 3, then 6) with at least 15° between the ends.</span></th>
+              {gc.map((g) => <td class="r"><span class={g.source ? 'ok' : 'bad'}>{g.source ? 'yes' : 'no'}</span></td>)}
+            </tr>
+            <tr>
+              <th scope="row">Binds the two numbers to their roles<span class="def">“From position 3 … to slot 1” and “from position 1 … to slot 3” use the same two numbers. A model that understands which is the source reaches differently for them, by at least 8°; one that only collects the numbers does not.</span></th>
+              {gc.map((g) => <td class="r"><span class={g.roles ? 'ok' : 'bad'}>{g.roles ? 'yes' : 'no'}</span></td>)}
+            </tr>
+            <tr>
+              <th scope="row">Reads the destination slot<span class="def">{`${last.dest_of} frames taken one second after a grasp, the same vial each time, with commands that ask for destination slot 1, 3 and 6. A frame passes when the predicted reach is ordered as in the demonstrations, by at least 10°. The check passes when at least 4 of the ${last.dest_of} frames do. “0/${last.dest_of}” is a real count: no frame passed, at any checkpoint.`}</span></th>
+              {gc.map((g) => <td class="r"><span class={g.dest ? 'ok' : 'bad'}>{g.dest_frames}/{g.dest_of}</span></td>)}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note after-gate">
+        {`The robot shows the same split. ${newest.name} at ${newest.short} grasped the right vial in ${newest.grasped_right} of ${newest.rollouts} rollouts and let go at ` +
+          `the asked slot in ${newest.released}. See `}<a href={url('results/')}>the results</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Why the destination is not followed</h2>
+      <p>
+        On 21 October a probe on training frames answered “underfit, overfit, or what?”: neither. It is a shortcut built
+        into how the 100 demonstrations were recorded. Each run of five was recorded in one sitting with one destination,
+        and the bin moved and the light changed between sittings, so the camera picture alone says which sitting a frame
+        is from, and the sitting says the destination. The source changed in every demonstration within a sitting, so the
+        picture could not give it away; that is why the source slot was learned and the destination was not.
+      </p>
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th>Test, on training frames</th><th class="r">12k steps</th><th class="r">2k steps</th></tr></thead>
+          <tbody>
+            <tr><td>Replays its own demonstration’s destination</td><td class="r">100%</td><td class="r">88%</td></tr>
+            <tr><td>The command names another source vial: it goes there</td><td class="r">94%</td><td class="r">94%</td></tr>
+            <tr><td>The command names another destination: it follows it</td><td class="r">19%</td><td class="r">31%</td></tr>
+            <tr><td>No command at all: it follows the other destination</td><td class="r">19%</td><td class="r">27%</td></tr>
+            <tr><td>Same command, all five camera images from the other demonstration: it follows the cameras</td><td class="r">81%</td><td class="r">75%</td></tr>
+            <tr><td>Same command, joint positions from the other demonstration</td><td class="r">10%</td><td class="r">15%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note after-gate">
+        {`Same result at 2k and 12k steps, so this is not overtraining. Without a command the model behaves as if the destination words were not there. ` +
+          `The probe was run on 21 October on 24 pairs of demonstrations with the same source and different destinations, for ${gated.name}, and is written up in the project notes.`}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The two short fine-tunes</h2>
+      <p>
+        {`${nameOf('pi05-noop')} and ${nameOf('pi05-trim2')} are quick fine-tunes of ${nameOf('pi05-allcams')} at 12k. Both train on demonstrations with the idle start and end cut, and replace the first ` +
+          `frames with views of the arm with nobody near it; the second uses a corrected cut. They test the finding of the 19 October probes: the 12k checkpoint often waited ` +
+          `at its start pose because it had learned the operator leaning in as its cue to move.`}
+      </p>
+      <div class="chart probes" data-chart="robot-probes" style="min-height: 220px"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Every model of this work, and what comes next</h2>
+      <p>
+        {`Cells say “not logged” where a run happened and no record of the number exists, and a dash where a policy was never trained. The August policies are with the `}<a href={url('previous/')}>previous work</a>.
+      </p>
+      <ModelTable eras={['after', 'planned', 'considered']} />
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../charts/training';
+</script>
+
+<style>
+  .intro { margin-top: 1rem; margin-bottom: 1.2rem; }
+  .run-head h2 { display: flex; align-items: baseline; gap: 0.6rem; }
+  .run-head h2 i { width: 0.8rem; height: 0.8rem; border-radius: 50%; flex: none; align-self: center; }
+  .run-head p { margin-top: 0.4rem; color: var(--ink-2); }
+  .facts { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 0.9rem 0 1.4rem; }
+  .facts div { display: grid; }
+  .facts dt { font-size: var(--step--1); color: var(--ink-2); }
+  .facts dd { margin: 0; font-weight: 560; }
+  .panel-label { margin-top: 1rem; font-size: var(--step--1); color: var(--ink); font-weight: 560; }
+  .probes { max-width: 34rem; margin-top: 1.4rem; }
+  .gate { margin-top: 1.4rem; }
+  .gate th[scope='row'] { font-weight: 560; min-width: 18rem; max-width: 26rem; }
+  .gate .def { display: block; font-weight: 400; color: var(--ink-2); font-size: var(--step--1); margin-top: 0.2rem; line-height: 1.45; }
+  .after-gate { margin-top: 1rem; }
+</style>

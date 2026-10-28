@@ -1,0 +1,180 @@
+{
+ "rows": [
+  {
+   "id": "pi05-v5",
+   "model": "pi05",
+   "era": "paper",
+   "name": "π0.5, frozen backbone",
+   "trained": "Action expert only; vision-language backbone frozen",
+   "data": "vial-sort-v5, 150 demos, 3 cameras",
+   "steps": "30k (12k deployed)",
+   "time": null,
+   "memory": null,
+   "robot": {
+    "rollouts": 79,
+    "complete": 20
+   },
+   "source": "report",
+   "verdict": "Deployed and evaluated: the system in the report."
+  },
+  {
+   "id": "pi0",
+   "model": "pi0",
+   "era": "paper",
+   "name": "π0",
+   "trained": "Action expert, full fine-tune vs LoRA; backbone frozen",
+   "data": "vial-sort-v1, 100 demos",
+   "steps": "30k",
+   "time": "about 5–6 h each",
+   "memory": "same for both",
+   "verdict": "Same training loss, but LoRA sometimes missed the grasp; full fine-tune grasped reliably. Only one fixed command was tried.",
+   "source": "project notes (June 2026), report"
+  },
+  {
+   "id": "groot",
+   "model": "groot",
+   "era": "paper",
+   "name": "GR00T N1.5",
+   "trained": "Fine-tune, batch 16",
+   "data": "vial-sort-v4",
+   "steps": "20k",
+   "time": "3 h 58 min",
+   "memory": "54.7 GB",
+   "verdict": "Exploratory; not carried through to deployment.",
+   "source": "project notes (July 2026), report"
+  },
+  {
+   "id": "act",
+   "model": "act",
+   "era": "paper",
+   "name": "ACT",
+   "trained": null,
+   "data": null,
+   "steps": null,
+   "time": null,
+   "memory": null,
+   "verdict": "No language input; a motion baseline only.",
+   "source": "report"
+  },
+  {
+   "id": "lingbot",
+   "model": null,
+   "era": "considered",
+   "name": "LingBot-VA (world-action model)",
+   "trained": "Not trained",
+   "data": null,
+   "steps": null,
+   "time": null,
+   "memory": null,
+   "verdict": "5,230 ms per inference as published: far too slow for closed-loop control.",
+   "source": "arXiv 2603.22078"
+  },
+  {
+   "id": "molmoact2",
+   "model": null,
+   "era": "planned",
+   "name": "MolmoAct2 (Allen Institute for AI)",
+   "trained": "Not trained. Planned: fine-tune on the same 100 demonstrations and compare with π0.5 and FLUX",
+   "data": "vial-sort-slots-100 (planned)",
+   "steps": null,
+   "time": null,
+   "memory": "16.5 to 48.3 GiB, as documented",
+   "verdict": "Of interest for depth reasoning from the colour images alone, since the RealSense cannot see the translucent vials. Already in LeRobot as policy.type=molmoact2; its depth-reasoning (Think) variant is not in that port yet. Memory is the authors' figure for fine-tuning the action expert only (batch 8) up to the full model, on an H100 with LIBERO, not measured here.",
+   "source": "LeRobot docs/source/molmoact2.mdx, allenai.org/blog/molmoact2, ee/DEPTH_PLAN.md"
+  },
+  {
+   "id": "pi05-allcams",
+   "model": "pi05",
+   "era": "after",
+   "name": "Spicy Chicken",
+   "trained": "π0.5 trained on the recordings as they were, all five cameras",
+   "data": "vial-sort-slots-100, as recorded",
+   "steps": "12k",
+   "time": "11.8 h",
+   "memory": "37.9 GB",
+   "step_s": 3.5,
+   "robot": {
+    "takes": 21,
+    "released": 3,
+    "right_vial": 3,
+    "stages": {
+     "no_grasp": 18,
+     "grasped": 0,
+     "carried": 0,
+     "released": 3
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
+   "id": "pi05-canon",
+   "model": "pi05",
+   "era": "after",
+   "name": "Mango Rice",
+   "trained": "π0.5 trained from the base on a cleaned copy with one wording per move",
+   "data": "vial-sort-slots-100, idle start and end cut, operator removed from the start frames, one canonical sentence per move",
+   "steps": "12k",
+   "time": "11.6 h",
+   "memory": "37.9 GB",
+   "step_s": 3.45,
+   "robot": {
+    "takes": 9,
+    "released": 2,
+    "right_vial": 8,
+    "stages": {
+     "no_grasp": 1,
+     "grasped": 2,
+     "carried": 4,
+     "released": 2
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
+   "id": "flux-ws100",
+   "model": "flux",
+   "era": "after",
+   "name": "Crispy Falafel",
+   "trained": "FLUX 3 Action, LoRA fine-tune, overhead and wrist cameras",
+   "data": "vial-sort-slots-100, overhead and wrist cameras only",
+   "steps": "30k",
+   "time": "16.9 h",
+   "memory": "33.6 GB",
+   "step_s": 2.02,
+   "robot": {
+    "takes": 20,
+    "released": 1,
+    "right_vial": 5,
+    "stages": {
+     "no_grasp": 15,
+     "grasped": 2,
+     "carried": 2,
+     "released": 1
+    }
+   },
+   "rate_hz": 15.46,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
+   "id": "flux-flux25",
+   "model": "flux",
+   "era": "after",
+   "name": "Sweet Corn",
+   "trained": "FLUX 3 Action on a single task, the first 25 demonstrations",
+   "data": "vial-flux25, one task (\"take the vial from position 3 of the rack to the bin\")",
+   "steps": "10k",
+   "time": "6.4 h",
+   "memory": "32.4 GB",
+   "step_s": 2.27,
+   "robot": null,
+   "rate_hz": null,
+   "verdict": "Rollouts not scored: an earlier scene layout.",
+   "source": "training log"
+  }
+ ]
+}

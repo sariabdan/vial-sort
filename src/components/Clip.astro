@@ -1,0 +1,46 @@
+---
+// One recorded rollout: the video, the asked move on a small rack, and what happened.
+import RackGlyph from './RackGlyph.astro';
+import CameraChips from './CameraChips.astro';
+import { url, moveLabel } from '../lib/site';
+
+interface Props {
+  src: string;
+  poster: string;
+  w: number;
+  h: number;
+  caption: string;
+  move?: string | null;
+  vialAt?: string;
+  missAt?: string;
+  vial?: 'red' | 'lime' | 'cyan';
+  label?: string;
+  /** cameras the model saw; the clip shows every feed the session recorded */
+  used?: string[];
+}
+const { src, poster, w, h, caption, move, vialAt, missAt, vial, label, used } = Astro.props;
+---
+<figure class="clip">
+  <video src={url(src)} poster={url(poster)} width={w} height={h} muted loop playsinline data-auto preload="metadata"
+    aria-label={label ?? `Recorded rollout, ${moveLabel(move)}`}></video>
+  <figcaption>
+    {move && (
+      <div class="clip-head">
+        <span class="move">{moveLabel(move)}</span>
+        <RackGlyph asked={move} vialAt={vialAt} missAt={missAt} vial={vial} />
+      </div>
+    )}
+    <p>{caption}</p>
+    {used && <p class="cams"><span class="note">Cameras the model saw: </span><CameraChips used={used} /></p>}
+  </figcaption>
+</figure>
+
+<style>
+  .clip { margin: 0; display: grid; gap: 0.7rem; align-content: start; }
+  video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; }
+  .clip-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: center; margin-bottom: 0.35rem; }
+  .clip-head .move { font-size: var(--step-1); }
+  .clip-head :global(.rack-glyph) { max-width: 12rem; justify-self: end; }
+  p { font-size: var(--step--1); color: var(--ink-2); }
+  .cams { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.5rem; }
+</style>

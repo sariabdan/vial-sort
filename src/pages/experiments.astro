@@ -1,0 +1,193 @@
+---
+import Base from '../layouts/Base.astro';
+import ModelDetail from '../components/ModelDetail.astro';
+import StageLegend from '../components/StageLegend.astro';
+import CameraChips from '../components/CameraChips.astro';
+import Term from '../components/Term.astro';
+import experiments from '../data/experiments.json';
+import results from '../data/results.json';
+import { GLOSSARY, GLOSSARY_ORDER } from '../lib/glossary';
+import { url, HF } from '../lib/site';
+
+const models = experiments.models;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const scored = results.total;
+const lo = results.left_out;
+const eye = results.eye as Record<string, number>;
+const sessions = new Set(experiments.rows.flatMap((r) => r.sessions)).size;
+const nameOf = (run: string) => models.find((m) => m.run === run)?.name ?? run;
+const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''))[0] ?? models[0];
+---
+<Base
+  page="experiments"
+  title="Experiments"
+  description="How the October rollouts were run and scored, every model described in full with its hyperparameters, and the words used on this site, defined before any result."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Experiments</h1>
+      <p class="lead">
+        Everything about how the models were tested comes before the results: how a rollout is run, how it is scored,
+        what each model is, and what each word means.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div>
+        <h2>How a rollout is run</h2>
+        <p>
+          {`A rollout is one autonomous attempt at one command. The robot is the follower arm of the SO-101 pair on the ` +
+            `workstation, with the five cameras of the `}<a href={url('datasets/')}>Data page</a>{`, and nobody drives it.`}
+        </p>
+        <ol class="steps">
+          <li>The arm is moved to the pose every demonstration started from, so a crash in the previous session cannot shift “home”.</li>
+          <li>
+            {`The command is the sentence the model trained on. From 21 October a short code (“R3 L1”) expands to the exact ` +
+              `training wording; before that it was typed by hand.`}
+          </li>
+          <li>
+            {`A person starts the rollout. The model reads the camera images and the joint angles, aims for a control rate of ` +
+              `30 per second, and sends joint targets to the arm. A person stops it, or it ends when a camera drops off the bus.`}
+          </li>
+          <li>
+            {`The model replans every few dozen actions. In `}<Term k="sync">sync mode</Term>{` the arm waits for each replan, which ` +
+              `limits π0.5 to about 24 to 26 actions a second; with `}<Term k="rtc">RTC</Term>{` it does not. FLUX has no RTC and ` +
+              `ran at 15.5 a second in the one session whose rate was logged.`}
+          </li>
+          <li>Each session is stored as a LeRobot dataset with the cameras the model saw, one episode per rollout, and uploaded to Hugging Face.</li>
+        </ol>
+        <p class="note">
+          {`These were test runs made during development, not a planned evaluation: ${sessions} sessions, uneven in the moves tried, ` +
+            `with no fixed number of rollouts per move.`}
+        </p>
+      </div>
+      <div>
+        <h2>How a rollout is scored</h2>
+        <p>
+          {`The `}<Term k="scorer">scorer</Term>{` reads the arm’s joint angles. It finds each moment the gripper closed on something ` +
+            `and each moment it opened, and decides which slot the arm was at by matching its pose to the same moment of the ` +
+            `100 demonstrations. It cannot see the vial. Each rollout is put in the furthest of four outcomes it reached:`}
+        </p>
+        <StageLegend defs />
+        <p class="note after">
+          {`${scored} rollouts are scored. Left out: ${lo.short} that ended within 3 seconds, ${lo.untrained} that asked for moves no ` +
+            `demonstration contains (this includes the held-out slots), ${lo.unreadable} whose command the scorer cannot read, and ` +
+            `${lo.earlier_scene} from an earlier layout of the table.`}
+        </p>
+        <p class="note">
+          {`Because the scorer reads the arm and not the vial, a person also watched ${eye.checked} of the rollouts that let go at the ` +
+            `asked slot: the vial was in the slot in ${eye.in_slot}, not in it in ${eye.not_in_slot}, and could not be told in ${eye.unclear}. ` +
+            `This is shown beside the scores and is never added to them.`}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The models</h2>
+      <p>{`${models.length} models. Most trained on the 100 demonstrations of the Data page, or on a copy of them; ${nameOf('flux-flux25')} trained on 25 earlier ones. The name is what the rest of the site uses.`}</p>
+      <div class="table-scroll">
+        <table class="data lookup">
+          <thead>
+            <tr><th>Name</th><th>Model</th><th>What it is</th><th>Started from</th><th>Cameras it saw</th><th class="r">Steps</th><th class="r">Scored rollouts</th><th>Weights</th></tr>
+          </thead>
+          <tbody>
+            {models.map((m) => (
+              <tr>
+                <th scope="row"><a href={`#${m.id}`} data-pick-link={m.id}>{m.name}</a></th>
+                <td>{FAMILY[m.family]}</td>
+                <td class="what">{m.what}</td>
+                <td class="what">{m.base}</td>
+                <td><CameraChips used={m.cams} note={m.cams_note} compact /></td>
+                <td class="r num">{m.steps?.toLocaleString('en-GB') ?? '–'}</td>
+                <td class="r num">{m.scored ? m.rollouts : 'not scored'}</td>
+                <td>{m.hub ? <a href={`${HF}/sari-abdan/${m.hub}`}>Hugging Face</a> : <span class="note">not published</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note after">
+        {`${nameOf('pi05-noop')} and ${nameOf('pi05-trim2')} were short fine-tunes of ${nameOf('pi05-allcams')} made to test one idea each, and their checkpoints ` +
+          `are deleted. ${nameOf('flux-flux25')} is the first FLUX run, on one task; its rollouts are not scored.`}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>One model in full</h2>
+      <p>Pick a model. Its settings, its checkpoints, every move it was asked and what happened to it are on this page and nowhere else.</p>
+      <div class="picker" role="tablist" aria-label="Model" hidden data-picker>
+        {models.map((m) => (
+          <button type="button" role="tab" class="pick" data-pick={m.id} aria-selected={m.id === dflt.id ? 'true' : 'false'}>
+            <i style={`background: var(--m-${m.model})`}></i>{m.name}
+          </button>
+        ))}
+      </div>
+      <div class="detail" data-default={dflt.id}>
+        {models.map((m) => <ModelDetail m={m} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Words used on this site</h2>
+      <p>Hover or focus a dotted word anywhere to see its definition. All of them are here.</p>
+      <dl class="glossary">
+        {GLOSSARY_ORDER.map((k) => (
+          <div id={`g-${k}`}><dt>{GLOSSARY[k].term}</dt><dd>{GLOSSARY[k].def}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // One model shown at a time. Without this script every model is listed one after another.
+  const picker = document.querySelector<HTMLElement>('[data-picker]')!;
+  const detail = document.querySelector<HTMLElement>('.detail')!;
+  const articles = [...detail.querySelectorAll<HTMLElement>('[data-model]')];
+  const buttons = [...picker.querySelectorAll<HTMLButtonElement>('[data-pick]')];
+  const known = new Set(articles.map((a) => a.dataset.model));
+  function show(id: string, scroll = false) {
+    articles.forEach((a) => (a.hidden = a.dataset.model !== id));
+    buttons.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pick === id)));
+    try { history.replaceState(null, '', `#${id}`); } catch (e) {}
+    if (scroll) picker.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  picker.hidden = false;
+  buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.pick!)));
+  document.querySelectorAll<HTMLAnchorElement>('[data-pick-link]').forEach((a) =>
+    a.addEventListener('click', (e) => { e.preventDefault(); show(a.dataset.pickLink!, true); }));
+  const fromHash = location.hash.slice(1);
+  show(known.has(fromHash) ? fromHash : detail.dataset.default!);
+</script>
+
+<style>
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .two h2 { margin-bottom: 0.9rem; }
+  .steps { margin: 1rem 0; padding-left: 1.3rem; display: grid; gap: 0.6rem; max-width: var(--measure); }
+  .after { margin-top: 1rem; }
+  .lookup th[scope='row'] { white-space: nowrap; }
+  .lookup .what { font-size: var(--step--1); color: var(--ink-2); min-width: 12rem; }
+  .picker { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .picker[hidden] { display: none; }
+  .pick {
+    font: inherit; color: var(--ink); background: none; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid var(--rule); border-radius: 999px; padding: 0.3rem 1rem;
+  }
+  .pick i { width: 0.65rem; height: 0.65rem; border-radius: 50%; }
+  .pick:hover { border-color: var(--steel); }
+  .pick[aria-selected='true'] { border-color: var(--ink); background: var(--raise); font-weight: 600; }
+  .detail :global([data-model]) + :global([data-model]) { margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--rule); }
+  .detail :global([data-model][hidden]) { display: none; }
+  .glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.3rem clamp(1.5rem, 4vw, 3.5rem); margin: 1.4rem 0 0; }
+  .glossary dt { font-weight: 620; }
+  .glossary dd { margin: 0.15rem 0 0; color: var(--ink-2); }
+  @media (max-width: 52rem) { .two, .glossary { grid-template-columns: minmax(0, 1fr); } }
+</style>

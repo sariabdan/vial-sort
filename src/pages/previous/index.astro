@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import StatTiles from '../../components/StatTiles.astro';
+import ModelTable from '../../components/ModelTable.astro';
+import evals from '../../data/evals.json';
+import { url, HF } from '../../lib/site';
+
+const k = evals.kpi;
+---
+<Base
+  page="previous"
+  title="Previous work"
+  description="The August 2026 work on the Jetson Thor rig: 150 demonstrations, a π0.5 policy with a frozen backbone, and 79 human-scored rollouts, with the report."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Previous work, August 2026</h1>
+      <p class="lead">
+        The first complete system: 150 teleoperated demonstrations on the Jetson Thor rig with three cameras,
+        and a π0.5 policy that follows source-to-destination commands.
+      </p>
+      <p class="intro">
+        {`The policy keeps π0.5's vision–language backbone frozen and trains only its action expert. A person scored ` +
+          `${k.rollouts} of its rollouts over ${k.scenarios} commands; the numbers below come from that evaluation. ` +
+          `The newer π0.5 and FLUX runs, on a workstation with five cameras, are the `}<a href={url('')}>latest work</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>How well it worked</h2>
+      <StatTiles />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Everything from August</h2>
+      <ul class="links">
+        <li>
+          <a href={url('previous/results/')}>The evaluation</a>
+          <span class="note">Where the takes were lost, command by command, with every scored trial on video.</span>
+        </li>
+        <li>
+          <a href={url('previous/data/')}>The datasets</a>
+          <span class="note">Versions 1 to 5, how the demonstrations were recorded, and why the policy uses no depth.</span>
+        </li>
+        <li>
+          <a href={url('previous/report/')}>The report</a>
+          <span class="note">Abstract, PDF and citation.</span>
+        </li>
+        <li>
+          <a href={`${HF}/datasets/sari-abdan/vial-sort-v5`}>The 150 demonstrations</a>
+          <span class="note">On Hugging Face, in the LeRobot format.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The policies tried in August</h2>
+      <p>Only π0.5 was deployed and evaluated; the others were set up on the same rig and not carried through.</p>
+      <ModelTable eras={['paper']} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { margin-top: 1rem; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.1rem; }
+  .links li { display: grid; gap: 0.15rem; }
+  .links li > a { font-size: var(--step-1); font-stretch: 112%; font-weight: 560; width: fit-content; }
+</style>

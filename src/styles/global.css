@@ -1,0 +1,185 @@
+/* Tokens. Every chart colour below passed the dataviz validator (scripts in the dataviz skill)
+   against these two surfaces: #f4f7f8 light, #151b20 dark. Ordinal ramps run worst → best. */
+:root {
+  color-scheme: light;
+  --page: #f4f7f8;
+  --raise: #fbfcfd;
+  --ink: #1d2328;
+  --ink-2: #48535d;
+  --steel: #5c6873;
+  --rack: #c9d1d7;
+  --grid: #dfe5e9;
+  --rule: #d3dae0;
+  --focus: #2a78d6;
+
+  /* the three vial colours, sampled from the cameras; vials and slots only, never chart series */
+  --vial-red: #c9302c;
+  --vial-lime: #a3b10d;
+  --vial-cyan: #0898a0;
+
+  /* models: categorical slots in fixed order, the same on every page */
+  --m-pi05: #2a78d6;
+  --m-flux: #eb6834;
+  --m-groot: #1baf7a;
+  --m-pi0: #eda100;
+  --m-act: #e87ba4;
+
+  /* how far a take got: v5 eval (4 outcomes), WS100 takes in π0.5 blue and FLUX orange (5 stages) */
+  --o4-1: #6da7ec; --o4-2: #2a78d6; --o4-3: #1c5cab; --o4-4: #0d366b;
+  --ob-1: #6da7ec; --ob-2: #3987e5; --ob-3: #256abf; --ob-4: #184f95; --ob-5: #0d366b;
+  --oo-1: #f8946f; --oo-2: #eb6834; --oo-3: #c94908; --oo-4: #9f3600; --oo-5: #621e00;
+  /* text that sits on each ramp step */
+  --o4t-1: #0b1f33; --o4t-2: #ffffff; --o4t-3: #ffffff; --o4t-4: #ffffff;
+
+  /* how far a rollout got, worst → best, the same four colours for every model */
+  --st-1: #6bb98a; --st-2: #369a64; --st-3: #187748; --st-4: #09492a;
+  --stt-1: #0d1a12; --stt-2: #0d1a12; --stt-3: #ffffff; --stt-4: #ffffff;
+
+  /* training demonstrations: violet, light → dark = few → many */
+  --d-1: #a1a0f3; --d-2: #817ce7; --d-3: #6554da; --d-4: #4c33b8; --d-5: #35168e;
+  /* text on the demonstration and π0.5 ramps (the bin box of the rack maps) */
+  --dt-1: #1d2328; --dt-2: #1d2328; --dt-3: #ffffff; --dt-4: #ffffff; --dt-5: #ffffff;
+  --obt-1: #1d2328; --obt-2: #ffffff; --obt-3: #ffffff; --obt-4: #ffffff; --obt-5: #ffffff;
+  --oot-1: #1d2328; --oot-2: #1d2328; --oot-3: #ffffff; --oot-4: #ffffff; --oot-5: #ffffff;
+
+  /* status: only with an icon and a word */
+  --good: #0ca30c;
+  --good-text: #006300;
+  --critical: #d03b3b;
+  --critical-text: #a82a2a;
+
+  --plot-background: var(--page);
+
+  --font: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --step--1: 0.85rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.33rem;
+  --step-2: 1.66rem;
+  --step-3: 2.07rem;
+  --step-4: 2.6rem;
+  --step-5: 3.24rem;
+  --wide: 72rem;
+  --measure: 66ch;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
+    --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
+    --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd;
+    --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181;
+    --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
+    --o4t-1: #ffffff; --o4t-2: #ffffff; --o4t-3: #0b1f33; --o4t-4: #0b1f33;
+    --ob-1: #184f95; --ob-2: #256abf; --ob-3: #3987e5; --ob-4: #6da7ec; --ob-5: #b7d3f6;
+    --oo-1: #8a2e00; --oo-2: #b43f00; --oo-3: #da5821; --oo-4: #f37e52; --oo-5: #ffbfa8;
+    --d-1: #513dba; --d-2: #6857de; --d-3: #8178f2; --d-4: #a09efe; --d-5: #c6c8ff;
+    --dt-1: #ffffff; --dt-2: #ffffff; --dt-3: #151b20; --dt-4: #151b20; --dt-5: #151b20;
+    --obt-1: #ffffff; --obt-2: #ffffff; --obt-3: #151b20; --obt-4: #151b20; --obt-5: #151b20;
+    --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
+    --st-1: #1e7048; --st-2: #2f9964; --st-3: #60c28e; --st-4: #b3e5ca;
+    --stt-1: #ffffff; --stt-2: #0d1a12; --stt-3: #0d1a12; --stt-4: #0d1a12;
+    --good-text: #0ca30c; --critical-text: #e66767;
+  }
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
+  --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
+  --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd;
+  --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181;
+  --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
+  --o4t-1: #ffffff; --o4t-2: #ffffff; --o4t-3: #0b1f33; --o4t-4: #0b1f33;
+  --ob-1: #184f95; --ob-2: #256abf; --ob-3: #3987e5; --ob-4: #6da7ec; --ob-5: #b7d3f6;
+  --oo-1: #8a2e00; --oo-2: #b43f00; --oo-3: #da5821; --oo-4: #f37e52; --oo-5: #ffbfa8;
+  --d-1: #513dba; --d-2: #6857de; --d-3: #8178f2; --d-4: #a09efe; --d-5: #c6c8ff;
+  --dt-1: #ffffff; --dt-2: #ffffff; --dt-3: #151b20; --dt-4: #151b20; --dt-5: #151b20;
+  --obt-1: #ffffff; --obt-2: #ffffff; --obt-3: #151b20; --obt-4: #151b20; --obt-5: #151b20;
+  --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
+  --st-1: #1e7048; --st-2: #2f9964; --st-3: #60c28e; --st-4: #b3e5ca;
+  --stt-1: #ffffff; --stt-2: #0d1a12; --stt-3: #0d1a12; --stt-4: #0d1a12;
+  --good-text: #0ca30c; --critical-text: #e66767;
+}
+
+/* ── base ─────────────────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-stretch: 100%;
+  font-optical-sizing: auto;
+  overflow-x: hidden;
+}
+img, video, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+
+h1, h2, h3 { font-stretch: 112%; line-height: 1.12; margin: 0; letter-spacing: -0.005em; }
+h1 { font-size: var(--step-3); font-weight: 660; }
+h2 { font-size: var(--step-2); font-weight: 620; }
+h3 { font-size: var(--step-1); font-weight: 600; line-height: 1.25; }
+p { margin: 0; max-width: var(--measure); }
+p + p { margin-top: 0.8em; }
+.lead { font-size: var(--step-1); line-height: 1.45; color: var(--ink-2); max-width: 52ch; }
+.note { font-size: var(--step--1); color: var(--ink-2); line-height: 1.5; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* a move code, the project's own notation: R3 → L3 */
+.move { font-stretch: 125%; font-weight: 640; letter-spacing: 0.01em; white-space: nowrap; }
+
+.wrap { max-width: var(--wide); margin-inline: auto; padding-inline: var(--gutter); }
+.section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.section + .section { border-top: 1px solid var(--rule); }
+.section > .wrap > h2 { margin-bottom: 0.6rem; }
+.section > .wrap > h2 + p { margin-bottom: 1.6rem; color: var(--ink-2); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ── figures (charts) ─────────────────────────────────────────────────────────────────── */
+.figure { margin: 0; }
+.figure + .figure { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+.figure > header { margin-bottom: 1rem; }
+.figure > header p { margin-top: 0.35rem; color: var(--ink-2); }
+.chart { color: var(--ink-2); font-size: 13px; }
+.chart svg { overflow: visible; font-family: var(--font); }
+.chart [aria-label='tip'] { font-size: 13px; }
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin: 0 0 0.8rem; padding: 0; list-style: none; font-size: var(--step--1); color: var(--ink-2); }
+.legend li { display: flex; align-items: center; gap: 0.45rem; }
+.legend i { width: 0.8rem; height: 0.8rem; border-radius: 3px; flex: none; }
+.figure details { margin-top: 0.9rem; font-size: var(--step--1); color: var(--ink-2); }
+.figure summary { cursor: pointer; width: fit-content; }
+.figure figcaption { margin-top: 0.8rem; }
+
+table.data { border-collapse: collapse; margin-top: 0.7rem; font-variant-numeric: tabular-nums; width: 100%; }
+table.data th, table.data td { text-align: left; padding: 0.32rem 0.9rem 0.32rem 0; border-bottom: 1px solid var(--grid); vertical-align: top; }
+table.data th { font-weight: 600; color: var(--ink); border-bottom-color: var(--rule); }
+table.data td.r, table.data th.r { text-align: right; }
+.table-scroll { overflow-x: auto; position: relative; } /* relative: visually-hidden text inside a scrolled table must not widen the page */
+
+.quiet-btn {
+  font: inherit; font-size: var(--step--1); color: var(--ink); background: none; cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 999px; padding: 0.12rem 0.8rem; white-space: nowrap;
+}
+.quiet-btn:hover { border-color: var(--steel); }
+.quiet-btn[aria-pressed='true'] { border-color: var(--ink); background: var(--raise); }
+
+/* status words: never colour alone */
+.ok, .bad { font-weight: 560; white-space: nowrap; }
+.ok { color: var(--good-text); }
+.bad { color: var(--critical-text); }
+.ok::before { content: '✓ '; }
+.bad::before { content: '✗ '; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

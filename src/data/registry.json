@@ -1,0 +1,257 @@
+{
+ "models": [
+  {
+   "id": "spicy-chicken",
+   "name": "Spicy Chicken",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-allcams",
+   "what": "π0.5 trained on the recordings as they were, all five cameras",
+   "base": "lerobot/pi05_base",
+   "data": "vial-sort-slots-100, as recorded",
+   "frames": 58650,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": "vial-sort-pi05-ws100-allcams-12000",
+   "probe": false,
+   "scored": true,
+   "steps": 12000,
+   "hours": 11.8,
+   "step_s": 3.5,
+   "mem_gb": 37.9,
+   "passes": 3.27,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "untrained": 6,
+    "unreadable": 2,
+    "short": 2
+   },
+   "last_day": "20261019",
+   "rows": [
+    "spicy-chicken-7000-sync",
+    "spicy-chicken-9000-rtc",
+    "spicy-chicken-12000-rtc",
+    "spicy-chicken-12000-sync"
+   ],
+   "rollouts": 21,
+   "checkpoints": [
+    7000,
+    9000,
+    12000
+   ]
+  },
+  {
+   "id": "mango-rice",
+   "name": "Mango Rice",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-canon",
+   "what": "π0.5 trained from the base on a cleaned copy with one wording per move",
+   "base": "lerobot/pi05_base",
+   "data": "vial-sort-slots-100, idle start and end cut, operator removed from the start frames, one canonical sentence per move",
+   "frames": 46361,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": "vial-sort-pi05-ws100-canon-12000",
+   "probe": false,
+   "scored": true,
+   "steps": 12000,
+   "hours": 11.6,
+   "step_s": 3.45,
+   "mem_gb": 37.9,
+   "passes": 4.14,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "short": 2,
+    "untrained": 1
+   },
+   "last_day": "20261021",
+   "rows": [
+    "mango-rice-10000-rtc",
+    "mango-rice-10000-sync",
+    "mango-rice-12000-rtc",
+    "mango-rice-12000-sync"
+   ],
+   "rollouts": 9,
+   "checkpoints": [
+    10000,
+    12000
+   ]
+  },
+  {
+   "id": "pretzel-one",
+   "name": "Pretzel One",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-noop",
+   "what": "A 361-step fine-tune of Spicy Chicken to test the operator-free starts",
+   "base": "Spicy Chicken at 12,000 steps",
+   "data": "vial-sort-slots-100, first trim (42,089 frames), operator-free start frames",
+   "frames": 42089,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": true,
+   "scored": true,
+   "steps": 361,
+   "hours": null,
+   "step_s": null,
+   "mem_gb": null,
+   "passes": null,
+   "has_loss": false,
+   "hyper_source": "the project notes (the checkpoint and its config were deleted)",
+   "left_out": {
+    "short": 1
+   },
+   "last_day": "20261019",
+   "rows": [
+    "pretzel-one-250-rtc"
+   ],
+   "rollouts": 3,
+   "checkpoints": [
+    250
+   ]
+  },
+  {
+   "id": "pretzel-two",
+   "name": "Pretzel Two",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-trim2",
+   "what": "A 500-step fine-tune of Spicy Chicken with the corrected trim",
+   "base": "Spicy Chicken at 12,000 steps",
+   "data": "vial-sort-slots-100, trimmed at the real let-go (46,361 frames), operator-free start frames",
+   "frames": 46361,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": true,
+   "scored": true,
+   "steps": 500,
+   "hours": null,
+   "step_s": null,
+   "mem_gb": null,
+   "passes": null,
+   "has_loss": false,
+   "hyper_source": "the project notes (the checkpoint and its config were deleted)",
+   "left_out": {},
+   "last_day": "20261019",
+   "rows": [
+    "pretzel-two-500-rtc"
+   ],
+   "rollouts": 17,
+   "checkpoints": [
+    500
+   ]
+  },
+  {
+   "id": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux3",
+   "model": "flux",
+   "run": "flux-ws100",
+   "what": "FLUX 3 Action, LoRA fine-tune, overhead and wrist cameras",
+   "base": "black-forest-labs/flux-3-action-so101, with this dataset's own joint ranges",
+   "data": "vial-sort-slots-100, overhead and wrist cameras only",
+   "frames": 58650,
+   "cams": [
+    "top_down",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": "vial-sort-flux3-ws100-30000",
+   "probe": false,
+   "scored": true,
+   "steps": 30000,
+   "hours": 16.9,
+   "step_s": 2.02,
+   "mem_gb": 33.6,
+   "passes": 2.05,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "short": 1
+   },
+   "last_day": "20261019",
+   "rows": [
+    "crispy-falafel-10000-sync",
+    "crispy-falafel-20000-sync",
+    "crispy-falafel-26000-sync",
+    "crispy-falafel-26000-sync-ema",
+    "crispy-falafel-30000-sync",
+    "crispy-falafel-30000-sync-ema"
+   ],
+   "rollouts": 20,
+   "checkpoints": [
+    10000,
+    20000,
+    26000,
+    30000
+   ]
+  },
+  {
+   "id": "sweet-corn",
+   "name": "Sweet Corn",
+   "family": "flux3",
+   "model": "flux",
+   "run": "flux-flux25",
+   "what": "FLUX 3 Action on a single task, the first 25 demonstrations",
+   "base": "black-forest-labs/flux-3-action-so101, with this dataset's own joint ranges",
+   "data": "vial-flux25, one task (\"take the vial from position 3 of the rack to the bin\")",
+   "frames": 9414,
+   "cams": [],
+   "cams_note": "left (re-aimed high) and wrist, from the earlier camera layout",
+   "hub": null,
+   "probe": false,
+   "scored": false,
+   "steps": 10000,
+   "hours": 6.4,
+   "step_s": 2.27,
+   "mem_gb": 32.4,
+   "passes": 4.25,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "short": 2,
+    "earlier_scene": 11
+   },
+   "last_day": null,
+   "rows": [],
+   "rollouts": 0,
+   "checkpoints": []
+  }
+ ],
+ "cameras": [
+  "top_down",
+  "left_top",
+  "left_bottom",
+  "right",
+  "wrist"
+ ]
+}

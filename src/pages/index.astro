@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import OctoberTiles from '../components/OctoberTiles.astro';
+import Clip from '../components/Clip.astro';
+import media from '../data/media.json';
+import october from '../data/october.json';
+import results from '../data/results.json';
+import registry from '../data/registry.json';
+import datasets from '../data/datasets.json';
+import { url, HF, CODE, visualizer } from '../lib/site';
+
+const cov = october.coverage;
+const hub = new Set(datasets.models.map((m) => m.name));
+const checkpoints = ['vial-sort-pi05-ws100-canon-12000', 'vial-sort-pi05-ws100-allcams-12000', 'vial-sort-flux3-ws100-30000'].filter((n) => hub.has(n));
+// the rollouts the home page shows: the full models, not the short fine-tunes, newest model first
+const shown = registry.models.filter((m) => !m.probe && media.featured.some((f) => f.model_id === m.id))
+  .sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''));
+const clipsOf = (id: string) => media.featured.filter((f) => f.model_id === id);
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const newest = results.tiles.pi05;
+const vial = (f: { vial?: string | null }) => (f.vial ?? 'red') as 'red' | 'lime' | 'cyan';
+const USER_HF = 'sari-abdan';
+const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
+---
+<Base
+  page="home"
+  title="Vial sort"
+  description="A low-cost SO-101 arm sorts translucent vials between two racks and a bin on spoken position commands. The latest work trains π0.5 and FLUX 3 Action on 100 demonstrations seen by five cameras. Videos, results, training runs and data."
+>
+  <Hero />
+
+  <section class="section">
+    <div class="wrap">
+      <h2>What the rollouts show</h2>
+      <p>
+        {`October's runs, scored from the arm's motion over ${results.total} rollouts, a rollout being one autonomous attempt at one command. ` +
+          `The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}
+      </p>
+      <OctoberTiles />
+      <p class="note after">
+        These are small counts from test runs, not a person-scored evaluation, and they should not be set beside
+        the <a href={url('previous/results/')}>August evaluation</a>. <a href={url('results/')}>Compare every model and checkpoint</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Rollouts from the October models</h2>
+      <p>Every camera the model saw, at once. They loop; click one to pause it.</p>
+      {shown.map((m) => (
+        <>
+          <h3 class="model"><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}<span class="note">{FAMILY[m.family]}</span></h3>
+          <div class="clips">
+            {clipsOf(m.id).map((f) => (
+              <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
+                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={vial(f)} used={f.used} />
+            ))}
+          </div>
+        </>
+      ))}
+      <p class="after"><a href={url('experiments/')}>What each model is and how it was tested</a> · <a href={url('training/')}>How each one trained</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap setup">
+      <div>
+        <h2>The setup</h2>
+        <p>
+          The arm is an SO-101, a 3D-printed six-joint design, built as a pair: a person moves the leader arm and
+          the follower copies it. That is how the 100 demonstrations were recorded.
+        </p>
+        <p>
+          {`Five cameras record at ${cov.fps} frames a second: one overhead, two across the table at different heights, one ` +
+            `from the side and one on the wrist. The vials are translucent plastic in three colours, and the policies see ` +
+            `only the colour images.`}
+        </p>
+        <p>
+          π0.5 is fine-tuned in full from <code>lerobot/pi05_base</code>: the vision encoder and the whole
+          vision–language model train, for 12,000 steps at batch size 16. FLUX 3 Action is fine-tuned with LoRA and
+          sees two of the cameras, overhead and wrist; its training loss covers both predicted video and actions.
+          Every model has a name, and the <a href={url('experiments/')}>Experiments page</a> says which is which.
+        </p>
+        <p><a href={url('datasets/')}>How the data was recorded and worded</a></p>
+      </div>
+      <figure class="rig">
+        <img src={url('img/setup_current.webp')} width="1362" height="1599" loading="lazy"
+          alt="The current rig: five cameras, two racks with coloured vials, the bin, the follower arm on the left and the leader arm in the foreground, all on one white table." />
+        <figcaption class="note">The current rig. Five cameras, the two racks, the bin, the follower arm that does the work and the leader arm a person moves. The five camera views are on the <a href={url('datasets/')}>Data page</a>.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Data and code</h2>
+      <ul class="links">
+        <li>
+          <a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>The 100 demonstrations</a>
+          <span class="note">LeRobot format on Hugging Face. <a href={visualizer('sari-abdan/vial-sort-slots-100')}>Watch any episode in the browser</a>.</span>
+        </li>
+        <li>
+          <a href={url('datasets/')}>The robot recordings</a>
+          <span class="note">{`${datasets.datasets.filter((d) => d.kind === 'rollout').length} October sessions with all five cameras, on Hugging Face.`}</span>
+        </li>
+        {checkpoints.length > 0 && (
+          <li>
+            <a href={`${HF}/${USER_HF}/${checkpoints[0]}`}>The October checkpoints</a>
+            <span class="note">The newest π0.5 run, the all-camera π0.5 run and the FLUX 3 Action adapter, on Hugging Face. None of them completes the task reliably.</span>
+          </li>
+        )}
+        <li>
+          <a href={CODE}>The code so far</a>
+          <span class="note">{`The project's LeRobot fork on GitHub. The October rollout and assessment scripts are not published yet${checkpoints.length ? '' : ', nor are the October checkpoints'}.`}</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section earlier">
+    <div class="wrap">
+      <h2>Before this</h2>
+      <p>
+        The first complete system, in August, was π0.5 with a frozen backbone, trained on 150 demonstrations and
+        scored by a person over 79 rollouts. Its evaluation, datasets and report are kept.
+      </p>
+      <p class="go"><a class="quiet-btn big" href={url('previous/')}>See the previous work</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .after { margin-top: 1.6rem; }
+  .model { margin: 2.4rem 0 1rem; font-size: var(--step-1); display: flex; align-items: baseline; gap: 0.6rem; }
+  .model .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; align-self: center; }
+  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.2rem clamp(1.2rem, 3vw, 2.5rem); }
+  .setup { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .setup h2 { margin-bottom: 0.9rem; }
+  .rig { margin: 0; }
+  .rig img { width: 100%; max-width: 34rem; height: auto; border-radius: 4px; }
+  .rig figcaption { margin-top: 0.6rem; max-width: 34rem; }
+  .five { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .five li { display: block; }
+  .five li.wide { grid-column: 1 / -1; }
+  .five img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .five .wide img { aspect-ratio: 16 / 9; object-fit: cover; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.1rem; }
+  .links li { display: grid; gap: 0.15rem; }
+  .links li > a { font-size: var(--step-1); font-stretch: 112%; font-weight: 560; width: fit-content; }
+  .go { margin-top: 1.2rem; }
+  .big { display: inline-block; text-decoration: none; font-size: var(--step-1); padding: 0.45rem 1.4rem; background: var(--raise); border-color: var(--steel); }
+  code { font-family: inherit; font-weight: 560; }
+  @media (max-width: 52rem) {
+    .setup, .clips { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

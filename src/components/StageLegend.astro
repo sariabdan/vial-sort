@@ -1,0 +1,28 @@
+---
+// The four outcomes of a rollout, worst to best, in the one colour set every chart and table uses.
+// With `defs` it also prints what each one means.
+import results from '../data/results.json';
+interface Props { defs?: boolean; inline?: boolean }
+const { defs = false, inline = false } = Astro.props;
+---
+{defs ? (
+  <ol class="stage-defs">
+    {results.stages.map((s, i) => (
+      <li>
+        <i style={`background: var(--st-${i + 1})`}></i>
+        <div><strong>{s.label}</strong><span class="note">{s.def}</span></div>
+      </li>
+    ))}
+  </ol>
+) : (
+  <ul class:list={['legend', inline && 'inline']} aria-label="Outcomes of a rollout, worst to best">
+    {results.stages.map((s, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{s.label}</li>)}
+  </ul>
+)}
+
+<style>
+  .stage-defs { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 0.9rem; max-width: 52rem; }
+  .stage-defs li { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr); gap: 0.8rem; align-items: start; }
+  .stage-defs i { width: 1.1rem; height: 1.1rem; border-radius: 3px; margin-top: 0.2rem; }
+  .stage-defs div { display: grid; gap: 0.15rem; }
+</style>

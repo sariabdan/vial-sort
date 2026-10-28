@@ -1,0 +1,30 @@
+---
+// Where takes are lost, in the order a take happens. Bars share one scale (`max`), so a shorter
+// bar is a smaller count; each row says how many of its reference count it is.
+interface Row { label: string; n: number; of?: number | null; color: string }
+interface Props { rows: Row[]; max: number }
+const { rows, max } = Astro.props;
+const pct = (x: number) => `${Math.round(x * 100)}%`;
+---
+<ol class="funnel">
+  {rows.map((r) => (
+    <li>
+      <span class="label">{r.label}</span>
+      <span class="track">
+        <span class="bar" style={`--f: ${r.n / max}; background: ${r.color}`}></span>
+        <span class="value"><strong>{r.n}</strong>{r.of ? <span class="note">{` of ${r.of} (${pct(r.n / r.of)})`}</span> : null}</span>
+      </span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .funnel { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; max-width: 52rem; }
+  li { display: grid; gap: 0.3rem; }
+  .label { color: var(--ink); }
+  .track { display: flex; align-items: center; gap: 0.7rem; }
+  /* the full-length bar leaves room for its own label */
+  .bar { height: 1.15rem; border-radius: 0 4px 4px 0; min-width: 4px; flex: none; width: calc((100% - 9.5rem) * var(--f)); }
+  .value { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .value strong { font-weight: 620; color: var(--ink); }
+</style>

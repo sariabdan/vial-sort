@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import CoverageMatrix from '../components/CoverageMatrix.astro';
+import CameraChips from '../components/CameraChips.astro';
+import Term from '../components/Term.astro';
+import october from '../data/october.json';
+import datasets from '../data/datasets.json';
+import media from '../data/media.json';
+import { url, HF, visualizer, date, CAMERA_NAMES } from '../lib/site';
+
+const cov = october.coverage;
+const demo = media.demo_ws100;
+const runs = datasets.datasets.filter((d) => d.kind === 'rollout');
+const minutes = (frames: number | null, fps: number | null) => (frames && fps ? Math.round(frames / fps / 60) : null);
+const w = cov.wordings;
+const pools = cov.pools;
+
+const cams = [
+  { key: 'top_down', text: 'The only high-angle view. It sees both racks, the bin and the arm at once, with no people in it.' },
+  { key: 'left_top', text: 'High, across the table. The operator is in view in every frame, on purpose: someone usually stands there during a rollout too.' },
+  { key: 'left_bottom', text: 'Near table level, the colour stream of a RealSense camera. The vials look largest here and which holes hold a vial can be read.' },
+  { key: 'right', text: 'A wide view of the workspace from the other side. A person is in view some of the time.' },
+  { key: 'wrist', text: 'Close up, mounted on the gripper. The vial fills the frame during a grasp.' },
+];
+
+// the sizes of the pools the wordings are drawn from, and what they multiply to
+const verbs = pools.verb.length, objects = pools.object.length, templates = pools.template.length;
+const slotForms = pools.slot_count, rackForms = pools.rack.left.length, binForms = pools.bin.length;
+const rackToRack = verbs * objects * (slotForms * rackForms) * (slotForms * rackForms) * templates;
+const toBin = verbs * objects * (slotForms * rackForms) * binForms * templates;
+const sci = (n: number) => {
+  const e = Math.floor(Math.log10(n));
+  return `${(n / 10 ** e).toFixed(1)} × 10${'⁰¹²³⁴⁵⁶⁷⁸⁹'.split('')[e] ?? `^${e}`}`;
+};
+const pool = [
+  { cls: 'verb', name: 'Verb', n: verbs, values: pools.verb.join(', ') },
+  { cls: 'obj', name: 'Object', n: objects, values: pools.object.join(', ') },
+  { cls: 'slot', name: 'Slot', n: slotForms, values: `for slot 3: ${pools.slot['3'].join(', ')}` },
+  { cls: 'rack', name: 'Rack', n: rackForms, values: pools.rack.left.join(', ') + ' (and the same for the right)' },
+  { cls: 'bin', name: 'Bin', n: binForms, values: pools.bin.join(', ') },
+  { cls: 'tmpl', name: 'Sentence form', n: templates, values: pools.template.join('; ') },
+];
+
+// mark each part of a real wording by the pool it came from
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const alt = (xs: string[]) => [...new Set(xs)].sort((a, b) => b.length - a.length).map(esc).join('|');
+const allSlots = Object.values(pools.slot).flat();
+const allRacks = [...pools.rack.left, ...pools.rack.right];
+const WORDING = new RegExp(
+  `^(${alt(pools.verb)}) (${alt(pools.object)}) (from|in|at) (${alt(allSlots)}) of (${alt(allRacks)}) (to|over to|into) ` +
+    `(?:(${alt(allSlots)}) of (${alt(allRacks)})|(${alt(pools.bin)}))\\.$`,
+);
+type Part = { text: string; cls?: string };
+const parts = (sentence: string): Part[] => {
+  const m = WORDING.exec(sentence);
+  if (!m) return [{ text: sentence }];
+  const [, v, o, t1, s1, r1, t2, s2, r2, b] = m;
+  return [
+    { text: v, cls: 'verb' }, { text: ' ' }, { text: o, cls: 'obj' }, { text: ' ' }, { text: t1, cls: 'tmpl' }, { text: ' ' },
+    { text: s1, cls: 'slot' }, { text: ' of ' }, { text: r1, cls: 'rack' }, { text: ' ' }, { text: t2, cls: 'tmpl' }, { text: ' ' },
+    ...(b ? [{ text: b, cls: 'bin' }] : [{ text: s2, cls: 'slot' }, { text: ' of ' }, { text: r2, cls: 'rack' }]), { text: '.' },
+  ];
+};
+---
+<Base
+  page="datasets"
+  title="Data"
+  description="The 100 teleoperated demonstrations behind the October models: the five cameras, which moves were recorded and which were held out, how the commands were worded, and every robot recording, public on Hugging Face."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Data</h1>
+      <p class="lead">
+        Five cameras watched 100 demonstrations of a person moving a vial with a leader arm. The set and every robot
+        recording are public on Hugging Face in the LeRobot format.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Five cameras</h2>
+      <p>One instant of one demonstration, seen by each camera. All five are recorded at 30 frames a second.</p>
+      <ul class="cams">
+        {cams.map((c) => (
+          <li>
+            <img src={url(`img/cams/${c.key}.webp`)} width="640" height="480" loading="lazy" alt={`${CAMERA_NAMES[c.key]}: ${c.text}`} />
+            <strong>{CAMERA_NAMES[c.key]} <span class="key">{c.key}</span></strong>
+            <span class="note">{c.text}</span>
+          </li>
+        ))}
+      </ul>
+      {demo && (
+        <figure class="demo">
+          <video src={url(demo.src)} poster={url(demo.poster)} width={demo.w} height={demo.h} muted loop playsinline data-auto preload="metadata"
+            aria-label="One demonstration, seen by all five cameras at once"></video>
+          <figcaption class="note">{demo.caption} The large view is the overhead camera; the four small ones are, from the top left, across the table, near eye level, from the side and the wrist.</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The 100 demonstrations</h2>
+      <p>
+        {`${cov.episodes} demonstrations, ${cov.frames.toLocaleString('en-GB')} frames, about ${cov.minutes} minutes. Each is one `}<Term k="move">move</Term>{`: ` +
+          `take the vial from one slot and put it in another slot or the bin. The set is `}<a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>sari-abdan/vial-sort-slots-100</a>{`, ` +
+          `and any episode can be `}<a href={visualizer('sari-abdan/vial-sort-slots-100')}>watched in the browser</a>{`.`}
+      </p>
+      <h3 class="sub">Every move that was recorded</h3>
+      <p>
+        {`Rows are the slot the vial started in, columns where it was put, and each number is how many demonstrations there are of that move. `}
+        <Term k="heldout">Held-out</Term>{` slots are hatched: they were never recorded, so a model can be tested on them. Every cross-rack move between the other slots, and every slot to the bin, ` +
+          `is there.`}
+      </p>
+      <CoverageMatrix demos={cov.demos} slots={cov.slots} heldSources={cov.heldout_sources} heldDestinations={cov.heldout_destinations} />
+      <p class="note after">
+        {`${Object.keys(cov.demos).length} different moves; 75 go from one rack to the other and 25 to the bin. No move stays inside a rack. ` +
+          `Slots 2 and 5 are never a source, and slots 2, 4 and 5 are never a destination (slot 4 is only ever a source).`}
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div>
+        <h2>How it was recorded</h2>
+        <ul class="rules">
+          <li>One afternoon, 14 October: twenty runs of five demonstrations. Each run has one destination and was recorded in one sitting.</li>
+          <li>For a rack destination the vial always starts in the other rack.</li>
+          <li>Three vial colours, red, cyan and dark green. In 95 of the 100 scenes a second vial of the target’s colour stands on the source rack, so colour never identifies the vial to move; the 5 exceptions are the first run.</li>
+          <li>The bin was moved to a new spot every ten demonstrations, with small nudges in between, and the first frame of every demonstration is saved so each spot is on record.</li>
+          <li>The room got darker through the afternoon. The side cameras are almost black in demonstrations 75 to 99; the overhead camera stays readable.</li>
+          <li>The arm is homed before every demonstration, and at the start the operator leans over the robot, so the person is in the wrist and across-the-table views.</li>
+          <li>The wrist camera dropped off the bus three times (demonstrations 47, 53 and 60). Those three were recorded again.</li>
+        </ul>
+        <h3 class="sub">Left and right</h3>
+        <p>
+          {`Left and right are read from the follower arm: the left rack is the rack to the left of the arm, which is the `}<strong>top</strong>{` rack in the overhead view, ` +
+            `and the right rack is the bottom one. The bin sits between them. Slot 1 is the one nearest the arm. In August the left rack was the one on the left of the side camera.`}
+        </p>
+      </div>
+      <div>
+        <h2>How the commands were written</h2>
+        <p>
+          {`A command names the vial by its position and never by its colour: “Move the vial from position 3 of the right rack to slot 6 of the left rack.” ` +
+            `Addressing the source slot keeps the instruction unambiguous even when two vials share a colour. Choosing which vial to move, the step from a colour to a position, ` +
+            `is left to the person who types the command.`}
+        </p>
+        <p>
+          {`The recording tool takes one label per run, but the source changes in every demonstration of a run. So each run was recorded with its ` +
+            `destination only. Afterwards one script read the recording sheet, which says which slot held the target and where it went, and rewrote ` +
+            `every demonstration’s command once. The video was not touched and nothing was recorded again.`}
+        </p>
+        <p>
+          {`Each wording is one draw from independent pools: ${verbs} verbs, ${objects} object nouns, ${slotForms} ways to say a slot, ${rackForms} ways to say a rack, ` +
+            `${binForms} ways to say the bin and ${templates} sentence forms. Multiplied out that is ${verbs} × ${objects} × (${slotForms} × ${rackForms}) × (${slotForms} × ${rackForms}) × ${templates} ` +
+            `= ${rackToRack.toLocaleString('en-GB')}, about ${sci(rackToRack)}, wordings of one rack-to-rack move, and ${toBin.toLocaleString('en-GB')} for a move to the bin.`}
+        </p>
+        <p>
+          {`The draw is not random: the k-th demonstration of a move gets the k-th combination, so repeated demonstrations of one move are phrased differently. ` +
+            `The result is ${w.distinct} different wordings across ${w.moves} moves, with at most ${w.max_per_move} wordings of any one move.`}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>The wording pools</h2>
+      <p>The same six colours mark the parts of the example wordings below.</p>
+      <div class="table-scroll">
+        <table class="data pools">
+          <thead><tr><th>Part</th><th class="r">Forms</th><th>Values</th></tr></thead>
+          <tbody>
+            {pool.map((p) => (
+              <tr><th scope="row"><span class={`tag ${p.cls}`}>{p.name}</span></th><td class="r num">{p.n}</td><td class="vals">{p.values}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub">The recorded wordings of one move</h3>
+      <p>
+        {`The move R3 → L6 has ${w.example.length} demonstrations. These are their commands, exactly as they are stored in the set:`}
+      </p>
+      <ul class="examples">
+        {w.example.map((e) => (
+          <li>“{parts(e).map((p) => (p.cls ? <span class={`tag ${p.cls}`}>{p.text}</span> : p.text))}”</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Robot recordings</h2>
+      <p>
+        {`Autonomous sessions from October, one episode per rollout, uploaded with every camera the model saw. A rollout is one autonomous attempt at one command. ` +
+          `The `}<a href={url('results/')}>results</a>{` score every session, including the ones not uploaded.`}
+      </p>
+      <div class="table-scroll">
+        <table class="data recs">
+          <thead><tr><th>Recording</th><th>Model</th><th>Uploaded</th><th class="r">Rollouts</th><th class="r">Minutes</th><th>Cameras recorded</th><th></th></tr></thead>
+          <tbody>
+            {runs.map((t) => (
+              <tr>
+                <td><a href={`${HF}/datasets/${t.id}`}>{t.name}</a></td>
+                <td>{t.model ?? '–'}</td>
+                <td>{date(t.updated)}</td>
+                <td class="r num">{t.episodes}</td>
+                <td class="r num">{minutes(t.frames, t.fps)}</td>
+                <td><CameraChips used={t.cameras} label="Cameras recorded" /></td>
+                <td><a href={visualizer(t.id)}>watch</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="after note">Filled chips are the cameras stored in that recording. The August datasets, versions 1 to 5, are under <a href={url('previous/data/')}>previous work</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .two h2 { margin-bottom: 0.9rem; }
+  .two p + p { margin-top: 0.9rem; }
+  .demo { margin: 2rem 0 0; display: grid; gap: 0.6rem; max-width: 60rem; }
+  .demo video { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .cams { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem clamp(1rem, 2.5vw, 2rem); }
+  .cams li { display: grid; gap: 0.3rem; align-content: start; }
+  .cams img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .key { font-weight: 400; color: var(--steel); font-size: var(--step--1); margin-left: 0.3rem; }
+  .rules { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.55rem; }
+  .sub { margin-top: 1.8rem; margin-bottom: 0.5rem; font-size: var(--step-1); }
+  .after { margin-top: 1.2rem; }
+  .pools th[scope='row'] { white-space: nowrap; }
+  .vals { color: var(--ink-2); font-size: var(--step--1); }
+  .examples { list-style: none; margin: 0.8rem 0 0; padding: 0; display: grid; gap: 0.7rem; font-size: var(--step-0); }
+  .tag { border-bottom: 3px solid var(--tag, var(--rack)); padding-bottom: 1px; }
+  .tag.verb { --tag: var(--m-pi05); }
+  .tag.obj { --tag: var(--m-groot); }
+  .tag.slot { --tag: var(--m-pi0); }
+  .tag.rack { --tag: var(--m-act); }
+  .tag.bin { --tag: var(--m-flux); }
+  .tag.tmpl { --tag: var(--d-3); }
+  @media (max-width: 60rem) { .cams { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 52rem) { .two { grid-template-columns: minmax(0, 1fr); } }
+</style>

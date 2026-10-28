@@ -1,0 +1,135 @@
+---
+import Base from '../../layouts/Base.astro';
+import Figure from '../../components/Figure.astro';
+import datasets from '../../data/datasets.json';
+import coverage from '../../data/coverage.json';
+import media from '../../data/media.json';
+import { url, HF, visualizer, date, moveLabel } from '../../lib/site';
+
+const train = datasets.datasets.filter((d) => d.kind === 'training');
+const minutes = (frames: number | null, fps: number | null) => (frames && fps ? Math.round(frames / fps / 60) : null);
+const v5 = train.find((d) => d.name === 'vial-sort-v5');
+const d = media.demo;
+---
+<Base
+  page="previous"
+  title="August datasets"
+  description="The August 2026 vial-sorting datasets, versions 1 to 5, public on Hugging Face: how the demonstrations were recorded, how prompts are worded, and why the policy uses no depth."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>The August datasets</h1>
+      <p class="lead">
+        Versions 1 to 5, all public on Hugging Face in the LeRobot format. Any episode opens in the browser
+        with all its cameras, the joint trajectory and the prompt on one timeline. The October set is on
+        the <a href={url('datasets/')}>Data page</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div>
+        <h2>The demonstrations behind the evaluated policy</h2>
+        <p>
+          {`${v5?.episodes} teleoperated demonstrations, about ${minutes(v5?.frames ?? null, v5?.fps ?? null)} minutes ` +
+            `of recording: a person drives the leader arm while the cameras, the joint positions and the prompt are ` +
+            `logged at 30 frames a second. Each demonstration is one move.`}
+        </p>
+        <p>
+          The set is <a href={`${HF}/datasets/sari-abdan/vial-sort-v5`}>sari-abdan/vial-sort-v5</a> on Hugging
+          Face, and every episode can be <a href={visualizer('sari-abdan/vial-sort-v5')}>watched in the browser</a>.
+        </p>
+      </div>
+      {d && (
+        <figure class="demo">
+          <video src={url(d.src)} poster={url(d.poster)} width={d.w} height={d.h} muted loop playsinline data-auto preload="metadata"></video>
+          <figcaption class="note">{d.caption}</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap two">
+      <div>
+        <h2>How the demonstrations were recorded</h2>
+        <ul class="rules">
+          <li>Three vial colours, red, cyan and green, three vials of each.</li>
+          <li>Two six-slot racks at a diagonal to the arm, the bin on the left.</li>
+          <li>Places are named from the side camera: the left rack is the one by the bin, and slots run 1 to 6 from left to right.</li>
+          <li>Vials are spaced so no two stand side by side, at most three to a rack; the other vials are never the colour being moved.</li>
+          <li>Slots 2 and 5 are never a source, so the evaluation can test two positions no demonstration started from.</li>
+          <li>The depth stream is recorded with every episode and not used by the policy.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Every demonstration has its own wording</h2>
+        <p>
+          {`${coverage.distinct_prompts} wordings for ${coverage.episodes} demonstrations, so the policy has to read ` +
+            `the positions rather than memorise one sentence. The ${coverage.wordings.prompts.length} for ` +
+            `${moveLabel(coverage.wordings.move)}:`}
+        </p>
+        <ul class="prompts">
+          {coverage.wordings.prompts.map((p) => <li>“{p}”</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Why the policy uses no depth</h2>
+      <p>
+        The vials are translucent plastic. The RealSense camera’s depth loses them; a model that estimates depth
+        from the colour image alone keeps their shape. The policy is trained on the colour images.
+      </p>
+      <figure class="depth">
+        <img src={url('img/depth_triptych.webp')} width="1920" height="522" loading="lazy"
+          alt="One side-camera frame three ways: the colour image, the Depth Anything V2 estimate with every vial outlined, and the RealSense depth with the vials missing." />
+        <figcaption class="note">The same frame: colour image, Depth Anything V2, Intel RealSense.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Every dataset</h2>
+      <Figure id="dataset-versions" title="Training datasets on the Hub" height={240}
+        description="Each dot is one set of recordings; two names on a dot are the same recordings in two formats (joint and end-effector).">
+        <table class="data" slot="table">
+          <thead><tr><th>Dataset</th><th>Uploaded</th><th class="r">Episodes</th><th class="r">Minutes</th><th>Cameras</th><th></th></tr></thead>
+          <tbody>
+            {train.map((t) => (
+              <tr>
+                <td><a href={`${HF}/datasets/${t.id}`}>{t.name}</a></td>
+                <td>{date(t.updated)}</td>
+                <td class="r">{t.episodes}</td>
+                <td class="r">{minutes(t.frames, t.fps)}</td>
+                <td>{t.cameras.join(', ')}</td>
+                <td><a href={visualizer(t.id)}>watch</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Figure>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../../charts/datasets';
+</script>
+
+<style>
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .two h2 { margin-bottom: 0.9rem; }
+  .two p + p { margin-top: 0.9rem; }
+  .demo { margin: 0; display: grid; gap: 0.6rem; }
+  .demo video, .depth img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .rules, .prompts { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.45rem; }
+  .prompts { list-style: none; padding: 0; margin-top: 1rem; color: var(--ink-2); }
+  .depth { margin: 1.5rem 0 0; display: grid; gap: 0.6rem; }
+  .sub { margin-top: 3rem; }
+  @media (max-width: 52rem) { .two { grid-template-columns: minmax(0, 1fr); } }
+</style>

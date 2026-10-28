@@ -1,0 +1,86 @@
+---
+// The two six-slot racks with the bin between them, as the table is laid out: left rack, bin, right rack,
+// slots 1–6 from left to right in each. Drawn on the server; the hero
+// script moves the vial along the arc in time with the video.
+interface Props {
+  asked: string; // 'R3->L3'
+  /** where the vial is drawn: a slot code, 'bin', 'held:L6' (lifted over L6) or 'source' */
+  vialAt?: string;
+  /** a slot where the gripper closed on nothing */
+  missAt?: string;
+  vial?: 'red' | 'lime' | 'cyan';
+  size?: 'hero' | 'small';
+  id?: string;
+}
+const { asked, vialAt = 'source', missAt, vial = 'red', size = 'small', id } = Astro.props;
+const [src, dst] = asked.split('->');
+
+const P = 24;
+const R = 8;
+const Y = 30;
+const LEFT0 = 33;
+const BIN = 206; // the bin sits between the racks
+const RIGHT0 = 259;
+const x = (code: string) =>
+  code === 'bin' ? BIN : (code[0] === 'L' ? LEFT0 : RIGHT0) + (Number(code[1]) - 1) * P;
+const slots = ['L', 'R'].flatMap((r) => [1, 2, 3, 4, 5, 6].map((n) => `${r}${n}`));
+
+const hero = size === 'hero';
+const H = hero ? 84 : 52;
+const lift = 6; // y of a vial held over a slot
+// the asked move as an arc over the racks; long moves arc higher
+const span = Math.abs(x(dst) - x(src));
+const ctrlY = Y - 18 - Math.min(26, span / 9);
+const arc = `M ${x(src)} ${Y} Q ${(x(src) + x(dst)) / 2} ${ctrlY} ${x(dst)} ${Y}`;
+
+const at = vialAt === 'source' ? src : vialAt.replace('held:', '');
+const vx = x(at);
+const vy = vialAt.startsWith('held:') ? lift : Y;
+const label = `Asked to move the vial from ${src} to ${dst === 'bin' ? 'the bin' : dst}.`;
+---
+<svg
+  class:list={['rack-glyph', size]}
+  viewBox={`0 0 412 ${H}`}
+  role="img"
+  aria-label={label}
+  id={id}
+  data-src={src}
+  data-dst={dst}
+>
+  <!-- bin -->
+  <rect x={BIN - 26} y={Y - 17} width="52" height="34" rx="6" class:list={['bin', dst === 'bin' && 'target']} />
+  {hero && <text x={BIN} y={Y + 42} class="lab" text-anchor="middle">bin</text>}
+  <!-- racks -->
+  <rect x={LEFT0 - 13} y={Y - 12} width={5 * P + 26} height="24" rx="12" class="bar" />
+  <rect x={RIGHT0 - 13} y={Y - 12} width={5 * P + 26} height="24" rx="12" class="bar" />
+  {hero && <text x={LEFT0 + 2.5 * P} y={Y + 42} class="lab" text-anchor="middle">left rack</text>}
+  {hero && <text x={RIGHT0 + 2.5 * P} y={Y + 42} class="lab" text-anchor="middle">right rack</text>}
+  {slots.map((s) => (
+    <circle cx={x(s)} cy={Y} r={R} class:list={['slot', s === dst && 'target']} data-slot={s} />
+  ))}
+  {hero && slots.map((s) => (
+    <text x={x(s)} y={Y + 25} class="num-lab" text-anchor="middle">{s[1]}</text>
+  ))}
+  <path d={arc} class="arc" data-arc />
+  {missAt && (
+    <g class="miss" transform={`translate(${x(missAt)} ${Y})`}>
+      <path d="M -4 -4 L 4 4 M 4 -4 L -4 4" />
+    </g>
+  )}
+  <circle cx={vx} cy={vy} r={R - 1.5} class="vial" style={`fill: var(--vial-${vial})`} data-vial />
+</svg>
+
+<style>
+  .rack-glyph { width: 100%; height: auto; overflow: visible; }
+  .rack-glyph.small { max-width: 15rem; }
+  .bar { fill: var(--grid); }
+  .bin { fill: none; stroke: var(--rack); stroke-width: 1.5; }
+  .bin.target { stroke: var(--ink); stroke-width: 2; }
+  .slot { fill: var(--page); stroke: var(--rack); stroke-width: 1.25; }
+  .slot.target { stroke: var(--ink); stroke-width: 2; }
+  .arc { fill: none; stroke: var(--steel); stroke-width: 1.25; opacity: 0.75; }
+  .vial { stroke: var(--page); stroke-width: 2; }
+  .miss path { stroke: var(--critical); stroke-width: 2; stroke-linecap: round; }
+  .lab, .num-lab { fill: var(--ink-2); font-size: 11px; font-family: var(--font); }
+  .num-lab { font-size: 9.5px; fill: var(--steel); font-variant-numeric: tabular-nums; }
+</style>

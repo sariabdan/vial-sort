@@ -1,0 +1,25 @@
+---
+// A chart with its title, what it counts, a legend, the numbers as a table, and notes.
+interface Props {
+  id: string;
+  title: string;
+  description?: string;
+  height?: number;
+}
+const { id, title, description, height = 320 } = Astro.props;
+---
+<figure class="figure" id={id}>
+  <header>
+    <h3>{title}</h3>
+    {description && <p>{description}</p>}
+  </header>
+  <slot name="legend" />
+  <div class="chart" data-chart={id} style={`min-height: ${height}px`}>
+    <slot />
+  </div>
+  <details>
+    <summary>Show the numbers</summary>
+    <div class="table-scroll"><slot name="table" /></div>
+  </details>
+  <figcaption><slot name="notes" /></figcaption>
+</figure>

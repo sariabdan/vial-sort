@@ -1,0 +1,831 @@
+{
+ "datasets": [
+  {
+   "id": "sari-abdan/rollout_flux_010000_ema_20261007_130022",
+   "name": "rollout_flux_010000_ema_20261007_130022",
+   "kind": "rollout",
+   "updated": "2026-10-07",
+   "episodes": 5,
+   "frames": 2068,
+   "fps": 30,
+   "cameras": [
+    "left",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_007000_20261016_123138",
+   "name": "rollout_pi05_007000_20261016_123138",
+   "kind": "rollout",
+   "updated": "2026-10-16",
+   "episodes": 5,
+   "frames": 7664,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_132700",
+   "name": "rollout_pi05_012000_20261019_132700",
+   "kind": "rollout",
+   "updated": "2026-10-19",
+   "episodes": 5,
+   "frames": 6237,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000500_20261019_181054",
+   "name": "rollout_pi05_000500_20261019_181054",
+   "kind": "rollout",
+   "updated": "2026-10-19",
+   "episodes": 10,
+   "frames": 13076,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261021_152902",
+   "name": "rollout_pi05_012000_20261021_152902",
+   "kind": "rollout",
+   "updated": "2026-10-21",
+   "episodes": 5,
+   "frames": 6582,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000250_20261019_171956",
+   "name": "rollout_pi05_000250_20261019_171956",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 9,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Pretzel One"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000250_20261019_172115",
+   "name": "rollout_pi05_000250_20261019_172115",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 3,
+   "frames": 2158,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Pretzel One"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000500_20261019_184506",
+   "name": "rollout_pi05_000500_20261019_184506",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 1180,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Pretzel Two"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000500_20261019_184850",
+   "name": "rollout_pi05_000500_20261019_184850",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 880,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Pretzel Two"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_000500_20261019_185110",
+   "name": "rollout_pi05_000500_20261019_185110",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 4,
+   "frames": 3547,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Pretzel Two"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_007000_20261016_122204",
+   "name": "rollout_pi05_007000_20261016_122204",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 3,
+   "frames": 3519,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_009000_20261019_152150",
+   "name": "rollout_pi05_009000_20261019_152150",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 3,
+   "frames": 3896,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_010000_20261021_152132",
+   "name": "rollout_pi05_010000_20261021_152132",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 787,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Rice"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_010000_20261021_154053",
+   "name": "rollout_pi05_010000_20261021_154053",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 3108,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Rice"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_130903",
+   "name": "rollout_pi05_012000_20261019_130903",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 163,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_132219",
+   "name": "rollout_pi05_012000_20261019_132219",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 3244,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_145507",
+   "name": "rollout_pi05_012000_20261019_145507",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 4,
+   "frames": 7896,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_161834",
+   "name": "rollout_pi05_012000_20261019_161834",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 40,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_162034",
+   "name": "rollout_pi05_012000_20261019_162034",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 5,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261019_162401",
+   "name": "rollout_pi05_012000_20261019_162401",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 1117,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Spicy Chicken"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261021_151423",
+   "name": "rollout_pi05_012000_20261021_151423",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 21,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Rice"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261021_151614",
+   "name": "rollout_pi05_012000_20261021_151614",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 16,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Rice"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_012000_20261021_151748",
+   "name": "rollout_pi05_012000_20261021_151748",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 2457,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Rice"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_121043",
+   "name": "rollout_flux_010000_20261016_121043",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 1010,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_121628",
+   "name": "rollout_flux_010000_20261016_121628",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 549,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_121859",
+   "name": "rollout_flux_010000_20261016_121859",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 300,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_171857",
+   "name": "rollout_flux_010000_20261016_171857",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 1067,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_172310",
+   "name": "rollout_flux_010000_20261016_172310",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 493,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_20261016_172502",
+   "name": "rollout_flux_010000_20261016_172502",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 161,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_ema_20261007_125223",
+   "name": "rollout_flux_010000_ema_20261007_125223",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 65,
+   "fps": 30,
+   "cameras": [
+    "left",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Sweet Corn"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_ema_20261007_125402",
+   "name": "rollout_flux_010000_ema_20261007_125402",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 833,
+   "fps": 30,
+   "cameras": [
+    "left",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Sweet Corn"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_010000_ema_20261007_132958",
+   "name": "rollout_flux_010000_ema_20261007_132958",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 1346,
+   "fps": 30,
+   "cameras": [
+    "left",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Sweet Corn"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_020000_20261019_152707",
+   "name": "rollout_flux_020000_20261019_152707",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 3,
+   "frames": 662,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_026000_20261019_153054",
+   "name": "rollout_flux_026000_20261019_153054",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 801,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_026000_ema_20261019_155347",
+   "name": "rollout_flux_026000_ema_20261019_155347",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 1,
+   "frames": 1153,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_030000_20261019_124848",
+   "name": "rollout_flux_030000_20261019_124848",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 1876,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_030000_20261019_130542",
+   "name": "rollout_flux_030000_20261019_130542",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 2,
+   "frames": 1174,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/rollout_flux_030000_ema_20261019_130024",
+   "name": "rollout_flux_030000_ema_20261019_130024",
+   "kind": "rollout",
+   "updated": "2026-10-23",
+   "episodes": 3,
+   "frames": 2499,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Crispy Falafel"
+  },
+  {
+   "id": "sari-abdan/vial-sort-v1-static",
+   "name": "vial-sort-v1-static",
+   "kind": "training",
+   "updated": "2026-06-07",
+   "episodes": 100,
+   "frames": 65404,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-v1-ee",
+   "name": "vial-sort-v1-ee",
+   "kind": "training",
+   "updated": "2026-06-08",
+   "episodes": 100,
+   "frames": 65404,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-v2-static",
+   "name": "vial-sort-v2-static",
+   "kind": "training",
+   "updated": "2026-06-23",
+   "episodes": 120,
+   "frames": 71625,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-v4-new",
+   "name": "vial-sort-v4-new",
+   "kind": "training",
+   "updated": "2026-06-29",
+   "episodes": 40,
+   "frames": 21414,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-v5-pilot",
+   "name": "vial-sort-v5-pilot",
+   "kind": "training",
+   "updated": "2026-08-10",
+   "episodes": 150,
+   "frames": 104421,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side",
+    "cam_depth"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-v5",
+   "name": "vial-sort-v5",
+   "kind": "training",
+   "updated": "2026-08-22",
+   "episodes": 150,
+   "frames": 104421,
+   "fps": 30,
+   "cameras": [
+    "cam_top",
+    "cam_wrist",
+    "cam_side",
+    "cam_depth"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-slots-100",
+   "name": "vial-sort-slots-100",
+   "kind": "training",
+   "updated": "2026-10-14",
+   "episodes": 100,
+   "frames": 58650,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  }
+ ],
+ "models": [
+  {
+   "id": "sari-abdan/vial-sort-pi05-v5-12000",
+   "name": "vial-sort-pi05-v5-12000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-groot-v5-12000",
+   "name": "vial-sort-groot-v5-12000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-v5-16000",
+   "name": "vial-sort-pi05-v5-16000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-v5-8000",
+   "name": "vial-sort-pi05-v5-8000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-ws100-canon-12000",
+   "name": "vial-sort-pi05-ws100-canon-12000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-ws100-allcams-12000",
+   "name": "vial-sort-pi05-ws100-allcams-12000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-flux3-ws100-30000",
+   "name": "vial-sort-flux3-ws100-30000"
+  }
+ ]
+}

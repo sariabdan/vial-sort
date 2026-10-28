@@ -1,0 +1,106 @@
+---
+// Demonstrations per source slot (rows) and destination (columns), the way the report's Figure 8 shows
+// them, with the slots that were held out on purpose drawn, not left out. Counts are written in the cells.
+import { moveLabel } from '../lib/site';
+
+interface Props {
+  demos: Record<string, number>;
+  slots: string[];
+  heldSources: string[];
+  heldDestinations: string[];
+}
+const { demos, slots, heldSources, heldDestinations } = Astro.props;
+const dests = [...slots, 'bin'];
+const cell = (s: string, d: string) => demos[`${s}->${d}`] ?? 0;
+const rowTotal = (s: string) => dests.reduce((n, d) => n + cell(s, d), 0);
+const colTotal = (d: string) => slots.reduce((n, s) => n + cell(s, d), 0);
+const total = slots.reduce((n, s) => n + rowTotal(s), 0);
+const top = Math.max(...Object.values(demos));
+const cls = (n: number) => Math.min(5, n);
+const sameRack = (s: string, d: string) => d !== 'bin' && s[0] === d[0];
+const kind = (s: string, d: string) =>
+  heldSources.includes(s) || heldDestinations.includes(d) ? 'held' : sameRack(s, d) ? 'same' : cell(s, d) ? 'rec' : 'none';
+---
+<div class="matrix-wrap">
+  <table class="matrix">
+    <caption class="visually-hidden">
+      Demonstrations for every source slot (rows) and destination (columns). Slots 2 and 5 as a source, and 2, 4 and 5 as a destination, were held out.
+    </caption>
+    <thead>
+      <tr class="groups">
+        <th></th>
+        <th colspan="6" scope="colgroup">Destination: left rack</th>
+        <th colspan="6" scope="colgroup">right rack</th>
+        <th scope="col">bin</th>
+        <th class="sum" scope="col"></th>
+      </tr>
+      <tr>
+        <th scope="col" class="corner">Source</th>
+        {dests.map((d) => (
+          <th scope="col" class:list={['col', heldDestinations.includes(d) && 'held-h']}>
+            {d === 'bin' ? '' : d[1]}
+            {heldDestinations.includes(d) && <span class="visually-hidden"> (held out)</span>}
+          </th>
+        ))}
+        <th scope="col" class="sum">Σ</th>
+      </tr>
+    </thead>
+    <tbody>
+      {slots.map((s, i) => (
+        <tr class:list={[i === 6 && 'gap']}>
+          <th scope="row" class:list={['row', heldSources.includes(s) && 'held-h']}>
+            {s}{heldSources.includes(s) && <span class="visually-hidden"> (held out)</span>}
+          </th>
+          {dests.map((d) => {
+            const k = kind(s, d);
+            const n = cell(s, d);
+            return (
+              <td class:list={['c', k]} style={k === 'rec' ? `background: var(--d-${cls(n)}); color: var(--dt-${cls(n)})` : undefined}
+                title={k === 'rec' ? `${moveLabel(`${s}->${d}`)}: ${n} demonstration${n === 1 ? '' : 's'}` : k === 'held' ? 'held out: never recorded' : k === 'same' ? 'same-rack move: not recorded' : ''}>
+                {k === 'rec' ? n : ''}
+              </td>
+            );
+          })}
+          <td class="sum num">{rowTotal(s)}</td>
+        </tr>
+      ))}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th scope="row" class="sum">Σ</th>
+        {dests.map((d) => <td class="sum num">{colTotal(d) || ''}</td>)}
+        <td class="sum num total">{total}</td>
+      </tr>
+    </tfoot>
+  </table>
+  <ul class="legend key">
+    <li>Demonstrations of that move:</li>
+    {[1, 2, 3, 4].map((n) => <li><i style={`background: var(--d-${n})`}></i>{n === 4 ? `${n} or more` : n}</li>)}
+    <li><i class="held"></i>held out on purpose, never recorded</li>
+    <li><i class="same"></i>same-rack move, not recorded</li>
+  </ul>
+</div>
+
+<style>
+  .matrix-wrap { overflow-x: auto; position: relative; padding-bottom: 0.4rem; }
+  .matrix { border-collapse: separate; border-spacing: 2px; font-size: var(--step--1); font-variant-numeric: tabular-nums; margin-top: 0.8rem; min-width: 34rem; }
+  .matrix th, .matrix td { text-align: center; padding: 0; }
+  .groups th { font-weight: 560; color: var(--ink-2); font-size: 0.78rem; padding-bottom: 0.2rem; white-space: nowrap; }
+  .groups th[colspan] { border-bottom: 1px solid var(--rule); }
+  .corner { text-align: left !important; font-weight: 560; color: var(--ink-2); padding-right: 0.6rem !important; }
+  .col, .row { font-weight: 560; color: var(--ink-2); }
+  .row { text-align: left !important; padding-right: 0.7rem !important; white-space: nowrap; }
+  .c { width: 2.3rem; height: 2.1rem; border-radius: 3px; font-weight: 600; }
+  .c.none { background: var(--grid); }
+  .c.same { background: var(--grid); opacity: 0.55; }
+  .c.held, .held-h { background-image: repeating-linear-gradient(135deg, var(--rack) 0 1px, transparent 1px 6px); }
+  .c.held { background-color: transparent; }
+  .held-h { color: var(--steel); }
+  .gap th, .gap td { padding-top: 0.7rem; }
+  .sum { color: var(--ink-2); font-weight: 560; padding-left: 0.5rem !important; }
+  .sum.total { color: var(--ink); font-weight: 700; }
+  tfoot th { text-align: left !important; }
+  .key { margin-top: 0.9rem; }
+  .key i.held { background-image: repeating-linear-gradient(135deg, var(--rack) 0 1px, transparent 1px 4px); border: 1px solid var(--rack); }
+  .key i.same { background: var(--grid); opacity: 0.55; }
+</style>

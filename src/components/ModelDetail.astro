@@ -1,0 +1,190 @@
+---
+// One model described in full: what it is, what it saw, every hyperparameter with its meaning, how each
+// checkpoint did on the robot, move by move, and what happened. Everything comes from models.yaml and the
+// build; a model added there gets this section with no page change.
+import experiments from '../data/experiments.json';
+import media from '../data/media.json';
+import CameraChips from './CameraChips.astro';
+import Clip from './Clip.astro';
+import Term from './Term.astro';
+import { HF, moveLabel } from '../lib/site';
+
+type Model = (typeof experiments.models)[number];
+interface Props { m: Model }
+const { m } = Astro.props;
+const stages = experiments.stages;
+const rows = experiments.rows.filter((r) => r.model === m.id);
+const clips = (media.featured as { model_id?: string }[]).filter((f) => f.model_id === m.id) as (typeof media.featured)[number][];
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const k = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000}k` : String(n));
+const left = m.left_out as Record<string, number>;
+const leftText = [
+  left.short && `${left.short} ended within 3 seconds`,
+  left.untrained && `${left.untrained} asked for moves no demonstration contains`,
+  left.unreadable && `${left.unreadable} had a command the scorer cannot read`,
+  left.earlier_scene && `${left.earlier_scene} ran on an earlier layout of the table`,
+].filter(Boolean).join(', ');
+const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b : a)).key : null;
+---
+<article class="model" data-model={m.id} id={m.id}>
+  <header>
+    <h3><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}</h3>
+    <p class="what">{`${m.what}.`}</p>
+  </header>
+
+  <dl class="facts">
+    <div><dt>Started from</dt><dd>{m.base}</dd></div>
+    <div><dt>Trained on</dt><dd>{m.data}</dd></div>
+    <div><dt>Cameras it saw</dt><dd><CameraChips used={m.cams} note={m.cams_note} /></dd></div>
+    {m.steps && <div><dt>Steps</dt><dd class="num">{m.steps.toLocaleString('en-GB')}</dd></div>}
+    {m.passes && <div><dt>Passes over the data</dt><dd class="num">{m.passes}</dd></div>}
+    {m.hours && <div><dt>Training time</dt><dd class="num">{`${m.hours} h`}</dd></div>}
+    {m.mem_gb && <div><dt>Peak GPU memory</dt><dd class="num">{`${m.mem_gb} GB`}</dd></div>}
+    {m.hub && <div><dt>Weights</dt><dd><a href={`${HF}/sari-abdan/${m.hub}`}>on Hugging Face</a></dd></div>}
+  </dl>
+
+  <h4>On the robot</h4>
+  {rows.length ? (
+    <>
+      <p class="note">
+        {`Scored rollouts only, one row per checkpoint and mode, never pooled. Left out for this model: ${leftText || 'none'}.`}
+      </p>
+      <div class="table-scroll">
+        <table class="data stages">
+          <thead>
+            <tr>
+              <th>Checkpoint</th><th class="r"><Term k="n">Rollouts</Term></th>
+              {stages.map((s, i) => <th class="r"><i class="sw" style={`background: var(--st-${i + 1})`}></i>{s.label}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr>
+                <td>{r.short}</td><td class="r num">{r.rollouts}</td>
+                {stages.map((s) => <td class:list={['r', 'num', !r.stages[s.key as keyof typeof r.stages] && 'zero']}>{r.stages[s.key as keyof typeof r.stages]}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Move by move</h4>
+      <p class="note">
+        {`Each move this model was asked, with the number of demonstrations of that exact move in the training data. One block per checkpoint; the one with the most rollouts is open.`}
+      </p>
+      <div class="moves">
+        {rows.map((r) => (
+          <details open={r.key === biggest}>
+            <summary>{`${r.short}: ${r.rollouts} rollouts, ${r.moves.length} move${r.moves.length === 1 ? '' : 's'}`}</summary>
+            <div class="table-scroll">
+              <table class="data stages">
+                <thead>
+                  <tr>
+                    <th>Move</th><th class="r">Demonstrations</th><th class="r">Rollouts</th>
+                    {stages.map((s, i) => <th class="r"><i class="sw" style={`background: var(--st-${i + 1})`}></i>{s.label}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {r.moves.map((mv) => (
+                    <tr>
+                      <td class="move">{moveLabel(mv.move)}</td><td class="r num">{mv.demos}</td><td class="r num">{mv.rollouts}</td>
+                      {stages.map((s) => <td class:list={['r', 'num', !mv.stages[s.key as keyof typeof mv.stages] && 'zero']}>{mv.stages[s.key as keyof typeof mv.stages]}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        ))}
+      </div>
+    </>
+  ) : (
+    <p>
+      {m.scored
+        ? 'This model was never run on the robot.'
+        : `Its rollouts ran on an earlier layout of the table, which the scorer cannot read, so none are scored here (${left.earlier_scene ?? 0} rollouts, ${left.short ?? 0} too short).`}
+    </p>
+  )}
+
+  <h4>Hyperparameters</h4>
+  <p class="note">{`Read from ${m.hyper_source}.`}</p>
+  {m.hyper.length ? m.hyper.map((g) => (
+    <div class="hyper">
+      <h5>{g.group}</h5>
+      <div class="table-scroll">
+        <table class="data hyp">
+          <tbody>
+            {g.rows.map(([label, value, def]) => (
+              <tr><th scope="row">{label}</th><td class="val">{value}</td><td class="def">{def}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )) : <p>No record of the settings survives.</p>}
+
+  <h4>What happened</h4>
+  <div class="story">
+    {m.notes.map((n) => (
+      <div><h5>{n.title}</h5><p>{n.text}</p></div>
+    ))}
+  </div>
+
+  {m.camera_choice && (
+    <>
+      <h4>Which camera FLUX looked through</h4>
+      <p>{m.camera_choice.intro}</p>
+      <div class="table-scroll">
+        <table class="data cam-choice">
+          <thead><tr><th>Run</th><th>Scene camera</th><th>Data</th><th>Result</th><th>Why</th></tr></thead>
+          <tbody>
+            {m.camera_choice.rows.map((c) => (
+              <tr><th scope="row">{c.run}</th><td>{c.camera}</td><td>{c.data}</td><td>{c.result}</td><td class="def">{c.why}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  )}
+
+  {clips.length > 0 && (
+    <>
+      <h4>Rollouts to watch</h4>
+      <div class="clips">
+        {clips.map((f) => (
+          <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
+            vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'red') as 'red'} used={(f as { used?: string[] }).used ?? m.cams} />
+        ))}
+      </div>
+    </>
+  )}
+</article>
+
+<style>
+  .model { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.2rem; min-width: 0; }
+  .model h3 { display: flex; align-items: center; gap: 0.6rem; font-size: var(--step-2); }
+  .dot { width: 0.85rem; height: 0.85rem; border-radius: 50%; flex: none; }
+  .what { color: var(--ink-2); margin-top: 0.4rem; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.9rem 2rem; margin: 1.2rem 0 0.4rem; }
+  .facts div { display: grid; gap: 0.1rem; align-content: start; }
+  .facts dt { font-size: var(--step--1); color: var(--ink-2); }
+  .facts dd { margin: 0; font-weight: 520; }
+  h4 { font-size: var(--step-1); font-stretch: 112%; font-weight: 600; margin: 2.2rem 0 0.5rem; }
+  h5 { font-size: var(--step-0); font-weight: 620; margin: 0 0 0.3rem; }
+  .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: -0.05rem; }
+  .stages th { font-size: var(--step--1); vertical-align: bottom; }
+  .zero { color: var(--steel); }
+  .moves { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
+  .moves details { min-width: 0; }
+  .moves summary { cursor: pointer; font-weight: 560; padding-block: 0.3rem; }
+  .hyper { margin-top: 1rem; }
+  .hyper h5 { color: var(--ink-2); font-weight: 560; font-size: var(--step--1); text-transform: none; }
+  .hyp th { font-weight: 560; text-align: left; white-space: nowrap; width: 1%; padding-right: 1.2rem; }
+  .hyp .val { white-space: nowrap; width: 1%; padding-right: 1.2rem; font-variant-numeric: tabular-nums; }
+  .def { color: var(--ink-2); font-size: var(--step--1); min-width: 14rem; }
+  .story { display: grid; gap: 1.1rem; max-width: var(--measure); }
+  .cam-choice th[scope='row'] { text-align: left; white-space: nowrap; }
+  .cam-choice td { vertical-align: top; min-width: 9rem; }
+  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem clamp(1.2rem, 3vw, 2.5rem); margin-top: 0.8rem; }
+  @media (max-width: 52rem) { .clips { grid-template-columns: minmax(0, 1fr); } }
+</style>

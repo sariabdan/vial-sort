@@ -1,0 +1,872 @@
+{
+ "featured": [
+  {
+   "take": "012000_20261021_152757_t2",
+   "model": "pi05",
+   "model_id": "mango-rice",
+   "row": "mango-rice-12000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "R3->L3",
+   "stage": "released",
+   "caption": "Mango Rice at 12k steps, R3 → L3. Takes the vial across the table and lets go in L3, the slot asked for. The same rollout as the one at the top of the home page.",
+   "vial": "red",
+   "at": "L3",
+   "miss": null,
+   "src": "media/takes/012000_20261021_152757_t2.mp4",
+   "poster": "media/takes/012000_20261021_152757_t2.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 27.53
+  },
+  {
+   "take": "010000_20261021_154053_t0",
+   "model": "pi05",
+   "model_id": "mango-rice",
+   "row": "mango-rice-10000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "L3->R3",
+   "stage": "released",
+   "caption": "Mango Rice at 10k steps, L3 → R3. Over the slot it opens, grips again within half a second, then lets go. The vial ends in R3.",
+   "vial": "cyan",
+   "at": "R3",
+   "miss": null,
+   "src": "media/takes/010000_20261021_154053_t0.mp4",
+   "poster": "media/takes/010000_20261021_154053_t0.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 24.4
+  },
+  {
+   "take": "012000_20261021_152757_t0",
+   "model": "pi05",
+   "model_id": "mango-rice",
+   "row": "mango-rice-12000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "R3->L6",
+   "stage": "carried",
+   "caption": "Mango Rice at 12k steps, R3 → L6. Carries the vial to the right slot and never lets go.",
+   "vial": "red",
+   "at": "held:L6",
+   "miss": null,
+   "src": "media/takes/012000_20261021_152757_t0.mp4",
+   "poster": "media/takes/012000_20261021_152757_t0.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 40.5
+  },
+  {
+   "take": "012000_20261021_152757_t3",
+   "model": "pi05",
+   "model_id": "mango-rice",
+   "row": "mango-rice-12000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "L1->R6",
+   "stage": "no_grasp",
+   "caption": "Mango Rice at 12k steps, L1 → R6. Closes on an empty hole instead of the vial.",
+   "vial": "red",
+   "at": "source",
+   "miss": "L4",
+   "src": "media/takes/012000_20261021_152757_t3.mp4",
+   "poster": "media/takes/012000_20261021_152757_t3.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 10.23
+  },
+  {
+   "take": "007000_20261016_122204_t0",
+   "model": "pi05",
+   "model_id": "spicy-chicken",
+   "row": "spicy-chicken-7000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "R1->bin",
+   "stage": "released",
+   "caption": "Spicy Chicken at 7k steps, R1 → bin. The vial ends in the bin.",
+   "vial": "red",
+   "at": "bin",
+   "miss": null,
+   "src": "media/takes/007000_20261016_122204_t0.mp4",
+   "poster": "media/takes/007000_20261016_122204_t0.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 12.6
+  },
+  {
+   "take": "012000_20261019_132557_t2",
+   "model": "pi05",
+   "model_id": "spicy-chicken",
+   "row": "spicy-chicken-12000-sync",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "L3->bin",
+   "stage": "released",
+   "caption": "Spicy Chicken at 12k steps, L3 → bin. The vial ends in the bin. This checkpoint left home in only a few of its other rollouts.",
+   "vial": "red",
+   "at": "bin",
+   "miss": null,
+   "src": "media/takes/012000_20261019_132557_t2.mp4",
+   "poster": "media/takes/012000_20261019_132557_t2.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 14.1
+  },
+  {
+   "take": "000250_20261019_172115_t0",
+   "model": "pi05",
+   "model_id": "pretzel-one",
+   "row": "pretzel-one-250-rtc",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "L4->R1",
+   "stage": "released",
+   "caption": "Pretzel One at 250 steps, L4 → R1. The arm lets go at R1, but the vial lands on the table beside the rack. Scored as let go at the asked slot; a person marked it not in the slot.",
+   "vial": "red",
+   "at": "R1",
+   "miss": null,
+   "src": "media/takes/000250_20261019_172115_t0.mp4",
+   "poster": "media/takes/000250_20261019_172115_t0.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 16.67
+  },
+  {
+   "take": "000500_20261019_180945_t7",
+   "model": "pi05",
+   "model_id": "pretzel-two",
+   "row": "pretzel-two-500-rtc",
+   "used": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "move": "R3->L6",
+   "stage": "carried",
+   "caption": "Pretzel Two at 500 steps, R3 → L6. Lifts the right vial and lets go over L2, four slots short of L6.",
+   "vial": "red",
+   "at": "L2",
+   "miss": null,
+   "src": "media/takes/000500_20261019_180945_t7.mp4",
+   "poster": "media/takes/000500_20261019_180945_t7.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 18.33
+  },
+  {
+   "take": "030000_20261019_124848_t1",
+   "model": "flux3",
+   "model_id": "crispy-falafel",
+   "row": "crispy-falafel-30000-sync",
+   "used": [
+    "top_down",
+    "wrist"
+   ],
+   "move": "R1->L3",
+   "stage": "carried",
+   "caption": "Crispy Falafel at 30k steps, R1 → L3. Takes the right vial across to the left rack, holds it over L4 and never lets go.",
+   "vial": "red",
+   "at": "held:L4",
+   "miss": null,
+   "src": "media/takes/030000_20261019_124848_t1.mp4",
+   "poster": "media/takes/030000_20261019_124848_t1.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 7.77
+  },
+  {
+   "take": "030000_ema_20261019_130024_t0",
+   "model": "flux3",
+   "model_id": "crispy-falafel",
+   "row": "crispy-falafel-30000-sync-ema",
+   "used": [
+    "top_down",
+    "wrist"
+   ],
+   "move": "R1->L3",
+   "stage": "carried",
+   "caption": "Crispy Falafel at 30k steps, EMA weights, R1 → L3. Takes the right vial to the left rack and lets go at L1, not L3.",
+   "vial": "red",
+   "at": "L1",
+   "miss": null,
+   "src": "media/takes/030000_ema_20261019_130024_t0.mp4",
+   "poster": "media/takes/030000_ema_20261019_130024_t0.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 16.13
+  }
+ ],
+ "captures": {
+  "20260822-185054": {
+   "src": "media/v5/20260822-185054.mp4",
+   "poster": "media/v5/20260822-185054.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.48
+  },
+  "20260822-185221": {
+   "src": "media/v5/20260822-185221.mp4",
+   "poster": "media/v5/20260822-185221.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 42.18
+  },
+  "20260822-185322": {
+   "src": "media/v5/20260822-185322.mp4",
+   "poster": "media/v5/20260822-185322.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.95
+  },
+  "20260822-185435": {
+   "src": "media/v5/20260822-185435.mp4",
+   "poster": "media/v5/20260822-185435.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.97
+  },
+  "20260822-185547": {
+   "src": "media/v5/20260822-185547.mp4",
+   "poster": "media/v5/20260822-185547.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.97
+  },
+  "20260822-185645": {
+   "src": "media/v5/20260822-185645.mp4",
+   "poster": "media/v5/20260822-185645.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 40.32
+  },
+  "20260822-185751": {
+   "src": "media/v5/20260822-185751.mp4",
+   "poster": "media/v5/20260822-185751.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.84
+  },
+  "20260822-190021": {
+   "src": "media/v5/20260822-190021.mp4",
+   "poster": "media/v5/20260822-190021.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.94
+  },
+  "20260822-190140": {
+   "src": "media/v5/20260822-190140.mp4",
+   "poster": "media/v5/20260822-190140.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.87
+  },
+  "20260822-190325": {
+   "src": "media/v5/20260822-190325.mp4",
+   "poster": "media/v5/20260822-190325.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.22
+  },
+  "20260822-190436": {
+   "src": "media/v5/20260822-190436.mp4",
+   "poster": "media/v5/20260822-190436.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.37
+  },
+  "20260822-190602": {
+   "src": "media/v5/20260822-190602.mp4",
+   "poster": "media/v5/20260822-190602.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.22
+  },
+  "20260822-190701": {
+   "src": "media/v5/20260822-190701.mp4",
+   "poster": "media/v5/20260822-190701.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 41.25
+  },
+  "20260822-190811": {
+   "src": "media/v5/20260822-190811.mp4",
+   "poster": "media/v5/20260822-190811.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.89
+  },
+  "20260822-192636": {
+   "src": "media/v5/20260822-192636.mp4",
+   "poster": "media/v5/20260822-192636.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.4
+  },
+  "20260822-200551": {
+   "src": "media/v5/20260822-200551.mp4",
+   "poster": "media/v5/20260822-200551.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.39
+  },
+  "20260822-200801": {
+   "src": "media/v5/20260822-200801.mp4",
+   "poster": "media/v5/20260822-200801.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 44.13
+  },
+  "20260822-201515": {
+   "src": "media/v5/20260822-201515.mp4",
+   "poster": "media/v5/20260822-201515.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 44.26
+  },
+  "20260822-201800": {
+   "src": "media/v5/20260822-201800.mp4",
+   "poster": "media/v5/20260822-201800.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.44
+  },
+  "20260822-202030": {
+   "src": "media/v5/20260822-202030.mp4",
+   "poster": "media/v5/20260822-202030.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.7
+  },
+  "20260822-202446": {
+   "src": "media/v5/20260822-202446.mp4",
+   "poster": "media/v5/20260822-202446.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.95
+  },
+  "20260822-202620": {
+   "src": "media/v5/20260822-202620.mp4",
+   "poster": "media/v5/20260822-202620.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.79
+  },
+  "20260822-202754": {
+   "src": "media/v5/20260822-202754.mp4",
+   "poster": "media/v5/20260822-202754.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.75
+  },
+  "20260822-202936": {
+   "src": "media/v5/20260822-202936.mp4",
+   "poster": "media/v5/20260822-202936.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.38
+  },
+  "20260822-203116": {
+   "src": "media/v5/20260822-203116.mp4",
+   "poster": "media/v5/20260822-203116.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 44.1
+  },
+  "20260822-203426": {
+   "src": "media/v5/20260822-203426.mp4",
+   "poster": "media/v5/20260822-203426.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.32
+  },
+  "20260822-203605": {
+   "src": "media/v5/20260822-203605.mp4",
+   "poster": "media/v5/20260822-203605.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.99
+  },
+  "20260822-203734": {
+   "src": "media/v5/20260822-203734.mp4",
+   "poster": "media/v5/20260822-203734.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 44.08
+  },
+  "20260822-203846": {
+   "src": "media/v5/20260822-203846.mp4",
+   "poster": "media/v5/20260822-203846.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.43
+  },
+  "20260822-204027": {
+   "src": "media/v5/20260822-204027.mp4",
+   "poster": "media/v5/20260822-204027.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 43.37
+  },
+  "20260822-204219": {
+   "src": "media/v5/20260822-204219.mp4",
+   "poster": "media/v5/20260822-204219.jpg",
+   "w": 1038,
+   "h": 260,
+   "secs": 25.82
+  },
+  "20260824-123507": {
+   "src": "media/v5/20260824-123507.mp4",
+   "poster": "media/v5/20260824-123507.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.13
+  },
+  "20260824-124107": {
+   "src": "media/v5/20260824-124107.mp4",
+   "poster": "media/v5/20260824-124107.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.13
+  },
+  "20260824-143950": {
+   "src": "media/v5/20260824-143950.mp4",
+   "poster": "media/v5/20260824-143950.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-144144": {
+   "src": "media/v5/20260824-144144.mp4",
+   "poster": "media/v5/20260824-144144.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.23
+  },
+  "20260824-144350": {
+   "src": "media/v5/20260824-144350.mp4",
+   "poster": "media/v5/20260824-144350.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-145201": {
+   "src": "media/v5/20260824-145201.mp4",
+   "poster": "media/v5/20260824-145201.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.03
+  },
+  "20260824-145427": {
+   "src": "media/v5/20260824-145427.mp4",
+   "poster": "media/v5/20260824-145427.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.1
+  },
+  "20260824-145625": {
+   "src": "media/v5/20260824-145625.mp4",
+   "poster": "media/v5/20260824-145625.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-145814": {
+   "src": "media/v5/20260824-145814.mp4",
+   "poster": "media/v5/20260824-145814.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.37
+  },
+  "20260824-150006": {
+   "src": "media/v5/20260824-150006.mp4",
+   "poster": "media/v5/20260824-150006.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-150222": {
+   "src": "media/v5/20260824-150222.mp4",
+   "poster": "media/v5/20260824-150222.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.77
+  },
+  "20260824-150347": {
+   "src": "media/v5/20260824-150347.mp4",
+   "poster": "media/v5/20260824-150347.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.03
+  },
+  "20260824-150523": {
+   "src": "media/v5/20260824-150523.mp4",
+   "poster": "media/v5/20260824-150523.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.13
+  },
+  "20260824-150704": {
+   "src": "media/v5/20260824-150704.mp4",
+   "poster": "media/v5/20260824-150704.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.97
+  },
+  "20260824-150913": {
+   "src": "media/v5/20260824-150913.mp4",
+   "poster": "media/v5/20260824-150913.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-151120": {
+   "src": "media/v5/20260824-151120.mp4",
+   "poster": "media/v5/20260824-151120.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.2
+  },
+  "20260824-151321": {
+   "src": "media/v5/20260824-151321.mp4",
+   "poster": "media/v5/20260824-151321.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.2
+  },
+  "20260824-151453": {
+   "src": "media/v5/20260824-151453.mp4",
+   "poster": "media/v5/20260824-151453.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.13
+  },
+  "20260824-151654": {
+   "src": "media/v5/20260824-151654.mp4",
+   "poster": "media/v5/20260824-151654.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.8
+  },
+  "20260824-151844": {
+   "src": "media/v5/20260824-151844.mp4",
+   "poster": "media/v5/20260824-151844.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-152050": {
+   "src": "media/v5/20260824-152050.mp4",
+   "poster": "media/v5/20260824-152050.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.77
+  },
+  "20260824-152212": {
+   "src": "media/v5/20260824-152212.mp4",
+   "poster": "media/v5/20260824-152212.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.73
+  },
+  "20260824-152432": {
+   "src": "media/v5/20260824-152432.mp4",
+   "poster": "media/v5/20260824-152432.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.73
+  },
+  "20260824-152609": {
+   "src": "media/v5/20260824-152609.mp4",
+   "poster": "media/v5/20260824-152609.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.73
+  },
+  "20260824-152735": {
+   "src": "media/v5/20260824-152735.mp4",
+   "poster": "media/v5/20260824-152735.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.73
+  },
+  "20260824-153009": {
+   "src": "media/v5/20260824-153009.mp4",
+   "poster": "media/v5/20260824-153009.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.77
+  },
+  "20260824-153146": {
+   "src": "media/v5/20260824-153146.mp4",
+   "poster": "media/v5/20260824-153146.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.73
+  },
+  "20260824-153317": {
+   "src": "media/v5/20260824-153317.mp4",
+   "poster": "media/v5/20260824-153317.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.77
+  },
+  "20260824-153511": {
+   "src": "media/v5/20260824-153511.mp4",
+   "poster": "media/v5/20260824-153511.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.77
+  },
+  "20260824-153645": {
+   "src": "media/v5/20260824-153645.mp4",
+   "poster": "media/v5/20260824-153645.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 39.77
+  },
+  "20260824-153853": {
+   "src": "media/v5/20260824-153853.mp4",
+   "poster": "media/v5/20260824-153853.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-154109": {
+   "src": "media/v5/20260824-154109.mp4",
+   "poster": "media/v5/20260824-154109.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.9
+  },
+  "20260824-154242": {
+   "src": "media/v5/20260824-154242.mp4",
+   "poster": "media/v5/20260824-154242.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.13
+  },
+  "20260824-154832": {
+   "src": "media/v5/20260824-154832.mp4",
+   "poster": "media/v5/20260824-154832.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-155108": {
+   "src": "media/v5/20260824-155108.mp4",
+   "poster": "media/v5/20260824-155108.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.87
+  },
+  "20260824-155409": {
+   "src": "media/v5/20260824-155409.mp4",
+   "poster": "media/v5/20260824-155409.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.1
+  },
+  "20260824-155754": {
+   "src": "media/v5/20260824-155754.mp4",
+   "poster": "media/v5/20260824-155754.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.9
+  },
+  "20260824-155941": {
+   "src": "media/v5/20260824-155941.mp4",
+   "poster": "media/v5/20260824-155941.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.9
+  },
+  "20260824-160111": {
+   "src": "media/v5/20260824-160111.mp4",
+   "poster": "media/v5/20260824-160111.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.97
+  },
+  "20260824-160246": {
+   "src": "media/v5/20260824-160246.mp4",
+   "poster": "media/v5/20260824-160246.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.87
+  },
+  "20260824-160427": {
+   "src": "media/v5/20260824-160427.mp4",
+   "poster": "media/v5/20260824-160427.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-160637": {
+   "src": "media/v5/20260824-160637.mp4",
+   "poster": "media/v5/20260824-160637.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-160748": {
+   "src": "media/v5/20260824-160748.mp4",
+   "poster": "media/v5/20260824-160748.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.0
+  },
+  "20260824-160851": {
+   "src": "media/v5/20260824-160851.mp4",
+   "poster": "media/v5/20260824-160851.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.83
+  },
+  "20260824-161034": {
+   "src": "media/v5/20260824-161034.mp4",
+   "poster": "media/v5/20260824-161034.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.97
+  },
+  "20260824-161328": {
+   "src": "media/v5/20260824-161328.mp4",
+   "poster": "media/v5/20260824-161328.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.07
+  },
+  "20260824-161519": {
+   "src": "media/v5/20260824-161519.mp4",
+   "poster": "media/v5/20260824-161519.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.97
+  },
+  "20260824-161620": {
+   "src": "media/v5/20260824-161620.mp4",
+   "poster": "media/v5/20260824-161620.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 43.03
+  },
+  "20260824-161735": {
+   "src": "media/v5/20260824-161735.mp4",
+   "poster": "media/v5/20260824-161735.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.87
+  },
+  "20260824-161936": {
+   "src": "media/v5/20260824-161936.mp4",
+   "poster": "media/v5/20260824-161936.jpg",
+   "w": 1440,
+   "h": 360,
+   "secs": 42.97
+  }
+ },
+ "gallery": {
+  "complete": {
+   "capture": "20260822-185054",
+   "src": "media/gallery/20260822-185054.mp4",
+   "poster": "media/gallery/20260822-185054.jpg",
+   "w": 346,
+   "h": 260,
+   "secs": 43.48
+  },
+  "missed_pickup": {
+   "capture": "20260822-185547",
+   "src": "media/gallery/20260822-185547.mp4",
+   "poster": "media/gallery/20260822-185547.jpg",
+   "w": 346,
+   "h": 260,
+   "secs": 43.97
+  },
+  "wrong_target": {
+   "capture": "20260822-185221",
+   "src": "media/gallery/20260822-185221.mp4",
+   "poster": "media/gallery/20260822-185221.jpg",
+   "w": 346,
+   "h": 260,
+   "secs": 42.18
+  },
+  "missed_drop": {
+   "capture": "20260822-190021",
+   "src": "media/gallery/20260822-190021.mp4",
+   "poster": "media/gallery/20260822-190021.jpg",
+   "w": 346,
+   "h": 260,
+   "secs": 43.94
+  }
+ },
+ "hero": {
+  "take": "012000_20261021_152757_t2",
+  "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+  "move": "R3->L3",
+  "cam": "right",
+  "caption": "Mango Rice (π0.5), 12k steps, 21 October 2026. Real time, one camera, cropped to the table and trimmed to the move.",
+  "src": "media/hero.mp4",
+  "poster": "media/hero.jpg",
+  "w": 422,
+  "h": 344,
+  "secs": 27.53,
+  "grasp": 2.5,
+  "release": 24.97
+ },
+ "demo": {
+  "caption": "A teleoperated demonstration from the v5 set. A person drives the leader arm; the follower copies it.",
+  "src": "media/demo.mp4",
+  "poster": "media/demo.jpg",
+  "w": 640,
+  "h": 480,
+  "secs": 20.6
+ },
+ "demo_ws100": {
+  "caption": "One demonstration, seen by all five cameras at once. A person drives the leader arm; the follower copies it.",
+  "episode": 10,
+  "src": "media/demo_ws100.mp4",
+  "poster": "media/demo_ws100.jpg",
+  "w": 960,
+  "h": 360,
+  "secs": 22.8
+ }
+}

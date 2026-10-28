@@ -1,0 +1,228 @@
+# Every trained model the site describes. This is the ONLY place a model gets a name: scripts/build_data.py
+# joins each entry to its robot sessions (by `run`), its training log, and its train_config.json, and every
+# page loops over the result. To add a model, add an entry here and re-run build_data.py.
+#
+#   id            url-safe slug (the #hash on the Experiments page, the ?m= on the Results page)
+#   name          the custom name shown everywhere
+#   run           the run id build_data.run_of() gives this model's rollout sessions
+#   family        pi05 | flux3
+#   what          one plain line, shown in the lookup table
+#   base          the weights it started from
+#   data          what it trained on
+#   frames        frames in the training copy (for "passes over the data"); steps from the log or `steps`
+#   cams          cameras the model was fed
+#   logs          [file in outputs/, first step] training logs, oldest first; none = no loss curve
+#   config        a train_config.json under outputs/ (read for the hyperparameters); `manual` fills in when it is gone
+#   hub           the public Hugging Face checkpoint, if any
+#   scored        false when its rollouts cannot be scored (an earlier scene layout)
+#   notes         [{title, text}] what happened, only what the logs and notes record
+#
+# Sources for the text: ee/MODELS_SEP_OCT_2026.md (23 Oct 2026) and the training logs.
+
+models:
+  - id: spicy-chicken
+    name: Spicy Chicken
+    run: pi05-allcams
+    family: pi05
+    what: π0.5 trained on the recordings as they were, all five cameras
+    base: lerobot/pi05_base
+    data: vial-sort-slots-100, as recorded
+    frames: 58650
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: [[pi05_train_allcams.log, 0], [pi05_resume.log, 7000], [pi05_resume2.log, 8000]]
+    config: pi05_full_vial-sort-ws100_allcams/checkpoints/012000/pretrained_model/train_config.json
+    hub: vial-sort-pi05-ws100-allcams-12000
+    notes:
+      - title: How it was trained
+        text: >-
+          15 to 16 October, in three stretches: it was stopped at 7,000 steps to stay inside a time budget and again
+          at 8,000 for a reboot, and resumed from the saved checkpoint each time. Loss fell from 0.125 to 0.009.
+      - title: What it did on the robot
+        text: >-
+          At 7,000 steps both valid rollouts on 16 October put the vial in the right place. At 12,000 steps it left
+          home in only 2 of 11 rollouts on 19 October; at 9,000 in 0 of 3.
+      - title: Why it froze
+        text: >-
+          Found on 19 October with offline tests on the GPU: about half of all frames at the home pose are the idle
+          start of a demonstration and half the idle end, from the identical pose, so the policy told them apart from
+          the pictures alone. In every demonstration the operator leaned over the robot at the start, and the
+          policy learned that as its cue to move. Swapping just the wrist or the left_bottom image of a frozen
+          rollout frame for a demonstration start made it reach.
+
+  - id: mango-rice
+    name: Mango Rice
+    run: pi05-canon
+    family: pi05
+    what: π0.5 trained from the base on a cleaned copy with one wording per move
+    base: lerobot/pi05_base
+    data: vial-sort-slots-100, idle start and end cut, operator removed from the start frames, one canonical sentence per move
+    frames: 46361
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: [[pi05_train_base12k.log, 0]]
+    config: pi05_full_vial-sort-ws100_canon_base12k/checkpoints/012000/pretrained_model/train_config.json
+    hub: vial-sort-pi05-ws100-canon-12000
+    notes:
+      - title: What is different from Spicy Chicken
+        text: >-
+          The same recipe from the same base weights, with three changes to the data: the idle start and end of each
+          demonstration are cut (58,650 frames became 46,361), about 8% of the samples at the home pose have the images that
+          showed the operator swapped for views of the arm with nobody near it, and the 100 wordings are replaced by
+          32 canonical sentences, one for each move. It trained 4.1 passes over the data against 3.3.
+      - title: Tested every 1,000 steps without the robot
+        text: >-
+          Each checkpoint went through the offline gate (see the Training page). It leaves home at all 12; from 2,000
+          steps on its reach follows the source slot named in the command; it never follows the destination slot.
+      - title: On the robot, 21 October
+        text: >-
+          Run as RTC first, which never lifted the vial with this checkpoint, then in sync mode. In sync mode it
+          took the right vial every time the command was worded exactly as in training, and put it in the asked slot
+          in two of six rollouts, both slot 3.
+
+  - id: pretzel-one
+    name: Pretzel One
+    run: pi05-noop
+    family: pi05
+    probe: true
+    what: A 361-step fine-tune of Spicy Chicken to test the operator-free starts
+    base: Spicy Chicken at 12,000 steps
+    data: vial-sort-slots-100, first trim (42,089 frames), operator-free start frames
+    frames: 42089
+    steps: 361
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: []
+    manual:
+      - ["Starting weights", "Spicy Chicken at 12,000 steps", "Fine-tuned from the finished model, not from the base."]
+      - ["Learning rate", "1e-5", "0.4 times the peak of the full runs (2.5e-5)."]
+      - ["Batch size", "16", "Frames per optimiser step."]
+      - ["Steps", "361 of 1,000 planned", "Stopped early; the checkpoint at 250 was tested."]
+      - ["Checkpoint every", "250 steps", ""]
+    notes:
+      - title: What it was for
+        text: >-
+          A test of the finding that Spicy Chicken froze at home because it had learned the operator leaning in as its
+          cue to move. The first frames of each start were swapped for views with nobody near the arm.
+      - title: What went wrong
+        text: >-
+          It left home at once and grasped the right vial, but let go too early. The trim cut every demonstration at the
+          first slight loosening of the gripper over the hole, before the vial was pushed in, so it learned to loosen
+          over the rack and stop. The trim was corrected for Pretzel Two. The checkpoint was deleted on 22 October.
+
+  - id: pretzel-two
+    name: Pretzel Two
+    run: pi05-trim2
+    family: pi05
+    probe: true
+    what: A 500-step fine-tune of Spicy Chicken with the corrected trim
+    base: Spicy Chicken at 12,000 steps
+    data: vial-sort-slots-100, trimmed at the real let-go (46,361 frames), operator-free start frames
+    frames: 46361
+    steps: 500
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: []
+    manual:
+      - ["Starting weights", "Spicy Chicken at 12,000 steps", "Fine-tuned from the finished model, not from Pretzel One."]
+      - ["Learning rate", "1e-5, cosine", ""]
+      - ["Batch size", "16", "Frames per optimiser step."]
+      - ["Steps", "500", "Checkpoints at 250 and 500."]
+      - ["Training time", "30 minutes", "17:34 to 18:04 on 19 October; loss 0.023 to 0.014."]
+    notes:
+      - title: What changed from Pretzel One
+        text: >-
+          The trim now cuts at the widest opening of the gripper after the grasp, which is the real let-go, and the
+          fine-tune starts again from Spicy Chicken rather than from Pretzel One.
+      - title: Offline, before the robot
+        text: >-
+          It left home on all four frozen test frames (72 to 90 degrees against 3 for Spicy Chicken), kept the
+          error at the moment of letting go at 1.5 degrees, and picked the right rack on 100% of training starts.
+      - title: On the robot, 19 October
+        text: >-
+          Its scored rollouts are in the table above. A separate table-top test of six prompts showed slot numbers barely
+          read: a middle vial beat the asked number twice, and the destination digit pulled the reach toward the
+          wrong source once. Destinations landed at slot 3 whatever the digit. The checkpoint was deleted on 22 October.
+
+  - id: crispy-falafel
+    name: Crispy Falafel
+    run: flux-ws100
+    family: flux3
+    what: FLUX 3 Action, LoRA fine-tune, overhead and wrist cameras
+    base: black-forest-labs/flux-3-action-so101, with this dataset's own joint ranges
+    data: vial-sort-slots-100, overhead and wrist cameras only
+    frames: 58650
+    cams: [top_down, wrist]
+    logs: [[flux3_train_ws100.log, 0], [flux3_resume.log, 10000]]
+    config: flux3_lora_vial-sort-ws100_top_down/checkpoints/030000/pretrained_model/train_config.json
+    hub: vial-sort-flux3-ws100-30000
+    notes:
+      - title: How it was trained
+        text: >-
+          Run 1 from 14 to 15 October (0 to 10,000 steps, 5 h 42 min), run 2 from 18 to 19 October (10,000 to 30,000,
+          11 h 13 min, a checkpoint every 2,000). The learning rate is constant, so every checkpoint is a finished
+          model. Loss fell from 0.249 to 0.087 and was flat from about 8,000 steps; 30,000 steps is 2.05 passes over
+          the data.
+      - title: Getting it to run
+        text: >-
+          Three problems stacked on 14 October: the base repositories were re-published and asked for a new licence
+          click, an attention library compiled for CUDA 13 silently fell back to a kernel that tried to allocate 882 GiB,
+          and runs started from an interactive session were killed when the session ended. The first needed the cached
+          revisions pinned, the second the CUDA 13 runtime put on the library path, the third a user-level systemd service.
+      - title: On the robot
+        text: >-
+          Always in sync mode: FLUX has no real-time chunking. It replans every 32 actions with a freeze of about
+          1.3 s, and ran at 15.5 Hz against the 30 Hz target. At 30,000 steps it grasped the asked vial in 4 of 4
+          grasps and put it in the asked slot in 1 of 4.
+      - title: Why only two cameras
+        text: >-
+          FLUX takes a scene view and a wrist view. The overhead camera was chosen on 14 October because it is the
+          only high-angle view, has no people in it, and stays readable in the dark runs. The other cameras were not
+          trained for FLUX.
+    camera_choice:
+      intro: >-
+        Three FLUX runs, each with a different scene camera. The choice of camera is the main thing that changed
+        between them; they also differ in data size, training length and normalisation, so this is a sequence,
+        not a controlled comparison.
+      rows:
+        - run: Flux five
+          camera: Low side camera across the table, plus wrist
+          data: 5 demonstrations, one task
+          result: Did not work. Deleted on 22 October.
+          why: >-
+            Black Forest Labs trained on high-angle views and dropped side views and datasets with people in them;
+            this was a low side view with a person walking behind the table. The shipped joint ranges did not fit
+            the arm either, and 3,000 steps on 5 demonstrations was too little.
+        - run: Sweet Corn
+          camera: The same camera re-aimed high and angled down, plus wrist
+          data: 25 demonstrations, one task
+          result: Ran at 15 Hz with freezes. No success count was kept.
+          why: >-
+            A single task cannot show whether the prompt is followed. The wrist camera dropped off USB during one session.
+        - run: Crispy Falafel
+          camera: Overhead (top_down), plus wrist
+          data: 100 demonstrations, 32 moves
+          result: Right vial in 4 of 4 grasps at 30,000 steps; the right slot in 1 of 4.
+          why: >-
+            Source slots are read; destination slots are not (see Training). A rack of six slots covers about two of
+            the 8 by 8 cells FLUX divides its picture into.
+
+  - id: sweet-corn
+    name: Sweet Corn
+    run: flux-flux25
+    family: flux3
+    scored: false
+    what: FLUX 3 Action on a single task, the first 25 demonstrations
+    base: black-forest-labs/flux-3-action-so101, with this dataset's own joint ranges
+    data: vial-flux25, one task ("take the vial from position 3 of the rack to the bin")
+    frames: 9414
+    cams: []
+    cams_note: left (re-aimed high) and wrist, from the earlier camera layout
+    logs: [[flux3_lora_vial-flux25_left.log, 0]]
+    config: flux3_lora_vial-flux25_left/checkpoints/010000/pretrained_model/train_config.json
+    notes:
+      - title: What it was
+        text: >-
+          The first FLUX run that used the arm's own joint statistics. 10,000 steps (2,500 updates), loss 0.345 to 0.089,
+          6 h 25 min on a GPU shared with other users' jobs. Its first launch died at step 141 for a reason never found.
+      - title: On the robot, 7 October
+        text: >-
+          Ran at 15.3 Hz, not 30: the 7-billion-parameter model takes 95% of each loop and froze for 1.3 s every 32
+          actions. Its rollouts were on the earlier scene layout, which the scoring script cannot read, so they are not
+          scored on this site.

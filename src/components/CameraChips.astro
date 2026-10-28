@@ -1,0 +1,23 @@
+---
+// Which of the five cameras a model saw (filled) and which it did not (outline). `note` stands in
+// when the model used a camera layout that is not these five.
+import { CAMERA_NAMES } from '../lib/site';
+interface Props { used: string[]; note?: string | null; label?: string; compact?: boolean }
+const { used, note, label = 'Cameras the model saw', compact = false } = Astro.props;
+---
+<span class="chips" role="group" aria-label={label}>
+  {note ? <span class="note">{note}</span> : compact ? (
+    <span>{used.length === 5 ? 'All five' : used.map((k) => CAMERA_NAMES[k] ?? k).join(' + ')}</span>
+  ) : Object.entries(CAMERA_NAMES).map(([k, n]) => (
+    <span class:list={['chip', used.includes(k) && 'on']} title={`${n}: ${used.includes(k) ? 'seen by the model' : 'not seen by the model'}`}>
+      <span class="visually-hidden">{`${n}: ${used.includes(k) ? 'seen' : 'not seen'}`}</span>
+      <span aria-hidden="true">{n}</span>
+    </span>
+  ))}
+</span>
+
+<style>
+  .chips { display: inline-flex; flex-wrap: wrap; gap: 0.25rem; vertical-align: middle; }
+  .chip { font-size: 0.72rem; line-height: 1; padding: 0.22rem 0.42rem; border-radius: 99px; border: 1px solid var(--rack); color: var(--steel); white-space: nowrap; }
+  .chip.on { background: var(--ink); border-color: var(--ink); color: var(--page); font-weight: 560; }
+</style>

@@ -1,0 +1,252 @@
+{
+ "stages": [
+  {
+   "key": "no_grasp",
+   "label": "Missed the vial",
+   "def": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty hole, or not at all."
+  },
+  {
+   "key": "grasped",
+   "label": "Grasped, not lifted",
+   "def": "The gripper closed on the right vial but the arm never lifted it."
+  },
+  {
+   "key": "carried",
+   "label": "Lifted, let go elsewhere or not at all",
+   "def": "The arm lifted the right vial, then let go at a different slot or never let go before the rollout ended."
+  },
+  {
+   "key": "released",
+   "label": "Let go at the asked slot",
+   "def": "The arm let go at the slot the command asked for (within half a slot). It does not prove the vial ended in the hole: the scorer reads the arm, not the vial."
+  }
+ ],
+ "coverage": {
+  "dataset": "vial-sort-slots-100",
+  "episodes": 100,
+  "frames": 58650,
+  "fps": 30,
+  "minutes": 33,
+  "trim_frames": 46361,
+  "cameras": [
+   "top_down",
+   "left_top",
+   "left_bottom",
+   "right",
+   "wrist"
+  ],
+  "slots": [
+   "L1",
+   "L2",
+   "L3",
+   "L4",
+   "L5",
+   "L6",
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5",
+   "R6"
+  ],
+  "heldout_sources": [
+   "L2",
+   "L5",
+   "R2",
+   "R5"
+  ],
+  "heldout_destinations": [
+   "L2",
+   "L4",
+   "L5",
+   "R2",
+   "R4",
+   "R5"
+  ],
+  "demos": {
+   "L1->R1": 2,
+   "L1->R3": 4,
+   "L1->R6": 4,
+   "L1->bin": 3,
+   "L3->R1": 3,
+   "L3->R3": 4,
+   "L3->R6": 3,
+   "L3->bin": 3,
+   "L4->R1": 2,
+   "L4->R3": 4,
+   "L4->R6": 4,
+   "L4->bin": 3,
+   "L6->R1": 3,
+   "L6->R3": 3,
+   "L6->R6": 4,
+   "L6->bin": 3,
+   "R1->L1": 3,
+   "R1->L3": 3,
+   "R1->L6": 2,
+   "R1->bin": 3,
+   "R3->L1": 4,
+   "R3->L3": 2,
+   "R3->L6": 3,
+   "R3->bin": 4,
+   "R4->L1": 4,
+   "R4->L3": 2,
+   "R4->L6": 3,
+   "R4->bin": 3,
+   "R6->L1": 4,
+   "R6->L3": 3,
+   "R6->L6": 2,
+   "R6->bin": 3
+  },
+  "per_source": {
+   "L1": 13,
+   "L3": 13,
+   "L4": 13,
+   "L6": 13,
+   "R1": 11,
+   "R3": 13,
+   "R4": 12,
+   "R6": 12
+  },
+  "per_destination": {
+   "L1": 15,
+   "L3": 10,
+   "L6": 10,
+   "R1": 10,
+   "R3": 15,
+   "R6": 15,
+   "bin": 25
+  },
+  "wordings": {
+   "distinct": 100,
+   "moves": 32,
+   "max_per_move": 4,
+   "example_move": "R3->L6",
+   "example": [
+    "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+    "Take the vial in slot 3 of the right rack to the sixth slot of the left rack.",
+    "Transfer the tube from the third slot of the rack on the right over to hole 6 of the left rack."
+   ]
+  },
+  "pools": {
+   "verb": [
+    "Move",
+    "Take",
+    "Transfer",
+    "Bring",
+    "Relocate",
+    "Carry"
+   ],
+   "object": [
+    "the vial",
+    "the tube",
+    "the test tube",
+    "the sample tube"
+   ],
+   "slot": {
+    "1": [
+     "position 1",
+     "slot 1",
+     "the first slot",
+     "hole 1",
+     "spot 1"
+    ],
+    "2": [
+     "position 2",
+     "slot 2",
+     "the second slot",
+     "hole 2",
+     "spot 2"
+    ],
+    "3": [
+     "position 3",
+     "slot 3",
+     "the third slot",
+     "hole 3",
+     "spot 3"
+    ],
+    "4": [
+     "position 4",
+     "slot 4",
+     "the fourth slot",
+     "hole 4",
+     "spot 4"
+    ],
+    "5": [
+     "position 5",
+     "slot 5",
+     "the fifth slot",
+     "hole 5",
+     "spot 5"
+    ],
+    "6": [
+     "position 6",
+     "slot 6",
+     "the sixth slot",
+     "hole 6",
+     "the last slot"
+    ]
+   },
+   "slot_count": 5,
+   "rack": {
+    "left": [
+     "the left rack",
+     "the rack on the left",
+     "the left-side rack",
+     "the left tube rack"
+    ],
+    "right": [
+     "the right rack",
+     "the rack on the right",
+     "the right-side rack",
+     "the right tube rack"
+    ]
+   },
+   "bin": [
+    "the bin",
+    "the trash",
+    "the waste bin",
+    "the trash can",
+    "the rubbish bin"
+   ],
+   "template": [
+    "… from S to D",
+    "… in S to D",
+    "… from S over to D",
+    "… at S to / into D"
+   ]
+  }
+ },
+ "tiles": {
+  "pi05": {
+   "key": "mango-rice-12000-sync",
+   "name": "Mango Rice",
+   "label": "Mango Rice · 12k · sync",
+   "short": "12k · sync",
+   "rollouts": 5,
+   "grasped_right": 4,
+   "released": 1
+  },
+  "flux": {
+   "key": "crispy-falafel-30000-sync",
+   "name": "Crispy Falafel",
+   "label": "Crispy Falafel · 30k · sync",
+   "short": "30k · sync",
+   "rollouts": 4,
+   "grasped_right": 3,
+   "released": 1
+  },
+  "gate": {
+   "checkpoints": 12,
+   "dest_passed": 0,
+   "dest_frames": 7,
+   "source_passed": 9,
+   "source_from": 5000
+  }
+ },
+ "eye": {
+  "in_slot": 4,
+  "checked": 10,
+  "unclear": 3,
+  "not_in_slot": 3
+ }
+}

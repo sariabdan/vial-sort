@@ -1,0 +1,277 @@
+---
+import Base from '../layouts/Base.astro';
+import RackMaps from '../components/RackMaps.astro';
+import StageLegend from '../components/StageLegend.astro';
+import Clip from '../components/Clip.astro';
+import Term from '../components/Term.astro';
+import results from '../data/results.json';
+import october from '../data/october.json';
+import registry from '../data/registry.json';
+import media from '../data/media.json';
+import { url } from '../lib/site';
+import { demoCells, rateCells, type RackMap } from '../lib/rackmaps';
+
+const rows = results.rows;
+const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
+const stages = results.stages;
+const cov = october.coverage;
+const bounds = [10, 12, 14, 19];
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const lo = results.left_out;
+const eye = results.eye as Record<string, number>;
+
+const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
+  Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
+const mapsOf = (r: (typeof rows)[number]): RackMap[] => [
+  { caption: 'Grasped the right vial, by source slot', ramp: 'st', cells: rateCells(slotRate(r.by_source, 'grasped_right'), 'as the source', 'grasped the right vial') },
+  { caption: 'Let go at the asked slot, by destination', ramp: 'st', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'let go at the asked slot') },
+];
+const demoMaps: RackMap[] = [
+  { caption: 'Demonstrations, by the slot the vial was taken from', ramp: 'd', cells: demoCells(cov.per_source, 'as the source', bounds) },
+  { caption: 'Demonstrations, by where the vial was put', ramp: 'd', cells: demoCells(cov.per_destination, 'as the destination', bounds) },
+];
+const clips = media.featured as (typeof media.featured)[number][];
+const total = results.total;
+const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof typeof r.stages];
+---
+<Base
+  page="results"
+  title="Results"
+  description="Compare any of the October models and checkpoints: how far their rollouts got, slot by slot, and the rollouts themselves."
+>
+  <section class="section head">
+    <div class="wrap">
+      <h1>Results</h1>
+      <p class="lead">
+        {`Tick the models and checkpoints to compare. Every chart, map and video on this page follows the selection. ` +
+          `A row is one model at one checkpoint in one mode: nothing is added across checkpoints.`}
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap work">
+    <aside class="rail" aria-label="Choose what to compare">
+      <details open class="rail-box">
+        <summary><h2>Compare</h2><span class="count" id="rail-count" aria-live="polite"></span></summary>
+        <div class="rail-actions">
+          <button type="button" class="quiet-btn" id="pick-newest">Newest</button>
+          <button type="button" class="quiet-btn" id="pick-all">All</button>
+          <button type="button" class="quiet-btn" id="pick-none">None</button>
+        </div>
+        <div class="rail-list">
+          {models.map((m) => (
+            <div class="rail-model" role="group" aria-label={m.name}>
+              <label class="model-box">
+                <input type="checkbox" data-model-box={m.id} />
+                <i style={`background: var(--m-${m.model})`}></i><strong>{m.name}</strong>
+                <span class="note">{FAMILY[m.family]}</span>
+              </label>
+              <ul>
+                {rows.filter((r) => r.model === m.id).map((r) => (
+                  <li>
+                    <label>
+                      <input type="checkbox" data-row-box={r.key} data-of={m.id} />
+                      <span>{r.short}</span><span class="note n">{`n = ${r.rollouts}`}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p class="note rail-foot">
+          {`${total} scored rollouts in all. `}<a href={url('experiments/')}>What each model is</a>.
+        </p>
+      </details>
+    </aside>
+
+    <div class="main" id="results-main">
+      <section class="block" aria-labelledby="h-far">
+        <div class="block-head">
+          <h2 id="h-far">How far each one got</h2>
+          <div class="seg-ctl" role="group" aria-label="Bar scale">
+            <button type="button" class="quiet-btn" aria-pressed="true" data-scale="share">Share of its rollouts</button>
+            <button type="button" class="quiet-btn" aria-pressed="false" data-scale="count">Number of rollouts</button>
+          </div>
+        </div>
+        <StageLegend inline />
+        <div class="bars" id="bars" data-mode="share" style="--max: 1">
+          <div class="axis" id="axis" aria-hidden="true"></div>
+          {rows.map((r) => (
+            <div class="bar-row" data-row={r.key}>
+              <div class="bar-label"><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></div>
+              <div class="bar" role="img"
+                aria-label={`${r.label}: ${stages.map((s) => `${count(r, s.key)} ${s.label.toLowerCase()}`).join(', ')}`}>
+                {stages.map((s, i) => count(r, s.key) > 0 && (
+                  <span class="seg" style={`--count: ${count(r, s.key)}; --share: ${(count(r, s.key) / r.rollouts) * 100}; background: var(--st-${i + 1}); color: var(--stt-${i + 1})`}
+                    title={`${r.label}\n${s.label}: ${count(r, s.key)} of ${r.rollouts} rollouts`}>{count(r, s.key)}</span>
+                ))}
+              </div>
+              <div class="bar-n num">{`n = ${r.rollouts}`}</div>
+            </div>
+          ))}
+        </div>
+        <p class="note empty" id="bars-empty" hidden>Nothing ticked. Pick at least one row on the left.</p>
+        <details class="twin">
+          <summary>Show the numbers as a table</summary>
+          <div class="table-scroll">
+            <table class="data">
+              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}</tr></thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}</tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <p class="note after">
+          {`A rollout is counted once, in the furthest outcome it reached. `}<Term k="letgo">Let go at the asked slot</Term>{` is read from the arm: ` +
+            `a person who watched the rollouts that reached it found the vial in the slot ${eye.in_slot} times, not in it ${eye.not_in_slot} times, ` +
+            `and could not tell ${eye.unclear} times.`}
+        </p>
+      </section>
+
+      <section class="block" aria-labelledby="h-slot">
+        <h2 id="h-slot">Slot by slot</h2>
+        <p>
+          {`Where on the table each ticked row succeeded. The racks are drawn left rack, bin, right rack, slots 1 to 6 in each. ` +
+            `A number is rollouts that got through out of rollouts that started or ended there; a darker slot is a better share. ` +
+            `Four rows are shown at most.`}
+        </p>
+        <ul class="legend">
+          <li>Demonstrations:</li>
+          {['10', '11–12', '13–14', '15–19', '20 or more'].map((t, i) => <li><i style={`background: var(--d-${i + 1})`}></i>{t}</li>)}
+        </ul>
+        <RackMaps maps={demoMaps} />
+        <ul class="legend rate">
+          <li>Share of rollouts that got through:</li>
+          {['up to 25%', 'up to 50%', 'up to 75%', 'over 75%'].map((t, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{t}</li>)}
+          <li><i class="none"></i>none</li>
+        </ul>
+        {rows.map((r) => (
+          <div class="slot-row" data-row={r.key}>
+            <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="note">{`${r.rollouts} rollouts`}</span></h3>
+            <RackMaps maps={mapsOf(r)} />
+          </div>
+        ))}
+        <p class="note empty" id="slots-empty" hidden>Nothing ticked.</p>
+        <p class="note after" id="slots-more" hidden>More than four rows are ticked: the first four are shown.</p>
+      </section>
+
+      <section class="block" aria-labelledby="h-watch">
+        <h2 id="h-watch">Rollouts to watch</h2>
+        <p>
+          {`Rollouts of the ticked rows, every camera the model saw at once. They loop; click one to pause it. ` +
+            `Filter by how far they got:`}
+        </p>
+        <div class="seg-ctl stage-filter" role="group" aria-label="Show rollouts that reached">
+          {stages.map((s, i) => (
+            <button type="button" class="quiet-btn" aria-pressed="true" data-stage={s.key}><i style={`background: var(--st-${i + 1})`}></i>{s.label}</button>
+          ))}
+        </div>
+        <div class="clips">
+          {clips.map((f) => (
+            <div class="clip-wrap" data-row={f.row} data-stage={f.stage}>
+              <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
+                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'red') as 'red'} used={f.used} />
+            </div>
+          ))}
+        </div>
+        <p class="note empty" id="clips-empty" hidden>No rollout of the ticked rows matches. Only some rollouts were picked to be shown.</p>
+      </section>
+
+      <section class="block" aria-labelledby="h-cannot">
+        <h2 id="h-cannot">What these numbers cannot say</h2>
+        <p>
+          {`They are small. The biggest row has ${Math.max(...rows.map((r) => r.rollouts))} rollouts and many have one to five, so one more ` +
+            `good or bad rollout moves a row a long way, and the rows are not a controlled comparison: they differ in training data, ` +
+            `length and mode. These were test runs during development, and the moves are uneven. The scorer reads the arm, not the vial. ` +
+            `Left out: ${lo.short} rollouts under 3 seconds, ${lo.untrained} on moves no demonstration contains, ${lo.unreadable} with a command ` +
+            `the scorer cannot read and ${lo.earlier_scene} from an earlier table layout. For a person-scored evaluation of a different, earlier ` +
+            `system see `}<a href={url('previous/results/')}>the August evaluation</a>{`; the two should not be compared.`}
+        </p>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import '../charts/october';
+</script>
+
+<style>
+  .head { padding-bottom: 1.5rem; }
+  .work { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; padding-bottom: 4rem; }
+  .rail { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--raise); }
+  .rail-box { padding: 0.9rem 1rem 1rem; }
+  .rail-box summary { display: flex; align-items: baseline; justify-content: space-between; cursor: pointer; list-style: none; }
+  .rail-box summary::-webkit-details-marker { display: none; }
+  .rail-box h2 { font-size: var(--step-1); }
+  .count { font-size: var(--step--1); color: var(--ink-2); }
+  .rail-actions { display: flex; gap: 0.4rem; margin: 0.8rem 0; }
+  .rail-list { display: grid; gap: 1rem; }
+  .model-box { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; flex-wrap: wrap; }
+  .model-box i { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+  .rail ul { list-style: none; margin: 0.35rem 0 0 1.55rem; padding: 0; display: grid; gap: 0.2rem; }
+  .rail li label { display: flex; align-items: baseline; gap: 0.5rem; cursor: pointer; }
+  .rail li .n { margin-left: auto; font-variant-numeric: tabular-nums; }
+  .rail input { accent-color: var(--ink); }
+  .rail-foot { margin-top: 1rem; }
+  .main { display: grid; gap: 3.5rem; min-width: 0; }
+  .block { min-width: 0; }
+  .block + .block { padding-top: 2.5rem; border-top: 1px solid var(--rule); }
+  .block h2 { font-size: var(--step-2); margin-bottom: 0.6rem; }
+  .block-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.6rem 1.5rem; margin-bottom: 0.6rem; }
+  .block-head h2 { margin: 0; }
+  .seg-ctl { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .seg-ctl .quiet-btn { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .seg-ctl i { width: 0.7rem; height: 0.7rem; border-radius: 3px; }
+  .stage-filter { margin: 0.8rem 0 1.4rem; }
+  .stage-filter .quiet-btn[aria-pressed='false'] { opacity: 0.55; }
+
+  .bars { display: grid; gap: 0.5rem; margin-top: 0.4rem; }
+  .axis { display: grid; grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr) 3.4rem; column-gap: 0.8rem; font-size: 0.72rem; color: var(--steel); }
+  .axis :global(.ticks) { position: relative; height: 1.1rem; grid-column: 2; }
+  .axis :global(.ticks span) { position: absolute; transform: translateX(-50%); }
+  .axis :global(.ticks span:first-child) { transform: none; }
+  .axis :global(.ticks span:last-child) { transform: translateX(-100%); }
+  .bar-row { display: grid; grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr) 3.4rem; align-items: center; gap: 0 0.8rem; }
+  .bar-row[hidden] { display: none; }
+  .bar-label { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step--1); line-height: 1.3; }
+  .bar-label i { width: 0.65rem; height: 0.65rem; border-radius: 50%; flex: none; }
+  .bar { display: flex; height: 1.9rem; gap: 1px; }
+  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums;
+         overflow: hidden; min-width: 0; width: calc(var(--share) * 1%); }
+  .bars[data-mode='count'] .seg { width: calc(var(--count) / var(--max) * 100%); }
+  .seg:first-child { border-radius: 4px 0 0 4px; }
+  .seg:last-child { border-radius: 0 4px 4px 0; }
+  .seg:only-child { border-radius: 4px; }
+  .bar-n { font-size: var(--step--1); color: var(--ink-2); text-align: right; }
+  .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
+  .twin summary { cursor: pointer; width: fit-content; }
+  .twin tr[hidden] { display: none; }
+  .after { margin-top: 1rem; }
+  .empty { margin-top: 1rem; }
+
+  .legend.rate { margin-top: 1.4rem; }
+  .legend .none { background: var(--page); border: 1.25px solid var(--rack); }
+  .slot-row { margin-top: 1.8rem; }
+  .slot-row[hidden] { display: none; }
+  .slot-row h3 { display: flex; align-items: baseline; gap: 0.6rem; font-size: var(--step-0); margin-bottom: 0.6rem; }
+  .slot-row h3 i { width: 0.65rem; height: 0.65rem; border-radius: 50%; align-self: center; }
+  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.2rem clamp(1.2rem, 3vw, 2.5rem); }
+  .clip-wrap[hidden] { display: none; }
+
+  @media (max-width: 62rem) {
+    .work { grid-template-columns: minmax(0, 1fr); }
+    .rail { position: static; max-height: none; }
+    .clips { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 40rem) {
+    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 3rem; }
+    .axis :global(.ticks) { grid-column: 1; }
+    .bar-label { grid-column: 1 / -1; margin-bottom: 0.2rem; }
+    .bar-row { row-gap: 0.1rem; }
+  }
+</style>

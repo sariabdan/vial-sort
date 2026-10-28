@@ -1,0 +1,214 @@
+{
+ "run": "pi05-canon",
+ "recorded_pan": {
+  "1": 36,
+  "3": 21,
+  "6": 3
+ },
+ "checkpoints": [
+  {
+   "step": 1000,
+   "source": false,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 17,
+    "3": 16,
+    "6": 12
+   },
+   "insertion_err": 4.8,
+   "gripper_err": 7.1
+  },
+  {
+   "step": 2000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 28,
+    "3": 24,
+    "6": 13
+   },
+   "insertion_err": 2.9,
+   "gripper_err": 5.0
+  },
+  {
+   "step": 3000,
+   "source": false,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 29,
+    "3": 23,
+    "6": 14
+   },
+   "insertion_err": 2.2,
+   "gripper_err": 3.7
+  },
+  {
+   "step": 4000,
+   "source": false,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 29,
+    "3": 23,
+    "6": 16
+   },
+   "insertion_err": 2.0,
+   "gripper_err": 3.1
+  },
+  {
+   "step": 5000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 29,
+    "3": 24,
+    "6": 13
+   },
+   "insertion_err": 2.2,
+   "gripper_err": 3.0
+  },
+  {
+   "step": 6000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 32,
+    "3": 25,
+    "6": 13
+   },
+   "insertion_err": 1.9,
+   "gripper_err": 2.9
+  },
+  {
+   "step": 7000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 31,
+    "3": 25,
+    "6": 12
+   },
+   "insertion_err": 1.5,
+   "gripper_err": 1.9
+  },
+  {
+   "step": 8000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 31,
+    "3": 25,
+    "6": 12
+   },
+   "insertion_err": 1.5,
+   "gripper_err": 2.2
+  },
+  {
+   "step": 9000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 31,
+    "3": 24,
+    "6": 11
+   },
+   "insertion_err": 1.5,
+   "gripper_err": 2.0
+  },
+  {
+   "step": 10000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 32,
+    "3": 25,
+    "6": 11
+   },
+   "insertion_err": 1.4,
+   "gripper_err": 1.9
+  },
+  {
+   "step": 11000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 32,
+    "3": 25,
+    "6": 11
+   },
+   "insertion_err": 1.4,
+   "gripper_err": 1.7
+  },
+  {
+   "step": 12000,
+   "source": true,
+   "roles": false,
+   "dest": false,
+   "dest_frames": 0,
+   "dest_of": 7,
+   "go_ok": 9,
+   "go_of": 9,
+   "pan": {
+    "1": 32,
+    "3": 25,
+    "6": 11
+   },
+   "insertion_err": 1.4,
+   "gripper_err": 1.7
+  }
+ ]
+}

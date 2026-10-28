@@ -1,0 +1,49 @@
+---
+// Per-slot counts or rates drawn on the rack layout (bin, left rack, right rack; slots 1–6 left to
+// right). The page builds the cells (src/lib/rackmaps.ts) and says what the colours mean.
+import type { RackMap } from '../lib/rackmaps';
+
+interface Props { maps: RackMap[] }
+const { maps } = Astro.props;
+const P = 26, Y = 28, R = 10, LEFT0 = 22, BIN = 224, RIGHT0 = 286;
+const x = (c: string) => (c === 'bin' ? BIN : (c[0] === 'L' ? LEFT0 : RIGHT0) + (Number(c[1]) - 1) * P);
+---
+<div class="maps">
+  {maps.map((m) => (
+    <figure class="map">
+      <figcaption>{m.caption}</figcaption>
+      <svg viewBox="0 0 448 62" role="img" aria-label={m.caption}>
+        <rect x={LEFT0 - 15} y={Y - 14} width={5 * P + 30} height="28" rx="14" class="bar" />
+        <rect x={RIGHT0 - 15} y={Y - 14} width={5 * P + 30} height="28" rx="14" class="bar" />
+        {m.cells.map((c) => (c.code === 'bin' ? (
+          <g>
+            <title>{c.title}</title>
+            <rect x={BIN - 26} y={Y - 16} width="52" height="32" rx="6" class="bin"
+              style={c.cls ? `fill: var(--${m.ramp}-${c.cls}); stroke: none` : undefined} />
+            <text x={BIN} y={Y + 4} text-anchor="middle" class="in"
+              style={c.cls ? `fill: var(--${m.ramp}t-${c.cls})` : undefined}>{c.text}</text>
+          </g>
+        ) : (
+          <g>
+            <title>{c.title}</title>
+            <circle cx={x(c.code)} cy={Y} r={R} class="slot"
+              style={c.cls ? `fill: var(--${m.ramp}-${c.cls}); stroke: none` : undefined} />
+            <text x={x(c.code)} y={Y + 27} text-anchor="middle" class="count">{c.text}</text>
+          </g>
+        )))}
+      </svg>
+    </figure>
+  ))}
+</div>
+
+<style>
+  .maps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem clamp(1rem, 3vw, 2.5rem); }
+  .map { margin: 0; }
+  figcaption { font-size: var(--step--1); color: var(--ink); margin-bottom: 0.25rem; }
+  svg { width: 100%; height: auto; overflow: visible; }
+  .bar { fill: var(--grid); }
+  .slot, .bin { fill: var(--page); stroke: var(--rack); stroke-width: 1.25; }
+  .count, .in { font-family: var(--font); font-size: 10.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .in { font-size: 11.5px; font-weight: 600; fill: var(--ink-2); }
+  @media (max-width: 40rem) { .maps { grid-template-columns: minmax(0, 1fr); } }
+</style>

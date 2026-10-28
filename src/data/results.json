@@ -1,0 +1,1018 @@
+{
+ "stages": [
+  {
+   "key": "no_grasp",
+   "label": "Missed the vial",
+   "def": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty hole, or not at all."
+  },
+  {
+   "key": "grasped",
+   "label": "Grasped, not lifted",
+   "def": "The gripper closed on the right vial but the arm never lifted it."
+  },
+  {
+   "key": "carried",
+   "label": "Lifted, let go elsewhere or not at all",
+   "def": "The arm lifted the right vial, then let go at a different slot or never let go before the rollout ended."
+  },
+  {
+   "key": "released",
+   "label": "Let go at the asked slot",
+   "def": "The arm let go at the slot the command asked for (within half a slot). It does not prove the vial ended in the hole: the scorer reads the arm, not the vial."
+  }
+ ],
+ "funnel": [
+  {
+   "key": "rollouts",
+   "label": "Rollouts"
+  },
+  {
+   "key": "grasped_right",
+   "label": "Grasped the right vial"
+  },
+  {
+   "key": "lifted",
+   "label": "Lifted it"
+  },
+  {
+   "key": "released",
+   "label": "Let go at the asked slot"
+  }
+ ],
+ "rows": [
+  {
+   "key": "crispy-falafel-10000-sync",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 10000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Crispy Falafel · 10k · sync",
+   "short": "10k · sync",
+   "rollouts": 8,
+   "grasped_right": 1,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 7,
+    "grasped": 1,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261016"
+   ],
+   "sessions": [
+    "010000_20261016_121043",
+    "010000_20261016_121628",
+    "010000_20261016_121859",
+    "010000_20261016_171857",
+    "010000_20261016_172310",
+    "010000_20261016_172502"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 5,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 4,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "crispy-falafel-20000-sync",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 20000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Crispy Falafel · 20k · sync",
+   "short": "20k · sync",
+   "rollouts": 3,
+   "grasped_right": 0,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 3,
+    "grasped": 0,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "020000_20261019_152707"
+   ],
+   "by_source": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L4": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "R1": {
+     "rollouts": 3,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "crispy-falafel-26000-sync",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 26000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Crispy Falafel · 26k · sync",
+   "short": "26k · sync",
+   "rollouts": 1,
+   "grasped_right": 0,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 1,
+    "grasped": 0,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "026000_20261019_153054"
+   ],
+   "by_source": {
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "crispy-falafel-26000-sync-ema",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 26000,
+   "mode": "sync",
+   "ema": true,
+   "label": "Crispy Falafel · 26k · sync · EMA",
+   "short": "26k · sync · EMA",
+   "rollouts": 1,
+   "grasped_right": 0,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 1,
+    "grasped": 0,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "026000_ema_20261019_155347"
+   ],
+   "by_source": {
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "crispy-falafel-30000-sync",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 30000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Crispy Falafel · 30k · sync",
+   "short": "30k · sync",
+   "rollouts": 4,
+   "grasped_right": 3,
+   "lifted": 2,
+   "released": 1,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 1,
+    "grasped": 1,
+    "carried": 1,
+    "released": 1
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "030000_20261019_124848",
+    "030000_20261019_130542"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 2,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R6": {
+     "rollouts": 2,
+     "grasped_right": 1,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "crispy-falafel-30000-sync-ema",
+   "model": "crispy-falafel",
+   "name": "Crispy Falafel",
+   "family": "flux",
+   "step": 30000,
+   "mode": "sync",
+   "ema": true,
+   "label": "Crispy Falafel · 30k · sync · EMA",
+   "short": "30k · sync · EMA",
+   "rollouts": 3,
+   "grasped_right": 1,
+   "lifted": 1,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 2,
+    "grasped": 0,
+    "carried": 1,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "030000_ema_20261019_130024"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "mango-rice-10000-rtc",
+   "model": "mango-rice",
+   "name": "Mango Rice",
+   "family": "pi05",
+   "step": 10000,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Mango Rice · 10k · RTC",
+   "short": "10k · RTC",
+   "rollouts": 1,
+   "grasped_right": 1,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 0,
+    "grasped": 1,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261021"
+   ],
+   "sessions": [
+    "010000_20261021_152132"
+   ],
+   "by_source": {
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "mango-rice-10000-sync",
+   "model": "mango-rice",
+   "name": "Mango Rice",
+   "family": "pi05",
+   "step": 10000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Rice · 10k · sync",
+   "short": "10k · sync",
+   "rollouts": 2,
+   "grasped_right": 2,
+   "lifted": 2,
+   "released": 1,
+   "seen_in_slot": 1,
+   "stages": {
+    "no_grasp": 0,
+    "grasped": 0,
+    "carried": 1,
+    "released": 1
+   },
+   "days": [
+    "20261021"
+   ],
+   "sessions": [
+    "010000_20261021_154053"
+   ],
+   "by_source": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    }
+   }
+  },
+  {
+   "key": "mango-rice-12000-rtc",
+   "model": "mango-rice",
+   "name": "Mango Rice",
+   "family": "pi05",
+   "step": 12000,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Mango Rice · 12k · RTC",
+   "short": "12k · RTC",
+   "rollouts": 1,
+   "grasped_right": 1,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 0,
+    "grasped": 1,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261021"
+   ],
+   "sessions": [
+    "012000_20261021_151748"
+   ],
+   "by_source": {
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "mango-rice-12000-sync",
+   "model": "mango-rice",
+   "name": "Mango Rice",
+   "family": "pi05",
+   "step": 12000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Rice · 12k · sync",
+   "short": "12k · sync",
+   "rollouts": 5,
+   "grasped_right": 4,
+   "lifted": 4,
+   "released": 1,
+   "seen_in_slot": 1,
+   "stages": {
+    "no_grasp": 1,
+    "grasped": 0,
+    "carried": 3,
+    "released": 1
+   },
+   "days": [
+    "20261021"
+   ],
+   "sessions": [
+    "012000_20261021_152757"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "pretzel-one-250-rtc",
+   "model": "pretzel-one",
+   "name": "Pretzel One",
+   "family": "pi05",
+   "step": 250,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Pretzel One · 250 · RTC",
+   "short": "250 · RTC",
+   "rollouts": 3,
+   "grasped_right": 1,
+   "lifted": 1,
+   "released": 1,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 2,
+    "grasped": 0,
+    "carried": 0,
+    "released": 1
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "000250_20261019_172115"
+   ],
+   "by_source": {
+    "L4": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R3": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "bin": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "pretzel-two-500-rtc",
+   "model": "pretzel-two",
+   "name": "Pretzel Two",
+   "family": "pi05",
+   "step": 500,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Pretzel Two · 500 · RTC",
+   "short": "500 · RTC",
+   "rollouts": 17,
+   "grasped_right": 10,
+   "lifted": 6,
+   "released": 3,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 7,
+    "grasped": 4,
+    "carried": 3,
+    "released": 3
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "000500_20261019_180945",
+    "000500_20261019_184506",
+    "000500_20261019_184850",
+    "000500_20261019_185110"
+   ],
+   "by_source": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R1": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 9,
+     "grasped_right": 8,
+     "released": 2
+    },
+    "R6": {
+     "rollouts": 4,
+     "grasped_right": 1,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 6,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 6,
+     "grasped_right": 2,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "spicy-chicken-7000-sync",
+   "model": "spicy-chicken",
+   "name": "Spicy Chicken",
+   "family": "pi05",
+   "step": 7000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Spicy Chicken · 7k · sync",
+   "short": "7k · sync",
+   "rollouts": 4,
+   "grasped_right": 2,
+   "lifted": 2,
+   "released": 2,
+   "seen_in_slot": 1,
+   "stages": {
+    "no_grasp": 2,
+    "grasped": 0,
+    "carried": 0,
+    "released": 2
+   },
+   "days": [
+    "20261016"
+   ],
+   "sessions": [
+    "007000_20261016_122204",
+    "007000_20261016_123035"
+   ],
+   "by_source": {
+    "L3": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 2,
+     "grasped_right": 1,
+     "released": 1
+    }
+   }
+  },
+  {
+   "key": "spicy-chicken-9000-rtc",
+   "model": "spicy-chicken",
+   "name": "Spicy Chicken",
+   "family": "pi05",
+   "step": 9000,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Spicy Chicken · 9k · RTC",
+   "short": "9k · RTC",
+   "rollouts": 3,
+   "grasped_right": 0,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 3,
+    "grasped": 0,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "009000_20261019_152150"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L4": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "R1": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "spicy-chicken-12000-rtc",
+   "model": "spicy-chicken",
+   "name": "Spicy Chicken",
+   "family": "pi05",
+   "step": 12000,
+   "mode": "rtc",
+   "ema": false,
+   "label": "Spicy Chicken · 12k · RTC",
+   "short": "12k · RTC",
+   "rollouts": 5,
+   "grasped_right": 0,
+   "lifted": 0,
+   "released": 0,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 5,
+    "grasped": 0,
+    "carried": 0,
+    "released": 0
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "012000_20261019_145507",
+    "012000_20261019_162401"
+   ],
+   "by_source": {
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L4": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "spicy-chicken-12000-sync",
+   "model": "spicy-chicken",
+   "name": "Spicy Chicken",
+   "family": "pi05",
+   "step": 12000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Spicy Chicken · 12k · sync",
+   "short": "12k · sync",
+   "rollouts": 9,
+   "grasped_right": 1,
+   "lifted": 1,
+   "released": 1,
+   "seen_in_slot": 1,
+   "stages": {
+    "no_grasp": 8,
+    "grasped": 0,
+    "carried": 0,
+    "released": 1
+   },
+   "days": [
+    "20261019"
+   ],
+   "sessions": [
+    "012000_20261019_130903",
+    "012000_20261019_132219",
+    "012000_20261019_132557"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 6,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R4": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 4,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 3,
+     "grasped_right": 1,
+     "released": 1
+    }
+   }
+  }
+ ],
+ "defaults": [
+  "mango-rice-12000-sync",
+  "crispy-falafel-30000-sync"
+ ],
+ "eye": {
+  "in_slot": 4,
+  "checked": 10,
+  "unclear": 3,
+  "not_in_slot": 3
+ },
+ "tiles": {
+  "pi05": {
+   "key": "mango-rice-12000-sync",
+   "name": "Mango Rice",
+   "label": "Mango Rice · 12k · sync",
+   "short": "12k · sync",
+   "rollouts": 5,
+   "grasped_right": 4,
+   "released": 1
+  },
+  "flux": {
+   "key": "crispy-falafel-30000-sync",
+   "name": "Crispy Falafel",
+   "label": "Crispy Falafel · 30k · sync",
+   "short": "30k · sync",
+   "rollouts": 4,
+   "grasped_right": 3,
+   "released": 1
+  },
+  "gate": {
+   "checkpoints": 12,
+   "dest_passed": 0,
+   "dest_frames": 7,
+   "source_passed": 9,
+   "source_from": 5000
+  }
+ },
+ "total": 70,
+ "left_out": {
+  "short": 8,
+  "untrained": 7,
+  "unreadable": 2,
+  "earlier_scene": 11
+ }
+}

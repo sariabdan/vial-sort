@@ -1,0 +1,127 @@
+---
+import RackGlyph from './RackGlyph.astro';
+import media from '../data/media.json';
+import { url, moveLabel } from '../lib/site';
+
+const h = media.hero;
+---
+<section class="hero">
+  <div class="wrap">
+    <h1>Language-conditioned robotic vial sorting with a vision–language–action policy</h1>
+    <p class="lead">
+      A low-cost SO-101 arm moves small, translucent plastic vials between two racks and a bin. Each command
+      names the exact slot to take the vial from and where to put it. The latest work trains π0.5 and
+      FLUX 3 Action on 100 demonstrations seen by five cameras.
+    </p>
+    <div class="hero-grid">
+      <figure class="hero-video">
+        <video
+          id="hero-video"
+          src={url(h.src)}
+          poster={url(h.poster)}
+          width={h.w}
+          height={h.h}
+          muted
+          loop
+          playsinline
+          preload="auto"
+          data-grasp={h.grasp}
+          data-release={h.release}
+          aria-label={`The arm moving a vial from ${h.move.replace('->', ' to ')}`}
+        ></video>
+        <figcaption>
+          <span class="note">{h.caption}</span>
+          <button id="hero-toggle" type="button" class="quiet-btn">Pause</button>
+        </figcaption>
+      </figure>
+      <div class="hero-text">
+        <p class="prompt">
+          <span class="visually-hidden">The command: {h.task}</span>
+          <span aria-hidden="true">“<span id="hero-typed" data-text={h.task}>{h.task}</span>”</span>
+        </p>
+        <p class="move move-big" aria-hidden="true">{moveLabel(h.move)}</p>
+        <RackGlyph asked={h.move} vialAt={h.move.split('->')[1]} size="hero" id="hero-glyph" vial="red" />
+        <p class="note">
+          The policy reads the sentence and the camera images and drives the arm's six joints. Nothing
+          else tells it which vial to take or where to put it.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const video = document.getElementById('hero-video') as HTMLVideoElement;
+  const glyph = document.getElementById('hero-glyph') as unknown as SVGSVGElement;
+  const typed = document.getElementById('hero-typed') as HTMLElement;
+  const toggle = document.getElementById('hero-toggle') as HTMLButtonElement;
+  const arc = glyph.querySelector('[data-arc]') as SVGPathElement;
+  const vial = glyph.querySelector('[data-vial]') as SVGCircleElement;
+  const full = typed.dataset.text ?? '';
+  const grasp = Number(video.dataset.grasp);
+  const release = Number(video.dataset.release);
+  const length = arc.getTotalLength();
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Everything is a function of the video's own clock, so loops and seeks stay in step.
+  function draw(t: number) {
+    const typeFor = Math.max(0.8, Math.min(2, grasp - 0.3));
+    const n = Math.min(full.length, Math.floor((t / typeFor) * full.length));
+    typed.textContent = full.slice(0, n);
+    typed.classList.toggle('typing', n < full.length);
+    // in the source slot until the grasp, along the arc during the carry, in the destination after
+    let p = t <= grasp ? 0 : t >= release ? 1 : (t - grasp) / (release - grasp);
+    p = p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2;
+    const pt = arc.getPointAtLength(p * length);
+    vial.setAttribute('cx', String(pt.x));
+    vial.setAttribute('cy', String(pt.y));
+  }
+
+  function loop() {
+    draw(video.currentTime);
+    if (!video.paused) requestAnimationFrame(loop);
+  }
+
+  function label() {
+    toggle.textContent = video.paused ? 'Play' : 'Pause';
+  }
+
+  if (reduce) {
+    video.controls = true;
+    draw(release + 1);
+    typed.textContent = full;
+    toggle.hidden = true;
+  } else {
+    draw(0);
+    video.addEventListener('play', () => { label(); requestAnimationFrame(loop); });
+    video.addEventListener('pause', label);
+    video.addEventListener('seeked', () => draw(video.currentTime));
+    video.play().catch(() => label());
+    toggle.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+  }
+</script>
+
+<style>
+  .hero { padding-block: clamp(2rem, 5vw, 3.5rem) clamp(2.5rem, 6vw, 4.5rem); }
+  h1 { max-width: 30ch; font-size: clamp(1.7rem, 3.6vw, var(--step-4)); }
+  .lead { margin-top: 0.9rem; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    margin-top: clamp(1.8rem, 4vw, 2.8rem);
+  }
+  .hero-video { margin: 0; }
+  .hero-video video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; }
+  .hero-video figcaption { display: flex; gap: 1rem; justify-content: space-between; align-items: baseline; margin-top: 0.6rem; }
+  .prompt { font-size: var(--step-1); line-height: 1.4; min-height: 4.2em; max-width: 26ch; }
+  #hero-typed.typing::after { content: ''; display: inline-block; width: 0.08em; height: 1em; margin-left: 0.06em; background: currentColor; vertical-align: -0.12em; }
+  .move-big { font-size: clamp(3rem, 7vw, 4.6rem); line-height: 1; margin: 0.5rem 0 1.1rem; }
+  .hero-text :global(.rack-glyph) { margin-bottom: 1.1rem; }
+  .hero-text .note { max-width: 40ch; }
+  @media (max-width: 52rem) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .prompt { min-height: 0; max-width: none; }
+  }
+</style>
