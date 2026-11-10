@@ -29,13 +29,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 12
+    "untrained": 9
    },
    "last_day": "20261109",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 25,
+   "rollouts": 28,
    "checkpoints": [
     16000
    ]
@@ -69,13 +69,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 13
+    "untrained": 9
    },
    "last_day": "20261109",
    "rows": [
     "mango-pudding-16000-sync"
    ],
-   "rollouts": 24,
+   "rollouts": 28,
    "checkpoints": [
     16000
    ]
@@ -110,13 +110,13 @@
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
     "short": 3,
-    "untrained": 7
+    "untrained": 4
    },
    "last_day": "20261104",
    "rows": [
     "mango-lassi-4000-sync"
    ],
-   "rollouts": 30,
+   "rollouts": 33,
    "checkpoints": [
     4000
    ]
@@ -150,13 +150,13 @@
    "has_loss": false,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 4
+    "untrained": 1
    },
    "last_day": "20261104",
    "rows": [
     "mango-sorbet-4000-sync"
    ],
-   "rollouts": 7,
+   "rollouts": 10,
    "checkpoints": [
     4000
    ]
@@ -190,13 +190,13 @@
    "has_loss": false,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 3
+    "untrained": 2
    },
    "last_day": "20261104",
    "rows": [
     "mango-chutney-4000-sync"
    ],
-   "rollouts": 4,
+   "rollouts": 5,
    "checkpoints": [
     4000
    ]

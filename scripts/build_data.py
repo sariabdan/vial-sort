@@ -658,7 +658,12 @@ def video_of(root, row, cam):
                        f"file-{int(row[f'videos/{cam}/file_index']):03d}.mp4"), float(row[f"videos/{cam}/from_timestamp"]))
 
 
+WS220_RUNS = ("pi05-b4k", "pi05-b4k-q37", "pi05-b4k-q37g", "pi05-b16k", "pi05-a16k")
+WS220_MOVES = set()
+
+
 def rollouts(clips, checked):
+    WS220_MOVES.update(json.loads((OUT / "ws220.json").read_text())["demos"])
     sessions = []
     for rep in sorted(glob_days()):
         for s in json.loads(rep.read_text())["sessions"]:
@@ -694,6 +699,11 @@ def rollouts(clips, checked):
             tid = f"{name}_t{r['take']}"
             stage = ws_stage(r, checked.get(tid)) if assessed and not r["short"] else None
             trained_move = not any("NEVER" in f or "no move" in f for f in r["flags"])
+            if run in WS220_RUNS and mv:
+                # assess_rollouts checks against the 100-demonstration sheet, which has no move inside one rack;
+                # these models trained on the 220, so a move counts as trained if the 220 contain it
+                trained_move = move_code(mv) in WS220_MOVES
+                r = {**r, "flags": [f for f in r["flags"] if "NEVER" not in f] if trained_move else r["flags"]}
             takes.append({"id": tid, "take": r["take"], "secs": round(r["secs"], 1), "checked": checked.get(tid),
                           "move": move_code(mv) if mv else None, "task": r.get("task"),
                           "stage": stage, "short": r["short"], "trained_move": trained_move,
@@ -787,6 +797,8 @@ def main():
     clips = []
     print(f"reading {LR}")
     checked = (yaml.safe_load((SITE / "curation.yaml").read_text()) or {}).get("checked") or {}
+    import runpy
+    runpy.run_path(str(SITE / "scripts/build_ws220.py"))
     scen, kpi = evals(clips)
     robot = rollouts(clips, checked)
     runs = training(robot)
@@ -794,8 +806,6 @@ def main():
     models(runs, kpi)
     coverage(scen)
     datasets(a.offline)
-    import runpy
-    runpy.run_path(str(SITE / "scripts/build_ws220.py"))
     BUILD.mkdir(exist_ok=True)
     (BUILD / "clips.json").write_text(json.dumps(clips, indent=1) + "\n")
     print(f"  build/clips.json ({len(clips)} clip sources)")

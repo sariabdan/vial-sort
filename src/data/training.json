@@ -821,10 +821,10 @@
      "stages": {
       "no_grasp": 2,
       "grasped": 1,
-      "carried": 5,
-      "released": 17
+      "carried": 6,
+      "released": 19
      },
-     "takes": 25
+     "takes": 28
     }
    ]
   },
@@ -1647,12 +1647,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 6,
-      "grasped": 3,
+      "no_grasp": 8,
+      "grasped": 4,
       "carried": 8,
-      "released": 7
+      "released": 8
      },
-     "takes": 24
+     "takes": 28
     }
    ]
   },
@@ -1875,12 +1875,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 7,
+      "no_grasp": 9,
       "grasped": 5,
       "carried": 8,
-      "released": 10
+      "released": 11
      },
-     "takes": 30
+     "takes": 33
     }
    ]
   },

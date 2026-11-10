@@ -5235,10 +5235,8 @@
      "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
      "stage": "no_grasp",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R3 (3.2)",
      "to": "never lifted",
      "grasps": 5,
@@ -5302,10 +5300,8 @@
      "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
      "stage": "released",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R2 (1.5) (+1 empty close)",
      "to": "R6 (6.0)",
      "grasps": 2,
@@ -5353,10 +5349,8 @@
      "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
      "stage": "no_grasp",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R6 (5.5) (+1 empty close)",
      "to": "never lifted",
      "grasps": 1,
@@ -5761,10 +5755,8 @@
      "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
      "stage": "carried",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R6 (6.0)",
      "to": "never let go -- held over R5 (5.3)",
      "grasps": 2,
@@ -5848,10 +5840,8 @@
      "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
      "stage": "carried",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "L6 (5.9)",
      "to": "L5 (4.6)",
      "grasps": 1,
@@ -5891,10 +5881,8 @@
      "task": "Move the vial from position 3 of the left rack to slot 1 of the left rack.",
      "stage": "grasped",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "L3 (2.8)",
      "to": "never lifted",
      "grasps": 2,
@@ -6029,10 +6017,8 @@
      "task": "Move the vial from position 3 of the left rack to slot 1 of the left rack.",
      "stage": "no_grasp",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "no grasp (hovered near L3 (2.7))",
      "to": "-",
      "grasps": 0,
@@ -6674,10 +6660,8 @@
      "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
      "stage": "released",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R6 (6.0)",
      "to": "R1 (1.0)",
      "grasps": 1,
@@ -6709,10 +6693,8 @@
      "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
      "stage": "no_grasp",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R2 (1.6)",
      "to": "R6 (6.0)",
      "grasps": 3,
@@ -6812,10 +6794,8 @@
      "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
      "stage": "no_grasp",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "no grasp (hovered near L5 (5.1))",
      "to": "-",
      "grasps": 0,
@@ -6874,10 +6854,8 @@
      "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
      "stage": "grasped",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "L6 (6.0) (+2 empty closes)",
      "to": "never lifted",
      "grasps": 3,
@@ -8096,10 +8074,8 @@
      "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
      "stage": "carried",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R6 (5.9)",
      "to": "never let go -- held over R1 (1.0) (the right slot)",
      "grasps": 1,
@@ -8131,10 +8107,8 @@
      "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
      "stage": "released",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "R1 (1.2)",
      "to": "R6 (6.0)",
      "grasps": 1,
@@ -8210,10 +8184,8 @@
      "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
      "stage": "released",
      "short": false,
-     "trained_move": false,
-     "flags": [
-      "move NEVER TRAINED"
-     ],
+     "trained_move": true,
+     "flags": [],
      "from": "L6 (5.6)",
      "to": "L2 (1.5)",
      "grasps": 2,

@@ -378,13 +378,13 @@
    "ema": false,
    "label": "Mango Chutney · 4k · sync",
    "short": "4k · sync",
-   "rollouts": 4,
+   "rollouts": 5,
    "grasped_right": 1,
    "lifted": 1,
    "released": 1,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 3,
+    "no_grasp": 4,
     "grasped": 0,
     "carried": 0,
     "released": 1
@@ -403,7 +403,7 @@
      "released": 0
     },
     "L3": {
-     "rollouts": 1,
+     "rollouts": 2,
      "grasped_right": 0,
      "released": 0
     },
@@ -419,6 +419,11 @@
     }
    },
    "by_destination": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
     "L6": {
      "rollouts": 2,
      "grasped_right": 1,
@@ -441,16 +446,16 @@
    "ema": false,
    "label": "Mango Lassi · 4k · sync",
    "short": "4k · sync",
-   "rollouts": 30,
-   "grasped_right": 23,
-   "lifted": 18,
-   "released": 10,
+   "rollouts": 33,
+   "grasped_right": 24,
+   "lifted": 19,
+   "released": 11,
    "seen_in_slot": 6,
    "stages": {
-    "no_grasp": 7,
+    "no_grasp": 9,
     "grasped": 5,
     "carried": 8,
-    "released": 10
+    "released": 11
    },
    "days": [
     "20261104"
@@ -475,14 +480,14 @@
      "released": 1
     },
     "L6": {
-     "rollouts": 3,
+     "rollouts": 4,
      "grasped_right": 2,
      "released": 1
     },
     "R1": {
-     "rollouts": 5,
-     "grasped_right": 4,
-     "released": 2
+     "rollouts": 6,
+     "grasped_right": 5,
+     "released": 3
     },
     "R3": {
      "rollouts": 8,
@@ -490,14 +495,14 @@
      "released": 3
     },
     "R6": {
-     "rollouts": 4,
+     "rollouts": 5,
      "grasped_right": 3,
      "released": 1
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 5,
+     "rollouts": 6,
      "grasped_right": 5,
      "released": 1
     },
@@ -512,7 +517,7 @@
      "released": 3
     },
     "R1": {
-     "rollouts": 4,
+     "rollouts": 5,
      "grasped_right": 3,
      "released": 2
     },
@@ -522,9 +527,9 @@
      "released": 1
     },
     "R6": {
-     "rollouts": 3,
-     "grasped_right": 1,
-     "released": 0
+     "rollouts": 4,
+     "grasped_right": 2,
+     "released": 1
     },
     "bin": {
      "rollouts": 4,
@@ -543,16 +548,16 @@
    "ema": false,
    "label": "Mango Pudding · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 24,
-   "grasped_right": 18,
-   "lifted": 15,
-   "released": 7,
-   "seen_in_slot": 6,
+   "rollouts": 28,
+   "grasped_right": 20,
+   "lifted": 16,
+   "released": 8,
+   "seen_in_slot": 8,
    "stages": {
-    "no_grasp": 6,
-    "grasped": 3,
+    "no_grasp": 8,
+    "grasped": 4,
     "carried": 8,
-    "released": 7
+    "released": 8
    },
    "days": [
     "20261108",
@@ -574,12 +579,12 @@
      "released": 1
     },
     "L6": {
-     "rollouts": 3,
-     "grasped_right": 2,
+     "rollouts": 5,
+     "grasped_right": 3,
      "released": 0
     },
     "R1": {
-     "rollouts": 4,
+     "rollouts": 5,
      "grasped_right": 3,
      "released": 2
     },
@@ -589,15 +594,15 @@
      "released": 1
     },
     "R6": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 1
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 2
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 5,
-     "grasped_right": 3,
+     "rollouts": 7,
+     "grasped_right": 4,
      "released": 1
     },
     "L3": {
@@ -611,9 +616,9 @@
      "released": 1
     },
     "R1": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 1
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 2
     },
     "R3": {
      "rollouts": 3,
@@ -621,7 +626,7 @@
      "released": 0
     },
     "R6": {
-     "rollouts": 5,
+     "rollouts": 6,
      "grasped_right": 4,
      "released": 1
     },
@@ -850,15 +855,15 @@
    "ema": false,
    "label": "Mango Sorbet · 4k · sync",
    "short": "4k · sync",
-   "rollouts": 7,
-   "grasped_right": 6,
-   "lifted": 6,
+   "rollouts": 10,
+   "grasped_right": 9,
+   "lifted": 8,
    "released": 2,
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 1,
-    "grasped": 0,
-    "carried": 4,
+    "grasped": 1,
+    "carried": 6,
     "released": 2
    },
    "days": [
@@ -874,9 +879,14 @@
      "released": 1
     },
     "L3": {
-     "rollouts": 3,
-     "grasped_right": 3,
+     "rollouts": 4,
+     "grasped_right": 4,
      "released": 1
+    },
+    "L6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
     },
     "R1": {
      "rollouts": 1,
@@ -884,15 +894,25 @@
      "released": 0
     },
     "R6": {
-     "rollouts": 2,
-     "grasped_right": 2,
+     "rollouts": 3,
+     "grasped_right": 3,
      "released": 0
     }
    },
    "by_destination": {
+    "L1": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 0
+    },
     "L6": {
      "rollouts": 3,
      "grasped_right": 2,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 1,
      "released": 0
     },
     "R6": {
@@ -917,16 +937,16 @@
    "ema": false,
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 25,
-   "grasped_right": 23,
-   "lifted": 22,
-   "released": 17,
-   "seen_in_slot": 16,
+   "rollouts": 28,
+   "grasped_right": 26,
+   "lifted": 25,
+   "released": 19,
+   "seen_in_slot": 17,
    "stages": {
     "no_grasp": 2,
     "grasped": 1,
-    "carried": 5,
-    "released": 17
+    "carried": 6,
+    "released": 19
    },
    "days": [
     "20261109"
@@ -946,14 +966,14 @@
      "released": 4
     },
     "L6": {
-     "rollouts": 5,
-     "grasped_right": 4,
-     "released": 2
+     "rollouts": 6,
+     "grasped_right": 5,
+     "released": 3
     },
     "R1": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 3
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 4
     },
     "R3": {
      "rollouts": 4,
@@ -961,16 +981,16 @@
      "released": 3
     },
     "R6": {
-     "rollouts": 3,
-     "grasped_right": 3,
+     "rollouts": 4,
+     "grasped_right": 4,
      "released": 3
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 2
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 3
     },
     "L3": {
      "rollouts": 4,
@@ -983,8 +1003,8 @@
      "released": 3
     },
     "R1": {
-     "rollouts": 4,
-     "grasped_right": 4,
+     "rollouts": 5,
+     "grasped_right": 5,
      "released": 3
     },
     "R3": {
@@ -993,9 +1013,9 @@
      "released": 1
     },
     "R6": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 3
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 4
     },
     "bin": {
      "rollouts": 2,
@@ -1415,9 +1435,9 @@
    "name": "Plain Bagel",
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 25,
-   "grasped_right": 23,
-   "released": 17
+   "rollouts": 28,
+   "grasped_right": 26,
+   "released": 19
   },
   "flux": {
    "key": "crispy-falafel-30000-sync",
@@ -1436,10 +1456,10 @@
    "source_from": 5000
   }
  },
- "total": 160,
+ "total": 174,
  "left_out": {
   "short": 11,
-  "untrained": 46,
+  "untrained": 32,
   "unreadable": 2,
   "earlier_scene": 11
  }
