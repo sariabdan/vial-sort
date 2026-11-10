@@ -218,13 +218,13 @@
  },
  "tiles": {
   "pi05": {
-   "key": "mango-rice-12000-sync",
-   "name": "Mango Rice",
-   "label": "Mango Rice · 12k · sync",
-   "short": "12k · sync",
-   "rollouts": 5,
-   "grasped_right": 4,
-   "released": 1
+   "key": "plain-bagel-16000-sync",
+   "name": "Plain Bagel",
+   "label": "Plain Bagel · 16k · sync",
+   "short": "16k · sync",
+   "rollouts": 25,
+   "grasped_right": 23,
+   "released": 17
   },
   "flux": {
    "key": "crispy-falafel-30000-sync",
@@ -244,9 +244,9 @@
   }
  },
  "eye": {
-  "in_slot": 4,
-  "checked": 10,
+  "in_slot": 43,
+  "checked": 119,
   "unclear": 3,
-  "not_in_slot": 3
+  "not_in_slot": 73
  }
 }

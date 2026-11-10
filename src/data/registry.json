@@ -1,6 +1,207 @@
 {
  "models": [
   {
+   "id": "plain-bagel",
+   "name": "Plain Bagel",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-a16k",
+   "what": "π0.5 trained from the base on the 220 demonstrations, where the destination cannot be read off the cameras",
+   "base": "lerobot/pi05_base",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "frames": 113010,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": "vial-sort-pi05-ws220-a-16000",
+   "probe": false,
+   "scored": true,
+   "steps": 16000,
+   "hours": 21.5,
+   "step_s": 4.81,
+   "mem_gb": 37.8,
+   "passes": 2.27,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "untrained": 12
+   },
+   "last_day": "20261109",
+   "rows": [
+    "plain-bagel-16000-sync"
+   ],
+   "rollouts": 25,
+   "checkpoints": [
+    16000
+   ]
+  },
+  {
+   "id": "mango-pudding",
+   "name": "Mango Pudding",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-b16k",
+   "what": "Mango Rice trained on for 16,000 steps on the 220 demonstrations",
+   "base": "Mango Rice at 12k steps",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "frames": 113010,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": "vial-sort-pi05-ws220-b-16000",
+   "probe": false,
+   "scored": true,
+   "steps": 16000,
+   "hours": 21.5,
+   "step_s": 4.81,
+   "mem_gb": 37.8,
+   "passes": 2.27,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "untrained": 13
+   },
+   "last_day": "20261109",
+   "rows": [
+    "mango-pudding-16000-sync"
+   ],
+   "rollouts": 24,
+   "checkpoints": [
+    16000
+   ]
+  },
+  {
+   "id": "mango-lassi",
+   "name": "Mango Lassi",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-b4k",
+   "what": "Mango Rice trained on for 4,000 steps on the 220 demonstrations",
+   "base": "Mango Rice at 12k steps",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "frames": 113010,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": false,
+   "scored": true,
+   "steps": 4000,
+   "hours": 4.1,
+   "step_s": 3.8,
+   "mem_gb": 37.9,
+   "passes": 0.57,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "short": 3,
+    "untrained": 7
+   },
+   "last_day": "20261104",
+   "rows": [
+    "mango-lassi-4000-sync"
+   ],
+   "rollouts": 30,
+   "checkpoints": [
+    4000
+   ]
+  },
+  {
+   "id": "mango-sorbet",
+   "name": "Mango Sorbet",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-b4k-q37",
+   "what": "Mango Lassi with the gripper and wrist ranges set back to Mango Rice's",
+   "base": "Mango Lassi (the same weights)",
+   "data": "vial-sort-slots-220",
+   "frames": 113010,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": false,
+   "scored": true,
+   "steps": 4000,
+   "hours": null,
+   "step_s": null,
+   "mem_gb": null,
+   "passes": 0.57,
+   "has_loss": false,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "untrained": 4
+   },
+   "last_day": "20261104",
+   "rows": [
+    "mango-sorbet-4000-sync"
+   ],
+   "rollouts": 7,
+   "checkpoints": [
+    4000
+   ]
+  },
+  {
+   "id": "mango-chutney",
+   "name": "Mango Chutney",
+   "family": "pi05",
+   "model": "pi05",
+   "run": "pi05-b4k-q37g",
+   "what": "Mango Lassi with only the gripper range set back",
+   "base": "Mango Lassi (the same weights)",
+   "data": "vial-sort-slots-220",
+   "frames": 113010,
+   "cams": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": false,
+   "scored": true,
+   "steps": 4000,
+   "hours": null,
+   "step_s": null,
+   "mem_gb": null,
+   "passes": 0.57,
+   "has_loss": false,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "untrained": 3
+   },
+   "last_day": "20261104",
+   "rows": [
+    "mango-chutney-4000-sync"
+   ],
+   "rollouts": 4,
+   "checkpoints": [
+    4000
+   ]
+  },
+  {
    "id": "spicy-chicken",
    "name": "Spicy Chicken",
    "family": "pi05",

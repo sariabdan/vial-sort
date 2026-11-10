@@ -26,7 +26,7 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 <Base
   page="home"
   title="Vial sort"
-  description="A low-cost SO-101 arm sorts translucent vials between two racks and a bin on spoken position commands. The latest work trains π0.5 and FLUX 3 Action on 100 demonstrations seen by five cameras. Videos, results, training runs and data."
+  description="A low-cost SO-101 arm sorts translucent vials between two racks and a bin on spoken position commands. The latest work trains π0.5 on 220 demonstrations seen by five cameras. Videos, results, training runs and data."
 >
   <Hero />
 
@@ -34,7 +34,7 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
     <div class="wrap">
       <h2>What the rollouts show</h2>
       <p>
-        {`October's runs, scored from the arm's motion over ${results.total} rollouts, a rollout being one autonomous attempt at one command. ` +
+        {`The runs of October and November, scored from the arm's motion over ${results.total} rollouts, a rollout being one autonomous attempt at one command. ` +
           `The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}
       </p>
       <OctoberTiles />
@@ -47,7 +47,7 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 
   <section class="section">
     <div class="wrap">
-      <h2>Rollouts from the October models</h2>
+      <h2>Rollouts from the October and November models</h2>
       <p>Every camera the model saw, at once. They loop; click one to pause it.</p>
       {shown.map((m) => (
         <>

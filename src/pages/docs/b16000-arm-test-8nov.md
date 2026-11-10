@@ -141,3 +141,9 @@ reseat the follower's USB cable and check its power supply.
 3. **Then decide.** If A fails the same way, the 3 Nov rule ("220, train B, then decide") points to the
    second sheet (~370), weighted toward what failed here: slots 3 and 6 as destinations, slot-6 sources,
    same-rack left moves, and scenes with other vials in the racks. If A passes, A is the model.
+
+## Data and model
+
+- The model: [`sari-abdan/vial-sort-pi05-ws220-b-16000`](https://huggingface.co/sari-abdan/vial-sort-pi05-ws220-b-16000) (Mango Pudding on the Results page)
+- What it trained on: [`sari-abdan/vial-sort-slots-220`](https://huggingface.co/datasets/sari-abdan/vial-sort-slots-220)
+- The recordings: [`rollout_pi05_016000_20261108_235412`](https://huggingface.co/datasets/sari-abdan/rollout_pi05_016000_20261108_235412) and [`rollout_pi05_016000_20261109_000538`](https://huggingface.co/datasets/sari-abdan/rollout_pi05_016000_20261109_000538)

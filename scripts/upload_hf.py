@@ -34,9 +34,10 @@ FLUX_LICENSE = next((LR.parent / ".cache/huggingface/hub/models--black-forest-la
 
 october = json.loads((SITE / "src/data/october.json").read_text())
 sessions = {s["name"]: s for s in json.loads((SITE / "src/data/rollouts.json").read_text())["sessions"]}
-runs = {r["id"]: r for r in october["runs"]}
 training = {r["id"]: r for r in json.loads((SITE / "src/data/training.json").read_text())["runs"]}
 STAGE = {s["key"]: s["label"] for s in october["stages"]}
+runs = {rid: {"takes": sum(x["takes"] for x in t["robot"]),
+              "stages": {k: sum(x["stages"].get(k, 0) for x in t["robot"]) for k in STAGE}} for rid, t in training.items()}
 
 
 def mb(n):
@@ -62,7 +63,7 @@ HOW = """These checkpoints were written by LeRobot's `lerobot-train` and are loa
 The rollouts used LeRobot's `lerobot-rollout`; the project's rollout and assessment scripts are not published yet."""
 
 
-def results_block(run_id, step, what):
+def results_block(run_id, step, what, when="October 2026"):
     """Whole-run counts, and the counts of this checkpoint alone (the run's other checkpoints were tested too)."""
     r = runs[run_id]
     right = r["takes"] - r["stages"]["no_grasp"]
@@ -70,15 +71,15 @@ def results_block(run_id, step, what):
     n = sum(x["takes"] for x in here)
     right_here = n - sum(x["stages"]["no_grasp"] for x in here)
     placed_here = sum(x["stages"]["released"] for x in here)
+    tail = " (a few later takes of five sessions are not public)" if when.startswith("October") else ""
     return f"""## What it did on the robot
 
-Across every tested checkpoint of this run ({what}), October 2026, there are {r["takes"]} scored takes: the right vial was
+Across every tested checkpoint of this run ({what}), {when}, there are {r["takes"]} scored takes: the right vial was
 gripped in **{right}** and let go at the asked slot in **{r["stages"]["released"]}**. At {step:,} steps alone: {n} takes, the right
 vial gripped in {right_here} and let go at the asked slot in {placed_here}. The takes were scored by a script that reads the
 arm's joint poses; it cannot see the vial, so "let go at the asked slot" means the arm opened there, which is the project's
 "right destination". Some of these takes were also watched on video and had the vial in the hole. They were test runs during development,
-not a planned evaluation, and the numbers are small. The recordings are in the `rollout_*` datasets of this account (a few later
-takes of five sessions are not public)."""
+not a planned evaluation, and the numbers are small. The recordings are in the `rollout_*` datasets of this account{tail}."""
 
 
 def pi05_card(run_id, repo, ckpt, train, dataset_note, extra):
@@ -201,11 +202,70 @@ This is a modified version of π0.5 (lerobot/pi05_base, itself built on PaliGemm
 """
 
 
+NOV_RUNS = ("pi05-b4k", "pi05-b4k-q37", "pi05-b4k-q37g", "pi05-b16k", "pi05-a16k")
+GEMMA_NOTICE_220 = GEMMA_NOTICE.replace("on 100 vial-sorting demonstrations", "on 220 vial-sorting demonstrations")
+SITE_URL = "https://sariabdan.github.io/vial-sort"
+
+
+def ws220_card(run_id, ckpt, extra):
+    t = json.loads((ckpt / "train_config.json").read_text())
+    tr = training[run_id]
+    return f"""---
+license: gemma
+library_name: lerobot
+pipeline_tag: robotics
+base_model: lerobot/pi05_base
+datasets:
+- {USER}/vial-sort-slots-220
+tags:
+- lerobot
+- robotics
+- vision-language-action
+- pi05
+- so101
+---
+
+# π0.5 on 220 vial-sorting demonstrations, {extra["title"]}
+
+A full fine-tune of π0.5 that moves a vial from one named slot to another, or into a bin, with a low-cost SO-101 arm.
+It is a research checkpoint, not a product. **It does not reliably complete the task.**
+
+## Training
+
+| | |
+|---|---|
+| Starting weights | {extra["base"]} |
+| Data | [`{USER}/vial-sort-slots-220`](https://huggingface.co/datasets/{USER}/vial-sort-slots-220): 220 demonstrations, idle start and end trimmed (113,010 frames), operator-free start frames, one sentence per move. 150 of them record one layout three times with three destinations, so the destination can only come from the prompt |
+| Steps | {t["steps"]:,} at batch size {t["batch_size"]} (2.3 passes), AdamW, learning rate {t["optimizer"]["lr"]}, bfloat16 |
+| Inputs | five 640×480 colour cameras (top_down, left_top, left_bottom, right, wrist), the 6 joint positions, the prompt |
+| Output | 6 joint targets in chunks of 50 steps; we ran it with `n_action_steps=15`, sync mode |
+| Hardware | one A100 80 GB, {tr["hours"]} hours in two 12-hour jobs, {tr["step_s"]} s per step, {tr["mem_gb"]} GiB |
+
+{extra["recipe"]}
+
+{PROMPT}
+
+{results_block(run_id, 16000, "16k steps", "November 2026")}
+
+{extra["arm"]}
+
+{extra["limits"]}
+
+More: {SITE_URL}/docs/
+
+{HOW}
+
+## License
+
+π0.5 is built on PaliGemma and Gemma. Use of this model is subject to the
+[Gemma Terms of Use](https://ai.google.dev/gemma/terms). See `NOTICE`.
+"""
+
+
 def models():
     pi = OUT / "pi05_full_vial-sort-ws100_canon_base12k/checkpoints/012000/pretrained_model"
     al = OUT / "pi05_full_vial-sort-ws100_allcams/checkpoints/012000/pretrained_model"
     fx = OUT / "flux3_lora_vial-sort-ws100_top_down/checkpoints/030000"
-    canon_run, all_run = runs["pi05-canon"], runs["pi05-allcams"]
     out = []
     out.append({
         "repo": f"{USER}/vial-sort-pi05-ws100-canon-12000", "kind": "model",
@@ -249,13 +309,39 @@ def models():
                   "prepare_base.py": (LR / "tools/flux/prepare_base.py").read_text(),
                   "README.md": flux_card("flux-ws100", 30000, fx / "pretrained_model/train_config.json")},
         "expect": {"adapter_model.safetensors": (fx / "pretrained_model/adapter_model.safetensors").stat().st_size}})
+    a16 = OUT / "pi05_full_vial-sort-ws220_canon_base16k/checkpoints/016000/pretrained_model"
+    b16 = OUT / "pi05_full_vial-sort-ws220_canon_ft012000_v2/checkpoints/016000/pretrained_model"
+    out.append({
+        "repo": f"{USER}/vial-sort-pi05-ws220-a-16000", "kind": "model", "folders": [(a16, "")], "ignore": [],
+        "files": {"NOTICE": GEMMA_NOTICE_220, "README.md": ws220_card("pi05-a16k", a16, {
+            "title": "from the base, 16k steps", "base": "`lerobot/pi05_base`, every weight trained",
+            "recipe": "Trained from the public base, with no earlier vial-sorting model in between.",
+            "arm": "On 9 November the operator ran 31 moves with this checkpoint and watched where each vial ended: **21 in the asked slot**. "
+                   "It reached slot 6 every time it carried the vial there, and also slots 4 and 5, which no demonstration used as a destination.",
+            "limits": "## Limits\n\nThe drop is the weak part: six times it reached the right slot and the vial ended in front of or behind the hole. "
+                      "It sometimes puts a vial asked for slot 1 or 3 in slot 2. For source slot 2, which no demonstration uses, it twice went "
+                      "for a neighbouring vial first. The one move that is not in the data, L1 → L6, failed at the grasp."})},
+        "expect": {"model.safetensors": (a16 / "model.safetensors").stat().st_size}})
+    out.append({
+        "repo": f"{USER}/vial-sort-pi05-ws220-b-16000", "kind": "model", "folders": [(b16, "")], "ignore": [],
+        "files": {"NOTICE": GEMMA_NOTICE_220, "README.md": ws220_card("pi05-b16k", b16, {
+            "title": "continued from the 100-demonstration model, 16k steps",
+            "base": "[`vial-sort-pi05-ws100-canon-12000`](https://huggingface.co/" + USER + "/vial-sort-pi05-ws100-canon-12000) (π0.5 trained 12k steps on 100 demonstrations), every weight trained",
+            "recipe": "The joint ranges used to scale state and action were set back to the starting model's own before training: merging "
+                      "datasets had widened the gripper's range from 37.4° to 50.8°, and a model trained on from another one keeps its scale.",
+            "arm": "On 8 and 9 November the operator ran the same 31 moves as for the from-base model and watched where each vial ended: "
+                   "**11 in the asked slot**, against 21 for that model.",
+            "limits": "## Limits\n\nThe destination follows the prompt but is pulled toward the middle of the rack: slot 3 often lands in slot 2, "
+                      "and slot 6 in slot 3 or 5. Seven moves failed at the grasp, most of them from slot 6. Use "
+                      "[`vial-sort-pi05-ws220-a-16000`](https://huggingface.co/" + USER + "/vial-sort-pi05-ws220-a-16000) instead."})},
+        "expect": {"model.safetensors": (b16 / "model.safetensors").stat().st_size}})
     return out
 
 
 # ── rollout sessions ────────────────────────────────────────────────────────────────────────────
 
-NAME = re.compile(r"^(\d+)(_ema)?_(\d{8})_(\d{6})$")
-HF_NAME = re.compile(r"^rollout_(pi05|flux)_(\d+)(_ema)?_(\d{8})_(\d{6})$")
+NAME = re.compile(r"^(\d+)(_ema)?(?:_q37g?)?_(\d{8})_(\d{6})$")
+HF_NAME = re.compile(r"^rollout_(pi05|flux)_(\d+)(_ema)?(?:_q37g?)?_(\d{8})_(\d{6})$")
 
 
 def stamp(d, t):
@@ -265,6 +351,7 @@ def stamp(d, t):
 def session_card(repo, name, s):
     takes = s["takes"]
     run = s["run"]
+    train_set = "vial-sort-slots-220" if run in NOV_RUNS else "vial-sort-slots-100"
     def how(t):
         if t["short"]:
             return "under 3 s, not scored"
@@ -302,7 +389,7 @@ demonstrations, and most of them fail.
 
 Moves are source → destination: `R3` is slot 3 of the right rack. Left and right are read from the follower arm (the left
 rack is the top rack in the overhead camera). People are visible in some camera views. The training data is
-[`{USER}/vial-sort-slots-100`](https://huggingface.co/datasets/{USER}/vial-sort-slots-100).
+[`{USER}/{train_set}`](https://huggingface.co/datasets/{USER}/{train_set}).
 """
 
 
@@ -331,7 +418,9 @@ def plan_rollouts(api):
     for pol, d, *_ in local:
         if not ((d / "meta/info.json").exists() and list(d.glob("data/*/*.parquet")) and (d / "videos").exists()):
             skipped.append((d.name, "no recorded data (session died or still open)"))
-        elif d.name in twin:
+        elif d.name in twin and NAME.match(d.name).group(3) < "20261101":
+            # October: the partial public copy stands. November: the full session goes up as well (the partial
+            # copy holds only its first five rollouts)
             skipped.append((d.name, f"already public as {twin[d.name]} (first five takes)"))
         elif d.name not in sessions:
             skipped.append((d.name, "not in src/data/rollouts.json: run scripts/build_data.py"))

@@ -34,3 +34,9 @@ B had first been trained for 4,000 steps on the merged dataset and lost its gras
 - [Arm test, 4 Nov: B at 4000 steps](../b4000-arm-test-4nov/)
 - [Arm test, 8–9 Nov: B at 16000 steps](../b16000-arm-test-8nov/)
 - [Arm test, 9 Nov: A at 16000 steps, against B](../a16000-arm-test-9nov/)
+
+## Data and models on Hugging Face
+
+- [`vial-sort-slots-220`](https://huggingface.co/datasets/sari-abdan/vial-sort-slots-220): the 220 demonstrations both runs trained on
+- [`vial-sort-contrast-51`](https://huggingface.co/datasets/sari-abdan/vial-sort-contrast-51) and [`vial-sort-contrast-99-depth`](https://huggingface.co/datasets/sari-abdan/vial-sort-contrast-99-depth): the 150 new demonstrations on their own, the second sitting with depth
+- [`vial-sort-pi05-ws220-a-16000`](https://huggingface.co/sari-abdan/vial-sort-pi05-ws220-a-16000) (A) and [`vial-sort-pi05-ws220-b-16000`](https://huggingface.co/sari-abdan/vial-sort-pi05-ws220-b-16000) (B)

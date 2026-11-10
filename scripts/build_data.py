@@ -213,6 +213,7 @@ def evals(clips):
 
 # ── training logs ───────────────────────────────────────────────────────────────────────────────
 
+REC_PLAIN = re.compile(r"INFO (\S+ \S+) \S+ step:\S+ .*?loss:([\d.]+) grdn:([\d.]+) lr:(\S+) .*?step_s:([\d.]+) .*?mem_gb:([\d.]+)")
 REC = re.compile(r"(\d+)/\d+ \[[^\]]*\]INFO (\S+ \S+) \S+ step:\S+ .*?loss:([\d.]+) grdn:([\d.]+) lr:(\S+) "
                  r".*?step_s:([\d.]+) .*?mem_gb:([\d.]+)(?: video_mse:([\d.]+) action_mse:([\d.]+))?")
 
@@ -220,7 +221,15 @@ REC = re.compile(r"(\d+)/\d+ \[[^\]]*\]INFO (\S+ \S+) \S+ step:\S+ .*?loss:([\d.
 def parse_log(path, first):
     """[{step, t, loss, ...}] of one log; the step is the tqdm count plus where the run resumed."""
     out = []
-    for chunk in path.read_bytes().decode("utf-8", "replace").replace("\r", "\n").split("\n"):
+    text = path.read_bytes().decode("utf-8", "replace").replace("\r", "\n")
+    if path.suffix == ".out":           # Slurm log of a cluster job: lerobot turns tqdm off there
+        for k, m in enumerate(REC_PLAIN.finditer(text)):
+            ts, loss, gn, lr, ss, mem = m.groups()
+            out.append({"step": first + 100 * (k + 1), "t": datetime.strptime(ts, "%Y-%m-%d %H:%M:%S"),
+                        "loss": float(loss), "grad_norm": float(gn), "lr": float(lr), "step_s": float(ss),
+                        "mem_gb": float(mem)})
+        return out
+    for chunk in text.split("\n"):
         m = REC.search(chunk)
         if m:
             n, ts, loss, gn, lr, ss, mem, vid, act = m.groups()
@@ -598,9 +607,22 @@ def october(gate_rows, runs_json):
 
 # ── rollouts ────────────────────────────────────────────────────────────────────────────────────
 
-def run_of(policy, day, step):
+# November runs, by the checkpoint folder the session log names (tools/rollout_logged.py, session.json)
+CKPT_RUN = [("ws220_canon_ft012000_v2/", "pi05-b16k"), ("ws220_canon_base16k/", "pi05-a16k"),
+            ("checkpoints/004000_q37g/", "pi05-b4k-q37g"), ("checkpoints/004000_q37/", "pi05-b4k-q37"),
+            ("ws220_canon_ft012000/", "pi05-b4k")]
+
+
+def run_of(policy, day, step, name=None):
     """(training run, how we know) of a rollout session. Sessions before tools/rollout_logged.py
     carry no checkpoint path, so this is read off the shell history and what each run kept."""
+    if name:
+        sj = LR / f"outputs/{policy}_rollouts/_sessions/{name}/session.json"
+        if sj.exists():
+            ck = json.loads(sj.read_text()).get("checkpoint") or ""
+            for frag, run in CKPT_RUN:
+                if frag in ck:
+                    return run, "checkpoint path in the session log"
     if policy == "flux":
         return ("flux-flux25", "left camera, only that run's cameras") if day == "20261007" else \
                ("flux-ws100", "RUN_DIR in the shell history / rollout.sh default")
@@ -663,7 +685,7 @@ def rollouts(clips, checked):
         name = s["name"]
         policy = "pi05" if s["policy"].startswith("pi05") else "flux"
         root = LR / "outputs" / f"{policy}_rollouts" / name
-        run, how = run_of(policy, s["day"], s["step"])
+        run, how = run_of(policy, s["day"], s["step"], name)
         eps, cams = episode_rows(root)
         takes = []
         for r in s["rows"]:
@@ -772,6 +794,8 @@ def main():
     models(runs, kpi)
     coverage(scen)
     datasets(a.offline)
+    import runpy
+    runpy.run_path(str(SITE / "scripts/build_ws220.py"))
     BUILD.mkdir(exist_ok=True)
     (BUILD / "clips.json").write_text(json.dumps(clips, indent=1) + "\n")
     print(f"  build/clips.json ({len(clips)} clip sources)")

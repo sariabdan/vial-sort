@@ -3855,6 +3855,5189 @@
      "strip": "012000_20261021_152757_t5.jpg"
     }
    ]
+  },
+  {
+   "name": "004000_20261104_181219",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_181219_t0",
+     "take": 0,
+     "secs": 20.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->L6",
+     "task": "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (3.0) (+1 empty close)",
+     "to": "L6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 262,
+       "release": 526,
+       "at": "R3 (3.0)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 539,
+       "release": 604,
+       "at": "L6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_181219_t0.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t1",
+     "take": 1,
+     "secs": 46.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L3",
+     "task": "Move the vial from position 1 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.3)",
+     "to": "L3 (3.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 194,
+       "release": 891,
+       "at": "R1 (1.3)",
+       "put": "L3 (3.1)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1362,
+       "release": null,
+       "at": "R5 (4.7)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_181219_t1.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t2",
+     "take": 2,
+     "secs": 44.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "R6->L1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (5.7)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 133,
+       "release": 455,
+       "at": "R6 (5.7)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_181219_t2.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t3",
+     "take": 3,
+     "secs": 51.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L3 (3.1))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_181219_t3.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t4",
+     "take": 4,
+     "secs": 51.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L3 (2.9))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_181219_t4.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t5",
+     "take": 5,
+     "secs": 51.4,
+     "checked": null,
+     "move": "L1->R6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the right rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 1229,
+       "release": 1293,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_181219_t5.jpg"
+    },
+    {
+     "id": "004000_20261104_181219_t6",
+     "take": 6,
+     "secs": 3.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed placing, went for slot 5"
+     },
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L6 (5.8))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_181219_t6.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_182424",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_182424_t0",
+     "take": 0,
+     "secs": 22.7,
+     "checked": null,
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (5.7)",
+     "to": "never let go -- held over R3 (3.0) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 205,
+       "release": null,
+       "at": "L6 (5.7)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_182424_t0.jpg"
+    },
+    {
+     "id": "004000_20261104_182424_t1",
+     "take": 1,
+     "secs": 1.0,
+     "checked": null,
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": null,
+     "short": true,
+     "trained_move": true,
+     "flags": [],
+     "from": "take ended after 1.0 s",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_182424_t1.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_182814",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_182814_t0",
+     "take": 0,
+     "secs": 1.2,
+     "checked": null,
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": null,
+     "short": true,
+     "trained_move": true,
+     "flags": [],
+     "from": "take ended after 1.2 s",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_182814_t0.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_182948",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_182948_t0",
+     "take": 0,
+     "secs": 1.4,
+     "checked": null,
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": null,
+     "short": true,
+     "trained_move": true,
+     "flags": [],
+     "from": "take ended after 1.4 s",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_182948_t0.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_183143",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_183143_t0",
+     "take": 0,
+     "secs": 12.9,
+     "checked": null,
+     "move": "R3->L6",
+     "task": "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R2 (2.5)",
+     "to": "never let go -- held over L6 (6.0) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 161,
+       "release": null,
+       "at": "R2 (2.5)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_183143_t0.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_183350",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_183350_t0",
+     "take": 0,
+     "secs": 18.5,
+     "checked": null,
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8)",
+     "to": "L2 (2.1)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 145,
+       "release": 145,
+       "at": "R3 (2.8)",
+       "put": "R3 (2.6)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 146,
+       "release": 518,
+       "at": "R3 (2.8)",
+       "put": "L2 (2.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_183350_t0.jpg"
+    },
+    {
+     "id": "004000_20261104_183350_t1",
+     "take": 1,
+     "secs": 10.8,
+     "checked": null,
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.7)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 249,
+       "release": null,
+       "at": "R3 (2.7)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_183350_t1.jpg"
+    },
+    {
+     "id": "004000_20261104_183350_t2",
+     "take": 2,
+     "secs": 42.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went for slot 1 and barely missed it"
+     },
+     "move": "R3->L6",
+     "task": "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8) (+2 empty closes)",
+     "to": "L6 (5.7)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 112,
+       "release": 443,
+       "at": "R3 (2.8)",
+       "put": "L6 (5.7)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 735,
+       "release": 819,
+       "at": "L6 (6.0)",
+       "put": "R5 (4.9)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 924,
+       "release": 1230,
+       "at": "R4 (3.7)",
+       "put": "R3 (2.5)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 1233,
+       "release": null,
+       "at": "R3 (2.8)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_183350_t2.jpg"
+    },
+    {
+     "id": "004000_20261104_183350_t3",
+     "take": 3,
+     "secs": 45.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8)",
+     "to": "L3 (3.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 151,
+       "release": 799,
+       "at": "R3 (2.8)",
+       "put": "L3 (3.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_183350_t3.jpg"
+    },
+    {
+     "id": "004000_20261104_183350_t4",
+     "take": 4,
+     "secs": 29.6,
+     "checked": null,
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8)",
+     "to": "L2 (2.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 172,
+       "release": 675,
+       "at": "R3 (2.8)",
+       "put": "L2 (2.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_183350_t4.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_184034",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_184034_t0",
+     "take": 0,
+     "secs": 36.1,
+     "checked": null,
+     "move": "R1->L1",
+     "task": "Move the vial from position 1 of the right rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.2)",
+     "to": "L2 (2.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 324,
+       "release": 744,
+       "at": "R1 (1.2)",
+       "put": "L2 (2.2)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1035,
+       "release": 1079,
+       "at": "L4 (3.6)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184034_t0.jpg"
+    },
+    {
+     "id": "004000_20261104_184034_t1",
+     "take": 1,
+     "secs": 40.4,
+     "checked": null,
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.5)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 274,
+       "release": 334,
+       "at": "R1 (1.5)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184034_t1.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_20261104_184550",
+   "policy": "pi05",
+   "run": "pi05-b4k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_20261104_184550_t0",
+     "take": 0,
+     "secs": 51.3,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.0)",
+     "to": "L6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 569,
+       "release": 1088,
+       "at": "R1 (1.0)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1089,
+       "release": 1351,
+       "at": "L6 (6.0)",
+       "put": "L6 (5.7)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1355,
+       "release": 1385,
+       "at": "L6 (5.9)",
+       "put": "L6 (5.9)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1414,
+       "release": null,
+       "at": "L6 (5.9)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t0.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t1",
+     "take": 1,
+     "secs": 34.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "R6->L3",
+     "task": "Move the vial from position 6 of the right rack to slot 3 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L2 (2.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 238,
+       "release": 551,
+       "at": "R6 (6.0)",
+       "put": "L2 (2.2)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 994,
+       "release": null,
+       "at": "L6 (5.5)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t1.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t2",
+     "take": 2,
+     "secs": 17.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (3.4)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 342,
+       "release": 386,
+       "at": "R3 (3.4)",
+       "put": "R3 (3.1)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t2.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t3",
+     "take": 3,
+     "secs": 51.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "barely picked up but did not"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (5.7)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 223,
+       "release": 264,
+       "at": "R6 (5.7)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 905,
+       "release": 1154,
+       "at": "R6 (6.0)",
+       "put": "R6 (5.8)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t3.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t4",
+     "take": 4,
+     "secs": 31.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "dropped, missed the destination"
+     },
+     "move": "L1->R1",
+     "task": "Move the vial from position 1 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 148,
+       "release": 429,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_184550_t4.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t5",
+     "take": 5,
+     "secs": 37.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "L1->R1",
+     "task": "Move the vial from position 1 of the left rack to slot 1 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L1 (1.0))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_20261104_184550_t5.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t6",
+     "take": 6,
+     "secs": 26.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed the destination"
+     },
+     "move": "L1->R3",
+     "task": "Move the vial from position 1 of the left rack to slot 3 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R3 (2.5)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 171,
+       "release": 513,
+       "at": "L1 (1.0)",
+       "put": "R3 (2.5)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 578,
+       "release": 630,
+       "at": "R4 (3.8)",
+       "put": "L6 (5.7)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_184550_t6.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t7",
+     "take": 7,
+     "secs": 21.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "L3->R3",
+     "task": "Move the vial from position 3 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.0)",
+     "to": "R1 (1.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 163,
+       "release": 549,
+       "at": "L3 (3.0)",
+       "put": "R1 (1.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_184550_t7.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t8",
+     "take": 8,
+     "secs": 51.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "L3->R1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the right rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.3)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 703,
+       "release": 729,
+       "at": "L3 (3.3)",
+       "put": "L3 (3.2)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t8.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t9",
+     "take": 9,
+     "secs": 22.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->R1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.7)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 152,
+       "release": 424,
+       "at": "L3 (2.7)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_184550_t9.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t10",
+     "take": 10,
+     "secs": 24.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "R1->bin",
+     "task": "Move the vial from position 1 of the right rack to the bin.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "closed on nothing at R1 (1.3)",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 132,
+       "release": null,
+       "at": "R1 (1.3)",
+       "put": null,
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t10.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t11",
+     "take": 11,
+     "secs": 38.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L3->bin",
+     "task": "Move the vial from position 3 of the left rack to the bin.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "closed on nothing at L3 (3.0)",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 749,
+       "release": 983,
+       "at": "L3 (3.0)",
+       "put": "L2 (2.1)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t11.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t12",
+     "take": 12,
+     "secs": 19.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->bin",
+     "task": "Move the vial from position 6 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (6.0)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 281,
+       "at": "L6 (6.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 326,
+       "release": 380,
+       "at": "R6 (6.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t12.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t13",
+     "take": 13,
+     "secs": 14.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->bin",
+     "task": "Move the vial from position 3 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (3.2)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 194,
+       "release": 339,
+       "at": "R3 (3.2)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_20261104_184550_t13.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t14",
+     "take": 14,
+     "secs": 51.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 3,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 489,
+       "release": 545,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 763,
+       "release": 860,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1075,
+       "release": null,
+       "at": "L1 (1.1)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t14.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t15",
+     "take": 15,
+     "secs": 28.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 395,
+       "release": 453,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 646,
+       "release": 783,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t15.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t16",
+     "take": 16,
+     "secs": 34.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "R6->R1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R3 (3.2)",
+     "to": "never lifted",
+     "grasps": 5,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 185,
+       "release": 232,
+       "at": "R3 (3.2)",
+       "put": "R3 (2.7)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 313,
+       "release": 400,
+       "at": "R4 (3.6)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 401,
+       "release": 441,
+       "at": "R6 (5.9)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 829,
+       "release": 861,
+       "at": "R4 (4.0)",
+       "put": "R3 (3.4)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 862,
+       "release": 908,
+       "at": "R3 (3.5)",
+       "put": "R4 (3.6)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t16.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t17",
+     "take": 17,
+     "secs": 51.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed the destination"
+     },
+     "move": "R1->R6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R2 (1.5) (+1 empty close)",
+     "to": "R6 (6.0)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 119,
+       "release": 339,
+       "at": "R2 (1.5)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 340,
+       "release": 1309,
+       "at": "R1 (1.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1462,
+       "release": null,
+       "at": "R4 (4.4)",
+       "put": null,
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t17.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t18",
+     "take": 18,
+     "secs": 18.1,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup, went for the right rack"
+     },
+     "move": "L6->L1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R6 (5.5) (+1 empty close)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [
+      "1: missed placing (also was going for slot 5)",
+      "2: R1  L3: successful",
+      "3: R6 L1: successful",
+      "4: L3 R6: failed pickup (but not missed)",
+      "5: L3 R6: failed pickup (but not missed)",
+      "6: L1 R6: failed pickup (but not missed)",
+      "7: L6 R3: missed placing (also was going for slot 5)",
+      "8: R3 L3: arm was moving very fast that it shutdown (3 times! one after the other)",
+      "9: R3 L6: missed dest (put was going to slot 6 and then shutdown!!",
+      "10: R3 L6: put in 5th slot",
+      "11: R3 L1: missed dest (but was going for slot 1 and barely did it)",
+      "12: R3 L3: put in slot 2",
+      "13: R1 L1: put in slot 2",
+      "14: R1 L6: failed pickup",
+      "15: R1 L6: successful",
+      "16: R6 L3: put in slot 2",
+      "17: R6 L6: missed pickup",
+      "18: R6 L6: barely picked up but didnt",
+      "19: L1 R1: barely successful (but dropped aka missed dest)",
+      "20: L1 R1: missed pickup",
+      "21: L1 R3: missed dest",
+      "22: L3 R3: put in slot 2",
+      "23: L3 R1: missed pickup",
+      "24: L3 R1: successful",
+      "25: R1 bin: failed pickup",
+      "26: L3 bin: failed pickup",
+      "27: L6 bin: successful",
+      "28: R3 bin: successful",
+      "29: L1 L6: missed pickup",
+      "30: L1 L6: missed pickup",
+      "31: R6 R1: missed pickup",
+      "32: R1 R6: missed dest",
+      "33: L6 L1: failed pickup (even went for the right rack!)",
+      "33: L3 R4:"
+     ],
+     "holds": [
+      {
+       "grasp": 353,
+       "release": 496,
+       "at": "R6 (6.0)",
+       "put": "R6 (5.7)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 499,
+       "release": null,
+       "at": "R6 (5.5)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t18.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t19",
+     "take": 19,
+     "secs": 51.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 3"
+     },
+     "move": "L3->R4",
+     "task": "Move the vial from position 3 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (3.1)",
+     "to": "R3 (2.5)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 800,
+       "release": 1056,
+       "at": "L3 (3.1)",
+       "put": "R3 (2.5)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1184,
+       "release": 1230,
+       "at": "R6 (6.0)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t19.jpg"
+    },
+    {
+     "id": "004000_20261104_184550_t20",
+     "take": 20,
+     "secs": 24.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 3"
+     },
+     "move": "R4->L5",
+     "task": "Move the vial from position 4 of the right rack to slot 5 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (3.8)",
+     "to": "L4 (3.6)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 150,
+       "release": 602,
+       "at": "R4 (3.8)",
+       "put": "L4 (3.6)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 603,
+       "release": 632,
+       "at": "L4 (3.6)",
+       "put": "L3 (3.3)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_20261104_184550_t20.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_q37_20261104_194544",
+   "policy": "pi05",
+   "run": "pi05-b4k-q37",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_q37_20261104_194544_t0",
+     "take": 0,
+     "secs": 14.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed the destination"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.3)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 126,
+       "release": 355,
+       "at": "L3 (3.3)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t0.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t1",
+     "take": 1,
+     "secs": 51.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed the destination, barely"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.9)",
+     "to": "never let go -- held over R6 (6.0) (the right slot)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 144,
+       "release": 438,
+       "at": "L3 (2.9)",
+       "put": "L2 (2.2)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 611,
+       "release": null,
+       "at": "L3 (3.1)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t1.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t2",
+     "take": 2,
+     "secs": 27.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->R6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 132,
+       "release": 742,
+       "at": "L1 (1.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 791,
+       "release": null,
+       "at": "R6 (6.0)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t2.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t3",
+     "take": 3,
+     "secs": 26.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went to slot 4"
+     },
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near R6 (5.6))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_q37_20261104_194544_t3.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t4",
+     "take": 4,
+     "secs": 37.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 5"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L5 (5.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 112,
+       "release": 704,
+       "at": "R6 (6.0)",
+       "put": "L5 (5.1)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 705,
+       "release": null,
+       "at": "L5 (5.2)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t4.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t5",
+     "take": 5,
+     "secs": 25.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 5"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L5 (5.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 130,
+       "release": 535,
+       "at": "R6 (6.0)",
+       "put": "L5 (5.3)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 543,
+       "release": null,
+       "at": "L5 (5.2)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t5.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t6",
+     "take": 6,
+     "secs": 44.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went to the wrong rack"
+     },
+     "move": "R6->R1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R6 (6.0)",
+     "to": "never let go -- held over R5 (5.3)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 118,
+       "release": 286,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 287,
+       "release": null,
+       "at": "R6 (6.0)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t6.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t7",
+     "take": 7,
+     "secs": 49.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "stuck at the top of the rack"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never let go -- held over L3 (3.2)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 159,
+       "release": 349,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 643,
+       "release": null,
+       "at": "L1 (1.0)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t7.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t8",
+     "take": 8,
+     "secs": 45.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 4 after a second grasp"
+     },
+     "move": "L6->L1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "L6 (5.9)",
+     "to": "L5 (4.6)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 505,
+       "release": 844,
+       "at": "L6 (5.9)",
+       "put": "L5 (4.6)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 933,
+       "release": null,
+       "at": "L4 (4.3)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t8.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t9",
+     "take": 9,
+     "secs": 46.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "grasped but did not lift it properly"
+     },
+     "move": "L3->L1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "L3 (2.8)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 135,
+       "release": 1004,
+       "at": "L3 (2.8)",
+       "put": "L2 (2.3)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1017,
+       "release": 1045,
+       "at": "L3 (2.7)",
+       "put": "L2 (2.2)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t9.jpg"
+    },
+    {
+     "id": "004000_q37_20261104_194544_t10",
+     "take": 10,
+     "secs": 18.0,
+     "checked": null,
+     "move": "L3->bin",
+     "task": "Move the vial from position 3 of the left rack to the bin.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.2)",
+     "to": "never let go -- held over bin (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": null,
+       "at": "L3 (3.2)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "004000_q37_20261104_194544_t10.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_q37g_20261104_201621",
+   "policy": "pi05",
+   "run": "pi05-b4k-q37g",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_q37g_20261104_201621_t0",
+     "take": 0,
+     "secs": 43.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (1.7) (+1 empty close)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 1253,
+       "release": 1275,
+       "at": "L3 (2.6)",
+       "put": "L1 (1.0)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 1276,
+       "release": 1306,
+       "at": "L2 (1.7)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37g_20261104_201621_t0.jpg"
+    },
+    {
+     "id": "004000_q37g_20261104_201621_t1",
+     "take": 1,
+     "secs": 30.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L3->L1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "no grasp (hovered near L3 (2.7))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_q37g_20261104_201621_t1.jpg"
+    },
+    {
+     "id": "004000_q37g_20261104_201621_t2",
+     "take": 2,
+     "secs": 10.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L3 (3.2))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_q37g_20261104_201621_t2.jpg"
+    },
+    {
+     "id": "004000_q37g_20261104_201621_t3",
+     "take": 3,
+     "secs": 41.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "failed pickup"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 219,
+       "release": 456,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 457,
+       "release": null,
+       "at": "L1 (1.0)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37g_20261104_201621_t3.jpg"
+    }
+   ]
+  },
+  {
+   "name": "004000_q37g_20261104_233013",
+   "policy": "pi05",
+   "run": "pi05-b4k-q37g",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261104",
+   "step": 4000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "004000_q37g_20261104_233013_t0",
+     "take": 0,
+     "secs": 41.6,
+     "checked": null,
+     "move": "L1->R6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L1 (1.0))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "004000_q37g_20261104_233013_t0.jpg"
+    },
+    {
+     "id": "004000_q37g_20261104_233013_t1",
+     "take": 1,
+     "secs": 40.0,
+     "checked": null,
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (5.9) (+1 empty close)",
+     "to": "L6 (5.6)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 180,
+       "release": 475,
+       "at": "R6 (5.9)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 516,
+       "release": 1044,
+       "at": "R6 (6.0)",
+       "put": "L6 (5.6)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1161,
+       "release": null,
+       "at": "R6 (6.0)",
+       "put": null,
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37g_20261104_233013_t1.jpg"
+    },
+    {
+     "id": "004000_q37g_20261104_233013_t2",
+     "take": 2,
+     "secs": 49.1,
+     "checked": null,
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.6)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 772,
+       "release": 1009,
+       "at": "R3 (2.6)",
+       "put": "R3 (2.8)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1143,
+       "release": null,
+       "at": "R3 (3.2)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "004000_q37g_20261104_233013_t2.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261108_235412",
+   "policy": "pi05",
+   "run": "pi05-b16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261108",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261108_235412_t0",
+     "take": 0,
+     "secs": 36.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R2 (2.4)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 129,
+       "release": 649,
+       "at": "R2 (2.4)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 985,
+       "release": 1004,
+       "at": "R6 (6.0)",
+       "put": "R6 (5.5)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1005,
+       "release": 1030,
+       "at": "R5 (5.3)",
+       "put": "R5 (5.5)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261108_235412_t0.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t1",
+     "take": 1,
+     "secs": 25.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed placing, a bit in front of the rack"
+     },
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (3.0)",
+     "to": "L4 (3.8)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 141,
+       "release": 605,
+       "at": "R3 (3.0)",
+       "put": "L4 (3.8)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 673,
+       "release": 706,
+       "at": "R6 (6.0)",
+       "put": "R5 (5.3)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 707,
+       "release": 743,
+       "at": "R5 (5.3)",
+       "put": "R6 (5.9)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261108_235412_t1.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t2",
+     "take": 2,
+     "secs": 30.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "placed in slot 5, nearly 6"
+     },
+     "move": "R3->L6",
+     "task": "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R2 (2.3) (+1 empty close)",
+     "to": "L6 (5.7)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 142,
+       "release": 556,
+       "at": "R2 (2.3)",
+       "put": "L6 (5.7)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 626,
+       "release": 734,
+       "at": "L6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 735,
+       "release": 758,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261108_235412_t2.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t3",
+     "take": 3,
+     "secs": 12.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->bin",
+     "task": "Move the vial from position 3 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.9)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 119,
+       "release": 245,
+       "at": "R3 (2.9)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261108_235412_t3.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t4",
+     "take": 4,
+     "secs": 34.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed placing, in front of the rack at slot 1"
+     },
+     "move": "L3->R1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.9)",
+     "to": "never let go -- held over R2 (1.5) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 164,
+       "release": null,
+       "at": "L3 (2.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261108_235412_t4.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t5",
+     "take": 5,
+     "secs": 24.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "placed in slot 2"
+     },
+     "move": "L3->R3",
+     "task": "Move the vial from position 3 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.2)",
+     "to": "R1 (1.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 194,
+       "release": 475,
+       "at": "L3 (3.2)",
+       "put": "R1 (1.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261108_235412_t5.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t6",
+     "take": 6,
+     "secs": 18.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went for slot 3, which held a vial"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L2 (2.5)",
+     "to": "never let go -- held over R4 (4.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 163,
+       "release": null,
+       "at": "L2 (2.5)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261108_235412_t6.jpg"
+    },
+    {
+     "id": "016000_20261108_235412_t7",
+     "take": 7,
+     "secs": 49.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went for slot 3, which held a vial"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.9)",
+     "to": "never let go -- held over R3 (3.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 421,
+       "release": null,
+       "at": "L3 (2.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261108_235412_t7.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261109_000538",
+   "policy": "pi05",
+   "run": "pi05-b16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261109",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261109_000538_t0",
+     "take": 0,
+     "secs": 35.8,
+     "checked": null,
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L4 (3.9)",
+     "to": "never let go -- held over R3 (3.1)",
+     "grasps": 2,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 294,
+       "release": 315,
+       "at": "L4 (3.9)",
+       "put": "L3 (3.4)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 505,
+       "release": null,
+       "at": "L3 (2.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t0.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t1",
+     "take": 1,
+     "secs": 23.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->bin",
+     "task": "Move the vial from position 3 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.0)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 434,
+       "release": 621,
+       "at": "L3 (3.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t1.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t2",
+     "take": 2,
+     "secs": 16.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->R1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R6 (6.0)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 116,
+       "release": 355,
+       "at": "R6 (6.0)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t2.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t3",
+     "take": 3,
+     "secs": 40.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->R6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R2 (1.6)",
+     "to": "R6 (6.0)",
+     "grasps": 3,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 125,
+       "release": 274,
+       "at": "R2 (1.6)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 275,
+       "release": 330,
+       "at": "R1 (1.3)",
+       "put": "R1 (1.1)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 523,
+       "release": 1094,
+       "at": "R1 (1.2)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1145,
+       "release": null,
+       "at": "R5 (5.3)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t3.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t4",
+     "take": 4,
+     "secs": 43.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "did not grasp: the vial sat between the jaws, they never closed"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 369,
+       "release": 391,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 556,
+       "release": 730,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t4.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t5",
+     "take": 5,
+     "secs": 7.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "did not grasp: the vial sat between the jaws, they never closed"
+     },
+     "move": "L6->L1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "no grasp (hovered near L5 (5.1))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261109_000538_t5.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t6",
+     "take": 6,
+     "secs": 33.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "did not grasp, second try"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 671,
+       "release": 719,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t6.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t7",
+     "take": 7,
+     "secs": 52.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "did not grasp, second try"
+     },
+     "move": "L6->L1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "L6 (6.0) (+2 empty closes)",
+     "to": "never lifted",
+     "grasps": 3,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 490,
+       "release": 511,
+       "at": "L6 (6.0)",
+       "put": "L6 (5.6)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 864,
+       "release": 886,
+       "at": "L6 (5.5)",
+       "put": "L5 (5.3)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1228,
+       "release": 1245,
+       "at": "L6 (5.7)",
+       "put": "L6 (5.5)",
+       "empty": true,
+       "carried": false
+      },
+      {
+       "grasp": 1248,
+       "release": 1248,
+       "at": "L6 (5.7)",
+       "put": "L6 (5.6)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1249,
+       "release": 1272,
+       "at": "L6 (5.7)",
+       "put": "L5 (5.5)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t7.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t8",
+     "take": 8,
+     "secs": 22.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "dropped just behind the rack at slot 1"
+     },
+     "move": "L1->R1",
+     "task": "Move the vial from position 1 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 170,
+       "release": 455,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t8.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t9",
+     "take": 9,
+     "secs": 38.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2, barely 3"
+     },
+     "move": "L1->R3",
+     "task": "Move the vial from position 1 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 354,
+       "release": 889,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.4)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 1121,
+       "release": null,
+       "at": "R3 (2.8)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t9.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t10",
+     "take": 10,
+     "secs": 16.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->R6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0) (+1 empty close)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 146,
+       "release": 367,
+       "at": "L1 (1.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 379,
+       "release": 448,
+       "at": "R6 (6.0)",
+       "put": "L4 (4.1)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t10.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t11",
+     "take": 11,
+     "secs": 32.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "could not grasp"
+     },
+     "move": "L6->R1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the right rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (6.0)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 247,
+       "release": 298,
+       "at": "L6 (6.0)",
+       "put": "L6 (5.8)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 920,
+       "release": 951,
+       "at": "L6 (6.0)",
+       "put": "L6 (5.8)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t11.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t12",
+     "take": 12,
+     "secs": 43.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 1"
+     },
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L5 (4.9)",
+     "to": "never let go -- held over R1 (1.1)",
+     "grasps": 2,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 153,
+       "release": 153,
+       "at": "L5 (4.9)",
+       "put": "L5 (4.9)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 154,
+       "release": null,
+       "at": "L5 (4.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t12.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t13",
+     "take": 13,
+     "secs": 50.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "grasped on the second try, then went to slot 3, which held a vial"
+     },
+     "move": "L6->R6",
+     "task": "Move the vial from position 6 of the left rack to slot 6 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (5.9)",
+     "to": "never let go -- held over R4 (4.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 762,
+       "release": null,
+       "at": "L6 (5.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t13.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t14",
+     "take": 14,
+     "secs": 49.1,
+     "checked": null,
+     "move": "R1->L1",
+     "task": "Move the vial from position 1 of the right rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.4)",
+     "to": "never let go -- held over L1 (1.0) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 117,
+       "release": null,
+       "at": "R1 (1.4)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t14.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t15",
+     "take": 15,
+     "secs": 33.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "barely at slot 1, missed the drop"
+     },
+     "move": "R1->L1",
+     "task": "Move the vial from position 1 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.3)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 123,
+       "release": 978,
+       "at": "R1 (1.3)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t15.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t16",
+     "take": 16,
+     "secs": 30.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "R1->L3",
+     "task": "Move the vial from position 1 of the right rack to slot 3 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R2 (1.7)",
+     "to": "L3 (2.6)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 115,
+       "release": 500,
+       "at": "R2 (1.7)",
+       "put": "L3 (2.6)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t16.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t17",
+     "take": 17,
+     "secs": 25.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.3)",
+     "to": "L6 (5.8)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 225,
+       "release": 635,
+       "at": "R1 (1.3)",
+       "put": "L6 (5.8)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 697,
+       "release": 719,
+       "at": "R6 (6.0)",
+       "put": "R5 (4.8)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t17.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t18",
+     "take": 18,
+     "secs": 8.8,
+     "checked": null,
+     "move": "R6->L1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near R6 (6.0))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261109_000538_t18.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t19",
+     "take": 19,
+     "secs": 34.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed the grasp, then went to slot 5 and stayed"
+     },
+     "move": "R6->L1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (5.9)",
+     "to": "never lifted",
+     "grasps": 5,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 107,
+       "release": 170,
+       "at": "R6 (5.9)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 266,
+       "release": 338,
+       "at": "R6 (5.8)",
+       "put": "R5 (5.1)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 428,
+       "release": 786,
+       "at": "R4 (4.4)",
+       "put": "R6 (5.7)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 883,
+       "release": 906,
+       "at": "R5 (5.3)",
+       "put": "R6 (5.6)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1000,
+       "release": 1044,
+       "at": "R6 (5.6)",
+       "put": "R6 (5.6)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t19.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t20",
+     "take": 20,
+     "secs": 17.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->L3",
+     "task": "Move the vial from position 6 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L3 (3.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 106,
+       "release": 473,
+       "at": "R6 (6.0)",
+       "put": "L3 (3.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t20.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t21",
+     "take": 21,
+     "secs": 45.1,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "could not grasp"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "never lifted",
+     "grasps": 4,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 331,
+       "release": 447,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 791,
+       "release": 837,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1225,
+       "release": 1292,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 1293,
+       "release": null,
+       "at": "R6 (6.0)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t21.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t22",
+     "take": 22,
+     "secs": 18.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L1",
+     "task": "Move the vial from position 5 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (5.3)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 118,
+       "release": 453,
+       "at": "R5 (5.3)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 454,
+       "release": 500,
+       "at": "L1 (1.4)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t22.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t23",
+     "take": 23,
+     "secs": 10.8,
+     "checked": null,
+     "move": "L2->R6",
+     "task": "Move the vial from position 2 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "no grasp (hovered near L2 (2.2))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261109_000538_t23.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t24",
+     "take": 24,
+     "secs": 52.1,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "could not grasp"
+     },
+     "move": "L2->R6",
+     "task": "Move the vial from position 2 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.1)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 346,
+       "release": 433,
+       "at": "L1 (1.1)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t24.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t25",
+     "take": 25,
+     "secs": 33.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 4"
+     },
+     "move": "R3->L5",
+     "task": "Move the vial from position 3 of the right rack to slot 5 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (3.0)",
+     "to": "L5 (5.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 121,
+       "release": 616,
+       "at": "R3 (3.0)",
+       "put": "L5 (5.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t25.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t26",
+     "take": 26,
+     "secs": 22.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "could not grasp"
+     },
+     "move": "L3->R4",
+     "task": "Move the vial from position 3 of the left rack to slot 4 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "closed on nothing at L4 (3.7)",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 209,
+       "release": 389,
+       "at": "L4 (3.7)",
+       "put": "L2 (2.1)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_000538_t26.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t27",
+     "take": 27,
+     "secs": 11.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L5->bin",
+     "task": "Move the vial from position 5 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (4.6)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 102,
+       "release": 231,
+       "at": "L5 (4.6)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t27.jpg"
+    },
+    {
+     "id": "016000_20261109_000538_t28",
+     "take": 28,
+     "secs": 11.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->bin",
+     "task": "Move the vial from position 2 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R2 (2.2)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 106,
+       "release": 255,
+       "at": "R2 (2.2)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_000538_t28.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261109_005026",
+   "policy": "pi05",
+   "run": "pi05-a16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261109",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261109_005026_t0",
+     "take": 0,
+     "secs": 21.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.9)",
+     "to": "L2 (1.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 558,
+       "at": "R3 (2.9)",
+       "put": "L2 (1.9)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t0.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t1",
+     "take": 1,
+     "secs": 20.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8)",
+     "to": "L3 (3.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 135,
+       "release": 556,
+       "at": "R3 (2.8)",
+       "put": "L3 (3.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t1.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t2",
+     "take": 2,
+     "secs": 22.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->L6",
+     "task": "Move the vial from position 3 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8) (+1 empty close)",
+     "to": "L6 (5.6)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 177,
+       "release": 532,
+       "at": "R3 (2.8)",
+       "put": "L6 (5.6)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 629,
+       "release": null,
+       "at": "L6 (6.0)",
+       "put": null,
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t2.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t3",
+     "take": 3,
+     "secs": 14.1,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->bin",
+     "task": "Move the vial from position 3 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R3 (2.8)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 123,
+       "release": 298,
+       "at": "R3 (2.8)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t3.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t4",
+     "take": 4,
+     "secs": 20.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->R1",
+     "task": "Move the vial from position 3 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L2 (2.5)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 132,
+       "release": 481,
+       "at": "L2 (2.5)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t4.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t5",
+     "take": 5,
+     "secs": 33.6,
+     "checked": null,
+     "move": "L3->R3",
+     "task": "Move the vial from position 3 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.9)",
+     "to": "never let go -- held over R1 (1.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 149,
+       "release": null,
+       "at": "L3 (2.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t5.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t6",
+     "take": 6,
+     "secs": 16.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->R3",
+     "task": "Move the vial from position 3 of the left rack to slot 3 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (3.0)",
+     "to": "R3 (2.8)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 171,
+       "release": 386,
+       "at": "L3 (3.0)",
+       "put": "R3 (2.8)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t6.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t7",
+     "take": 7,
+     "secs": 19.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.8)",
+     "to": "R6 (5.8)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 165,
+       "release": 361,
+       "at": "L3 (2.8)",
+       "put": "R6 (5.8)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 362,
+       "release": 458,
+       "at": "R6 (5.8)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t7.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t8",
+     "take": 8,
+     "secs": 52.1,
+     "checked": {
+      "vial": "in_slot",
+      "why": "missed the first grasp, then success"
+     },
+     "move": "L3->R6",
+     "task": "Move the vial from position 3 of the left rack to slot 6 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.6)",
+     "to": "never let go -- held over R6 (6.0) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 1387,
+       "release": null,
+       "at": "L3 (2.6)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t8.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t9",
+     "take": 9,
+     "secs": 12.6,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->bin",
+     "task": "Move the vial from position 3 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L3 (2.7)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 149,
+       "release": 301,
+       "at": "L3 (2.7)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t9.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t10",
+     "take": 10,
+     "secs": 26.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "placed in front of slot 1"
+     },
+     "move": "R6->R1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R6 (5.9)",
+     "to": "never let go -- held over R1 (1.0) (the right slot)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 117,
+       "release": null,
+       "at": "R6 (5.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t10.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t11",
+     "take": 11,
+     "secs": 18.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put behind slot 6"
+     },
+     "move": "R1->R6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "R1 (1.2)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 124,
+       "release": 469,
+       "at": "R1 (1.2)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t11.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t12",
+     "take": 12,
+     "secs": 19.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "did not grasp"
+     },
+     "move": "L1->L6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the left rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.0)",
+     "to": "never lifted",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 338,
+       "release": 409,
+       "at": "L1 (1.0)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 553,
+       "release": null,
+       "at": "L2 (1.7)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t12.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t13",
+     "take": 13,
+     "secs": 31.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->L1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED"
+     ],
+     "from": "L6 (5.6)",
+     "to": "L2 (1.5)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 150,
+       "release": 150,
+       "at": "L6 (5.6)",
+       "put": "L6 (5.5)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 151,
+       "release": 624,
+       "at": "L6 (5.6)",
+       "put": "L2 (1.5)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t13.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t14",
+     "take": 14,
+     "secs": 31.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in front of slot 1"
+     },
+     "move": "L1->R1",
+     "task": "Move the vial from position 1 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 143,
+       "release": 805,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t14.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t15",
+     "take": 15,
+     "secs": 31.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in slot 2"
+     },
+     "move": "L1->R3",
+     "task": "Move the vial from position 1 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 140,
+       "release": 742,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t15.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t16",
+     "take": 16,
+     "secs": 15.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->R6",
+     "task": "Move the vial from position 1 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 137,
+       "release": 363,
+       "at": "L1 (1.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 398,
+       "release": 430,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t16.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t17",
+     "take": 17,
+     "secs": 6.3,
+     "checked": null,
+     "move": "L6->R1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the right rack.",
+     "stage": "grasped",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (5.7)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 115,
+       "release": null,
+       "at": "L6 (5.7)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t17.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t18",
+     "take": 18,
+     "secs": 18.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->R1",
+     "task": "Move the vial from position 6 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (5.7)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 132,
+       "release": 471,
+       "at": "L6 (5.7)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t18.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t19",
+     "take": 19,
+     "secs": 11.3,
+     "checked": null,
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near L6 (5.9))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261109_005026_t19.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t20",
+     "take": 20,
+     "secs": 45.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "stuck between slot 3 and 4, never let go"
+     },
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (6.0)",
+     "to": "never let go -- held over R4 (3.7)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 177,
+       "release": null,
+       "at": "L6 (6.0)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t20.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t21",
+     "take": 21,
+     "secs": 13.7,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->R6",
+     "task": "Move the vial from position 6 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "L6 (5.6)",
+     "to": "R6 (6.0)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 128,
+       "release": 128,
+       "at": "L6 (5.6)",
+       "put": "L6 (5.5)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 129,
+       "release": 367,
+       "at": "L6 (5.6)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t21.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t22",
+     "take": 22,
+     "secs": 25.1,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L1",
+     "task": "Move the vial from position 1 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.2)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 127,
+       "release": 534,
+       "at": "R1 (1.2)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t22.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t23",
+     "take": 23,
+     "secs": 5.5,
+     "checked": null,
+     "move": "R1->L3",
+     "task": "Move the vial from position 1 of the right rack to slot 3 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "no grasp (hovered near R1 (1.3))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261109_005026_t23.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t24",
+     "take": 24,
+     "secs": 19.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L3",
+     "task": "Move the vial from position 1 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.2)",
+     "to": "L3 (3.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 509,
+       "at": "R1 (1.2)",
+       "put": "L3 (3.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t24.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t25",
+     "take": 25,
+     "secs": 20.7,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->L6",
+     "task": "Move the vial from position 1 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R1 (1.0)",
+     "to": "L6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 117,
+       "release": 573,
+       "at": "R1 (1.0)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t25.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t26",
+     "take": 26,
+     "secs": 30.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->L1",
+     "task": "Move the vial from position 6 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L1 (1.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 572,
+       "at": "R6 (6.0)",
+       "put": "L1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t26.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t27",
+     "take": 27,
+     "secs": 27.1,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->L3",
+     "task": "Move the vial from position 6 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (5.9)",
+     "to": "L3 (3.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 155,
+       "release": 530,
+       "at": "R6 (5.9)",
+       "put": "L3 (3.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t27.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t28",
+     "take": 28,
+     "secs": 16.9,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->L6",
+     "task": "Move the vial from position 6 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "L5 (5.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 135,
+       "release": 395,
+       "at": "R6 (6.0)",
+       "put": "L5 (5.4)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 430,
+       "release": 449,
+       "at": "L6 (5.7)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t28.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t29",
+     "take": 29,
+     "secs": 31.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L1",
+     "task": "Move the vial from position 5 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (4.7)",
+     "to": "L1 (1.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 103,
+       "release": 439,
+       "at": "R5 (4.7)",
+       "put": "L1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t29.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t30",
+     "take": 30,
+     "secs": 44.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "picked the wrong vial, the one in slot 4"
+     },
+     "move": "L2->R6",
+     "task": "Move the vial from position 2 of the left rack to slot 6 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L4 (3.5)",
+     "to": "R6 (5.7)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 854,
+       "release": 1048,
+       "at": "L4 (3.5)",
+       "put": "R6 (5.7)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t30.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t31",
+     "take": 31,
+     "secs": 40.6,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "carried the right vial, dropped it behind slot 6"
+     },
+     "move": "L2->R6",
+     "task": "Move the vial from position 2 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (1.6)",
+     "to": "R6 (5.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 171,
+       "release": 411,
+       "at": "L2 (1.6)",
+       "put": "R6 (5.9)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 518,
+       "release": 539,
+       "at": "R6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 981,
+       "release": 1193,
+       "at": "L4 (4.5)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t31.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t32",
+     "take": 32,
+     "secs": 31.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went to slot 5, dropped it in front of the rack"
+     },
+     "move": "R3->L5",
+     "task": "Move the vial from position 3 of the right rack to slot 5 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (2.7)",
+     "to": "L5 (5.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 111,
+       "release": 726,
+       "at": "R3 (2.7)",
+       "put": "L5 (5.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t32.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t33",
+     "take": 33,
+     "secs": 16.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L3->R4",
+     "task": "Move the vial from position 3 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (2.7)",
+     "to": "R3 (3.3)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 146,
+       "release": 447,
+       "at": "L3 (2.7)",
+       "put": "R3 (3.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t33.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t34",
+     "take": 34,
+     "secs": 9.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L5->bin",
+     "task": "Move the vial from position 5 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (4.7)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 124,
+       "release": 241,
+       "at": "L5 (4.7)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t34.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t35",
+     "take": 35,
+     "secs": 23.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "went for slot 3 or 4 and missed the grasp"
+     },
+     "move": "R2->bin",
+     "task": "Move the vial from position 2 of the right rack to the bin.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "closed on nothing at R3 (2.9)",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 180,
+       "release": 646,
+       "at": "R3 (2.9)",
+       "put": "R6 (5.7)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261109_005026_t35.jpg"
+    },
+    {
+     "id": "016000_20261109_005026_t36",
+     "take": 36,
+     "secs": 14.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success after a neighbouring vial was moved"
+     },
+     "move": "R2->bin",
+     "task": "Move the vial from position 2 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (2.6)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 139,
+       "release": 307,
+       "at": "R3 (2.6)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261109_005026_t36.jpg"
+    }
+   ]
   }
  ]
 }

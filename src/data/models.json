@@ -83,6 +83,84 @@
    "source": "LeRobot docs/source/molmoact2.mdx, allenai.org/blog/molmoact2, ee/DEPTH_PLAN.md"
   },
   {
+   "id": "pi05-a16k",
+   "model": "pi05",
+   "era": "after",
+   "name": "Plain Bagel",
+   "trained": "π0.5 trained from the base on the 220 demonstrations, where the destination cannot be read off the cameras",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "steps": "16k",
+   "time": "21.5 h",
+   "memory": "37.8 GB",
+   "step_s": 4.81,
+   "robot": {
+    "takes": 25,
+    "released": 17,
+    "right_vial": 23,
+    "stages": {
+     "no_grasp": 2,
+     "grasped": 1,
+     "carried": 5,
+     "released": 17
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
+   "id": "pi05-b16k",
+   "model": "pi05",
+   "era": "after",
+   "name": "Mango Pudding",
+   "trained": "Mango Rice trained on for 16,000 steps on the 220 demonstrations",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "steps": "16k",
+   "time": "21.5 h",
+   "memory": "37.8 GB",
+   "step_s": 4.81,
+   "robot": {
+    "takes": 24,
+    "released": 7,
+    "right_vial": 18,
+    "stages": {
+     "no_grasp": 6,
+     "grasped": 3,
+     "carried": 8,
+     "released": 7
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
+   "id": "pi05-b4k",
+   "model": "pi05",
+   "era": "after",
+   "name": "Mango Lassi",
+   "trained": "Mango Rice trained on for 4,000 steps on the 220 demonstrations",
+   "data": "vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move",
+   "steps": "4k",
+   "time": "4.1 h",
+   "memory": "37.9 GB",
+   "step_s": 3.8,
+   "robot": {
+    "takes": 30,
+    "released": 10,
+    "right_vial": 23,
+    "stages": {
+     "no_grasp": 7,
+     "grasped": 5,
+     "carried": 8,
+     "released": 10
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
    "id": "pi05-allcams",
    "model": "pi05",
    "era": "after",

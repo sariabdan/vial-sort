@@ -369,6 +369,270 @@
    }
   },
   {
+   "key": "mango-chutney-4000-sync",
+   "model": "mango-chutney",
+   "name": "Mango Chutney",
+   "family": "pi05",
+   "step": 4000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Chutney · 4k · sync",
+   "short": "4k · sync",
+   "rollouts": 4,
+   "grasped_right": 1,
+   "lifted": 1,
+   "released": 1,
+   "seen_in_slot": 0,
+   "stages": {
+    "no_grasp": 3,
+    "grasped": 0,
+    "carried": 0,
+    "released": 1
+   },
+   "days": [
+    "20261104"
+   ],
+   "sessions": [
+    "004000_q37g_20261104_201621",
+    "004000_q37g_20261104_233013"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "L3": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 2,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "R6": {
+     "rollouts": 2,
+     "grasped_right": 0,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "mango-lassi-4000-sync",
+   "model": "mango-lassi",
+   "name": "Mango Lassi",
+   "family": "pi05",
+   "step": 4000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Lassi · 4k · sync",
+   "short": "4k · sync",
+   "rollouts": 30,
+   "grasped_right": 23,
+   "lifted": 18,
+   "released": 10,
+   "seen_in_slot": 6,
+   "stages": {
+    "no_grasp": 7,
+    "grasped": 5,
+    "carried": 8,
+    "released": 10
+   },
+   "days": [
+    "20261104"
+   ],
+   "sessions": [
+    "004000_20261104_181219",
+    "004000_20261104_182424",
+    "004000_20261104_183143",
+    "004000_20261104_183350",
+    "004000_20261104_184034",
+    "004000_20261104_184550"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "L3": {
+     "rollouts": 6,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "R1": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 2
+    },
+    "R3": {
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 3
+    },
+    "R6": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 1
+    },
+    "L3": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 3
+    },
+    "R1": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "R3": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "R6": {
+     "rollouts": 3,
+     "grasped_right": 1,
+     "released": 0
+    },
+    "bin": {
+     "rollouts": 4,
+     "grasped_right": 2,
+     "released": 2
+    }
+   }
+  },
+  {
+   "key": "mango-pudding-16000-sync",
+   "model": "mango-pudding",
+   "name": "Mango Pudding",
+   "family": "pi05",
+   "step": 16000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Pudding · 16k · sync",
+   "short": "16k · sync",
+   "rollouts": 24,
+   "grasped_right": 18,
+   "lifted": 15,
+   "released": 7,
+   "seen_in_slot": 6,
+   "stages": {
+    "no_grasp": 6,
+    "grasped": 3,
+    "carried": 8,
+    "released": 7
+   },
+   "days": [
+    "20261108",
+    "20261109"
+   ],
+   "sessions": [
+    "016000_20261108_235412",
+    "016000_20261109_000538"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "L3": {
+     "rollouts": 6,
+     "grasped_right": 5,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 0
+    },
+    "R1": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "R3": {
+     "rollouts": 4,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "R6": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 1
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 5,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "L3": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "L6": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "R1": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "R3": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 1
+    },
+    "bin": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    }
+   }
+  },
+  {
    "key": "mango-rice-10000-rtc",
    "model": "mango-rice",
    "name": "Mango Rice",
@@ -573,6 +837,170 @@
      "rollouts": 1,
      "grasped_right": 0,
      "released": 0
+    }
+   }
+  },
+  {
+   "key": "mango-sorbet-4000-sync",
+   "model": "mango-sorbet",
+   "name": "Mango Sorbet",
+   "family": "pi05",
+   "step": 4000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Mango Sorbet · 4k · sync",
+   "short": "4k · sync",
+   "rollouts": 7,
+   "grasped_right": 6,
+   "lifted": 6,
+   "released": 2,
+   "seen_in_slot": 1,
+   "stages": {
+    "no_grasp": 1,
+    "grasped": 0,
+    "carried": 4,
+    "released": 2
+   },
+   "days": [
+    "20261104"
+   ],
+   "sessions": [
+    "004000_q37_20261104_194544"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 1
+    },
+    "L3": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "R1": {
+     "rollouts": 1,
+     "grasped_right": 0,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 0
+    }
+   },
+   "by_destination": {
+    "L6": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "bin": {
+     "rollouts": 1,
+     "grasped_right": 1,
+     "released": 0
+    }
+   }
+  },
+  {
+   "key": "plain-bagel-16000-sync",
+   "model": "plain-bagel",
+   "name": "Plain Bagel",
+   "family": "pi05",
+   "step": 16000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Plain Bagel · 16k · sync",
+   "short": "16k · sync",
+   "rollouts": 25,
+   "grasped_right": 23,
+   "lifted": 22,
+   "released": 17,
+   "seen_in_slot": 16,
+   "stages": {
+    "no_grasp": 2,
+    "grasped": 1,
+    "carried": 5,
+    "released": 17
+   },
+   "days": [
+    "20261109"
+   ],
+   "sessions": [
+    "016000_20261109_005026"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "L3": {
+     "rollouts": 6,
+     "grasped_right": 6,
+     "released": 4
+    },
+    "L6": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 3
+    },
+    "R3": {
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 3
+    },
+    "R6": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 3
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 2
+    },
+    "L3": {
+     "rollouts": 4,
+     "grasped_right": 3,
+     "released": 3
+    },
+    "L6": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 3
+    },
+    "R1": {
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 3
+    },
+    "R3": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 1
+    },
+    "R6": {
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 3
+    },
+    "bin": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
     }
    }
   },
@@ -972,24 +1400,24 @@
   }
  ],
  "defaults": [
-  "mango-rice-12000-sync",
+  "plain-bagel-16000-sync",
   "crispy-falafel-30000-sync"
  ],
  "eye": {
-  "in_slot": 4,
-  "checked": 10,
+  "in_slot": 43,
+  "checked": 119,
   "unclear": 3,
-  "not_in_slot": 3
+  "not_in_slot": 73
  },
  "tiles": {
   "pi05": {
-   "key": "mango-rice-12000-sync",
-   "name": "Mango Rice",
-   "label": "Mango Rice · 12k · sync",
-   "short": "12k · sync",
-   "rollouts": 5,
-   "grasped_right": 4,
-   "released": 1
+   "key": "plain-bagel-16000-sync",
+   "name": "Plain Bagel",
+   "label": "Plain Bagel · 16k · sync",
+   "short": "16k · sync",
+   "rollouts": 25,
+   "grasped_right": 23,
+   "released": 17
   },
   "flux": {
    "key": "crispy-falafel-30000-sync",
@@ -1008,10 +1436,10 @@
    "source_from": 5000
   }
  },
- "total": 70,
+ "total": 160,
  "left_out": {
-  "short": 8,
-  "untrained": 7,
+  "short": 11,
+  "untrained": 46,
   "unreadable": 2,
   "earlier_scene": 11
  }

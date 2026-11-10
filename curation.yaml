@@ -13,6 +13,18 @@ hero:
 # clip: five cameras for π0.5, two for FLUX. {name} becomes the model's name from models.yaml.
 # vial, at (where it ended: a slot, 'held:<slot>' or 'source') and miss are what the video shows.
 featured:
+  - take: 016000_20261109_005026_t2
+    vial: red
+    at: L6
+    caption: "{name} at 16k steps, R3 → L6, 9 November. Trained on the 220 demonstrations: carries the vial across the table to the far end of the left rack and lets go in L6."
+  - take: 016000_20261109_005026_t33
+    vial: lime
+    at: R4
+    caption: "{name} at 16k steps, L3 → R4. No demonstration ever put a vial in slot 4, and the vial ends in R4."
+  - take: 016000_20261108_235412_t2
+    vial: red
+    at: L5
+    caption: "{name} at 16k steps, R3 → L6, 8 November: the same move as the first clip, from the model trained on from Mango Rice. It stops one slot short, in L5."
   - take: 012000_20261021_152757_t2
     vial: red
     at: L3
@@ -85,3 +97,115 @@ checked:
   007000_20261016_123035_t2: {vial: unclear, why: "standing in the left rack, L5 or L6"}
   000500_20261019_180945_t2: {vial: unclear, why: "too dark to see"}
   030000_20261019_124848_t0: {vial: unclear, why: "hidden under the gripper"}
+
+  # November (B 4k with its two rescaled copies, B 16k, A 16k): the operator's notes at the robot, mapped to the
+  # recorded rollouts by move order. Where a move was retried, the note is on the last attempt.
+  016000_20261108_235412_t0: {vial: in_slot, why: "success"}
+  016000_20261108_235412_t1: {vial: not_in_slot, why: "missed placing, a bit in front of the rack"}
+  016000_20261108_235412_t2: {vial: not_in_slot, why: "placed in slot 5, nearly 6"}
+  016000_20261108_235412_t3: {vial: in_slot, why: "success"}
+  016000_20261108_235412_t4: {vial: not_in_slot, why: "missed placing, in front of the rack at slot 1"}
+  016000_20261108_235412_t5: {vial: not_in_slot, why: "placed in slot 2"}
+  016000_20261108_235412_t6: {vial: not_in_slot, why: "went for slot 3, which held a vial"}
+  016000_20261108_235412_t7: {vial: not_in_slot, why: "went for slot 3, which held a vial"}
+  016000_20261109_000538_t1: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t2: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t3: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t4: {vial: not_in_slot, why: "did not grasp: the vial sat between the jaws, they never closed"}
+  016000_20261109_000538_t6: {vial: not_in_slot, why: "did not grasp, second try"}
+  016000_20261109_000538_t5: {vial: not_in_slot, why: "did not grasp: the vial sat between the jaws, they never closed"}
+  016000_20261109_000538_t7: {vial: not_in_slot, why: "did not grasp, second try"}
+  016000_20261109_000538_t8: {vial: not_in_slot, why: "dropped just behind the rack at slot 1"}
+  016000_20261109_000538_t9: {vial: not_in_slot, why: "put in slot 2, barely 3"}
+  016000_20261109_000538_t10: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t11: {vial: not_in_slot, why: "could not grasp"}
+  016000_20261109_000538_t12: {vial: not_in_slot, why: "put in slot 1"}
+  016000_20261109_000538_t13: {vial: not_in_slot, why: "grasped on the second try, then went to slot 3, which held a vial"}
+  016000_20261109_000538_t15: {vial: not_in_slot, why: "barely at slot 1, missed the drop"}
+  016000_20261109_000538_t16: {vial: not_in_slot, why: "put in slot 2"}
+  016000_20261109_000538_t17: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t19: {vial: not_in_slot, why: "missed the grasp, then went to slot 5 and stayed"}
+  016000_20261109_000538_t20: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t21: {vial: not_in_slot, why: "could not grasp"}
+  016000_20261109_000538_t22: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t24: {vial: not_in_slot, why: "could not grasp"}
+  016000_20261109_000538_t25: {vial: not_in_slot, why: "put in slot 4"}
+  016000_20261109_000538_t26: {vial: not_in_slot, why: "could not grasp"}
+  016000_20261109_000538_t27: {vial: in_slot, why: "success"}
+  016000_20261109_000538_t28: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t0: {vial: not_in_slot, why: "put in slot 2"}
+  016000_20261109_005026_t1: {vial: not_in_slot, why: "put in slot 2"}
+  016000_20261109_005026_t2: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t3: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t4: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t6: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t7: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t8: {vial: in_slot, why: "missed the first grasp, then success"}
+  016000_20261109_005026_t9: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t10: {vial: not_in_slot, why: "placed in front of slot 1"}
+  016000_20261109_005026_t11: {vial: not_in_slot, why: "put behind slot 6"}
+  016000_20261109_005026_t12: {vial: not_in_slot, why: "did not grasp"}
+  016000_20261109_005026_t13: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t14: {vial: not_in_slot, why: "put in front of slot 1"}
+  016000_20261109_005026_t15: {vial: not_in_slot, why: "put in slot 2"}
+  016000_20261109_005026_t16: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t18: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t20: {vial: not_in_slot, why: "stuck between slot 3 and 4, never let go"}
+  016000_20261109_005026_t21: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t22: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t24: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t25: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t26: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t27: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t28: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t29: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t30: {vial: not_in_slot, why: "picked the wrong vial, the one in slot 4"}
+  016000_20261109_005026_t31: {vial: not_in_slot, why: "carried the right vial, dropped it behind slot 6"}
+  016000_20261109_005026_t32: {vial: not_in_slot, why: "went to slot 5, dropped it in front of the rack"}
+  016000_20261109_005026_t33: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t34: {vial: in_slot, why: "success"}
+  016000_20261109_005026_t35: {vial: not_in_slot, why: "went for slot 3 or 4 and missed the grasp"}
+  016000_20261109_005026_t36: {vial: in_slot, why: "success after a neighbouring vial was moved"}
+  004000_20261104_181219_t0: {vial: in_slot, why: "success"}
+  004000_20261104_181219_t1: {vial: in_slot, why: "success"}
+  004000_20261104_181219_t2: {vial: not_in_slot, why: "failed pickup"}
+  004000_20261104_181219_t3: {vial: not_in_slot, why: "failed pickup"}
+  004000_20261104_181219_t4: {vial: not_in_slot, why: "failed pickup"}
+  004000_20261104_181219_t6: {vial: not_in_slot, why: "missed placing, went for slot 5"}
+  004000_20261104_183350_t2: {vial: not_in_slot, why: "went for slot 1 and barely missed it"}
+  004000_20261104_183350_t3: {vial: not_in_slot, why: "put in slot 2"}
+  004000_20261104_184550_t0: {vial: in_slot, why: "success"}
+  004000_20261104_184550_t1: {vial: not_in_slot, why: "put in slot 2"}
+  004000_20261104_184550_t2: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t3: {vial: not_in_slot, why: "barely picked up but did not"}
+  004000_20261104_184550_t4: {vial: not_in_slot, why: "dropped, missed the destination"}
+  004000_20261104_184550_t5: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t6: {vial: not_in_slot, why: "missed the destination"}
+  004000_20261104_184550_t7: {vial: not_in_slot, why: "put in slot 2"}
+  004000_20261104_184550_t8: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t9: {vial: in_slot, why: "success"}
+  004000_20261104_184550_t10: {vial: not_in_slot, why: "failed pickup"}
+  004000_20261104_184550_t11: {vial: not_in_slot, why: "failed pickup"}
+  004000_20261104_184550_t12: {vial: in_slot, why: "success"}
+  004000_20261104_184550_t13: {vial: in_slot, why: "success"}
+  004000_20261104_184550_t14: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t15: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t16: {vial: not_in_slot, why: "missed pickup"}
+  004000_20261104_184550_t17: {vial: not_in_slot, why: "missed the destination"}
+  004000_20261104_184550_t18: {vial: not_in_slot, why: "failed pickup, went for the right rack"}
+  004000_20261104_184550_t19: {vial: not_in_slot, why: "put in slot 3"}
+  004000_20261104_184550_t20: {vial: not_in_slot, why: "put in slot 3"}
+  004000_q37_20261104_194544_t0: {vial: not_in_slot, why: "missed the destination"}
+  004000_q37_20261104_194544_t1: {vial: not_in_slot, why: "missed the destination, barely"}
+  004000_q37_20261104_194544_t2: {vial: in_slot, why: "success"}
+  004000_q37_20261104_194544_t3: {vial: not_in_slot, why: "went to slot 4"}
+  004000_q37_20261104_194544_t4: {vial: not_in_slot, why: "put in slot 5"}
+  004000_q37_20261104_194544_t5: {vial: not_in_slot, why: "put in slot 5"}
+  004000_q37_20261104_194544_t6: {vial: not_in_slot, why: "went to the wrong rack"}
+  004000_q37_20261104_194544_t7: {vial: not_in_slot, why: "stuck at the top of the rack"}
+  004000_q37_20261104_194544_t8: {vial: not_in_slot, why: "put in slot 4 after a second grasp"}
+  004000_q37_20261104_194544_t9: {vial: not_in_slot, why: "grasped but did not lift it properly"}
+  004000_q37g_20261104_201621_t0: {vial: not_in_slot, why: "failed pickup"}
+  004000_q37g_20261104_201621_t1: {vial: not_in_slot, why: "failed pickup"}
+  004000_q37g_20261104_201621_t2: {vial: not_in_slot, why: "failed pickup"}
+  004000_q37g_20261104_201621_t3: {vial: not_in_slot, why: "failed pickup"}

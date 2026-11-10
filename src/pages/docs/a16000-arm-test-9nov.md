@@ -187,3 +187,9 @@ Whether it matters isn't proven. A reaches the right slot most of the time with 
 breaking the task. But the failures left are last-centimetre drops, and that's where the cameras guide the
 arm. Test: put it back (`.venv/bin/python tools/cam_align.py` prints the live offset and which way to move
 the camera until ALIGNED), then repeat the near-miss moves on A 16000 with a few controls.
+
+## Data and model
+
+- The model: [`sari-abdan/vial-sort-pi05-ws220-a-16000`](https://huggingface.co/sari-abdan/vial-sort-pi05-ws220-a-16000) (Plain Bagel on the Results page)
+- What it trained on: [`sari-abdan/vial-sort-slots-220`](https://huggingface.co/datasets/sari-abdan/vial-sort-slots-220)
+- The recordings of this session: [`rollout_pi05_016000_20261109_005026`](https://huggingface.co/datasets/sari-abdan/rollout_pi05_016000_20261109_005026)

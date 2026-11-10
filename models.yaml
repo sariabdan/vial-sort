@@ -20,6 +20,114 @@
 # Sources for the text: ee/MODELS_SEP_OCT_2026.md (23 Oct 2026) and the training logs.
 
 models:
+  - id: plain-bagel
+    name: Plain Bagel
+    run: pi05-a16k
+    family: pi05
+    what: π0.5 trained from the base on the 220 demonstrations, where the destination cannot be read off the cameras
+    base: lerobot/pi05_base
+    data: vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move
+    frames: 113010
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: [[cluster_logs/slurm-pi05-a-37335.out, 0], [cluster_logs/slurm-pi05-a-37336.out, 8000]]
+    config: pi05_full_vial-sort-ws220_canon_base16k/checkpoints/016000/pretrained_model/train_config.json
+    hub: vial-sort-pi05-ws220-a-16000
+    notes:
+      - title: How it was trained
+        text: >-
+          7 November, on one A100 80 GB of a university GPU cluster, in two 12-hour jobs: the first stopped itself after
+          the 8,000-step checkpoint and the second resumed from it. 16,000 steps at batch 16 (2.3 passes over the
+          data), learning rate 2.5e-5, 4.8 s per step, 37.8 GiB of GPU memory. Loss fell from 0.099 to 0.009.
+      - title: On the robot, 9 November
+        text: >-
+          The same 31 moves as Mango Pudding, one after the other: 21 vials ended in the asked slot, against 11. It reached
+          slot 6 every time it carried the vial there, and also slots 4 and 5, which no demonstration used as a destination.
+          One move failed at the grasp: L1 → L6, the one move that is not in the 220 demonstrations. What is left is the
+          drop: six times it reached the right slot and the vial ended in front of or behind the hole.
+      - title: Tested without the robot
+        text: >-
+          Every checkpoint from 8,000 steps on went through the offline gate. They score the same within a few points,
+          so the last one was kept. Its predicted destination for slot 1, 3 and 6 is further apart than Mango Pudding's on
+          the same frames.
+
+  - id: mango-pudding
+    name: Mango Pudding
+    run: pi05-b16k
+    family: pi05
+    what: Mango Rice trained on for 16,000 steps on the 220 demonstrations
+    base: Mango Rice at 12k steps
+    data: vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move
+    frames: 113010
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: [[cluster_logs/slurm-pi05-b-37157.out, 0], [cluster_logs/slurm-pi05-b-37256.out, 8000]]
+    config: pi05_full_vial-sort-ws220_canon_ft012000_v2/checkpoints/016000/pretrained_model/train_config.json
+    hub: vial-sort-pi05-ws220-b-16000
+    notes:
+      - title: How it was trained
+        text: >-
+          6 to 7 November, on one A100 80 GB of a university GPU cluster, in two 12-hour jobs. 16,000 steps at batch 16,
+          learning rate 1e-5. The joint ranges used to scale the data were set back to Mango Rice's own, the fix found
+          with Mango Lassi. Loss fell from 0.085 to 0.009.
+      - title: On the robot, 8 and 9 November
+        text: >-
+          31 moves: 11 vials ended in the asked slot. The destination now follows the command: with the vial always at R3,
+          asking for slot 1, 3 and 6 sent it to slot 1, about 3 and 5. But the far slots were pulled toward the middle,
+          and seven moves failed at the grasp, most of them from slot 6.
+
+  - id: mango-lassi
+    name: Mango Lassi
+    run: pi05-b4k
+    family: pi05
+    what: Mango Rice trained on for 4,000 steps on the 220 demonstrations
+    base: Mango Rice at 12k steps
+    data: vial-sort-slots-220, idle start and end cut, operator removed from the start frames, one sentence per move
+    frames: 113010
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    logs: [[pi05_full_vial-sort-ws220_canon_ft012000.log, 0]]
+    config: pi05_full_vial-sort-ws220_canon_ft012000/checkpoints/004000/pretrained_model/train_config.json
+    notes:
+      - title: Why it lost the grasp
+        text: >-
+          On 4 November it failed at the grasp in 14 of 35 rollouts. Merging the datasets had widened the gripper's range
+          in the scaling from 37.4° to 50.8°, so every closing command came out about a third too open. A model trained
+          on from Mango Rice keeps Mango Rice's scale, so the change broke it. Mango Sorbet is the same weights with the
+          old ranges written back.
+
+  - id: mango-sorbet
+    name: Mango Sorbet
+    run: pi05-b4k-q37
+    family: pi05
+    what: Mango Lassi with the gripper and wrist ranges set back to Mango Rice's
+    base: Mango Lassi (the same weights)
+    data: vial-sort-slots-220
+    frames: 113010
+    steps: 4000
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    config: pi05_full_vial-sort-ws220_canon_ft012000/checkpoints/004000_q37/pretrained_model/train_config.json
+    notes:
+      - title: The fix, tested on the arm
+        text: >-
+          4 November, 10 rollouts: it failed at the grasp once, against 14 of 35 for Mango Lassi. It carried the vial to the
+          destination rack nine times but put it in the asked slot only once: it went to the middle of the rack, slot 4 or 5,
+          whatever slot was asked for.
+
+  - id: mango-chutney
+    name: Mango Chutney
+    run: pi05-b4k-q37g
+    family: pi05
+    what: Mango Lassi with only the gripper range set back
+    base: Mango Lassi (the same weights)
+    data: vial-sort-slots-220
+    frames: 113010
+    steps: 4000
+    cams: [top_down, left_top, left_bottom, right, wrist]
+    config: pi05_full_vial-sort-ws220_canon_ft012000/checkpoints/004000_q37g/pretrained_model/train_config.json
+    notes:
+      - title: Only half the fix
+        text: >-
+          4 November: it failed at the grasp in all four moves that Mango Sorbet had picked up. The wrist pitch range had
+          changed too, by 8%, which tilts the gripper about 4° down at the grasp. Both joints have to be set back.
+
   - id: spicy-chicken
     name: Spicy Chicken
     run: pi05-allcams

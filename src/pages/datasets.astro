@@ -4,11 +4,15 @@ import CoverageMatrix from '../components/CoverageMatrix.astro';
 import CameraChips from '../components/CameraChips.astro';
 import Term from '../components/Term.astro';
 import october from '../data/october.json';
+import ws220 from '../data/ws220.json';
 import datasets from '../data/datasets.json';
 import media from '../data/media.json';
 import { url, HF, visualizer, date, CAMERA_NAMES } from '../lib/site';
 
 const cov = october.coverage;
+const c2 = ws220;
+const b2 = c2.batches as Record<string, { episodes: number; frames: number; first: string | null; last: string | null }>;
+const R220 = 'sari-abdan/vial-sort-slots-220', R51 = 'sari-abdan/vial-sort-contrast-51', R99 = 'sari-abdan/vial-sort-contrast-99-depth';
 const demo = media.demo_ws100;
 const runs = datasets.datasets.filter((d) => d.kind === 'rollout');
 const minutes = (frames: number | null, fps: number | null) => (frames && fps ? Math.round(frames / fps / 60) : null);
@@ -65,15 +69,30 @@ const parts = (sentence: string): Part[] => {
 <Base
   page="datasets"
   title="Data"
-  description="The 100 teleoperated demonstrations behind the October models: the five cameras, which moves were recorded and which were held out, how the commands were worded, and every robot recording, public on Hugging Face."
+  description="The teleoperated demonstrations, 100 behind the October models and 220 behind the November ones: the five cameras, which moves were recorded and which were held out, how the commands were worded, and every robot recording, public on Hugging Face."
 >
   <section class="section">
     <div class="wrap">
       <h1>Data</h1>
       <p class="lead">
-        Five cameras watched 100 demonstrations of a person moving a vial with a leader arm. The set and every robot
-        recording are public on Hugging Face in the LeRobot format.
+        Five cameras watched a person move a vial with a leader arm. There are two training sets: the first 100
+        demonstrations, and 220 that keep 70 of those and add 150 recorded so the destination can only come from the
+        command. Both sets and every robot recording are public on Hugging Face in the LeRobot format.
       </p>
+      <div class="table-scroll">
+        <table class="data" id="sets">
+          <caption class="visually-hidden">The two training sets side by side</caption>
+          <thead><tr><th></th><th>100 demonstrations</th><th>220 demonstrations</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Recorded</th><td>14 October 2026</td><td>70 of the 100, then 51 on 28 October and 99 on 3 November</td></tr>
+            <tr><th scope="row">How</th><td>Twenty runs of five, one destination per run</td><td>One layout recorded three times, to three different destinations</td></tr>
+            <tr><th scope="row">Moves</th><td>{Object.keys(cov.demos).length} moves, none inside one rack</td><td>{c2.moves} moves, {c2.same_rack} demonstrations inside one rack</td></tr>
+            <tr><th scope="row">Size</th><td class="num">{cov.episodes} episodes, {cov.frames.toLocaleString('en-GB')} frames, {cov.minutes} min</td><td class="num">{c2.episodes} episodes, {c2.frames.toLocaleString('en-GB')} frames, {c2.minutes} min</td></tr>
+            <tr><th scope="row">Trained</th><td>The October models</td><td>The November models (Plain Bagel, Mango Pudding)</td></tr>
+            <tr><th scope="row">On Hugging Face</th><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td><td><a href={`${HF}/datasets/${R220}`}>vial-sort-slots-220</a></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -119,6 +138,40 @@ const parts = (sentence: string): Part[] => {
         {`${Object.keys(cov.demos).length} different moves; 75 go from one rack to the other and 25 to the bin. No move stays inside a rack. ` +
           `Slots 2 and 5 are never a source, and slots 2, 4 and 5 are never a destination (slot 4 is only ever a source).`}
       </p>
+    </div>
+  </section>
+
+  <section class="section" id="ws220">
+    <div class="wrap">
+      <h2>The 220 demonstrations</h2>
+      <p>
+        {`${c2.episodes} demonstrations, ${c2.frames.toLocaleString('en-GB')} frames, about ${c2.minutes} minutes, the same five cameras. ` +
+          `With the 100, every run of five had one destination and was recorded in one sitting, so the pictures gave the destination away ` +
+          `and the models learned to read it there. In the 150 new demonstrations one layout is recorded three times in a row with three ` +
+          `different destinations, so only the command can tell them apart. The set is `}<a href={`${HF}/datasets/${R220}`}>{R220}</a>{`, and any episode can be `}<a href={visualizer(R220)}>watched in the browser</a>{`.`}
+      </p>
+      <h3 class="sub">Every move that was recorded</h3>
+      <p>
+        {`Laid out like the matrix above, now with moves inside one rack: ${c2.same_rack} of the ${c2.episodes}. The held-out slots are the same, ` +
+          `and so is one gap: no demonstration goes from L1 to L6.`}
+      </p>
+      <CoverageMatrix demos={c2.demos} slots={c2.slots} heldSources={c2.heldout_sources} heldDestinations={c2.heldout_destinations} />
+      <p class="note after">
+        {`${c2.moves} different moves; ${c2.to_bin} go to the bin and ${c2.same_rack} stay inside one rack. Every source slot has ` +
+          `${Math.min(...Object.values(c2.per_source))} to ${Math.max(...Object.values(c2.per_source))} demonstrations.`}
+      </p>
+      <h3 class="sub">Where they come from</h3>
+      <div class="table-scroll">
+        <table class="data">
+          <thead><tr><th>Part</th><th>Recorded</th><th class="r">Episodes</th><th class="r">Frames</th><th>Also published alone</th></tr></thead>
+          <tbody>
+            <tr><td>The first 70 of the 100 (runs 15 to 20 were too dark and were dropped)</td><td>14 October</td><td class="r">{b2.ws100.episodes}</td><td class="r">{b2.ws100.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td></tr>
+            <tr><td>Three destinations per layout, first sitting</td><td>{date(b2.contrast.first ?? '')}</td><td class="r">{b2.contrast.episodes}</td><td class="r">{b2.contrast.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R51}`}>vial-sort-contrast-51</a></td></tr>
+            <tr><td>Three destinations per layout, second sitting, with the RealSense depth stream as well</td><td>{date(b2['contrast+depth'].first ?? '')}</td><td class="r">{b2['contrast+depth'].episodes}</td><td class="r">{b2['contrast+depth'].frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R99}`}>vial-sort-contrast-99-depth</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note after">The training set leaves the depth stream out: the November models see the five colour cameras only. The across-the-table camera sits slightly differently in the first 70 than in the later 150, and it was knocked again on 4 November; see <a href={url('docs/a16000-arm-test-9nov/')}>the note of 9 November</a>.</p>
     </div>
   </section>
 

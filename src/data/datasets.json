@@ -675,6 +675,405 @@
    "model": "Crispy Falafel"
   },
   {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_181333",
+   "name": "rollout_pi05_004000_20261104_181333",
+   "kind": "rollout",
+   "updated": "2026-11-04",
+   "episodes": 5,
+   "frames": 6454,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_183519",
+   "name": "rollout_pi05_004000_20261104_183519",
+   "kind": "rollout",
+   "updated": "2026-11-04",
+   "episodes": 5,
+   "frames": 4392,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_184657",
+   "name": "rollout_pi05_004000_20261104_184657",
+   "kind": "rollout",
+   "updated": "2026-11-04",
+   "episodes": 20,
+   "frames": 20311,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_q37_20261104_194652",
+   "name": "rollout_pi05_004000_q37_20261104_194652",
+   "kind": "rollout",
+   "updated": "2026-11-04",
+   "episodes": 10,
+   "frames": 11023,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261108_235520",
+   "name": "rollout_pi05_016000_20261108_235520",
+   "kind": "rollout",
+   "updated": "2026-11-08",
+   "episodes": 5,
+   "frames": 4177,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261109_000645",
+   "name": "rollout_pi05_016000_20261109_000645",
+   "kind": "rollout",
+   "updated": "2026-11-08",
+   "episodes": 25,
+   "frames": 23540,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261109_005131",
+   "name": "rollout_pi05_016000_20261109_005131",
+   "kind": "rollout",
+   "updated": "2026-11-09",
+   "episodes": 35,
+   "frames": 24587,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_181219",
+   "name": "rollout_pi05_004000_20261104_181219",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 7,
+   "frames": 8107,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_182424",
+   "name": "rollout_pi05_004000_20261104_182424",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 2,
+   "frames": 712,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_182814",
+   "name": "rollout_pi05_004000_20261104_182814",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 1,
+   "frames": 35,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_182948",
+   "name": "rollout_pi05_004000_20261104_182948",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 1,
+   "frames": 43,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_183143",
+   "name": "rollout_pi05_004000_20261104_183143",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 1,
+   "frames": 388,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_183350",
+   "name": "rollout_pi05_004000_20261104_183350",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 5,
+   "frames": 4392,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_184034",
+   "name": "rollout_pi05_004000_20261104_184034",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 2,
+   "frames": 2295,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_20261104_184550",
+   "name": "rollout_pi05_004000_20261104_184550",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 21,
+   "frames": 21047,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Lassi"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_q37_20261104_194544",
+   "name": "rollout_pi05_004000_q37_20261104_194544",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 11,
+   "frames": 11564,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Sorbet"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_q37g_20261104_201621",
+   "name": "rollout_pi05_004000_q37g_20261104_201621",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 4,
+   "frames": 3772,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Chutney"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_004000_q37g_20261104_233013",
+   "name": "rollout_pi05_004000_q37g_20261104_233013",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 3,
+   "frames": 3921,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Chutney"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261108_235412",
+   "name": "rollout_pi05_016000_20261108_235412",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 8,
+   "frames": 6972,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Pudding"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261109_000538",
+   "name": "rollout_pi05_016000_20261109_000538",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 29,
+   "frames": 25907,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Mango Pudding"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261109_005026",
+   "name": "rollout_pi05_016000_20261109_005026",
+   "kind": "rollout",
+   "updated": "2026-11-10",
+   "episodes": 37,
+   "frames": 25738,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Plain Bagel"
+  },
+  {
    "id": "sari-abdan/vial-sort-v1-static",
    "name": "vial-sort-v1-static",
    "kind": "training",
@@ -796,6 +1195,64 @@
    "format": "v3.0",
    "private": false,
    "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-contrast-51",
+   "name": "vial-sort-contrast-51",
+   "kind": "training",
+   "updated": "2026-11-10",
+   "episodes": 51,
+   "frames": 36420,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-slots-220",
+   "name": "vial-sort-slots-220",
+   "kind": "training",
+   "updated": "2026-11-10",
+   "episodes": 220,
+   "frames": 141735,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/vial-sort-contrast-99-depth",
+   "name": "vial-sort-contrast-99-depth",
+   "kind": "training",
+   "updated": "2026-11-10",
+   "episodes": 99,
+   "frames": 60993,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist",
+    "rs_depth"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
   }
  ],
  "models": [
@@ -826,6 +1283,14 @@
   {
    "id": "sari-abdan/vial-sort-flux3-ws100-30000",
    "name": "vial-sort-flux3-ws100-30000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-ws220-a-16000",
+   "name": "vial-sort-pi05-ws220-a-16000"
+  },
+  {
+   "id": "sari-abdan/vial-sort-pi05-ws220-b-16000",
+   "name": "vial-sort-pi05-ws220-b-16000"
   }
  ]
 }
