@@ -110,7 +110,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "crispy-falafel-20000-sync",
@@ -157,7 +158,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "crispy-falafel-26000-sync",
@@ -199,7 +201,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "crispy-falafel-26000-sync-ema",
@@ -241,7 +244,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "crispy-falafel-30000-sync",
@@ -304,7 +308,8 @@
      "grasped_right": 1,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "crispy-falafel-30000-sync-ema",
@@ -366,7 +371,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "mango-chutney-4000-sync",
@@ -433,6 +439,22 @@
      "rollouts": 2,
      "grasped_right": 0,
      "released": 0
+    }
+   },
+   "untrained": {
+    "rollouts": 2,
+    "grasped_right": 1,
+    "lifted": 0,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 1,
+     "grasped": 1,
+     "carried": 0,
+     "released": 0
+    },
+    "moves": {
+     "L1->L6": 2
     }
    }
   },
@@ -536,6 +558,24 @@
      "grasped_right": 2,
      "released": 2
     }
+   },
+   "untrained": {
+    "rollouts": 4,
+    "grasped_right": 4,
+    "lifted": 2,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 0,
+     "grasped": 2,
+     "carried": 2,
+     "released": 0
+    },
+    "moves": {
+     "L1->L6": 2,
+     "L3->R4": 1,
+     "R4->L5": 1
+    }
    }
   },
   {
@@ -635,6 +675,28 @@
      "grasped_right": 2,
      "released": 2
     }
+   },
+   "untrained": {
+    "rollouts": 9,
+    "grasped_right": 6,
+    "lifted": 4,
+    "released": 4,
+    "seen_in_slot": 3,
+    "stages": {
+     "no_grasp": 3,
+     "grasped": 2,
+     "carried": 0,
+     "released": 4
+    },
+    "moves": {
+     "L1->L6": 2,
+     "L2->R6": 2,
+     "L3->R4": 1,
+     "L5->bin": 1,
+     "R2->bin": 1,
+     "R3->L5": 1,
+     "R5->L1": 1
+    }
    }
   },
   {
@@ -677,7 +739,8 @@
      "grasped_right": 1,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "mango-rice-10000-sync",
@@ -729,7 +792,8 @@
      "grasped_right": 1,
      "released": 1
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "mango-rice-12000-rtc",
@@ -771,7 +835,8 @@
      "grasped_right": 1,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "mango-rice-12000-sync",
@@ -842,6 +907,22 @@
      "rollouts": 1,
      "grasped_right": 0,
      "released": 0
+    }
+   },
+   "untrained": {
+    "rollouts": 1,
+    "grasped_right": 0,
+    "lifted": 0,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 1,
+     "grasped": 0,
+     "carried": 0,
+     "released": 0
+    },
+    "moves": {
+     "L3->L6": 1
     }
    }
   },
@@ -924,6 +1005,22 @@
      "rollouts": 1,
      "grasped_right": 1,
      "released": 0
+    }
+   },
+   "untrained": {
+    "rollouts": 1,
+    "grasped_right": 1,
+    "lifted": 1,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 0,
+     "grasped": 0,
+     "carried": 1,
+     "released": 0
+    },
+    "moves": {
+     "L1->L6": 1
     }
    }
   },
@@ -1022,6 +1119,28 @@
      "grasped_right": 2,
      "released": 2
     }
+   },
+   "untrained": {
+    "rollouts": 9,
+    "grasped_right": 7,
+    "lifted": 6,
+    "released": 5,
+    "seen_in_slot": 4,
+    "stages": {
+     "no_grasp": 2,
+     "grasped": 1,
+     "carried": 1,
+     "released": 5
+    },
+    "moves": {
+     "L1->L6": 1,
+     "L2->R6": 2,
+     "L3->R4": 1,
+     "L5->bin": 1,
+     "R2->bin": 2,
+     "R3->L5": 1,
+     "R5->L1": 1
+    }
    }
   },
   {
@@ -1079,7 +1198,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "pretzel-two-500-rtc",
@@ -1164,7 +1284,8 @@
      "grasped_right": 2,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "spicy-chicken-7000-sync",
@@ -1227,6 +1348,23 @@
      "grasped_right": 1,
      "released": 1
     }
+   },
+   "untrained": {
+    "rollouts": 5,
+    "grasped_right": 0,
+    "lifted": 0,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 5,
+     "grasped": 0,
+     "carried": 0,
+     "released": 0
+    },
+    "moves": {
+     "R5->L3": 1,
+     "R5->bin": 4
+    }
    }
   },
   {
@@ -1279,7 +1417,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "spicy-chicken-12000-rtc",
@@ -1342,7 +1481,8 @@
      "grasped_right": 0,
      "released": 0
     }
-   }
+   },
+   "untrained": null
   },
   {
    "key": "spicy-chicken-12000-sync",
@@ -1415,6 +1555,22 @@
      "rollouts": 3,
      "grasped_right": 1,
      "released": 1
+    }
+   },
+   "untrained": {
+    "rollouts": 1,
+    "grasped_right": 0,
+    "lifted": 0,
+    "released": 0,
+    "seen_in_slot": 0,
+    "stages": {
+     "no_grasp": 1,
+     "grasped": 0,
+     "carried": 0,
+     "released": 0
+    },
+    "moves": {
+     "R4->L5": 1
     }
    }
   }

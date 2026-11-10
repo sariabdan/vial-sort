@@ -49,6 +49,11 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       <p class="note">
         {`Scored rollouts only, one row per checkpoint and mode, never pooled. Left out for this model: ${leftText || 'none'}.`}
       </p>
+      {rows.filter((r) => r.untrained).map((r) => (
+        <p class="note">{`Beside the table, ${r.short}: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves no demonstration ` +
+          `it trained on contains (${Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')}). The right vial was grasped in ` +
+          `${r.untrained.grasped_right}, the arm let go at the asked slot in ${r.untrained.released}, and the vial was seen in that slot in ${r.untrained.seen_in_slot}.`}</p>
+      ))}
       <div class="table-scroll">
         <table class="data stages">
           <thead>

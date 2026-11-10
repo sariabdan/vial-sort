@@ -512,6 +512,7 @@ def october(gate_rows, runs_json):
     by_run = {m["run"]: m for m in MODELS}
     cov = ws100_coverage()
     rows, left_out = {}, defaultdict(Counter)
+    untr = defaultdict(lambda: {"total": new_tally(), "moves": Counter()})  # untrained moves, shown beside a row, never in it
     for s in sessions:
         m = by_run.get(s["run"])
         if m is None:
@@ -526,6 +527,9 @@ def october(gate_rows, runs_json):
                 left_out[m["id"]]["unreadable"] += 1
             elif not t["trained_move"]:
                 left_out[m["id"]]["untrained"] += 1
+                if t["stage"]:
+                    tally(untr[key]["total"], t)
+                    untr[key]["moves"][t["move"]] += 1
             else:
                 r = rows.setdefault(key, {"total": new_tally(), "moves": defaultdict(new_tally), "src": defaultdict(new_tally),
                                           "dst": defaultdict(new_tally), "sessions": [], "days": set()})
@@ -544,6 +548,9 @@ def october(gate_rows, runs_json):
                "step": step, "mode": mode, "ema": ema, "label": f"{m['name']} · {tag}", "short": tag,
                **freeze(r["total"]), "days": sorted(r["days"]), "sessions": r["sessions"],
                "by_source": pick(r["src"]), "by_destination": pick(r["dst"]),
+               "untrained": ({**freeze(untr[(mid, step, mode, ema)]["total"]),
+                              "moves": dict(sorted(untr[(mid, step, mode, ema)]["moves"].items()))}
+                             if (mid, step, mode, ema) in untr else None),
                "moves": [{"move": mv, "demos": cov["demos"].get(mv, 0), **freeze(t)}
                          for mv, t in sorted(r["moves"].items(), key=lambda kv: (-kv[1]["rollouts"], kv[0]))]}
         results.append(row)

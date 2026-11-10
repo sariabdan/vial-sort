@@ -8,7 +8,7 @@ import results from '../data/results.json';
 import october from '../data/october.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
-import { url } from '../lib/site';
+import { moveLabel, url } from '../lib/site';
 import { demoCells, rateCells, type RackMap } from '../lib/rackmaps';
 
 const rows = results.rows;
@@ -108,6 +108,11 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
                 ))}
               </div>
               <div class="bar-n num">{`n = ${r.rollouts}`}</div>
+              {r.untrained && (
+                <p class="bar-untr">{`Beside it, not counted in n: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves ` +
+                  `it was never trained on (${Object.keys(r.untrained.moves).map(moveLabel).join(', ')}). The vial ended in the asked slot in ` +
+                  `${r.untrained.seen_in_slot} of them, by eye.`}</p>
+              )}
             </div>
           ))}
         </div>
@@ -116,10 +121,10 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
           <summary>Show the numbers as a table</summary>
           <div class="table-scroll">
             <table class="data">
-              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}</tr></thead>
+              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}<th class="r">Untrained moves, beside n</th><th class="r">of those, vial in the asked slot</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}</tr>
+                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}<td class="r num">{r.untrained?.rollouts ?? 0}</td><td class="r num">{r.untrained ? r.untrained.seen_in_slot : '–'}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -248,6 +253,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .seg:last-child { border-radius: 0 4px 4px 0; }
   .seg:only-child { border-radius: 4px; }
   .bar-n { font-size: var(--step--1); color: var(--ink-2); text-align: right; }
+  .bar-untr { grid-column: 2 / 4; margin: 0.15rem 0 0.5rem; font-size: 0.78rem; line-height: 1.35; color: var(--ink-2); max-width: none; }
   .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
   .twin summary { cursor: pointer; width: fit-content; }
   .twin tr[hidden] { display: none; }
