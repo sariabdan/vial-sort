@@ -31,7 +31,7 @@ class Text(HTMLParser):
 
 
 # words that legitimately mix letters and digits; identifiers (pi05_base, vial-flux25) are skipped whole
-OK = re.compile(r"^(?:bfloat16|MolmoAct2|v\d+|π0(?:\.5)?|[LR][1-6]|\d+k|\d+(?:st|nd|rd|th)|D435i|N1\.5|3D|av1|h264|\d+(?:px|fps|h))$", re.I)
+OK = re.compile(r"^(?:bfloat16|MolmoAct2|v\d+|π0(?:\.5)?|[LR][1-6]|\d+k|\d+(?:st|nd|rd|th)|D435i|N1\.5|3D|av1|h264|\d+(?:px|fps|h)|base\d+k?(?:’s)?|ws\d+(?:_\w+)?(?:’s)?|pi05(?:_\w+)?)$", re.I)
 GLUE = [re.compile(p) for p in (r"[a-z]{2,}\d", r"\d[a-z]{3,}", r"[a-z0-9][.;:,][A-Z]", r"\)[a-z]", r"[a-z]\(")]
 PRIVATE = re.compile(r"192\.168\.|/home/|hf_[A-Za-z0-9]{10,}|gho_[A-Za-z0-9]{10,}|ghp_[A-Za-z0-9]{10,}")
 

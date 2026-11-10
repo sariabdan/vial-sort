@@ -1,0 +1,50 @@
+---
+// Layout of the dated notes in src/pages/docs/*.md. Frontmatter: title, date (YYYY-MM-DD), description.
+import Base from './Base.astro';
+import { url, date } from '../lib/site';
+
+const { frontmatter } = Astro.props;
+const { title, description } = frontmatter;
+---
+<Base page="docs" title={title} description={description}>
+  <section class="section">
+    <div class="wrap doc">
+      <p class="doc-meta"><a href={url('docs/')}>Docs</a> · {date(String(frontmatter.date))}</p>
+      <h1>{title}</h1>
+      <p class="lead">{description}</p>
+      <article class="doc-body">
+        <slot />
+      </article>
+      <p class="doc-meta doc-end"><a href={url('docs/')}>← All docs</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .doc { max-width: 54rem; }
+  .doc-meta { font-size: var(--step--1); color: var(--ink-2); margin-bottom: 0.7rem; }
+  .doc h1 { margin-bottom: 0.9rem; }
+  .doc-end { margin-top: 3rem; }
+  .doc-body { margin-top: 2.2rem; }
+  .doc-body :global(h2) { margin-top: 2.6rem; margin-bottom: 0.7rem; }
+  .doc-body :global(h3) { margin-top: 1.8rem; margin-bottom: 0.5rem; }
+  .doc-body :global(p) { margin-top: 0.8em; }
+  .doc-body :global(ul),
+  .doc-body :global(ol) { max-width: var(--measure); padding-left: 1.25rem; margin: 0.7rem 0; }
+  .doc-body :global(li + li) { margin-top: 0.35rem; }
+  .doc-body :global(table) {
+    display: block; overflow-x: auto; max-width: 100%;
+    border-collapse: collapse; margin: 1rem 0 0.4rem;
+    font-size: var(--step--1); font-variant-numeric: tabular-nums;
+  }
+  .doc-body :global(th),
+  .doc-body :global(td) {
+    text-align: left; padding: 0.32rem 0.9rem 0.32rem 0;
+    border-bottom: 1px solid var(--grid); vertical-align: top;
+  }
+  .doc-body :global(th) { font-weight: 600; border-bottom-color: var(--rule); }
+  .doc-body :global(code) { font-size: 0.9em; background: var(--raise); padding: 0.05em 0.3em; border-radius: 3px; }
+  .doc-body :global(blockquote) {
+    margin: 1rem 0; padding-left: 1rem; border-left: 3px solid var(--rule); color: var(--ink-2);
+  }
+</style>

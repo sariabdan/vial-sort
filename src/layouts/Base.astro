@@ -6,15 +6,17 @@ import { url, CODE, HF } from '../lib/site';
 interface Props {
   title: string;
   description: string;
-  page: 'home' | 'results' | 'training' | 'datasets' | 'experiments' | 'previous';
+  page: 'home' | 'results' | 'training' | 'datasets' | 'experiments' | 'docs' | 'previous';
 }
 const { title, description, page } = Astro.props;
-// in the order a reader needs them: what was recorded, what was done, what came out, how the models learned
+// in the order a reader needs them: what was recorded, what was done, what came out, how the models learned,
+// then the dated notes (src/pages/docs/*.md) for the work after the October pages
 const nav = [
   { key: 'datasets', href: 'datasets/', label: 'Data' },
   { key: 'experiments', href: 'experiments/', label: 'Experiments' },
   { key: 'results', href: 'results/', label: 'Results' },
   { key: 'training', href: 'training/', label: 'Training' },
+  { key: 'docs', href: 'docs/', label: 'Docs' },
 ];
 // the August work, one level down; the sub-navigation shows only inside it
 const previous = [

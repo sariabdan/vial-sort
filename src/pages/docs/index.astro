@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { url, date } from '../../lib/site';
+
+// every .md file in this folder is one note; newest first
+const files = import.meta.glob<{ frontmatter: { title: string; date: string; description: string } }>('./*.md', { eager: true });
+const notes = Object.entries(files)
+  .map(([path, mod]) => ({ ...mod.frontmatter, date: String(mod.frontmatter.date), slug: path.replace(/^\.\//, '').replace(/\.md$/, '') }))
+  .sort((a, b) => b.date.localeCompare(a.date));
+---
+<Base
+  page="docs"
+  title="Docs"
+  description="Dated notes on the work after the October pages: the contrastive data, the retrains of π0.5 and how each one did on the arm."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Docs</h1>
+      <p class="lead">Dated notes on the work after the October pages: new data recorded so the destination comes from the command, two retrains of π0.5, and how each one did on the arm.</p>
+      <ol class="notes">
+        {notes.map((n) => (
+          <li>
+            <p class="when">{date(n.date)}</p>
+            <h2><a href={url(`docs/${n.slug}/`)}>{n.title}</a></h2>
+            <p>{n.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notes { list-style: none; padding: 0; margin: 2.2rem 0 0; max-width: 54rem; }
+  .notes li { padding-block: 1.3rem; border-top: 1px solid var(--rule); }
+  .notes h2 { font-size: var(--step-1); margin: 0.2rem 0 0.4rem; }
+  .when { font-size: var(--step--1); color: var(--ink-2); }
+</style>
