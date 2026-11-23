@@ -1,0 +1,234 @@
+# Written by scripts/notes_to_yaml.py from notes/B_16000.txt: the operator's notes, one entry per noted move.
+# scripts/build_data.py scores these sessions from this file: one rollout per move, the result on its last take,
+# earlier takes counted as restarts. Fix a misreading here by hand; re-running the script needs --force.
+#
+# outcome:
+#   placed        the vial ended in the asked slot
+#   drop_missed   let go at the asked slot, the vial ended beside it (in front, behind, on the rack)
+#   off_slot      let go at another slot (ended says which)
+#   never_let_go  carried the vial and never let go
+#   no_grasp      never picked the asked vial up
+#   wrong_vial    picked up another vial
+# ended: where the vial ended (a slot, bin, source = it never left, A/B = stuck between two slots, null = unknown)
+# retried: the note says it took more than one try
+model: mango-pudding
+source: notes/B_16000.txt
+sessions: ["016000_20261108_235412", "016000_20261109_000538"]
+moves:
+  - n: "1"
+    move: R3->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["016000_20261108_235412_t0"]
+  - n: "2"
+    move: R3->L3
+    outcome: drop_missed
+    ended: L3
+    retried: false
+    note: "missed placing ( a bit in front of the rack"
+    takes: ["016000_20261108_235412_t1"]
+  - n: "3"
+    move: R3->L6
+    outcome: off_slot
+    ended: L5
+    retried: false
+    note: "placed in slot 5 (nearly 6!)"
+    takes: ["016000_20261108_235412_t2"]
+  - n: "4"
+    move: R3->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261108_235412_t3"]
+  - n: "5"
+    move: L3->R1
+    outcome: drop_missed
+    ended: R1
+    retried: false
+    note: "missed placing, in fron tof teh rack of slot 1"
+    takes: ["016000_20261108_235412_t4"]
+  - n: "6"
+    move: L3->R3
+    outcome: off_slot
+    ended: R2
+    retried: false
+    note: "placed in slot 2"
+    takes: ["016000_20261108_235412_t5"]
+  - n: "7"
+    move: L3->R6
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "was going for slot 3, that is taken by a vial"
+    takes: ["016000_20261108_235412_t6"]
+  - n: "8"
+    move: L3->R6
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "same as tge one before it"
+    takes: ["016000_20261108_235412_t7", "016000_20261109_000538_t0"]
+  - n: "9"
+    move: L3->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t1"]
+  - n: "10"
+    move: R6->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t2"]
+  - n: "11"
+    move: R1->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t3"]
+  - n: "12"
+    move: L1->L6
+    outcome: no_grasp
+    ended: source
+    retried: true
+    note: "didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip ( ran it twice on different colors)"
+    takes: ["016000_20261109_000538_t4", "016000_20261109_000538_t6"]
+  - n: "13"
+    move: L6->L1
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip"
+    takes: ["016000_20261109_000538_t5", "016000_20261109_000538_t7"]
+  - n: "14"
+    move: L1->R1
+    outcome: drop_missed
+    ended: R1
+    retried: false
+    note: "dropped just behind of the rack of slot 1"
+    takes: ["016000_20261109_000538_t8"]
+  - n: "15"
+    move: L1->R3
+    outcome: off_slot
+    ended: R2
+    retried: false
+    note: "put in slot 2 but barely 3"
+    takes: ["016000_20261109_000538_t9"]
+  - n: "16"
+    move: L1->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t10"]
+  - n: "17"
+    move: L6->R1
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "couldnt grasp (same as before!)"
+    takes: ["016000_20261109_000538_t11"]
+  - n: "18"
+    move: L6->R3
+    outcome: off_slot
+    ended: R1
+    retried: false
+    note: "put in slot 1 but was meanign 3 (i know) but in this scene i only kept 1 vial"
+    takes: ["016000_20261109_000538_t12"]
+  - n: "19"
+    move: L6->R6
+    outcome: off_slot
+    ended: R3
+    retried: true
+    note: "couldnt grasp it at first, but then it could and it went to slot 3 that had a vial"
+    takes: ["016000_20261109_000538_t13"]
+  - n: "20"
+    move: R1->L1
+    outcome: drop_missed
+    ended: L1
+    retried: false
+    note: "barely at slot 1 (missed drop)"
+    takes: ["016000_20261109_000538_t14", "016000_20261109_000538_t15"]
+  - n: "21"
+    move: R1->L3
+    outcome: off_slot
+    ended: L2
+    retried: false
+    note: "put in slot 2"
+    takes: ["016000_20261109_000538_t16"]
+  - n: "22"
+    move: R1->L6
+    outcome: placed
+    ended: L6
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t17"]
+  - n: "24"
+    move: R6->L1
+    outcome: no_grasp
+    ended: source
+    retried: true
+    note: "couldnt grasp at first then went to slot 5 and stayed there (missed pickup"
+    takes: ["016000_20261109_000538_t18", "016000_20261109_000538_t19"]
+  - n: "25"
+    move: R6->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t20"]
+  - n: "26"
+    move: R6->L6
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "couldnt grasp it"
+    takes: ["016000_20261109_000538_t21"]
+  - n: "25b"
+    move: R5->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t22"]
+  - n: "26b"
+    move: L2->R6
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "couldnt grab it"
+    takes: ["016000_20261109_000538_t23", "016000_20261109_000538_t24"]
+  - n: "27"
+    move: R3->L5
+    outcome: off_slot
+    ended: L4
+    retried: false
+    note: "put in slot 4"
+    takes: ["016000_20261109_000538_t25"]
+  - n: "28"
+    move: L3->R4
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "couldnt grab it"
+    takes: ["016000_20261109_000538_t26"]
+  - n: "29"
+    move: L5->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t27"]
+  - n: "30"
+    move: R2->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261109_000538_t28"]

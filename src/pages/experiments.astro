@@ -14,6 +14,8 @@ const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, strin
 const scored = results.total;
 const lo = results.left_out;
 const eye = results.eye as Record<string, number>;
+const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+const noted = andList(results.noted_models);
 const sessions = new Set(experiments.rows.flatMap((r) => r.sessions)).size;
 const nameOf = (run: string) => models.find((m) => m.run === run)?.name ?? run;
 const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''))[0] ?? models[0];
@@ -73,9 +75,16 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
         <StageLegend defs />
         <p class="note after">
           {`${scored} rollouts are scored. Left out: ${lo.short} that ended within 3 seconds, ${lo.untrained} that asked for moves no ` +
-            `demonstration contains (this includes the held-out slots), ${lo.unreadable} whose command the scorer cannot read, and ` +
-            `${lo.earlier_scene} from an earlier layout of the table.`}
+            `demonstration contains (this includes the held-out slots), ${lo.unreadable} whose command the scorer cannot read, ` +
+            (lo.restart ? `${lo.earlier_scene} from an earlier layout of the table, and ${lo.restart} restarts of a move the operator noted once.`
+              : `and ${lo.earlier_scene} from an earlier layout of the table.`)}
         </p>
+        {noted && (
+          <p class="note">
+            {`${noted} are scored from the operator's notes at the robot instead of the scorer: one rollout per noted move, the ` +
+              `outcome as written, restarts counted inside their move. Their move tables below list every note as written.`}
+          </p>
+        )}
         <p class="note">
           {`Because the scorer reads the arm and not the vial, a person also watched ${eye.checked} of the rollouts that let go at the ` +
             `asked slot: the vial was in the slot in ${eye.in_slot}, not in it in ${eye.not_in_slot}, and could not be told in ${eye.unclear}. ` +

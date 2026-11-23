@@ -222,9 +222,9 @@
    "name": "Plain Bagel",
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 28,
-   "grasped_right": 26,
-   "released": 19
+   "rollouts": 24,
+   "grasped_right": 24,
+   "released": 20
   },
   "flux": {
    "key": "crispy-falafel-30000-sync",
@@ -244,9 +244,9 @@
   }
  },
  "eye": {
-  "in_slot": 43,
-  "checked": 119,
+  "in_slot": 11,
+  "checked": 53,
   "unclear": 3,
-  "not_in_slot": 73
+  "not_in_slot": 39
  }
 }

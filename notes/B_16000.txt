@@ -1,0 +1,32 @@
+B 16000:
+1: R3 L1: success
+2: R3 L3: missed placing ( a bit in front of the rack
+3: R3 L6: placed in slot 5 (nearly 6!)
+4: R3 bin: success
+5: L3 R1: missed placing, in fron tof teh rack of slot 1
+6: L3 R3: placed in slot 2
+7: L3 R6: was going for slot 3, that is taken by a vial
+8: L3 R6: same as tge one before it
+9: L3 bin: success
+10: R6 R1: success
+11: R1 R6: success
+12: L1 L6: didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip ( ran it twice on different colors)
+13: L6 L1: didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip
+14: L1 R1: dropped just behind of the rack of slot 1
+15: L1 R3: put in slot 2 but barely 3
+16: L1 R6: success
+17: L6 R1: couldnt grasp (same as before!)
+18: L6 R3: put in slot 1 but was meanign 3 (i know) but in this scene i only kept 1 vial
+19: L6 R6: couldnt grasp it at first, but then it could and it went to slot 3 that had a vial
+20: R1 L1: barely at slot 1 (missed drop)
+21: R1 L3: put in slot 2 
+22: R1 L6: success
+24: R6 L1: couldnt grasp at first then went to slot 5 and stayed there (missed pickup
+25: R6 L3: success
+26: R6 L6: couldnt grasp it
+25: R5 L1: success
+26: L2 R6: couldnt grab it
+27: R3 L5: put in slot 4
+28: L3 R4: couldnt grab it
+29: L5 bin: success
+30: R2 bin: success

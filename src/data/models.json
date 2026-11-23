@@ -94,14 +94,14 @@
    "memory": "37.8 GB",
    "step_s": 4.81,
    "robot": {
-    "takes": 28,
-    "released": 19,
-    "right_vial": 26,
+    "takes": 24,
+    "released": 20,
+    "right_vial": 24,
     "stages": {
-     "no_grasp": 2,
-     "grasped": 1,
-     "carried": 6,
-     "released": 19
+     "no_grasp": 0,
+     "grasped": 0,
+     "carried": 4,
+     "released": 20
     }
    },
    "rate_hz": null,
@@ -120,14 +120,14 @@
    "memory": "37.8 GB",
    "step_s": 4.81,
    "robot": {
-    "takes": 28,
-    "released": 8,
+    "takes": 24,
+    "released": 12,
     "right_vial": 20,
     "stages": {
-     "no_grasp": 8,
-     "grasped": 4,
+     "no_grasp": 4,
+     "grasped": 0,
      "carried": 8,
-     "released": 8
+     "released": 12
     }
    },
    "rate_hz": null,

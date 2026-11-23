@@ -507,19 +507,32 @@ def freeze(t):
 def october(gate_rows, runs_json):
     """Registry (one entry per model), results (one row per model + checkpoint + mode), and per-model
     experiments (hyperparameters, checkpoint rows, move tables). Scored rollouts are trained moves over
-    3 s (the cuts tools/assess_rollouts.py makes)."""
+    3 s (the cuts tools/assess_rollouts.py makes). A session with operator's notes counts each noted move
+    once, scored from the note (rollouts()); its restarts are left out, counted as such."""
     sessions = json.loads((OUT / "rollouts.json").read_text())["sessions"]
     by_run = {m["run"]: m for m in MODELS}
     cov = ws100_coverage()
     rows, left_out = {}, defaultdict(Counter)
     untr = defaultdict(lambda: {"total": new_tally(), "moves": Counter()})  # untrained moves, shown beside a row, never in it
+    scored_by, restarts, noted = defaultdict(Counter), Counter(), defaultdict(list)
+    demos_of = lambda run, mv: (WS220_DEMOS if run in WS220_RUNS else cov["demos"]).get(mv, 0)
     for s in sessions:
         m = by_run.get(s["run"])
         if m is None:
             continue
         key = (m["id"], s["step"], s["mode"], s["ema"])
         for t in s["takes"]:
-            if t["short"]:
+            nt = t.get("noted")
+            if t.get("restart"):
+                left_out[m["id"]]["restart"] += 1
+                restarts[key] += 1
+                continue
+            if nt:  # every noted move, trained or not, in the operator's order, for the move table
+                noted[key].append({"n": nt["n"], "move": t["move"], "trained": t["trained_move"],
+                                   "demos": demos_of(m["run"], t["move"]), "outcome": nt["outcome"], "stage": t["stage"],
+                                   "ended": nt["ended"], "retried": nt["retried"], "attempts": nt["attempts"],
+                                   "note": nt["note"], "take": t["id"], "_order": (nt["file"], nt["i"])})
+            if t["short"] and not nt:
                 left_out[m["id"]]["short"] += 1
             elif m.get("scored") is False:
                 left_out[m["id"]]["earlier_scene"] += 1  # 7 Oct, before the racks moved: the assessment cannot read it
@@ -530,7 +543,9 @@ def october(gate_rows, runs_json):
                 if t["stage"]:
                     tally(untr[key]["total"], t)
                     untr[key]["moves"][t["move"]] += 1
+                    scored_by[key]["notes" if nt else "arm"] += 1
             else:
+                scored_by[key]["notes" if nt else "arm"] += 1
                 r = rows.setdefault(key, {"total": new_tally(), "moves": defaultdict(new_tally), "src": defaultdict(new_tally),
                                           "dst": defaultdict(new_tally), "sessions": [], "days": set()})
                 a, b = t["move"].split("->")
@@ -543,6 +558,10 @@ def october(gate_rows, runs_json):
     results, per_model = [], defaultdict(list)
     for (mid, step, mode, ema), r in sorted(rows.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2], kv[0][3])):
         m = next(x for x in MODELS if x["id"] == mid)
+        by = scored_by[(mid, step, mode, ema)]
+        if by["notes"] and by["arm"]:
+            sys.exit(f"{mid} at {step} ({mode}): {by['notes']} rollouts scored from notes and {by['arm']} from the arm in one "
+                     f"row. Note the other sessions too (scripts/notes_to_yaml.py), or none of them.")
         tag = f"{kstep(step)} · {MODE_NAME.get(mode, 'mode unknown')}{' · EMA' if ema else ''}"
         row = {"key": f"{mid}-{step}-{mode}{'-ema' if ema else ''}", "model": mid, "name": m["name"], "family": FAMILY_KEY[m["family"]],
                "step": step, "mode": mode, "ema": ema, "label": f"{m['name']} · {tag}", "short": tag,
@@ -551,7 +570,10 @@ def october(gate_rows, runs_json):
                "untrained": ({**freeze(untr[(mid, step, mode, ema)]["total"]),
                               "moves": dict(sorted(untr[(mid, step, mode, ema)]["moves"].items()))}
                              if (mid, step, mode, ema) in untr else None),
-               "moves": [{"move": mv, "demos": cov["demos"].get(mv, 0), **freeze(t)}
+               "scored_by": "notes" if by["notes"] else "arm", "restarts": restarts[(mid, step, mode, ema)],
+               "noted_moves": [{k: v for k, v in x.items() if k != "_order"}
+                               for x in sorted(noted[(mid, step, mode, ema)], key=lambda x: x["_order"])] or None,
+               "moves": [{"move": mv, "demos": demos_of(m["run"], mv), **freeze(t)}
                          for mv, t in sorted(r["moves"].items(), key=lambda kv: (-kv[1]["rollouts"], kv[0]))]}
         results.append(row)
         per_model[mid].append(row)
@@ -586,12 +608,13 @@ def october(gate_rows, runs_json):
             rs = [r for r in results if r["model"] == newest["id"]]
             plain = [r for r in rs if r["mode"] == "sync" and not r["ema"]] or rs
             heads[fam] = max(plain, key=lambda r: r["step"])["key"]
-    # the eye checks: only some rollouts were watched, so this is a caveat on the last stage, not a stage
+    # the eye checks: only some rollouts were watched, so this is a caveat on the last stage, not a stage. Rollouts
+    # scored from the operator's notes are left out: there the note is the score, not a check beside it.
     eye = Counter()
     for s_ in sessions:
         for t in s_["takes"]:
             v = (t["checked"] or {}).get("vial")
-            if v:
+            if v and not t.get("noted"):
                 eye[v] += 1
                 eye["checked"] += 1
     byk = {r["key"]: r for r in results}
@@ -605,10 +628,12 @@ def october(gate_rows, runs_json):
                        "cameras": CAMERAS})
     write("experiments", {"models": reg, "stages": stages, "rows": results})
     write("results", {"stages": stages, "funnel": [{"key": k, "label": lab} for k, lab in FUNNEL],
-                      "rows": [{k: v for k, v in r.items() if k != "moves"} for r in results],
+                      "rows": [{k: v for k, v in r.items() if k not in ("moves", "noted_moves")} for r in results],
+                      "noted_models": [m["name"] for m in MODELS if any(r["model"] == m["id"] and r["scored_by"] == "notes"
+                                                                       for r in results)],
                       "defaults": list(heads.values()), "eye": dict(eye), "tiles": tiles,
                       "total": sum(r["rollouts"] for r in results),
-                      "left_out": {k: sum(v[k] for v in left_out.values()) for k in ("short", "untrained", "unreadable", "earlier_scene")}})
+                      "left_out": {k: sum(v[k] for v in left_out.values()) for k in ("short", "untrained", "unreadable", "earlier_scene", "restart")}})
     write("october", {"stages": stages, "coverage": cov, "tiles": tiles, "eye": dict(eye)})
 
 
@@ -666,11 +691,35 @@ def video_of(root, row, cam):
 
 
 WS220_RUNS = ("pi05-b4k", "pi05-b4k-q37", "pi05-b4k-q37g", "pi05-b16k", "pi05-a16k")
-WS220_MOVES = set()
+WS220_DEMOS = {}  # move -> demonstrations of it in the 220 (src/data/ws220.json)
+
+# Arm tests the operator noted move by move (notes/*.yaml, written by scripts/notes_to_yaml.py) are scored from
+# the notes, not the arm: one rollout per noted move, its result on the move's last take, the takes before it
+# restarts. What each outcome is on the site's scale:
+NOTE_STAGE = {"placed": "released", "drop_missed": "released", "off_slot": "carried", "never_let_go": "carried",
+              "no_grasp": "no_grasp", "wrong_vial": "no_grasp"}
 
 
-def rollouts(clips, checked):
-    WS220_MOVES.update(json.loads((OUT / "ws220.json").read_text())["demos"])
+def load_notes():
+    """({take id: (move entry, 'final' | 'restart')}, {session name: notes file}) from notes/*.yaml."""
+    by_take, sessions = {}, {}
+    for f in sorted((SITE / "notes").glob("*.yaml")):
+        d = yaml.safe_load(f.read_text())
+        for s in d["sessions"]:
+            sessions[s] = f.name
+        for i, mv in enumerate(d["moves"]):
+            if mv["outcome"] not in NOTE_STAGE:
+                sys.exit(f"notes/{f.name} #{mv['n']}: outcome {mv['outcome']!r} is not one of {', '.join(NOTE_STAGE)}")
+            for k, tid in enumerate(mv["takes"]):
+                if tid in by_take:
+                    sys.exit(f"notes/{f.name}: {tid} is under two notes")
+                by_take[tid] = ({**mv, "file": f.name, "i": i}, "final" if k == len(mv["takes"]) - 1 else "restart")
+    return by_take, sessions
+
+
+def rollouts(clips, checked, notes):
+    WS220_DEMOS.update(json.loads((OUT / "ws220.json").read_text())["demos"])
+    note_takes, note_sessions = notes
     sessions = []
     for rep in sorted(glob_days()):
         for s in json.loads(rep.read_text())["sessions"]:
@@ -709,17 +758,32 @@ def rollouts(clips, checked):
             if run in WS220_RUNS and mv:
                 # assess_rollouts checks against the 100-demonstration sheet, which has no move inside one rack;
                 # these models trained on the 220, so a move counts as trained if the 220 contain it
-                trained_move = move_code(mv) in WS220_MOVES
+                trained_move = move_code(mv) in WS220_DEMOS
                 r = {**r, "flags": [f for f in r["flags"] if "NEVER" not in f] if trained_move else r["flags"]}
-            takes.append({"id": tid, "take": r["take"], "secs": round(r["secs"], 1), "checked": checked.get(tid),
+            chk, noted, restart = checked.get(tid), None, False
+            if name in note_sessions:
+                if tid not in note_takes:
+                    sys.exit(f"{tid} was recorded but notes/{note_sessions[name]} has no note for it: re-run "
+                             f"scripts/notes_to_yaml.py --force, or add it to the right move by hand")
+                nt, role = note_takes[tid]
+                if not mv or nt["move"] != move_code(mv):
+                    sys.exit(f"notes/{nt['file']} #{nt['n']} is {nt['move']}, but {tid} asked {move_code(mv) if mv else '?'}")
+                restart = role == "restart"
+                if not restart:
+                    stage = NOTE_STAGE[nt["outcome"]]
+                    chk = {"vial": "in_slot" if nt["outcome"] == "placed" else "not_in_slot", "why": nt["note"]}
+                    noted = {k: nt[k] for k in ("n", "file", "i", "outcome", "ended", "retried", "note")} | \
+                            {"attempts": len(nt["takes"])}
+            takes.append({"id": tid, "take": r["take"], "secs": round(r["secs"], 1), "checked": chk,
                           "move": move_code(mv) if mv else None, "task": r.get("task"),
                           "stage": stage, "short": r["short"], "trained_move": trained_move,
+                          "restart": restart, "noted": noted,
                           "flags": r["flags"], "from": r.get("from"), "to": r.get("to"),
                           "grasps": r.get("grasps"), "src_ok": r.get("src_ok"), "dst_ok": r.get("dst_ok"),
                           "lifted": r.get("lifted"), "notes": r.get("notes", []),
                           "holds": [{k: h[k] for k in ("grasp", "release", "at", "put", "empty", "carried")} for h in r["holds"]],
                           "strip": r.get("strip") if assessed else None})
-            if stage and trained_move:
+            if stage and trained_move and not restart:
                 robot[run][(s["step"], s["mode"], "_ema_" in name)][stage] += 1
             clips.append({"id": tid, "kind": "take", "day": s["day"], "secs": r["secs"],
                           "cams": {c.split(".")[-1]: video_of(root, row, c) for c in cams},
@@ -807,7 +871,7 @@ def main():
     import runpy
     runpy.run_path(str(SITE / "scripts/build_ws220.py"))
     scen, kpi = evals(clips)
-    robot = rollouts(clips, checked)
+    robot = rollouts(clips, checked, load_notes())
     runs = training(robot)
     october(gate(), runs)
     models(runs, kpi)

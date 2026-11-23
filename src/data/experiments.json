@@ -201,13 +201,14 @@
    ],
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 9
+    "restart": 6,
+    "untrained": 7
    },
    "last_day": "20261109",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 28,
+   "rollouts": 24,
    "checkpoints": [
     16000
    ]
@@ -409,13 +410,14 @@
    ],
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 9
+    "restart": 6,
+    "untrained": 7
    },
    "last_day": "20261109",
    "rows": [
     "mango-pudding-16000-sync"
    ],
-   "rollouts": 28,
+   "rollouts": 24,
    "checkpoints": [
     16000
    ]
@@ -2168,6 +2170,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R3",
@@ -2293,6 +2298,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L4->R1",
@@ -2368,6 +2376,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -2428,6 +2439,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -2509,6 +2523,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R6",
@@ -2619,6 +2636,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R6",
@@ -2750,6 +2770,9 @@
      "L1->L6": 2
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R6",
@@ -2768,7 +2791,7 @@
     },
     {
      "move": "L3->L1",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -2783,7 +2806,7 @@
     },
     {
      "move": "L3->R6",
-     "demos": 3,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -2798,7 +2821,7 @@
     },
     {
      "move": "R1->L6",
-     "demos": 2,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -2813,7 +2836,7 @@
     },
     {
      "move": "R6->L6",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -2947,10 +2970,13 @@
      "R4->L5": 1
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L1",
-     "demos": 4,
+     "demos": 7,
      "rollouts": 3,
      "grasped_right": 3,
      "lifted": 2,
@@ -2965,7 +2991,7 @@
     },
     {
      "move": "R3->L6",
-     "demos": 3,
+     "demos": 6,
      "rollouts": 3,
      "grasped_right": 3,
      "lifted": 3,
@@ -2980,7 +3006,7 @@
     },
     {
      "move": "L1->R1",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 1,
      "lifted": 1,
@@ -2995,7 +3021,7 @@
     },
     {
      "move": "L3->R1",
-     "demos": 3,
+     "demos": 5,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 1,
@@ -3010,7 +3036,7 @@
     },
     {
      "move": "L3->R6",
-     "demos": 3,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 0,
      "lifted": 0,
@@ -3025,7 +3051,7 @@
     },
     {
      "move": "L6->R3",
-     "demos": 3,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 1,
      "lifted": 1,
@@ -3040,7 +3066,7 @@
     },
     {
      "move": "R1->L6",
-     "demos": 2,
+     "demos": 6,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 1,
@@ -3055,7 +3081,7 @@
     },
     {
      "move": "R6->L6",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 1,
      "lifted": 0,
@@ -3070,7 +3096,7 @@
     },
     {
      "move": "L1->R3",
-     "demos": 4,
+     "demos": 9,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3100,7 +3126,7 @@
     },
     {
      "move": "L3->R3",
-     "demos": 4,
+     "demos": 3,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3115,7 +3141,7 @@
     },
     {
      "move": "L3->bin",
-     "demos": 3,
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -3130,7 +3156,7 @@
     },
     {
      "move": "L6->L1",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -3145,7 +3171,7 @@
     },
     {
      "move": "L6->bin",
-     "demos": 3,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3160,7 +3186,7 @@
     },
     {
      "move": "R1->L1",
-     "demos": 3,
+     "demos": 5,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3175,7 +3201,7 @@
     },
     {
      "move": "R1->L3",
-     "demos": 3,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3190,7 +3216,7 @@
     },
     {
      "move": "R1->R6",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3205,7 +3231,7 @@
     },
     {
      "move": "R1->bin",
-     "demos": 3,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -3220,7 +3246,7 @@
     },
     {
      "move": "R3->L3",
-     "demos": 2,
+     "demos": 5,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3250,7 +3276,7 @@
     },
     {
      "move": "R6->L1",
-     "demos": 4,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3265,7 +3291,7 @@
     },
     {
      "move": "R6->L3",
-     "demos": 3,
+     "demos": 8,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3280,7 +3306,7 @@
     },
     {
      "move": "R6->R1",
-     "demos": 0,
+     "demos": 1,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -3305,16 +3331,16 @@
    "ema": false,
    "label": "Mango Pudding · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 28,
+   "rollouts": 24,
    "grasped_right": 20,
-   "lifted": 16,
-   "released": 8,
+   "lifted": 20,
+   "released": 12,
    "seen_in_slot": 8,
    "stages": {
-    "no_grasp": 8,
-    "grasped": 4,
+    "no_grasp": 4,
+    "grasped": 0,
     "carried": 8,
-    "released": 8
+    "released": 12
    },
    "days": [
     "20261108",
@@ -3331,41 +3357,41 @@
      "released": 2
     },
     "L3": {
-     "rollouts": 6,
+     "rollouts": 5,
      "grasped_right": 5,
-     "released": 1
+     "released": 2
     },
     "L6": {
-     "rollouts": 5,
-     "grasped_right": 3,
+     "rollouts": 4,
+     "grasped_right": 2,
      "released": 0
     },
     "R1": {
-     "rollouts": 5,
-     "grasped_right": 3,
-     "released": 2
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 3
     },
     "R3": {
      "rollouts": 4,
-     "grasped_right": 2,
-     "released": 1
+     "grasped_right": 4,
+     "released": 3
     },
     "R6": {
-     "rollouts": 5,
-     "grasped_right": 4,
+     "rollouts": 4,
+     "grasped_right": 2,
      "released": 2
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 7,
-     "grasped_right": 4,
-     "released": 1
+     "rollouts": 4,
+     "grasped_right": 2,
+     "released": 2
     },
     "L3": {
      "rollouts": 3,
-     "grasped_right": 2,
-     "released": 1
+     "grasped_right": 3,
+     "released": 2
     },
     "L6": {
      "rollouts": 3,
@@ -3374,18 +3400,18 @@
     },
     "R1": {
      "rollouts": 4,
-     "grasped_right": 4,
-     "released": 2
+     "grasped_right": 3,
+     "released": 3
     },
     "R3": {
      "rollouts": 3,
-     "grasped_right": 2,
+     "grasped_right": 3,
      "released": 0
     },
     "R6": {
-     "rollouts": 6,
-     "grasped_right": 4,
-     "released": 1
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
     },
     "bin": {
      "rollouts": 2,
@@ -3394,20 +3420,20 @@
     }
    },
    "untrained": {
-    "rollouts": 9,
-    "grasped_right": 6,
+    "rollouts": 7,
+    "grasped_right": 4,
     "lifted": 4,
-    "released": 4,
+    "released": 3,
     "seen_in_slot": 3,
     "stages": {
      "no_grasp": 3,
-     "grasped": 2,
-     "carried": 0,
-     "released": 4
+     "grasped": 0,
+     "carried": 1,
+     "released": 3
     },
     "moves": {
-     "L1->L6": 2,
-     "L2->R6": 2,
+     "L1->L6": 1,
+     "L2->R6": 1,
      "L3->R4": 1,
      "L5->bin": 1,
      "R2->bin": 1,
@@ -3415,70 +3441,432 @@
      "R5->L1": 1
     }
    },
+   "scored_by": "notes",
+   "restarts": 6,
+   "noted_moves": [
+    {
+     "n": "1",
+     "move": "R3->L1",
+     "trained": true,
+     "demos": 7,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261108_235412_t0"
+    },
+    {
+     "n": "2",
+     "move": "R3->L3",
+     "trained": true,
+     "demos": 5,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed placing ( a bit in front of the rack",
+     "take": "016000_20261108_235412_t1"
+    },
+    {
+     "n": "3",
+     "move": "R3->L6",
+     "trained": true,
+     "demos": 6,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 1,
+     "note": "placed in slot 5 (nearly 6!)",
+     "take": "016000_20261108_235412_t2"
+    },
+    {
+     "n": "4",
+     "move": "R3->bin",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261108_235412_t3"
+    },
+    {
+     "n": "5",
+     "move": "L3->R1",
+     "trained": true,
+     "demos": 5,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed placing, in fron tof teh rack of slot 1",
+     "take": "016000_20261108_235412_t4"
+    },
+    {
+     "n": "6",
+     "move": "L3->R3",
+     "trained": true,
+     "demos": 3,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "placed in slot 2",
+     "take": "016000_20261108_235412_t5"
+    },
+    {
+     "n": "7",
+     "move": "L3->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "was going for slot 3, that is taken by a vial",
+     "take": "016000_20261108_235412_t6"
+    },
+    {
+     "n": "8",
+     "move": "L3->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 2,
+     "note": "same as tge one before it",
+     "take": "016000_20261109_000538_t0"
+    },
+    {
+     "n": "9",
+     "move": "L3->bin",
+     "trained": true,
+     "demos": 7,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t1"
+    },
+    {
+     "n": "10",
+     "move": "R6->R1",
+     "trained": true,
+     "demos": 1,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t2"
+    },
+    {
+     "n": "11",
+     "move": "R1->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t3"
+    },
+    {
+     "n": "12",
+     "move": "L1->L6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": true,
+     "attempts": 2,
+     "note": "didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip ( ran it twice on different colors)",
+     "take": "016000_20261109_000538_t6"
+    },
+    {
+     "n": "13",
+     "move": "L6->L1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 2,
+     "note": "didnt grasp it properly at all, like it the vial was in the middle, but teh gripper wont grip",
+     "take": "016000_20261109_000538_t7"
+    },
+    {
+     "n": "14",
+     "move": "L1->R1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "dropped just behind of the rack of slot 1",
+     "take": "016000_20261109_000538_t8"
+    },
+    {
+     "n": "15",
+     "move": "L1->R3",
+     "trained": true,
+     "demos": 9,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 2 but barely 3",
+     "take": "016000_20261109_000538_t9"
+    },
+    {
+     "n": "16",
+     "move": "L1->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t10"
+    },
+    {
+     "n": "17",
+     "move": "L6->R1",
+     "trained": true,
+     "demos": 6,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "couldnt grasp (same as before!)",
+     "take": "016000_20261109_000538_t11"
+    },
+    {
+     "n": "18",
+     "move": "L6->R3",
+     "trained": true,
+     "demos": 4,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 1 but was meanign 3 (i know) but in this scene i only kept 1 vial",
+     "take": "016000_20261109_000538_t12"
+    },
+    {
+     "n": "19",
+     "move": "L6->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": true,
+     "attempts": 1,
+     "note": "couldnt grasp it at first, but then it could and it went to slot 3 that had a vial",
+     "take": "016000_20261109_000538_t13"
+    },
+    {
+     "n": "20",
+     "move": "R1->L1",
+     "trained": true,
+     "demos": 5,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 2,
+     "note": "barely at slot 1 (missed drop)",
+     "take": "016000_20261109_000538_t15"
+    },
+    {
+     "n": "21",
+     "move": "R1->L3",
+     "trained": true,
+     "demos": 6,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 2",
+     "take": "016000_20261109_000538_t16"
+    },
+    {
+     "n": "22",
+     "move": "R1->L6",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t17"
+    },
+    {
+     "n": "24",
+     "move": "R6->L1",
+     "trained": true,
+     "demos": 6,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": true,
+     "attempts": 2,
+     "note": "couldnt grasp at first then went to slot 5 and stayed there (missed pickup",
+     "take": "016000_20261109_000538_t19"
+    },
+    {
+     "n": "25",
+     "move": "R6->L3",
+     "trained": true,
+     "demos": 8,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t20"
+    },
+    {
+     "n": "26",
+     "move": "R6->L6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "couldnt grasp it",
+     "take": "016000_20261109_000538_t21"
+    },
+    {
+     "n": "25b",
+     "move": "R5->L1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t22"
+    },
+    {
+     "n": "26b",
+     "move": "L2->R6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 2,
+     "note": "couldnt grab it",
+     "take": "016000_20261109_000538_t24"
+    },
+    {
+     "n": "27",
+     "move": "R3->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L4",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 4",
+     "take": "016000_20261109_000538_t25"
+    },
+    {
+     "n": "28",
+     "move": "L3->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "couldnt grab it",
+     "take": "016000_20261109_000538_t26"
+    },
+    {
+     "n": "29",
+     "move": "L5->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t27"
+    },
+    {
+     "n": "30",
+     "move": "R2->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_000538_t28"
+    }
+   ],
    "moves": [
     {
      "move": "L3->R6",
-     "demos": 3,
-     "rollouts": 3,
+     "demos": 4,
+     "rollouts": 2,
      "grasped_right": 2,
      "lifted": 2,
      "released": 0,
      "seen_in_slot": 0,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 0,
       "grasped": 0,
       "carried": 2,
       "released": 0
      }
     },
     {
-     "move": "L6->L1",
-     "demos": 0,
-     "rollouts": 2,
-     "grasped_right": 1,
-     "lifted": 0,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 1,
-      "grasped": 1,
-      "carried": 0,
-      "released": 0
-     }
-    },
-    {
-     "move": "R1->L1",
-     "demos": 3,
-     "rollouts": 2,
-     "grasped_right": 2,
-     "lifted": 2,
-     "released": 1,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 1,
-      "released": 1
-     }
-    },
-    {
-     "move": "R6->L1",
-     "demos": 4,
-     "rollouts": 2,
-     "grasped_right": 1,
-     "lifted": 0,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 1,
-      "grasped": 1,
-      "carried": 0,
-      "released": 0
-     }
-    },
-    {
      "move": "L1->R1",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3493,7 +3881,7 @@
     },
     {
      "move": "L1->R3",
-     "demos": 4,
+     "demos": 9,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3523,22 +3911,22 @@
     },
     {
      "move": "L3->R1",
-     "demos": 3,
+     "demos": 5,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
-     "released": 0,
+     "released": 1,
      "seen_in_slot": 0,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
-      "carried": 1,
-      "released": 0
+      "carried": 0,
+      "released": 1
      }
     },
     {
      "move": "L3->R3",
-     "demos": 4,
+     "demos": 3,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3553,7 +3941,7 @@
     },
     {
      "move": "L3->bin",
-     "demos": 3,
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3567,23 +3955,8 @@
      }
     },
     {
-     "move": "L6->R1",
-     "demos": 3,
-     "rollouts": 1,
-     "grasped_right": 1,
-     "lifted": 0,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 1,
-      "carried": 0,
-      "released": 0
-     }
-    },
-    {
-     "move": "L6->R3",
-     "demos": 3,
+     "move": "L6->L1",
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -3593,6 +3966,36 @@
       "no_grasp": 1,
       "grasped": 0,
       "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R1",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R3",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
       "released": 0
      }
     },
@@ -3612,23 +4015,38 @@
      }
     },
     {
-     "move": "R1->L3",
-     "demos": 3,
+     "move": "R1->L1",
+     "demos": 5,
      "rollouts": 1,
-     "grasped_right": 0,
-     "lifted": 0,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R1->L3",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
      "released": 0,
      "seen_in_slot": 0,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 0,
       "grasped": 0,
-      "carried": 0,
+      "carried": 1,
       "released": 0
      }
     },
     {
      "move": "R1->L6",
-     "demos": 2,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3643,37 +4061,52 @@
     },
     {
      "move": "R1->R6",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
-     "grasped_right": 0,
-     "lifted": 0,
-     "released": 0,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
      "seen_in_slot": 1,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 0,
       "grasped": 0,
       "carried": 0,
-      "released": 0
+      "released": 1
      }
     },
     {
      "move": "R3->L1",
-     "demos": 4,
+     "demos": 7,
      "rollouts": 1,
-     "grasped_right": 0,
-     "lifted": 0,
-     "released": 0,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
      "seen_in_slot": 1,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 0,
       "grasped": 0,
       "carried": 0,
-      "released": 0
+      "released": 1
      }
     },
     {
      "move": "R3->L3",
-     "demos": 2,
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R3->L6",
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3683,21 +4116,6 @@
       "no_grasp": 0,
       "grasped": 0,
       "carried": 1,
-      "released": 0
-     }
-    },
-    {
-     "move": "R3->L6",
-     "demos": 3,
-     "rollouts": 1,
-     "grasped_right": 0,
-     "lifted": 0,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 1,
-      "grasped": 0,
-      "carried": 0,
       "released": 0
      }
     },
@@ -3717,8 +4135,23 @@
      }
     },
     {
+     "move": "R6->L1",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
      "move": "R6->L3",
-     "demos": 3,
+     "demos": 8,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3733,22 +4166,22 @@
     },
     {
      "move": "R6->L6",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 1,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "lifted": 0,
      "released": 0,
      "seen_in_slot": 0,
      "stages": {
-      "no_grasp": 0,
-      "grasped": 1,
+      "no_grasp": 1,
+      "grasped": 0,
       "carried": 0,
       "released": 0
      }
     },
     {
      "move": "R6->R1",
-     "demos": 0,
+     "demos": 1,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -3805,6 +4238,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -3875,6 +4311,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L3->R3",
@@ -3950,6 +4389,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -4055,6 +4497,9 @@
      "L3->L6": 1
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R6",
@@ -4230,10 +4675,13 @@
      "L1->L6": 1
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L3->R6",
-     "demos": 3,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 2,
@@ -4248,7 +4696,7 @@
     },
     {
      "move": "R6->L6",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 2,
@@ -4278,7 +4726,7 @@
     },
     {
      "move": "L3->L1",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 0,
@@ -4293,7 +4741,7 @@
     },
     {
      "move": "L3->bin",
-     "demos": 3,
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4308,7 +4756,7 @@
     },
     {
      "move": "L6->L1",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4323,7 +4771,7 @@
     },
     {
      "move": "R1->L6",
-     "demos": 2,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 0,
      "lifted": 0,
@@ -4338,7 +4786,7 @@
     },
     {
      "move": "R6->R1",
-     "demos": 0,
+     "demos": 1,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4363,16 +4811,16 @@
    "ema": false,
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 28,
-   "grasped_right": 26,
-   "lifted": 25,
-   "released": 19,
+   "rollouts": 24,
+   "grasped_right": 24,
+   "lifted": 24,
+   "released": 20,
    "seen_in_slot": 17,
    "stages": {
-    "no_grasp": 2,
-    "grasped": 1,
-    "carried": 6,
-    "released": 19
+    "no_grasp": 0,
+    "grasped": 0,
+    "carried": 4,
+    "released": 20
    },
    "days": [
     "20261109"
@@ -4387,29 +4835,29 @@
      "released": 2
     },
     "L3": {
-     "rollouts": 6,
-     "grasped_right": 6,
-     "released": 4
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
     },
     "L6": {
-     "rollouts": 6,
-     "grasped_right": 5,
+     "rollouts": 4,
+     "grasped_right": 4,
      "released": 3
     },
     "R1": {
-     "rollouts": 5,
+     "rollouts": 4,
      "grasped_right": 4,
      "released": 4
     },
     "R3": {
      "rollouts": 4,
      "grasped_right": 4,
-     "released": 3
+     "released": 2
     },
     "R6": {
      "rollouts": 4,
      "grasped_right": 4,
-     "released": 3
+     "released": 4
     }
    },
    "by_destination": {
@@ -4419,9 +4867,9 @@
      "released": 3
     },
     "L3": {
-     "rollouts": 4,
+     "rollouts": 3,
      "grasped_right": 3,
-     "released": 3
+     "released": 2
     },
     "L6": {
      "rollouts": 3,
@@ -4429,19 +4877,19 @@
      "released": 3
     },
     "R1": {
-     "rollouts": 5,
-     "grasped_right": 5,
-     "released": 3
+     "rollouts": 4,
+     "grasped_right": 4,
+     "released": 4
     },
     "R3": {
-     "rollouts": 5,
-     "grasped_right": 4,
+     "rollouts": 3,
+     "grasped_right": 3,
      "released": 1
     },
     "R6": {
      "rollouts": 5,
      "grasped_right": 5,
-     "released": 4
+     "released": 5
     },
     "bin": {
      "rollouts": 2,
@@ -4450,106 +4898,453 @@
     }
    },
    "untrained": {
-    "rollouts": 9,
-    "grasped_right": 7,
+    "rollouts": 7,
+    "grasped_right": 6,
     "lifted": 6,
-    "released": 5,
+    "released": 6,
     "seen_in_slot": 4,
     "stages": {
-     "no_grasp": 2,
-     "grasped": 1,
-     "carried": 1,
-     "released": 5
+     "no_grasp": 1,
+     "grasped": 0,
+     "carried": 0,
+     "released": 6
     },
     "moves": {
      "L1->L6": 1,
-     "L2->R6": 2,
+     "L2->R6": 1,
      "L3->R4": 1,
      "L5->bin": 1,
-     "R2->bin": 2,
+     "R2->bin": 1,
      "R3->L5": 1,
      "R5->L1": 1
     }
    },
+   "scored_by": "notes",
+   "restarts": 6,
+   "noted_moves": [
+    {
+     "n": "1",
+     "move": "R3->L1",
+     "trained": true,
+     "demos": 7,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 2",
+     "take": "016000_20261109_005026_t0"
+    },
+    {
+     "n": "2",
+     "move": "R3->L3",
+     "trained": true,
+     "demos": 5,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 2",
+     "take": "016000_20261109_005026_t1"
+    },
+    {
+     "n": "3",
+     "move": "R3->L6",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t2"
+    },
+    {
+     "n": "4",
+     "move": "R3->bin",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t3"
+    },
+    {
+     "n": "5",
+     "move": "L3->R1",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t4"
+    },
+    {
+     "n": "6",
+     "move": "L3->R3",
+     "trained": true,
+     "demos": 3,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "016000_20261109_005026_t6"
+    },
+    {
+     "n": "7",
+     "move": "L3->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t7"
+    },
+    {
+     "n": "8",
+     "move": "L3->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": true,
+     "attempts": 1,
+     "note": "didnt grasp it at first but then grasp and success",
+     "take": "016000_20261109_005026_t8"
+    },
+    {
+     "n": "9",
+     "move": "L3->bin",
+     "trained": true,
+     "demos": 7,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t9"
+    },
+    {
+     "n": "10",
+     "move": "R6->R1",
+     "trained": true,
+     "demos": 1,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "placed in front of slot 1",
+     "take": "016000_20261109_005026_t10"
+    },
+    {
+     "n": "11",
+     "move": "R1->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "put behind slot 6",
+     "take": "016000_20261109_005026_t11"
+    },
+    {
+     "n": "12",
+     "move": "L1->L6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "didnt grasp it",
+     "take": "016000_20261109_005026_t12"
+    },
+    {
+     "n": "13",
+     "move": "L6->L1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t13"
+    },
+    {
+     "n": "14",
+     "move": "L1->R1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in front of slot 1 of right rack",
+     "take": "016000_20261109_005026_t14"
+    },
+    {
+     "n": "15",
+     "move": "L1->R3",
+     "trained": true,
+     "demos": 9,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in slot 2",
+     "take": "016000_20261109_005026_t15"
+    },
+    {
+     "n": "16",
+     "move": "L1->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t16"
+    },
+    {
+     "n": "17",
+     "move": "L6->R1",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "016000_20261109_005026_t18"
+    },
+    {
+     "n": "18",
+     "move": "L6->R3",
+     "trained": true,
+     "demos": 4,
+     "outcome": "never_let_go",
+     "stage": "carried",
+     "ended": "R3/R4",
+     "retried": false,
+     "attempts": 2,
+     "note": "stuck between slot 3 and 4 and didnt put the vial in any",
+     "take": "016000_20261109_005026_t20"
+    },
+    {
+     "n": "19",
+     "move": "L6->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t21"
+    },
+    {
+     "n": "20",
+     "move": "R1->L1",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t22"
+    },
+    {
+     "n": "21",
+     "move": "R1->L3",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "016000_20261109_005026_t24"
+    },
+    {
+     "n": "22",
+     "move": "R1->L6",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t25"
+    },
+    {
+     "n": "24",
+     "move": "R6->L1",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t26"
+    },
+    {
+     "n": "25",
+     "move": "R6->L3",
+     "trained": true,
+     "demos": 8,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t27"
+    },
+    {
+     "n": "26",
+     "move": "R6->L6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t28"
+    },
+    {
+     "n": "25b",
+     "move": "R5->L1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t29"
+    },
+    {
+     "n": "26b",
+     "move": "L2->R6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": true,
+     "attempts": 2,
+     "note": "picked the wrong vial (4th slot one), then i retried when putting the other vial in 5th slot then it carried teh one in 2nd slot but missed drop behind the 6th slot of right rack",
+     "take": "016000_20261109_005026_t31"
+    },
+    {
+     "n": "27",
+     "move": "R3->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "drop_missed",
+     "stage": "released",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 1,
+     "note": "was going to 5th slot but dropped it in front of the rack",
+     "take": "016000_20261109_005026_t32"
+    },
+    {
+     "n": "28",
+     "move": "L3->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R4",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t33"
+    },
+    {
+     "n": "29",
+     "move": "L5->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261109_005026_t34"
+    },
+    {
+     "n": "30",
+     "move": "R2->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": true,
+     "attempts": 2,
+     "note": "was going to slot 3 or 4 (missed grasp) but i retried with removing one of teh neighboring vials from the dest vial, and then it succeeded",
+     "take": "016000_20261109_005026_t36"
+    }
+   ],
    "moves": [
     {
-     "move": "L3->R3",
+     "move": "L3->R6",
      "demos": 4,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 2,
-     "released": 1,
-     "seen_in_slot": 1,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 1,
-      "released": 1
-     }
-    },
-    {
-     "move": "L3->R6",
-     "demos": 3,
-     "rollouts": 2,
-     "grasped_right": 2,
-     "lifted": 2,
-     "released": 1,
+     "released": 2,
      "seen_in_slot": 2,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
-      "carried": 1,
-      "released": 1
-     }
-    },
-    {
-     "move": "L6->R1",
-     "demos": 3,
-     "rollouts": 2,
-     "grasped_right": 2,
-     "lifted": 1,
-     "released": 1,
-     "seen_in_slot": 1,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 1,
       "carried": 0,
-      "released": 1
-     }
-    },
-    {
-     "move": "L6->R3",
-     "demos": 3,
-     "rollouts": 2,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 1,
-      "grasped": 0,
-      "carried": 1,
-      "released": 0
-     }
-    },
-    {
-     "move": "R1->L3",
-     "demos": 3,
-     "rollouts": 2,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 1,
-     "seen_in_slot": 1,
-     "stages": {
-      "no_grasp": 1,
-      "grasped": 0,
-      "carried": 0,
-      "released": 1
+      "released": 2
      }
     },
     {
      "move": "L1->R1",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4564,7 +5359,7 @@
     },
     {
      "move": "L1->R3",
-     "demos": 4,
+     "demos": 9,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4594,6 +5389,21 @@
     },
     {
      "move": "L3->R1",
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L3->R3",
      "demos": 3,
      "rollouts": 1,
      "grasped_right": 1,
@@ -4609,7 +5419,7 @@
     },
     {
      "move": "L3->bin",
-     "demos": 3,
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4624,7 +5434,7 @@
     },
     {
      "move": "L6->L1",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4635,6 +5445,36 @@
       "grasped": 0,
       "carried": 0,
       "released": 1
+     }
+    },
+    {
+     "move": "L6->R1",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L6->R3",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
      }
     },
     {
@@ -4654,7 +5494,22 @@
     },
     {
      "move": "R1->L1",
-     "demos": 3,
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R1->L3",
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4669,7 +5524,7 @@
     },
     {
      "move": "R1->L6",
-     "demos": 2,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4684,7 +5539,7 @@
     },
     {
      "move": "R1->R6",
-     "demos": 0,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4699,7 +5554,7 @@
     },
     {
      "move": "R3->L1",
-     "demos": 4,
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4714,22 +5569,22 @@
     },
     {
      "move": "R3->L3",
-     "demos": 2,
+     "demos": 5,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
-     "released": 1,
+     "released": 0,
      "seen_in_slot": 0,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
-      "carried": 0,
-      "released": 1
+      "carried": 1,
+      "released": 0
      }
     },
     {
      "move": "R3->L6",
-     "demos": 3,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4759,7 +5614,7 @@
     },
     {
      "move": "R6->L1",
-     "demos": 4,
+     "demos": 6,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4774,7 +5629,7 @@
     },
     {
      "move": "R6->L3",
-     "demos": 3,
+     "demos": 8,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4789,7 +5644,7 @@
     },
     {
      "move": "R6->L6",
-     "demos": 2,
+     "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -4804,17 +5659,17 @@
     },
     {
      "move": "R6->R1",
-     "demos": 0,
+     "demos": 1,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
-     "released": 0,
+     "released": 1,
      "seen_in_slot": 0,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
-      "carried": 1,
-      "released": 0
+      "carried": 0,
+      "released": 1
      }
     }
    ]
@@ -4876,6 +5731,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L4->R1",
@@ -5009,6 +5867,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -5211,6 +6072,9 @@
      "R5->bin": 4
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L3->R3",
@@ -5326,6 +6190,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R1",
@@ -5437,6 +6304,9 @@
     }
    },
    "untrained": null,
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "R3->L6",
@@ -5589,6 +6459,9 @@
      "R4->L5": 1
     }
    },
+   "scored_by": "arm",
+   "restarts": 0,
+   "noted_moves": null,
    "moves": [
     {
      "move": "L1->R6",

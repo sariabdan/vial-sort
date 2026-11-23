@@ -37,7 +37,7 @@
     "wrist"
    ],
    "move": "L3->R4",
-   "stage": "carried",
+   "stage": "released",
    "caption": "Plain Bagel at 16k steps, L3 → R4. No demonstration ever put a vial in slot 4, and the vial ends in R4.",
    "vial": "lime",
    "at": "R4",
@@ -61,7 +61,7 @@
     "wrist"
    ],
    "move": "R3->L6",
-   "stage": "no_grasp",
+   "stage": "carried",
    "caption": "Mango Pudding at 16k steps, R3 → L6, 8 November: the same move as the first clip, from the model trained on from Mango Rice. It stops one slot short, in L5.",
    "vial": "red",
    "at": "L5",

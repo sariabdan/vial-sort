@@ -19,6 +19,8 @@ const bounds = [10, 12, 14, 19];
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
 const lo = results.left_out;
 const eye = results.eye as Record<string, number>;
+const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+const noted = andList(results.noted_models);
 
 const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
@@ -108,6 +110,11 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
                 ))}
               </div>
               <div class="bar-n num">{`n = ${r.rollouts}`}</div>
+              {r.scored_by === 'notes' && (
+                <p class="bar-untr">{`Scored from the operator's notes, not the arm: one rollout per noted move` +
+                  `${r.restarts ? ` (${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside their move)` : ''}. ` +
+                  `The vial was in the slot in ${r.seen_in_slot} of the ${r.released} let go at the asked slot.`}</p>
+              )}
               {r.untrained && (
                 <p class="bar-untr">{`Beside it, not counted in n: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves ` +
                   `it was never trained on (${Object.keys(r.untrained.moves).map(moveLabel).join(', ')}). The vial ended in the asked slot in ` +
@@ -133,7 +140,8 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
         <p class="note after">
           {`A rollout is counted once, in the furthest outcome it reached. `}<Term k="letgo">Let go at the asked slot</Term>{` is read from the arm: ` +
             `a person who watched the rollouts that reached it found the vial in the slot ${eye.in_slot} times, not in it ${eye.not_in_slot} times, ` +
-            `and could not tell ${eye.unclear} times.`}
+            `and could not tell ${eye.unclear} times.` +
+            (noted ? ` ${noted} are the exception: they are scored from the operator's notes at the robot, move by move.` : '')}
         </p>
       </section>
 
@@ -191,9 +199,11 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
         <p>
           {`They are small. The biggest row has ${Math.max(...rows.map((r) => r.rollouts))} rollouts and many have one to five, so one more ` +
             `good or bad rollout moves a row a long way, and the rows are not a controlled comparison: they differ in training data, ` +
-            `length and mode. These were test runs during development, and the moves are uneven. The scorer reads the arm, not the vial. ` +
+            `length and mode. These were test runs during development, and the moves are uneven. The scorer reads the arm, not the vial` +
+            (noted ? ` (${noted} are scored from the operator's notes instead). ` : '. ') +
             `Left out: ${lo.short} rollouts under 3 seconds, ${lo.untrained} on moves no demonstration contains, ${lo.unreadable} with a command ` +
-            `the scorer cannot read and ${lo.earlier_scene} from an earlier table layout. For a person-scored evaluation of a different, earlier ` +
+            `the scorer cannot read` + (lo.restart ? `, ${lo.earlier_scene} from an earlier table layout and ${lo.restart} restarts of a move ` +
+              `the operator noted once` : ` and ${lo.earlier_scene} from an earlier table layout`) + `. For a person-scored evaluation of a different, earlier ` +
             `system see `}<a href={url('previous/results/')}>the August evaluation</a>{`; the two should not be compared.`}
         </p>
       </section>

@@ -23,7 +23,18 @@ const leftText = [
   left.untrained && `${left.untrained} asked for moves no demonstration contains`,
   left.unreadable && `${left.unreadable} had a command the scorer cannot read`,
   left.earlier_scene && `${left.earlier_scene} ran on an earlier layout of the table`,
+  left.restart && `${left.restart} were restarts of a move the operator noted once`,
 ].filter(Boolean).join(', ');
+// A row scored from the operator's notes (notes/*.yaml) lists every noted move in the order it was run.
+const OUTCOME: Record<string, string> = {
+  placed: 'In the slot', drop_missed: 'Let go at the slot, ended beside it', off_slot: 'Let go at another slot',
+  never_let_go: 'Never let go', no_grasp: 'Never picked it up', wrong_vial: 'Took another vial',
+};
+const stageIdx = (key: string) => stages.findIndex((s) => s.key === key);
+const fromOf = (move: string) => move.split('->')[0];
+const endedText = (ended: string | null, move: string) =>
+  ended === null ? '–' : ended === 'source' ? `still in ${fromOf(move)}` : ended === 'bin' ? 'the bin'
+    : ended.includes('/') ? `between ${ended.replace('/', ' and ')}` : ended;
 const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b : a)).key : null;
 ---
 <article class="model" data-model={m.id} id={m.id}>
@@ -49,6 +60,13 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       <p class="note">
         {`Scored rollouts only, one row per checkpoint and mode, never pooled. Left out for this model: ${leftText || 'none'}.`}
       </p>
+      {rows.filter((r) => r.scored_by === 'notes').map((r) => (
+        <p class="note">{`${r.short} is scored from the operator's notes at the robot, not read from the arm: one rollout per noted ` +
+          `move${r.restarts ? `, its ${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside the move` : ''}. A vial that ended in ` +
+          `the asked slot, or was let go there and ended beside it, counts as let go at the asked slot (the vial was in the slot in ` +
+          `${r.seen_in_slot} of ${r.released}); one put in another slot or never let go, as let go elsewhere; one never picked up, as ` +
+          `missed. The notes do not tell grasped-but-not-lifted apart from missed.`}</p>
+      ))}
       {rows.filter((r) => r.untrained).map((r) => (
         <p class="note">{`Beside the table, ${r.short}: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves no demonstration ` +
           `it trained on contains (${Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')}). The right vial was grasped in ` +
@@ -75,10 +93,37 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
 
       <h4>Move by move</h4>
       <p class="note">
-        {`Each move this model was asked, with the number of demonstrations of that exact move in the training data. One block per checkpoint; the one with the most rollouts is open.`}
+        {`Each move this model was asked, with the number of demonstrations of that exact move in the training data. One block per checkpoint; the one with the most rollouts is open.` +
+          (rows.some((r) => r.noted_moves) ? ` A checkpoint scored from the operator's notes lists every noted move in the order it was run, with the note as written.` : '')}
       </p>
       <div class="moves">
-        {rows.map((r) => (
+        {rows.map((r) => r.noted_moves ? (
+          <details open={r.key === biggest}>
+            <summary>{`${r.short}: ${r.noted_moves.length} moves as noted at the robot, ${r.rollouts} of them trained`}</summary>
+            <div class="table-scroll">
+              <table class="data noted">
+                <thead>
+                  <tr>
+                    <th class="r">#</th><th>Move</th><th class="r">Demonstrations</th><th>What happened</th><th class="ended">Where the vial ended</th><th>The operator's note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {r.noted_moves.map((mv) => (
+                    <tr class:list={[!mv.trained && 'untrained']}>
+                      <td class="r num">{mv.n}</td>
+                      <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">not trained, beside n</span>}</td>
+                      <td class="r num">{mv.demos}</td>
+                      <td class="what-col"><i class="sw" style={`background: var(--st-${stageIdx(mv.stage) + 1})`}></i>{OUTCOME[mv.outcome] ?? mv.outcome}
+                        {mv.attempts > 1 && <span class="tag">{`${mv.attempts} rollouts, the last one counted`}</span>}</td>
+                      <td class="ended">{endedText(mv.ended, mv.move)}</td>
+                      <td class="said">{`“${mv.note}”`}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        ) : (
           <details open={r.key === biggest}>
             <summary>{`${r.short}: ${r.rollouts} rollouts, ${r.moves.length} move${r.moves.length === 1 ? '' : 's'}`}</summary>
             <div class="table-scroll">
@@ -179,6 +224,12 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: -0.05rem; }
   .stages th { font-size: var(--step--1); vertical-align: bottom; }
   .zero { color: var(--steel); }
+  .noted td { vertical-align: top; }
+  .noted .what-col, .noted .ended { white-space: nowrap; }
+  .noted .said { color: var(--ink-2); font-size: var(--step--1); min-width: 16rem; }
+  .noted .tag { display: block; font-size: 0.75rem; color: var(--ink-2); white-space: nowrap; }
+  .noted .what-col .tag { margin-left: 1.15rem; }
+  .noted tr.untrained td { background: var(--raise); }
   .moves { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
   .moves details { min-width: 0; }
   .moves summary { cursor: pointer; font-weight: 560; padding-block: 0.3rem; }

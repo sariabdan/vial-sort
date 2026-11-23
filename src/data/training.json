@@ -819,12 +819,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 2,
-      "grasped": 1,
-      "carried": 6,
-      "released": 19
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 4,
+      "released": 20
      },
-     "takes": 28
+     "takes": 24
     }
    ]
   },
@@ -1647,12 +1647,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 8,
-      "grasped": 4,
+      "no_grasp": 4,
+      "grasped": 0,
       "carried": 8,
-      "released": 8
+      "released": 12
      },
-     "takes": 28
+     "takes": 24
     }
    ]
   },

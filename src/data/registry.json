@@ -29,13 +29,14 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 9
+    "restart": 6,
+    "untrained": 7
    },
    "last_day": "20261109",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 28,
+   "rollouts": 24,
    "checkpoints": [
     16000
    ]
@@ -69,13 +70,14 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 9
+    "restart": 6,
+    "untrained": 7
    },
    "last_day": "20261109",
    "rows": [
     "mango-pudding-16000-sync"
    ],
-   "rollouts": 28,
+   "rollouts": 24,
    "checkpoints": [
     16000
    ]

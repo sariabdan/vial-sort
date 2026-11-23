@@ -1,0 +1,32 @@
+A 16000: plain bagel
+1: R3 L1: put in slot 2
+2: R3 L3: put in slot 2
+3: R3 L6: success
+4: R3 bin: success
+5: L3 R1: success
+6: L3 R3: success
+7: L3 R6: success
+8: L3 R6: didnt grasp it at first but then grasp and success
+9: L3 bin: success
+10: R6 R1: placed in front of slot 1
+11: R1 R6: put behind slot 6
+12: L1 L6: didnt grasp it
+13: L6 L1: success
+14: L1 R1: put in front of slot 1 of right rack
+15: L1 R3: put in slot 2
+16: L1 R6: success
+17: L6 R1: success
+18: L6 R3: stuck between slot 3 and 4 and didnt put the vial in any
+19: L6 R6: success
+20: R1 L1: success
+21: R1 L3: success
+22: R1 L6: success
+24: R6 L1: success
+25: R6 L3: success
+26: R6 L6: success
+25: R5 L1: success
+26: L2 R6: picked the wrong vial (4th slot one), then i retried when putting the other vial in 5th slot then it carried teh one in 2nd slot but missed drop behind the 6th slot of right rack
+27: R3 L5: was going to 5th slot but dropped it in front of the rack
+28: L3 R4: success
+29: L5 bin: success
+30: R2 bin: was going to slot 3 or 4 (missed grasp) but i retried with removing one of teh neighboring vials from the dest vial, and then it succeeded 
