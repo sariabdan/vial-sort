@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import SlotMaps from '../components/SlotMaps.astro';
+import ScoreTable from '../components/ScoreTable.astro';
 import StageLegend from '../components/StageLegend.astro';
 import Clip from '../components/Clip.astro';
 import Term from '../components/Term.astro';
@@ -9,6 +10,7 @@ import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
 import { slotDemos, slotGot, type SlotMap } from '../lib/rackmaps';
+import { scoreRun, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
@@ -41,6 +43,7 @@ const mapsOf = (r: (typeof rows)[number]): SlotMap[] => {
 const clips = media.featured as (typeof media.featured)[number][];
 const total = results.total;
 const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof typeof r.stages];
+const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'disqualified').length;
 ---
 <Base
   page="results"
@@ -94,6 +97,20 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
     </aside>
 
     <div class="main" id="results-main">
+      <section class="block" aria-labelledby="h-score">
+        <h2 id="h-score">Score</h2>
+        <p>
+          {`Every run is scored the same way: at each of the 12 rack slots, the share of its rollouts that ended in the asked slot, ` +
+            `then the mean of those 12 shares, with the bin left out. A run passes with at least ${MIN_PER_SLOT} rollouts at every slot ` +
+            `and a total of at least ${PASS_MARK * 100}%. ` +
+            (qualified ? `${qualified} of the ${rows.length} runs have ${MIN_PER_SLOT} at every slot. `
+              : `No run has ${MIN_PER_SLOT} rollouts at every slot yet, so each one is disqualified; its numbers are shown over the slots it was tried at. `)}
+          <a href={url('experiments/#score')}>How the score works</a>.
+        </p>
+        <ScoreTable rows={rows} follow />
+        <p class="note empty" id="score-empty" hidden>Nothing ticked. Pick at least one row on the left.</p>
+      </section>
+
       <section class="block" aria-labelledby="h-far">
         <div class="block-head">
           <h2 id="h-far">How far each one got</h2>

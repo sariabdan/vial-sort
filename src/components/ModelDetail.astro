@@ -7,7 +7,8 @@ import media from '../data/media.json';
 import CameraChips from './CameraChips.astro';
 import Clip from './Clip.astro';
 import Term from './Term.astro';
-import { HF, moveLabel } from '../lib/site';
+import ScoreTable from './ScoreTable.astro';
+import { HF, moveLabel, url } from '../lib/site';
 
 type Model = (typeof experiments.models)[number];
 interface Props { m: Model }
@@ -94,6 +95,8 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
           </tbody>
         </table>
       </div>
+      <p class="score-head">Score <a href={url('experiments/#score')}>(how it works)</a></p>
+      <ScoreTable rows={rows.map((r) => ({ key: r.key, label: r.short, by_destination: r.by_destination }))} first="Checkpoint" />
 
       <h4>Move by move</h4>
       <p class="note">
@@ -255,4 +258,6 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   .cam-choice td { vertical-align: top; min-width: 9rem; }
   .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem clamp(1.2rem, 3vw, 2.5rem); margin-top: 0.8rem; }
   @media (max-width: 52rem) { .clips { grid-template-columns: minmax(0, 1fr); } }
+  .score-head { margin-top: 1.4rem; font-weight: 600; }
+  .score-head a { font-weight: 400; }
 </style>

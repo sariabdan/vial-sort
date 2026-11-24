@@ -18,6 +18,9 @@ export const GLOSSARY: Record<string, Entry> = {
   heldout: { term: 'Held out', def: 'Never recorded on purpose: slots 2 and 5 are never a source, and slots 2, 4 and 5 never a destination. They test whether a model can reach slots no demonstration used.' },
   demonstration: { term: 'Demonstration', def: 'One move recorded by a person driving the leader arm while the follower arm copied it, with all cameras and joint positions logged.' },
   scorer: { term: 'Scorer', def: 'A script (assess_rollouts) that reads the arm’s joint angles during a rollout, finds each grasp and release, and works out which slot the arm was at by matching its pose to the same moment in the demonstrations. It is accurate to about half a slot and cannot see the vial.' },
+  score: { term: 'Total accuracy', def: 'The score of a run: for each of the 12 rack slots as the destination, the share of its rollouts that ended in the asked slot, then the mean of those 12 shares. The bin is left out. A run passes with at least 10 rollouts at every slot and a total of at least 70%; fewer than 10 at any slot disqualifies it. Explained under “How a run is scored” on the Experiments page.' },
+  trainacc: { term: 'Trained-slot accuracy', def: 'The same mean over slots 1, 3 and 6 of both racks: the destinations the demonstrations used.' },
+  heldacc: { term: 'Held-out accuracy', def: 'The same mean over slots 2, 4 and 5 of both racks, which no demonstration used as a destination.' },
   eyecheck: { term: 'Eye check', def: 'A person watching the cameras to see where the vial actually ended. Done for only some of the rollouts scored from the arm; a vial a person saw outside the asked slot counts as not in it.' },
   grasp: { term: 'Picked up', def: 'The arm closed the gripper on the vial in the slot the command asked to take it from and lifted it out. Closing on it without lifting it counts as never picked up.' },
   letgo: { term: 'In the asked slot', def: 'The vial ended in the slot the command asked for. A vial dropped in front of or behind the slot does not count. With the operator\'s notes, it is what the operator saw; for models without notes it is read from the arm (it let go at the asked slot, within half a slot), unless a person saw the vial was not in it.' },
@@ -35,5 +38,5 @@ export const GLOSSARY: Record<string, Entry> = {
 /** The order the glossary is printed in: what a reader meets first. */
 export const GLOSSARY_ORDER = [
   'rollout', 'session', 'checkpoint', 'step', 'pass', 'demonstration', 'command', 'wording', 'move', 'slot', 'rack', 'source', 'heldout',
-  'scorer', 'grasp', 'letgo', 'eyecheck', 'n', 'sync', 'rtc', 'ema', 'lora', 'finetune', 'loss', 'gate', 'operator',
+  'scorer', 'grasp', 'letgo', 'score', 'trainacc', 'heldacc', 'eyecheck', 'n', 'sync', 'rtc', 'ema', 'lora', 'finetune', 'loss', 'gate', 'operator',
 ];

@@ -47,8 +47,9 @@ function draw() {
   // in count mode the longest bar is `end` wide so the axis and the segments agree
   bars.style.setProperty('--max', String(scale === 'count' ? t.end : 1));
   document.getElementById('axis')!.innerHTML = chosen.length ? t.html : '';
-  all('.bar-row, .twin tr[data-row]').forEach((el) => (el.hidden = !state.has(el.dataset.row!)));
+  all('.bar-row, .twin tr[data-row], table.score tr[data-row]').forEach((el) => (el.hidden = !state.has(el.dataset.row!)));
   document.getElementById('bars-empty')!.hidden = chosen.length > 0;
+  document.getElementById('score-empty')!.hidden = chosen.length > 0;
 
   // slot maps: the first four ticked
   let shown = 0;

@@ -8,6 +8,7 @@ import experiments from '../data/experiments.json';
 import results from '../data/results.json';
 import { GLOSSARY, GLOSSARY_ORDER } from '../lib/glossary';
 import { url, HF, andList, demoSet } from '../lib/site';
+import { scoreRun, pctOf, verdictText, RACK_SLOTS, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 const models = experiments.models;
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
@@ -18,6 +19,11 @@ const onSet = (set: string) => models.filter((m) => demoSet(m.data) === set).len
 const noted = andList(results.noted_models);
 const sessions = new Set(experiments.rows.flatMap((r) => r.sessions)).size;
 const nameOf = (run: string) => models.find((m) => m.run === run)?.name ?? run;
+// the worked example under "How a run is scored": the run with the most rollouts
+const ex = [...results.rows].sort((a, b) => b.rollouts - a.rollouts)[0];
+const exScore = scoreRun(ex.by_destination);
+const exSlots = RACK_SLOTS.filter((s) => ex.by_destination[s as keyof typeof ex.by_destination])
+  .map((s) => { const v = ex.by_destination[s as keyof typeof ex.by_destination] as { rollouts: number; released: number }; return `${s} ${v.released}/${v.rollouts}`; });
 const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''))[0] ?? models[0];
 ---
 <Base
@@ -95,6 +101,47 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
     </div>
   </section>
 
+  <section class="section" id="score">
+    <div class="wrap">
+      <h2>How a run is scored</h2>
+      <p>
+        {`A run is one model at one checkpoint in one mode. Its score is built slot by slot, so every place on the table counts ` +
+          `the same however many rollouts went there. This is the score on the Results page and in each model's entry below.`}
+      </p>
+      <ol class="steps">
+        <li>For each of the 12 rack slots as the destination: the share of its rollouts that ended in the asked slot.</li>
+        <li>
+          <Term k="score">Total accuracy</Term>{`: the mean of those 12 shares. The bin is left out: it is an easy target and ` +
+            `would lift the score.`}
+        </li>
+        <li>
+          <Term k="trainacc">Trained-slot accuracy</Term>{` and `}<Term k="heldacc">held-out accuracy</Term>{`: the same mean over ` +
+            `slots 1, 3 and 6 of both racks, the destinations the demonstrations used, and over slots 2, 4 and 5, which no ` +
+            `demonstration used as a destination.`}
+        </li>
+        <li>
+          {`A run passes with at least ${MIN_PER_SLOT} rollouts at every one of the 12 slots and a total accuracy of at least ` +
+            `${PASS_MARK * 100}%. With fewer than ${MIN_PER_SLOT} at any slot it is disqualified; its numbers are still shown, ` +
+            `over the slots it was tried at.`}
+        </li>
+      </ol>
+      <p class="note">
+        {`The mean, not the median: the median hides slots that fail. Seven slots at 80% and five at 0% have a median of 80% ` +
+          `but a mean of 47%.`}
+      </p>
+      <p class="note">
+        {`The ${PASS_MARK * 100}% bar is on the mean, not on every slot, because ${MIN_PER_SLOT} rollouts still leave room for ` +
+          `luck. A slot that really works 80% of the time scores 6 of 10 or less about one time in eight, so a model that is ` +
+          `really 80% good everywhere would show at least one slot below 7 of 10 about four times in five. The mean of 120 ` +
+          `rollouts evens that out.`}
+      </p>
+      <p class="note">
+        {`For example, ${ex.label}: ${exSlots.join(', ')}. Total accuracy ${pctOf(exScore.total)}, trained slots ` +
+          `${pctOf(exScore.trained)}, held-out slots ${pctOf(exScore.held)}. ${verdictText(exScore)}.`}
+      </p>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap">
       <h2>The models</h2>
@@ -168,10 +215,10 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
   const articles = [...detail.querySelectorAll<HTMLElement>('[data-model]')];
   const buttons = [...picker.querySelectorAll<HTMLButtonElement>('[data-pick]')];
   const known = new Set(articles.map((a) => a.dataset.model));
-  function show(id: string, scroll = false) {
+  function show(id: string, scroll = false, keepHash = false) {
     articles.forEach((a) => (a.hidden = a.dataset.model !== id));
     buttons.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.pick === id)));
-    try { history.replaceState(null, '', `#${id}`); } catch (e) {}
+    if (!keepHash) try { history.replaceState(null, '', `#${id}`); } catch (e) {}
     if (scroll) picker.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   picker.hidden = false;
@@ -179,7 +226,8 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
   document.querySelectorAll<HTMLAnchorElement>('[data-pick-link]').forEach((a) =>
     a.addEventListener('click', (e) => { e.preventDefault(); show(a.dataset.pickLink!, true); }));
   const fromHash = location.hash.slice(1);
-  show(known.has(fromHash) ? fromHash : detail.dataset.default!);
+  // an address like #score is a section of this page, not a model: show the default model and leave the address alone
+  show(known.has(fromHash) ? fromHash : detail.dataset.default!, false, !known.has(fromHash));
 </script>
 
 <style>
