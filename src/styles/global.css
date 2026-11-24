@@ -64,7 +64,7 @@
   --step-3: 2.07rem;
   --step-4: 2.6rem;
   --step-5: 3.24rem;
-  --wide: 110rem;
+  --wide: 90rem;  /* between the first 72rem and the 110rem that ran to the screen edge */
   --measure: 66ch;
   --gutter: clamp(1rem, 4vw, 2.5rem);
 }
@@ -168,7 +168,7 @@ p + p { margin-top: 0.8em; }
 .figure summary { cursor: pointer; width: fit-content; }
 .figure figcaption { margin-top: 0.8rem; }
 
-table.data { border-collapse: collapse; margin-top: 0.7rem; font-variant-numeric: tabular-nums; width: 100%; }
+table.data { border-collapse: collapse; margin-top: 0.7rem; font-variant-numeric: tabular-nums; width: auto; max-width: 100%; }  /* as wide as its content, not stretched to the right edge */
 table.data th, table.data td { text-align: left; padding: 0.32rem 0.9rem 0.32rem 0; border-bottom: 1px solid var(--grid); vertical-align: top; }
 table.data th { font-weight: 600; color: var(--ink); border-bottom-color: var(--rule); }
 table.data td.r, table.data th.r { text-align: right; }
