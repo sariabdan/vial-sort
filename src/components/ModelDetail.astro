@@ -31,6 +31,11 @@ const OUTCOME: Record<string, string> = {
 };
 const stageIdx = (key: string) => stages.findIndex((s) => s.key === key);
 const fromOf = (move: string) => move.split('->')[0];
+// the day a noted rollout was recorded, from its take id (<step>_<yyyymmdd>_<hhmmss>_t<n>): a row opens each day
+const dayOf = (take: string) => {
+  const m = take.match(/_(\d{4})(\d{2})(\d{2})_\d{6}_t\d+$/);
+  return m ? new Date(`${m[1]}-${m[2]}-${m[3]}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '';
+};
 const endedText = (ended: string | null, move: string) =>
   ended === null ? '–' : ended === 'source' ? `still in ${fromOf(move)}` : ended === 'bin' ? 'the bin'
     : ended.includes('/') ? `between ${ended.replace('/', ' and ')}` : ended;
@@ -68,7 +73,8 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       ))}
       {rows.filter((r) => r.untrained).map((r) => (
         <p class="note">{`Of the ${r.rollouts} rollouts at ${r.short}, ${r.untrained.rollouts} ${r.untrained.rollouts === 1 ? 'was' : 'were'} on moves no demonstration ` +
-          `it trained on contains (${Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')}). Of those ${r.untrained.rollouts}, the right vial was grasped in ` +
+          `it trained on contains (${Object.keys(r.untrained.moves).length <= 8 ? Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')
+            : `${Object.keys(r.untrained.moves).length} different moves${r.noted_moves ? ', all in the table below' : ''}`}). Of those ${r.untrained.rollouts}, the right vial was grasped in ` +
           `${r.untrained.grasped_right}, the arm let go at the asked slot in ${r.untrained.released}, and the vial was seen in that slot in ${r.untrained.seen_in_slot}.`}</p>
       ))}
       <div class="table-scroll">
@@ -107,7 +113,11 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
                   </tr>
                 </thead>
                 <tbody>
-                  {r.noted_moves.map((mv) => (
+                  {r.noted_moves.map((mv, i) => (
+                    <>
+                    {(i === 0 || dayOf(mv.take) !== dayOf(r.noted_moves[i - 1].take)) && (
+                      <tr class="day"><th colspan="6" scope="rowgroup">{`On the robot, ${dayOf(mv.take)}`}</th></tr>
+                    )}
                     <tr class:list={[!mv.trained && 'untrained']}>
                       <td class="r num">{mv.n}</td>
                       <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">never trained on</span>}</td>
@@ -117,6 +127,7 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
                       <td class="ended">{endedText(mv.ended, mv.move)}</td>
                       <td class="said">{`“${mv.note}”`}</td>
                     </tr>
+                    </>
                   ))}
                 </tbody>
               </table>
@@ -229,6 +240,7 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   .noted .tag { display: block; font-size: 0.75rem; color: var(--ink-2); white-space: nowrap; }
   .noted .what-col .tag { margin-left: 1.15rem; }
   .noted tr.untrained td { background: var(--raise); }
+  .noted tr.day th { text-align: left; font-weight: 620; padding-top: 1.1rem; border-bottom: 1px solid var(--rule); }
   .moves { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
   .moves details { min-width: 0; }
   .moves summary { cursor: pointer; font-weight: 560; padding-block: 0.3rem; }

@@ -865,12 +865,18 @@ def coverage(scen):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--offline", action="store_true", help="answer HF API calls from build/cache")
+    ap.add_argument("--rollouts-only", action="store_true",
+                    help="only list the recorded takes (src/data/rollouts.json), without the notes: what "
+                         "scripts/notes_to_yaml.py matches new notes against (scripts/update_site.py runs this first)")
     a = ap.parse_args()
     clips = []
     print(f"reading {LR}")
     checked = (yaml.safe_load((SITE / "curation.yaml").read_text()) or {}).get("checked") or {}
     import runpy
     runpy.run_path(str(SITE / "scripts/build_ws220.py"))
+    if a.rollouts_only:
+        rollouts(clips, checked, ({}, {}))
+        return
     scen, kpi = evals(clips)
     robot = rollouts(clips, checked, load_notes())
     runs = training(robot)

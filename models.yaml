@@ -38,12 +38,15 @@ models:
           7 November, on one A100 80 GB of a university GPU cluster, in two 12-hour jobs: the first stopped itself after
           the 8,000-step checkpoint and the second resumed from it. 16,000 steps at batch 16 (2.3 passes over the
           data), learning rate 2.5e-5, 4.8 s per step, 37.8 GiB of GPU memory. Loss fell from 0.099 to 0.009.
-      - title: On the robot, 9 November
+      - title: On the robot, 9 and 24 November
         text: >-
-          The same 31 moves as Mango Pudding, one after the other: 21 vials ended in the asked slot, against 11. It reached
-          slot 6 every time it carried the vial there, and also slots 4 and 5, which no demonstration used as a destination.
-          One move failed at the grasp: L1 → L6, the one move that is not in the 220 demonstrations. What is left is the
-          drop: six times it reached the right slot and the vial ended in front of or behind the hole.
+          82 moves over two days, scored from the operator's notes: the 31 on 9 November that Mango Pudding also ran (21 in
+          the asked slot, against Mango Pudding's 11), and 51 on 24 November that used every slot as a source and as a
+          destination. The vial ended in the asked slot in 51 of the 82. Every slot to the bin worked, 12 of 12. To slots 1,
+          3 and 6, the destinations it trained on: 33 of 48. To the slots no demonstration used as a destination: 5 of 11 on
+          the left rack and 1 of 11 on the right, where, asked for R4, it put the vial in R3 four times out of five, asked for
+          R2 it went to R1 all three times, and asked for R5 it ended at R3 or R4. It picked up the right vial in 77 of the 82;
+          three times it took another one.
       - title: Tested without the robot
         text: >-
           Every checkpoint from 8,000 steps on went through the offline gate. They score the same within a few points,

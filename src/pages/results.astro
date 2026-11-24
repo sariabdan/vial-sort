@@ -21,6 +21,11 @@ const lo = results.left_out;
 const eye = results.eye as Record<string, number>;
 const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
 const noted = andList(results.noted_models);
+// up to 8 untrained moves are named; more than that are counted, and listed move by move on the Experiments page
+const untrMoves = (m: Record<string, number>) => {
+  const k = Object.keys(m);
+  return k.length <= 8 ? k.map(moveLabel).join(', ') : `${k.length} different moves, each listed with its result on the Experiments page`;
+};
 
 const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
@@ -163,7 +168,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
             <RackMaps maps={mapsOf(r)} />
             {r.untrained && (
               <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
-                `${r.untrained.rollouts} on moves it was never trained on (${Object.keys(r.untrained.moves).map(moveLabel).join(', ')}).`}</p>
+                `${r.untrained.rollouts} on moves it was never trained on (${untrMoves(r.untrained.moves)}).`}</p>
             )}
           </div>
         ))}

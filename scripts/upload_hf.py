@@ -24,7 +24,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
 
 SITE = Path(__file__).resolve().parents[1]
 LR = Path(os.environ.get("LEROBOT", Path.home() / "lerobot"))
@@ -479,6 +479,11 @@ def refresh_cards(api):
     public = {d.id for d in api.list_datasets(author=USER) if not d.private}
     for it in todo:
         if it["repo"] in public:
+            # cards written by ~/lerobot/tools/upload_session.py (scored from the operator's notes, linking the model's other
+            # sessions) are kept: this card would put back outcomes read from the arm
+            if "<!-- upload_session.py" in Path(hf_hub_download(it["repo"], "README.md", repo_type="dataset", force_download=True)).read_text():
+                print("card kept (upload_session.py):", it["repo"], flush=True)
+                continue
             api.upload_file(path_or_fileobj=session_card(it["repo"], it["name"], it["session"]).encode(), path_in_repo="README.md",
                             repo_id=it["repo"], repo_type="dataset", commit_message="Correct the card")
             print("card refreshed:", it["repo"], flush=True)

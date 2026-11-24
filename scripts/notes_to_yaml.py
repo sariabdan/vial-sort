@@ -38,7 +38,9 @@ WRONG_VIAL = re.compile(r"\bwrong vial", re.I)
 SUCCESS = re.compile(r"\bsucce(?:ss|ed)", re.I)
 STUCK = re.compile(r"\bstuck\b|\bnever let go|\bdidn'?t let go|\bdid not let go", re.I)
 DROP = re.compile(r"\bin fron|\bbehind\b|\bmissed plac|\bmissed (?:the )?drop|\bdropped\b", re.I)
-SLOT = re.compile(r"\bslot\s*(\d)|\b(\d)(?:st|nd|rd|th)\s+slot", re.I)
+SLOT = re.compile(r"\bslot\s*(\d)|\b(\d)(?:st|nd|rd|th)\s+slot|\b([LR])([1-6])\b", re.I)  # "slot 2", "2nd slot", "R2"
+# "grabbed R1" / "picked R6": the slot it took a vial from; another slot than the asked source means the wrong vial
+GRABBED = re.compile(r"\b(?:grabbed|grabed|picked|took|grasped)\s+(?:up\s+)?([LR][1-6])\b", re.I)
 BETWEEN = re.compile(r"\bbetween (?:slot )?(\d)\D{1,12}?(\d)", re.I)
 SAME = re.compile(r"\bsame as\b", re.I)
 RETRY = re.compile(r"\bat first\b|\bretr(?:y|ied)\b|\bran it twice\b|\bsecond try\b", re.I)
@@ -54,10 +56,6 @@ OUTCOMES = {
 }
 
 
-def slot_of(m):
-    return int(m.group(1) or m.group(2))
-
-
 def read(src, dst, text, prev):
     """(outcome, ended, retried) of one note; None when no rule reads it."""
     final = re.split(r"\bthen\b", text, flags=re.I)[-1]
@@ -70,10 +68,17 @@ def read(src, dst, text, prev):
             return None
         return f"{rack}{n}"
 
+    def place(m):  # a slot mention as a code: "R2" as written, "slot 2" / "2nd slot" on the destination's rack
+        return f"{m.group(3).upper()}{m.group(4)}" if m.group(3) else at(int(m.group(1) or m.group(2)))
+
     if NO_GRASP.search(final):
         return "no_grasp", "source", retried
     if WRONG_VIAL.search(final):
         return "wrong_vial", "source", retried
+    g = GRABBED.search(final)
+    if g and g.group(1).upper() != src:
+        return "wrong_vial", "source", retried
+    final = GRABBED.sub(" ", final)  # "grabbed L5 and put in R2": the destination is the slot it was put in
     if SUCCESS.search(final):
         return "placed", dst, retried
     if STUCK.search(final):
@@ -81,14 +86,16 @@ def read(src, dst, text, prev):
         return "never_let_go", (f"{at(b.group(1))}/{at(b.group(2))}" if b and rack else None), retried
     d = DROP.search(final)
     if d:
-        s = SLOT.search(final, d.end()) or SLOT.search(final)
-        ended = at(slot_of(s)) if s else dst
+        # the slot named after the drop word, else anywhere in the final part, else the last one named before it
+        # ("kept hovering above R4 and then fell in front of rack"), else the asked slot
+        s = SLOT.search(final, d.end()) or SLOT.search(final) or ([*SLOT.finditer(before)] or [None])[-1]
+        ended = place(s) if s else dst
         if ended is None:
             return None
         return ("drop_missed" if ended == dst else "off_slot"), ended, retried
     s = SLOT.search(final)
-    if s and rack:
-        ended = at(slot_of(s))
+    if s and place(s):
+        ended = place(s)
         return ("placed" if ended == dst else "off_slot"), ended, retried
     if SAME.search(final) and prev:
         if prev["move"] == f"{src}->{dst}":
