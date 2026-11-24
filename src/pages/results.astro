@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import SlotTable, { type SlotPart } from '../components/SlotTable.astro';
+import SlotMaps from '../components/SlotMaps.astro';
 import StageLegend from '../components/StageLegend.astro';
 import Clip from '../components/Clip.astro';
 import Term from '../components/Term.astro';
@@ -8,6 +8,7 @@ import results from '../data/results.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
+import { slotDemos, slotGot, type SlotMap } from '../lib/rackmaps';
 
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
@@ -26,14 +27,15 @@ const untrMoves = (m: Record<string, number>) => {
 
 const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
-// per row: how it did at each slot, with its own training set's demonstrations under the same slot
-const partsOf = (r: (typeof rows)[number]): SlotPart[] => {
+// per row, in reading order for one column: demonstrations above rollouts, source first. Wide pages put the
+// source maps on the left and the destination maps on the right (SlotMaps.astro).
+const mapsOf = (r: (typeof rows)[number]): SlotMap[] => {
   const d = r.train_set ? demoSets[r.train_set] : null;
   return [
-    { title: 'Where the vial started (the source slot)', what: 'Picked up the right vial', role: 'source', verb: 'picked up the right vial',
-      got: slotRate(r.by_source, 'grasped_right'), demos: d?.per_source ?? null },
-    { title: 'Where it had to go (the destination)', what: 'In the asked slot', role: 'destination', verb: 'ended in the asked slot',
-      got: slotRate(r.by_destination, 'released'), demos: d?.per_destination ?? null },
+    ...(d ? [slotDemos(d.per_source, 'source', r.train_set!)] : []),
+    slotGot(slotRate(r.by_source, 'grasped_right'), 'source', 'Picked up the right vial, by source slot', 'picked up the right vial'),
+    ...(d ? [slotDemos(d.per_destination, 'destination', r.train_set!)] : []),
+    slotGot(slotRate(r.by_destination, 'released'), 'destination', 'In the asked slot, by destination', 'ended in the asked slot'),
   ];
 };
 const clips = media.featured as (typeof media.featured)[number][];
@@ -148,20 +150,20 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
       <section class="block" aria-labelledby="h-slot">
         <h2 id="h-slot">Slot by slot</h2>
         <p>
-          {`Where on the table each ticked row succeeded, next to how many of its own training demonstrations used the same slot ` +
-            `(the models trained on 100 and on 220 demonstrations differ). The columns follow the table: the left rack's slots 1 to 6, ` +
-            `the bin, the right rack's slots 1 to 6. Four rows are shown at most.`}
+          {`Where on the table each ticked row succeeded, next to what it trained on: the demonstrations of its own training set ` +
+            `(the models trained on 100 and on 220 demonstrations differ). The racks are drawn as on the table: left rack, bin, ` +
+            `right rack, slots 1 to 6 in each. The number under a slot is what counts. Four rows are shown at most.`}
         </p>
-        <p class="key">
-          <span class="vial-meter" style="--p: 75" aria-hidden="true"></span>
-          <span>{`Each vial is filled to the share of the rollouts at that slot that got through, with the count under it: 3/4 is 3 ` +
-            `of 4. A dash: no rollout there. The row under it counts the row's training demonstrations that started or ended at that slot.`}</span>
-        </p>
+        <ul class="legend slot-key">
+          <li><i class="k-got"></i>{`Rollouts: how many got through, of how many started or ended at that slot`}</li>
+          <li><i class="k-demo"></i>{`Demonstrations: how many of its training set started or ended there`}</li>
+          <li><i class="k-none"></i>{`Empty: none there`}</li>
+        </ul>
         {rows.map((r) => (
           <div class="slot-row" data-row={r.key}>
             <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="sub">{`${r.rollouts} rollouts` +
               (r.train_set ? `, trained on ${r.train_set} (${demoSets[r.train_set].episodes} demonstrations)` : '')}</span></h3>
-            <SlotTable label={r.label} set={r.train_set ?? null} parts={partsOf(r)} />
+            <SlotMaps maps={mapsOf(r)} />
             {r.untrained && (
               <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
                 `${r.untrained.rollouts} on moves it was never trained on (${untrMoves(r.untrained.moves)}).`}</p>
@@ -272,8 +274,11 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .after { margin-top: 1rem; }
   .empty { margin-top: 1rem; }
 
-  .key { display: flex; align-items: center; gap: 1rem; margin-top: 1.1rem; }
-  .key .vial-meter { margin: 0; flex: none; }
+  .slot-key { margin-top: 1.1rem; font-size: var(--step-0); color: var(--ink); gap: 0.5rem 1.6rem; }
+  .slot-key i { width: 1rem; height: 1rem; border-radius: 50%; box-sizing: border-box; }
+  .slot-key .k-got { background: var(--slot-got); }
+  .slot-key .k-demo { background: var(--slot-demo); }
+  .slot-key .k-none { background: var(--page); border: 1.5px solid var(--rack); }
   .slot-row { margin-top: 2.4rem; }
   .slot-row[hidden] { display: none; }
   .slot-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }
