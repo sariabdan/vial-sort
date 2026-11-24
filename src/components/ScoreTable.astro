@@ -2,7 +2,7 @@
 // The score of each run (src/lib/score.ts): total, trained-slot and held-out accuracy, and the verdict. Used on
 // Results (rows follow the ticks through data-row) and in each model's entry on Experiments.
 import Term from './Term.astro';
-import { scoreRun, pctOf, verdictText } from '../lib/score';
+import { scoreRun, pctOf, verdictText, weakSlots } from '../lib/score';
 
 interface Row { key: string; label: string; by_destination: Record<string, { rollouts: number; released: number }> }
 interface Props { rows: Row[]; first?: string; follow?: boolean }
@@ -23,15 +23,21 @@ const { rows, first = 'Run', follow = false } = Astro.props;
     <tbody>
       {rows.map((r) => {
         const s = scoreRun(r.by_destination);
+        const weak = weakSlots(r.by_destination);
         return (
-          <tr data-row={follow ? r.key : undefined}>
-            <td>{r.label}</td>
-            <td class="r num total">{pctOf(s.total)}</td>
-            <td class="r num">{pctOf(s.trained)}</td>
-            <td class="r num">{pctOf(s.held)}</td>
-            <td class="r num">{`${s.tried} of 12`}</td>
-            <td class="verdict">{verdictText(s)}</td>
-          </tr>
+          <>
+            <tr class="main" data-row={follow ? r.key : undefined}>
+              <td class="run">{(() => { const [nm, ...ck] = r.label.split(' · '); return ck.length ? <><span class="nm">{nm}</span><span class="ck">{ck.join(' · ')}</span></> : nm; })()}</td>
+              <td class="r num total">{pctOf(s.total)}</td>
+              <td class="r num">{pctOf(s.trained)}</td>
+              <td class="r num">{pctOf(s.held)}</td>
+              <td class="r num">{`${s.tried} of 12`}</td>
+              <td class="verdict">{verdictText(s)}</td>
+            </tr>
+            <tr class="sub" data-row={follow ? r.key : undefined}>
+              <td colspan="6"><Term k="weak">Weak slots</Term>{`, worst first: ${weak.length ? weak.join(', ') : 'none'}`}</td>
+            </tr>
+          </>
         );
       })}
     </tbody>
@@ -39,8 +45,14 @@ const { rows, first = 'Run', follow = false } = Astro.props;
 </div>
 
 <style>
-  .score td, .score th { padding-right: 1.4rem; }
+  .score td, .score th { padding-right: 1.2rem; }
+  .score .run { min-width: 10rem; }
+  .score .run .nm, .score .run .ck { display: block; white-space: nowrap; }
+  .score .run .ck { color: var(--ink-2); }
   .score .total { font-weight: 680; }
-  .score .verdict { color: var(--ink-2); }
+  .score .verdict { color: var(--ink-2); min-width: 12rem; }
+  /* the weak slots sit on their own line under their run, so the pair reads as one */
+  .score tr.main td { border-bottom: 0; padding-bottom: 0.1rem; }
+  .score tr.sub td { padding-top: 0.1rem; padding-bottom: 0.7rem; color: var(--ink-2); font-size: var(--step--1); }
   .score tr[hidden] { display: none; }
 </style>

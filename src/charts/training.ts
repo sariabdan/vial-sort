@@ -13,7 +13,7 @@ const color = (model: string) => `var(--m-${model})`;
 const ramp = (_model: string, i: number) => `var(--st-${i + 1})`; // one set of stage colours for every model
 const kStep = (s: number) => (s >= 1000 ? `${s / 1000}k` : String(s));
 const UNIT = 11; // px per rollout square, gap included
-const M = { marginLeft: 52, marginRight: 18 };
+const M = { marginLeft: 58, marginRight: 20 };
 
 // one loss domain per model: the runs of a model share a y scale, different models do not
 const lossDomain: Record<string, [number, number]> = {};
@@ -53,9 +53,9 @@ for (const run of training.runs) {
       ...plotBase,
       ...M,
       width,
-      height: 160,
-      marginTop: 10,
-      marginBottom: 24,
+      height: 180,
+      marginTop: 26,   // room for the "↑ Loss" label above the top tick at the larger text size
+      marginBottom: 26,
       x: { domain: [0, run.steps], tickFormat: kStep, ticks: width < 500 ? 3 : 6, label: null },
       y: { type: 'log', domain: lossDomain[run.model], label: run.model === 'flux' ? 'Loss (video + action)' : 'Loss',
            ticks: 3, tickFormat: '~g', labelAnchor: 'top' },

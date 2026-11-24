@@ -101,10 +101,9 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
         <h2 id="h-score">Score</h2>
         <p>
           {`Every run is scored the same way: at each of the 12 rack slots, the share of its rollouts that ended in the asked slot, ` +
-            `then the mean of those 12 shares, with the bin left out. A run passes with at least ${MIN_PER_SLOT} rollouts at every slot ` +
-            `and a total of at least ${PASS_MARK * 100}%. ` +
-            (qualified ? `${qualified} of the ${rows.length} runs have ${MIN_PER_SLOT} at every slot. `
-              : `No run has ${MIN_PER_SLOT} rollouts at every slot yet, so each one is disqualified; its numbers are shown over the slots it was tried at. `)}
+            `then the mean of the 12, with the bin left out. A run passes with at least ${MIN_PER_SLOT} rollouts at every slot and a total of ` +
+            `at least ${PASS_MARK * 100}%` + (qualified ? `. ` : `; no run has ${MIN_PER_SLOT} at every slot yet, so all are disqualified, with their numbers still shown. `) +
+            `Weak slots shows where the score is lost; every slot's numbers are under `}<a href="#h-slot">Slot by slot</a>{`. `}
           <a href={url('experiments/#score')}>How the score works</a>.
         </p>
         <ScoreTable rows={rows} follow />
@@ -237,7 +236,7 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
 
 <style>
   .head { padding-bottom: 1.5rem; }
-  .work { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; padding-bottom: 4rem; }
+  .work { display: grid; grid-template-columns: 19rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; padding-bottom: 4rem; }
   .rail { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--raise); }
   .rail-box { padding: 0.9rem 1rem 1rem; }
   .rail-box summary { display: flex; align-items: baseline; justify-content: space-between; cursor: pointer; list-style: none; }
@@ -266,17 +265,17 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
   .stage-filter .quiet-btn[aria-pressed='false'] { opacity: 0.55; }
 
   .bars { display: grid; gap: 0.5rem; margin-top: 0.4rem; }
-  .axis { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4rem; column-gap: 0.8rem; font-size: 0.9rem; color: var(--steel); }
+  .axis { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4.8rem; column-gap: 0.8rem; font-size: 1.05rem; color: var(--steel); }
   .axis :global(.ticks) { position: relative; height: 1.1rem; grid-column: 2; }
   .axis :global(.ticks span) { position: absolute; transform: translateX(-50%); }
   .axis :global(.ticks span:first-child) { transform: none; }
   .axis :global(.ticks span:last-child) { transform: translateX(-100%); }
-  .bar-row { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4rem; align-items: center; gap: 0 0.8rem; }
+  .bar-row { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4.8rem; align-items: center; gap: 0 0.8rem; }
   .bar-row[hidden] { display: none; }
   .bar-label { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); line-height: 1.3; }
   .bar-label i { width: 0.65rem; height: 0.65rem; border-radius: 50%; flex: none; }
-  .bar { display: flex; height: 2.5rem; gap: 2px; }
-  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: 650; font-variant-numeric: tabular-nums;
+  .bar { display: flex; height: 2.8rem; gap: 2px; }
+  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 650; font-variant-numeric: tabular-nums;
          overflow: hidden; min-width: 0; width: calc(var(--share) * 1%); }
   .bars[data-mode='count'] .seg { width: calc(var(--count) / var(--max) * 100%); }
   .seg:first-child { border-radius: 4px 0 0 4px; }
@@ -310,7 +309,7 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
     .clips { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 40rem) {
-    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 4.6rem; }
+    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 5.2rem; }
     .axis :global(.ticks) { grid-column: 1; }
     .bar-label { grid-column: 1 / -1; margin-bottom: 0.2rem; }
     .bar-row { row-gap: 0.1rem; }

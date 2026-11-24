@@ -11,6 +11,7 @@ export const HELD_OUT_SLOTS = RACK_SLOTS.filter((s) => '245'.includes(s[1]));
 export const TRAINED_SLOTS = RACK_SLOTS.filter((s) => !HELD_OUT_SLOTS.includes(s));
 export const MIN_PER_SLOT = 10;
 export const PASS_MARK = 0.7;
+export const WEAK_AT = 0.5;   // a slot at half or less in the asked slot is listed as weak
 
 type ByDestination = Record<string, { rollouts: number; released: number }>;
 export interface RunScore {
@@ -38,7 +39,15 @@ export function scoreRun(by: ByDestination): RunScore {
 
 export const pctOf = (x: number | null) => (x === null ? '–' : `${Math.round(x * 100)}%`);
 
-/** "Disqualified: fewer than 10 rollouts at 12 of 12 slots", "Passed", "Below 70%" */
+/** "Disqualified: under 10 rollouts at 12 of 12 slots", "Passed", "Below 70%" */
 export const verdictText = (s: RunScore) =>
   s.verdict === 'passed' ? 'Passed' : s.verdict === 'below' ? `Below ${PASS_MARK * 100}%`
-    : `Disqualified: fewer than ${MIN_PER_SLOT} rollouts at ${s.short} of 12 slots`;
+    : `Disqualified: under ${MIN_PER_SLOT} rollouts at ${s.short} of 12 slots`;
+
+/** The slots at half or less in the asked slot, worst first ("R2 0/3"); slots never tried are not listed. */
+export function weakSlots(by: ByDestination): string[] {
+  const share = (s: string) => by[s].released / by[s].rollouts;
+  return RACK_SLOTS.filter((s) => by[s]?.rollouts && share(s) <= WEAK_AT)
+    .sort((a, b) => share(a) - share(b) || by[b].rollouts - by[a].rollouts)
+    .map((s) => `${s} ${by[s].released}/${by[s].rollouts}`);
+}

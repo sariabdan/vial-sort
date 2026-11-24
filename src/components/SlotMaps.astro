@@ -1,85 +1,102 @@
 ---
 // Results' "Slot by slot": the left rack, the bin and the right rack as on the table, slots 1–6 from left to right.
-// A filled circle marks a slot with something there, in one solid colour per kind of map (violet: demonstrations,
-// dark green: rollouts), so there are no shades to tell apart; the number under it is the value. Built in HTML, not
-// SVG, so the numbers keep their size whatever the page width (the SVG maps shrank them with the page).
+// A filled circle marks a slot with something there, in one solid colour per kind of map (dark green: rollouts,
+// violet: demonstrations), so there are no shades to tell apart; the number under it is the value. The rollout maps
+// come first, together, and the demonstrations follow as their own group, for comparison (the two kinds are never
+// interleaved). Built in HTML, not SVG, so the numbers keep their size whatever the page width.
 import type { SlotMap } from '../lib/rackmaps';
 
 interface Props { maps: SlotMap[] }
 const { maps } = Astro.props;
+const groups = [
+  { kind: 'got', title: 'Its rollouts' },
+  { kind: 'demo', title: 'Its training demonstrations, for comparison' },
+].map((g) => ({ ...g, maps: maps.filter((m) => m.kind === g.kind) })).filter((g) => g.maps.length);
 const rack = (m: SlotMap, r: string) => m.cells.filter((c) => c.code[0] === r);
 const binOf = (m: SlotMap) => m.cells.find((c) => c.code === 'bin');
 ---
 <div class="slot-wrap">
-  <div class="rmaps">
-    {maps.map((m) => {
-      const bin = binOf(m);
-      return (
-        <figure class:list={['rmap', m.kind, m.role === 'source' ? 'src' : 'dst']}>
-          <figcaption>{m.caption}</figcaption>
-          <div class="racks">
-            <div class="tray" role="group" aria-label="Left rack">
-              {rack(m, 'L').map((c) => (
-                <div class="slot" title={c.title}>
-                  <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
-                  <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
+  {groups.map((g) => (
+    <div class:list={['group', g.kind]}>
+      <p class="group-title"><i aria-hidden="true"></i>{g.title}</p>
+      <div class="rmaps">
+        {g.maps.map((m) => {
+          const bin = binOf(m);
+          return (
+            <figure class="rmap">
+              <figcaption>{m.caption}</figcaption>
+              <div class="racks">
+                <div class="tray" role="group" aria-label="Left rack">
+                  {rack(m, 'L').map((c) => (
+                    <div class="slot" title={c.title}>
+                      <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
+                      <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {bin && (
-              <div class="slot binslot" title={bin.title}>
-                <i class:list={['box', { on: bin.on }]} aria-hidden="true"></i>
-                <b class:list={{ off: !bin.on }}>{bin.text && <span class="visually-hidden">Bin: </span>}{bin.text}</b>
+                {bin && (
+                  <div class="slot binslot" title={bin.title}>
+                    <i class:list={['box', { on: bin.on }]} aria-hidden="true"></i>
+                    <b class:list={{ off: !bin.on }}>{bin.text && <span class="visually-hidden">Bin: </span>}{bin.text}</b>
+                  </div>
+                )}
+                <div class="tray" role="group" aria-label="Right rack">
+                  {rack(m, 'R').map((c) => (
+                    <div class="slot" title={c.title}>
+                      <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
+                      <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-            <div class="tray" role="group" aria-label="Right rack">
-              {rack(m, 'R').map((c) => (
-                <div class="slot" title={c.title}>
-                  <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
-                  <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
-                </div>
-              ))}
-            </div>
-          </div>
-        </figure>
-      );
-    })}
-  </div>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  ))}
 </div>
 
 <style>
   /* sized by the room the maps have (the side panel and browser zoom change it), not by the screen */
-  .slot-wrap { container-type: inline-size; }
+  .slot-wrap { container-type: inline-size; display: grid; gap: 2.2rem; }
+  .group-title { display: flex; align-items: center; gap: 0.6rem; font-size: var(--step-0); font-weight: 650; color: var(--ink); margin-bottom: 0.9rem; }
+  .group-title i { width: 1rem; height: 1rem; border-radius: 50%; flex: none; }
+  .got .group-title i { background: var(--slot-got); }
+  .demo .group-title i { background: var(--slot-demo); }
+  .demo { padding-top: 1.6rem; border-top: 1px solid var(--rule); }
   .rmaps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.6rem 3rem; }
   .rmap { margin: 0; min-width: 0; }
-  figcaption { font-size: var(--step-0); font-weight: 600; color: var(--ink); margin-bottom: 0.55rem; }
+  figcaption { font-size: var(--step-0); color: var(--ink); margin-bottom: 0.6rem; }
 
-  .racks { --cw: 2.8rem; --bw: 4.8rem; --gap: 1rem; display: flex; flex-wrap: wrap; align-items: start; gap: 0.6rem var(--gap); }
+  .racks { --cw: 3.3rem; --bw: 5.6rem; --gap: 1rem; display: flex; flex-wrap: wrap; align-items: start; gap: 0.7rem var(--gap); }
   .tray { position: relative; display: grid; grid-template-columns: repeat(6, var(--cw)); }
   /* the grey rack behind the six circles */
-  .tray::before { content: ''; position: absolute; inset: 0 0 auto; height: 2.3rem; border-radius: 1.15rem; background: var(--grid); }
-  .slot { position: relative; display: grid; grid-template-rows: 2.3rem auto; justify-items: center; align-items: center; row-gap: 0.3rem; }
+  .tray::before { content: ''; position: absolute; inset: 0 0 auto; height: 2.6rem; border-radius: 1.3rem; background: var(--grid); }
+  .slot { position: relative; display: grid; grid-template-rows: 2.6rem auto; justify-items: center; align-items: center; row-gap: 0.3rem; }
   .binslot { width: var(--bw); }
-  .dot { width: 1.6rem; height: 1.6rem; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
-  .box { width: calc(var(--bw) - 0.6rem); height: 2.3rem; border-radius: 6px; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
+  .dot { width: 1.85rem; height: 1.85rem; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
+  .box { width: calc(var(--bw) - 0.6rem); height: 2.6rem; border-radius: 6px; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
   .demo .on { background: var(--slot-demo); border-color: var(--slot-demo); }
   .got .on { background: var(--slot-got); border-color: var(--slot-got); }
 
-  .slot b { font-size: 1.25rem; font-weight: 680; line-height: 1.2; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .demo .slot b { font-size: 1.12rem; font-weight: 540; }
-  .slot b.long { font-size: 1.02rem; }
+  .slot b { font-size: 1.45rem; font-weight: 680; line-height: 1.2; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .demo .slot b { font-size: 1.3rem; font-weight: 540; }
+  .slot b.long { font-size: 1.15rem; }
   .slot b.off { color: var(--steel); font-weight: 500; }
 
-  /* wide: source maps on the left, destination maps on the right, demonstrations above rollouts */
-  @container (min-width: 84rem) {
-    .rmaps { grid-template-columns: repeat(2, max-content); grid-auto-flow: row dense; }
-    .src { grid-column: 1; }
-    .dst { grid-column: 2; }
+  /* narrower: tighter slots */
+  @container (max-width: 48rem) {
+    .racks { --cw: 2.9rem; --bw: 5rem; --gap: 0.6rem; }
+    .slot b { font-size: 1.25rem; }
+    .demo .slot b { font-size: 1.12rem; }
+    .slot b.long { font-size: 1.02rem; }
   }
-  /* narrow: tighter slots; on a phone the right rack wraps under the left one */
-  @container (max-width: 41rem) {
-    .racks { --cw: 2.5rem; --bw: 4.4rem; --gap: 0.6rem; }
-    .slot b { font-size: 1.1rem; }
-    .demo .slot b { font-size: 1rem; }
+  /* phones: the left rack and the bin on one line, the right rack under them */
+  @container (max-width: 26rem) {
+    .racks { --cw: 2.6rem; --bw: 4.6rem; --gap: 0.5rem; }
+    .slot b { font-size: 1.12rem; }
+    .demo .slot b { font-size: 1.02rem; }
+    .dot { width: 1.6rem; height: 1.6rem; }
   }
 </style>

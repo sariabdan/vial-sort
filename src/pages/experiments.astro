@@ -124,6 +124,10 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
             `${PASS_MARK * 100}%. With fewer than ${MIN_PER_SLOT} at any slot it is disqualified; its numbers are still shown, ` +
             `over the slots it was tried at.`}
         </li>
+        <li>
+          {`A slot where half or fewer of the rollouts ended in the asked slot is a `}<Term k="weak">weak slot</Term>{`. ` +
+            `The score tables list them worst first, so it shows where the score is lost.`}
+        </li>
       </ol>
       <p class="note">
         {`The mean, not the median: the median hides slots that fail. Seven slots at 80% and five at 0% have a median of 80% ` +

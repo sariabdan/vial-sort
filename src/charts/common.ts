@@ -19,11 +19,11 @@ export function mount(id: string, draw: (width: number) => Element) {
 
 /** Options every Plot shares: the site's font and ink, colours passed through as written. */
 export const plotBase = {
-  style: { fontFamily: 'var(--font)', fontSize: '13px', color: 'var(--ink-2)', background: 'transparent', overflow: 'visible' },
+  style: { fontFamily: 'var(--font)', fontSize: '15px', color: 'var(--ink-2)', background: 'transparent', overflow: 'visible' },
   color: { type: 'identity' as const },
 };
 
-export const tip = { fill: 'var(--raise)', stroke: 'var(--rule)', fontSize: 13 };
+export const tip = { fill: 'var(--raise)', stroke: 'var(--rule)', fontSize: 15 };
 
 export const moveLabel = (m: string) => m.replace('->', ' → ');
 
