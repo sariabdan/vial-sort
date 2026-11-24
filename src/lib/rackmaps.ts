@@ -2,7 +2,7 @@
 // A cell's class picks a step of a validated ramp; null leaves the slot empty.
 
 export type Cell = { code: string; cls: number | null; text: string; title: string };
-export type RackMap = { caption: string; ramp: 'd' | 'rate'; cells: Cell[] };
+export type RackMap = { caption: string; ramp: 'd' | 'ob'; cells: Cell[] };  // ramps: demonstrations (violet), the August π0.5 blue
 
 export const PLACES = [...['L', 'R'].flatMap((r) => [1, 2, 3, 4, 5, 6].map((n) => `${r}${n}`)), 'bin'];
 const name = (c: string) => (c === 'bin' ? 'The bin' : c);
@@ -21,7 +21,7 @@ export function demoCells(counts: Record<string, number>, role: string, bounds: 
 }
 
 /** Share of rollouts per slot that reached `what`: four classes (up to 25%, 50%, 75%, over), none for zero.
- *  Drawn in the slot-map teal ramp (--rate-1…4), never the outcome colours: a darker slot worked more often. */
+ *  Only the August page draws these now (in its blue ramp); Results shows its slots as vials (SlotTable.astro). */
 export function rateCells(by: Record<string, { n: number; ok: number }>, role: string, what: string): Cell[] {
   return PLACES.map((c) => {
     if (c === 'bin' && role === 'as the source') return { code: c, cls: null, text: '', title: 'The bin is never a source' };

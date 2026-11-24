@@ -37,9 +37,9 @@
      validate_palette.js, every pair, light and dark (teal, not green: red and green fail for colour-blind readers). */
   --st-1: #b42828; --st-2: #e9893f; --st-3: #00897a;
   --stt-1: #ffffff; --stt-2: #1d2328; --stt-3: #ffffff;
-  /* the slot maps: how often a slot worked, one teal ramp light → dark (ordinal-validated); not the outcome colours */
-  --rate-1: #6db9ad; --rate-2: #35998b; --rate-3: #0e7466; --rate-4: #0a4a42;
-  --ratet-1: #1d2328; --ratet-2: #ffffff; --ratet-3: #ffffff; --ratet-4: #ffffff;
+  /* the vials of the slot-by-slot tables: one neutral colour, the fill level carries the share (no shades to tell
+     apart). Fill on track 7.1:1, outline on the page 3.3:1. */
+  --meter: #3d4b57; --meter-track: #dfe5e9; --meter-edge: #7d8a95;
 
   /* training demonstrations: violet, light → dark = few → many */
   --d-1: #a1a0f3; --d-2: #817ce7; --d-3: #6554da; --d-4: #4c33b8; --d-5: #35168e;
@@ -86,8 +86,7 @@
     --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
     --st-1: #c8394a; --st-2: #bd8429; --st-3: #12a28f;
     --stt-1: #ffffff; --stt-2: #151b20; --stt-3: #151b20;
-    --rate-1: #175c53; --rate-2: #1d806f; --rate-3: #2fa392; --rate-4: #7fd1c3;
-    --ratet-1: #ffffff; --ratet-2: #ffffff; --ratet-3: #151b20; --ratet-4: #151b20;
+    --meter: #c3ccd3; --meter-track: #2a343c; --meter-edge: #6b7782;
     --good-text: #0ca30c; --critical-text: #e66767;
   }
 }
@@ -107,8 +106,7 @@
   --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
   --st-1: #c8394a; --st-2: #bd8429; --st-3: #12a28f;
   --stt-1: #ffffff; --stt-2: #151b20; --stt-3: #151b20;
-  --rate-1: #175c53; --rate-2: #1d806f; --rate-3: #2fa392; --rate-4: #7fd1c3;
-  --ratet-1: #ffffff; --ratet-2: #ffffff; --ratet-3: #151b20; --ratet-4: #151b20;
+  --meter: #c3ccd3; --meter-track: #2a343c; --meter-edge: #6b7782;
   --good-text: #0ca30c; --critical-text: #e66767;
 }
 
@@ -174,6 +172,10 @@ table.data { border-collapse: collapse; margin-top: 0.7rem; font-variant-numeric
 table.data th, table.data td { text-align: left; padding: 0.32rem 0.9rem 0.32rem 0; border-bottom: 1px solid var(--grid); vertical-align: top; }
 table.data th { font-weight: 600; color: var(--ink); border-bottom-color: var(--rule); }
 table.data td.r, table.data th.r { text-align: right; }
+/* a vial filled to a share (--p, 0–100), on Results' slot-by-slot tables and their key */
+.vial-meter { display: block; box-sizing: border-box; width: 1.25rem; height: 3.6rem; margin: 0 auto 0.4rem;
+        border: 1.5px solid var(--meter-edge); border-radius: 0.2rem 0.2rem 0.65rem 0.65rem;
+        background: linear-gradient(to top, var(--meter) calc(var(--p, 0) * 1%), var(--meter-track) 0); }
 .table-scroll { overflow-x: auto; position: relative; } /* relative: visually-hidden text inside a scrolled table must not widen the page */
 
 .quiet-btn {

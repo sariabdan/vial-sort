@@ -1,6 +1,7 @@
 ---
 // Per-slot counts or rates drawn on the rack layout (bin, left rack, right rack; slots 1–6 left to
-// right). The page builds the cells (src/lib/rackmaps.ts) and says what the colours mean.
+// right). The page builds the cells (src/lib/rackmaps.ts) and says what the colours mean. Used by the August page;
+// Results draws its slots with SlotTable.astro.
 import type { RackMap } from '../lib/rackmaps';
 
 interface Props { maps: RackMap[] }

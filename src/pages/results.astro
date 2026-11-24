@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import RackMaps from '../components/RackMaps.astro';
+import SlotTable, { type SlotPart } from '../components/SlotTable.astro';
 import StageLegend from '../components/StageLegend.astro';
 import Clip from '../components/Clip.astro';
 import Term from '../components/Term.astro';
@@ -8,13 +8,10 @@ import results from '../data/results.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
-import { demoCells, rateCells, type RackMap } from '../lib/rackmaps';
 
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
 const stages = results.stages;
-// one demonstration scale for both training sets (10–41 per slot), so the 220 set reads darker than the 100 set
-const bounds = [15, 22, 29, 36];
 const demoSets = results.demo_sets as Record<string, { episodes: number; per_source: Record<string, number>; per_destination: Record<string, number> }>;
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
 const lo = results.left_out;
@@ -29,14 +26,14 @@ const untrMoves = (m: Record<string, number>) => {
 
 const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
-// per row: its own training set's demonstrations beside how it did, source maps on the left, destination maps on the right
-const mapsOf = (r: (typeof rows)[number]): RackMap[] => {
+// per row: how it did at each slot, with its own training set's demonstrations under the same slot
+const partsOf = (r: (typeof rows)[number]): SlotPart[] => {
   const d = r.train_set ? demoSets[r.train_set] : null;
   return [
-    ...(d ? [{ caption: `Demonstrations in ${r.train_set}, by source slot`, ramp: 'd' as const, cells: demoCells(d.per_source, 'as the source', bounds) }] : []),
-    ...(d ? [{ caption: `Demonstrations in ${r.train_set}, by destination`, ramp: 'd' as const, cells: demoCells(d.per_destination, 'as the destination', bounds) }] : []),
-    { caption: 'Picked up the right vial, by source slot', ramp: 'rate', cells: rateCells(slotRate(r.by_source, 'grasped_right'), 'as the source', 'picked up the right vial') },
-    { caption: 'In the asked slot, by destination', ramp: 'rate', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'ended in the asked slot') },
+    { title: 'Where the vial started (the source slot)', what: 'Picked up the right vial', role: 'source', verb: 'picked up the right vial',
+      got: slotRate(r.by_source, 'grasped_right'), demos: d?.per_source ?? null },
+    { title: 'Where it had to go (the destination)', what: 'In the asked slot', role: 'destination', verb: 'ended in the asked slot',
+      got: slotRate(r.by_destination, 'released'), demos: d?.per_destination ?? null },
   ];
 };
 const clips = media.featured as (typeof media.featured)[number][];
@@ -52,7 +49,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
     <div class="wrap">
       <h1>Results</h1>
       <p class="lead">
-        {`Tick the models and checkpoints to compare. Every chart, map and video on this page follows the selection. ` +
+        {`Tick the models and checkpoints to compare. Every chart, table and video on this page follows the selection. ` +
           `A row is one model at one checkpoint in one mode: nothing is added across checkpoints.`}
       </p>
     </div>
@@ -151,24 +148,20 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
       <section class="block" aria-labelledby="h-slot">
         <h2 id="h-slot">Slot by slot</h2>
         <p>
-          {`Where on the table each ticked row succeeded, next to what it trained on: the demonstrations of its own training set ` +
-            `(the models trained on 100 and on 220 demonstrations differ). The racks are drawn left rack, bin, right rack, slots 1 to 6 ` +
-            `in each. Under a slot: rollouts that got through out of rollouts that started or ended there. Four rows are shown at most.`}
+          {`Where on the table each ticked row succeeded, next to how many of its own training demonstrations used the same slot ` +
+            `(the models trained on 100 and on 220 demonstrations differ). The columns follow the table: the left rack's slots 1 to 6, ` +
+            `the bin, the right rack's slots 1 to 6. Four rows are shown at most.`}
         </p>
-        <ul class="legend">
-          <li>Demonstrations per slot:</li>
-          {['15 or fewer', '16–22', '23–29', '30–36', '37 or more'].map((t, i) => <li><i style={`background: var(--d-${i + 1})`}></i>{t}</li>)}
-        </ul>
-        <ul class="legend rate">
-          <li>Rollouts that got through:</li>
-          {['up to 25%', 'up to 50%', 'up to 75%', 'over 75%'].map((t, i) => <li><i style={`background: var(--rate-${i + 1})`}></i>{t}</li>)}
-          <li><i class="none"></i>none</li>
-        </ul>
+        <p class="key">
+          <span class="vial-meter" style="--p: 75" aria-hidden="true"></span>
+          <span>{`Each vial is filled to the share of the rollouts at that slot that got through, with the count under it: 3/4 is 3 ` +
+            `of 4. A dash: no rollout there. The row under it counts the row's training demonstrations that started or ended at that slot.`}</span>
+        </p>
         {rows.map((r) => (
           <div class="slot-row" data-row={r.key}>
-            <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="note">{`${r.rollouts} rollouts` +
+            <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="sub">{`${r.rollouts} rollouts` +
               (r.train_set ? `, trained on ${r.train_set} (${demoSets[r.train_set].episodes} demonstrations)` : '')}</span></h3>
-            <RackMaps maps={mapsOf(r)} />
+            <SlotTable label={r.label} set={r.train_set ?? null} parts={partsOf(r)} />
             {r.untrained && (
               <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
                 `${r.untrained.rollouts} on moves it was never trained on (${untrMoves(r.untrained.moves)}).`}</p>
@@ -208,7 +201,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
             `good or bad rollout moves a row a long way, and the rows are not a controlled comparison: they differ in training data, ` +
             `length and mode. These were test runs during development, and the moves are uneven. The scorer reads the arm, not the vial` +
             (noted ? ` (${noted} are scored from the operator's notes instead). ` : '. ') +
-            `The counts include ${results.untrained} rollouts on moves no demonstration contains; under each row's slot maps it says how many. ` +
+            `The counts include ${results.untrained} rollouts on moves no demonstration contains; under each row in Slot by slot it says how many. ` +
             `Left out: ${lo.short} rollouts under 3 seconds, ${lo.unreadable} with a command ` +
             `the scorer cannot read` + (lo.restart ? `, ${lo.earlier_scene} from an earlier table layout and ${lo.restart} restarts of a move ` +
               `the operator noted once` : ` and ${lo.earlier_scene} from an earlier table layout`) + `. For a person-scored evaluation of a different, earlier ` +
@@ -271,7 +264,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .seg:last-child { border-radius: 0 4px 4px 0; }
   .seg:only-child { border-radius: 4px; }
   .bar-n { font-size: var(--step-0); color: var(--ink-2); text-align: right; white-space: nowrap; }
-  .split { margin-top: 0.7rem; font-size: var(--step--1); }
+  .split { margin-top: 0.8rem; font-size: var(--step-0); }
   .bar-untr { grid-column: 2 / 4; margin: 0.25rem 0 0.6rem; font-size: var(--step--1); line-height: 1.4; color: var(--ink-2); max-width: none; }
   .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
   .twin summary { cursor: pointer; width: fit-content; }
@@ -279,12 +272,13 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .after { margin-top: 1rem; }
   .empty { margin-top: 1rem; }
 
-  .legend.rate { margin-top: 1.4rem; }
-  .legend .none { background: var(--page); border: 1.25px solid var(--rack); }
-  .slot-row { margin-top: 1.8rem; }
+  .key { display: flex; align-items: center; gap: 1rem; margin-top: 1.1rem; }
+  .key .vial-meter { margin: 0; flex: none; }
+  .slot-row { margin-top: 2.4rem; }
   .slot-row[hidden] { display: none; }
-  .slot-row h3 { display: flex; align-items: baseline; gap: 0.6rem; font-size: var(--step-0); margin-bottom: 0.6rem; }
-  .slot-row h3 i { width: 0.65rem; height: 0.65rem; border-radius: 50%; align-self: center; }
+  .slot-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .slot-row h3 i { width: 0.75rem; height: 0.75rem; border-radius: 50%; align-self: center; }
+  .slot-row h3 .sub { font-size: var(--step-0); font-weight: 400; color: var(--ink-2); }
   .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.2rem clamp(1.2rem, 3vw, 2.5rem); }
   .clip-wrap[hidden] { display: none; }
 
