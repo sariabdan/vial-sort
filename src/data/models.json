@@ -99,7 +99,6 @@
     "right_vial": 77,
     "stages": {
      "no_grasp": 5,
-     "grasped": 0,
      "carried": 26,
      "released": 51
     }
@@ -125,7 +124,6 @@
     "right_vial": 24,
     "stages": {
      "no_grasp": 7,
-     "grasped": 0,
      "carried": 13,
      "released": 11
     }
@@ -148,10 +146,9 @@
    "robot": {
     "takes": 37,
     "released": 6,
-    "right_vial": 28,
+    "right_vial": 21,
     "stages": {
-     "no_grasp": 9,
-     "grasped": 7,
+     "no_grasp": 16,
      "carried": 15,
      "released": 6
     }
@@ -177,7 +174,6 @@
     "right_vial": 3,
     "stages": {
      "no_grasp": 24,
-     "grasped": 0,
      "carried": 0,
      "released": 3
     }
@@ -200,10 +196,9 @@
    "robot": {
     "takes": 10,
     "released": 2,
-    "right_vial": 8,
+    "right_vial": 6,
     "stages": {
-     "no_grasp": 2,
-     "grasped": 2,
+     "no_grasp": 4,
      "carried": 4,
      "released": 2
     }
@@ -226,10 +221,9 @@
    "robot": {
     "takes": 20,
     "released": 1,
-    "right_vial": 5,
+    "right_vial": 3,
     "stages": {
-     "no_grasp": 15,
-     "grasped": 2,
+     "no_grasp": 17,
      "carried": 2,
      "released": 1
     }

@@ -2,18 +2,13 @@
  "stages": [
   {
    "key": "no_grasp",
-   "label": "Missed the vial",
-   "def": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty hole, or not at all."
-  },
-  {
-   "key": "grasped",
-   "label": "Grasped, not lifted",
-   "def": "The gripper closed on the right vial but the arm never lifted it."
+   "label": "Never picked it up",
+   "def": "The arm never picked up the vial in the asked source slot: the gripper closed on another vial, on an empty hole or not at all, or closed on the right vial but never lifted it."
   },
   {
    "key": "carried",
-   "label": "Lifted, not in the asked slot",
-   "def": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
+   "label": "Picked up, not in the asked slot",
+   "def": "The arm picked up the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
   },
   {
    "key": "released",
@@ -233,7 +228,7 @@
    "label": "Crispy Falafel · 30k · sync",
    "short": "30k · sync",
    "rollouts": 4,
-   "grasped_right": 3,
+   "grasped_right": 2,
    "released": 1,
    "scored_by": "arm"
   },

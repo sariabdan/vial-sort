@@ -2,18 +2,13 @@
  "stages": [
   {
    "key": "no_grasp",
-   "label": "Missed the vial",
-   "def": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty hole, or not at all."
-  },
-  {
-   "key": "grasped",
-   "label": "Grasped, not lifted",
-   "def": "The gripper closed on the right vial but the arm never lifted it."
+   "label": "Never picked it up",
+   "def": "The arm never picked up the vial in the asked source slot: the gripper closed on another vial, on an empty hole or not at all, or closed on the right vial but never lifted it."
   },
   {
    "key": "carried",
-   "label": "Lifted, not in the asked slot",
-   "def": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
+   "label": "Picked up, not in the asked slot",
+   "def": "The arm picked up the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
   },
   {
    "key": "released",
@@ -28,11 +23,7 @@
   },
   {
    "key": "grasped_right",
-   "label": "Grasped the right vial"
-  },
-  {
-   "key": "lifted",
-   "label": "Lifted it"
+   "label": "Picked up the right vial"
   },
   {
    "key": "released",
@@ -51,13 +42,12 @@
    "label": "Crispy Falafel · 10k · sync",
    "short": "10k · sync",
    "rollouts": 8,
-   "grasped_right": 1,
+   "grasped_right": 0,
    "lifted": 0,
    "released": 0,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 7,
-    "grasped": 1,
+    "no_grasp": 8,
     "carried": 0,
     "released": 0
    },
@@ -75,7 +65,7 @@
    "by_source": {
     "L1": {
      "rollouts": 5,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     },
     "L3": {
@@ -102,7 +92,7 @@
     },
     "R3": {
      "rollouts": 4,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     },
     "bin": {
@@ -113,7 +103,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "crispy-falafel-20000-sync",
@@ -132,7 +123,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 3,
-    "grasped": 0,
     "carried": 0,
     "released": 0
    },
@@ -163,7 +153,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "crispy-falafel-26000-sync",
@@ -182,7 +173,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 1,
-    "grasped": 0,
     "carried": 0,
     "released": 0
    },
@@ -208,7 +198,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "crispy-falafel-26000-sync-ema",
@@ -227,7 +218,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 1,
-    "grasped": 0,
     "carried": 0,
     "released": 0
    },
@@ -253,7 +243,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "crispy-falafel-30000-sync",
@@ -266,13 +257,12 @@
    "label": "Crispy Falafel · 30k · sync",
    "short": "30k · sync",
    "rollouts": 4,
-   "grasped_right": 3,
+   "grasped_right": 2,
    "lifted": 2,
    "released": 1,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 1,
-    "grasped": 1,
+    "no_grasp": 2,
     "carried": 1,
     "released": 1
    },
@@ -286,7 +276,7 @@
    "by_source": {
     "L1": {
      "rollouts": 2,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     },
     "R1": {
@@ -313,13 +303,14 @@
     },
     "R6": {
      "rollouts": 2,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "crispy-falafel-30000-sync-ema",
@@ -338,7 +329,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 2,
-    "grasped": 0,
     "carried": 1,
     "released": 0
    },
@@ -384,7 +374,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "mango-chutney-4000-sync",
@@ -397,13 +388,12 @@
    "label": "Mango Chutney · 4k · sync",
    "short": "4k · sync",
    "rollouts": 7,
-   "grasped_right": 2,
+   "grasped_right": 1,
    "lifted": 1,
    "released": 1,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 5,
-    "grasped": 1,
+    "no_grasp": 6,
     "carried": 0,
     "released": 1
    },
@@ -417,7 +407,7 @@
    "by_source": {
     "L1": {
      "rollouts": 3,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     },
     "L3": {
@@ -444,7 +434,7 @@
     },
     "L6": {
      "rollouts": 4,
-     "grasped_right": 2,
+     "grasped_right": 1,
      "released": 1
     },
     "R6": {
@@ -455,13 +445,12 @@
    },
    "untrained": {
     "rollouts": 2,
-    "grasped_right": 1,
+    "grasped_right": 0,
     "lifted": 0,
     "released": 0,
     "seen_in_slot": 0,
     "stages": {
-     "no_grasp": 1,
-     "grasped": 1,
+     "no_grasp": 2,
      "carried": 0,
      "released": 0
     },
@@ -470,7 +459,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-220"
   },
   {
    "key": "mango-lassi-4000-sync",
@@ -483,13 +473,12 @@
    "label": "Mango Lassi · 4k · sync",
    "short": "4k · sync",
    "rollouts": 37,
-   "grasped_right": 28,
+   "grasped_right": 21,
    "lifted": 21,
    "released": 6,
    "seen_in_slot": 6,
    "stages": {
-    "no_grasp": 9,
-    "grasped": 7,
+    "no_grasp": 16,
     "carried": 15,
     "released": 6
    },
@@ -507,12 +496,12 @@
    "by_source": {
     "L1": {
      "rollouts": 6,
-     "grasped_right": 5,
+     "grasped_right": 2,
      "released": 0
     },
     "L3": {
      "rollouts": 7,
-     "grasped_right": 4,
+     "grasped_right": 3,
      "released": 1
     },
     "L6": {
@@ -522,12 +511,12 @@
     },
     "R1": {
      "rollouts": 6,
-     "grasped_right": 5,
+     "grasped_right": 4,
      "released": 2
     },
     "R3": {
      "rollouts": 8,
-     "grasped_right": 8,
+     "grasped_right": 7,
      "released": 2
     },
     "R4": {
@@ -537,14 +526,14 @@
     },
     "R6": {
      "rollouts": 5,
-     "grasped_right": 3,
+     "grasped_right": 2,
      "released": 0
     }
    },
    "by_destination": {
     "L1": {
      "rollouts": 6,
-     "grasped_right": 5,
+     "grasped_right": 4,
      "released": 0
     },
     "L3": {
@@ -559,12 +548,12 @@
     },
     "L6": {
      "rollouts": 9,
-     "grasped_right": 8,
+     "grasped_right": 4,
      "released": 2
     },
     "R1": {
      "rollouts": 5,
-     "grasped_right": 3,
+     "grasped_right": 2,
      "released": 1
     },
     "R3": {
@@ -579,7 +568,7 @@
     },
     "R6": {
      "rollouts": 4,
-     "grasped_right": 2,
+     "grasped_right": 1,
      "released": 0
     },
     "bin": {
@@ -590,13 +579,12 @@
    },
    "untrained": {
     "rollouts": 4,
-    "grasped_right": 4,
+    "grasped_right": 2,
     "lifted": 2,
     "released": 0,
     "seen_in_slot": 0,
     "stages": {
-     "no_grasp": 0,
-     "grasped": 2,
+     "no_grasp": 2,
      "carried": 2,
      "released": 0
     },
@@ -607,7 +595,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-220"
   },
   {
    "key": "mango-pudding-16000-sync",
@@ -626,7 +615,6 @@
    "seen_in_slot": 11,
    "stages": {
     "no_grasp": 7,
-    "grasped": 0,
     "carried": 13,
     "released": 11
    },
@@ -745,7 +733,6 @@
     "seen_in_slot": 3,
     "stages": {
      "no_grasp": 3,
-     "grasped": 0,
      "carried": 1,
      "released": 3
     },
@@ -760,7 +747,8 @@
     }
    },
    "scored_by": "notes",
-   "restarts": 6
+   "restarts": 6,
+   "train_set": "vial-sort-slots-220"
   },
   {
    "key": "mango-rice-10000-rtc",
@@ -773,13 +761,12 @@
    "label": "Mango Rice · 10k · RTC",
    "short": "10k · RTC",
    "rollouts": 1,
-   "grasped_right": 1,
+   "grasped_right": 0,
    "lifted": 0,
    "released": 0,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 0,
-    "grasped": 1,
+    "no_grasp": 1,
     "carried": 0,
     "released": 0
    },
@@ -792,20 +779,21 @@
    "by_source": {
     "R3": {
      "rollouts": 1,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "by_destination": {
     "L6": {
      "rollouts": 1,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "mango-rice-10000-sync",
@@ -824,7 +812,6 @@
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 0,
-    "grasped": 0,
     "carried": 1,
     "released": 1
    },
@@ -860,7 +847,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "mango-rice-12000-rtc",
@@ -873,13 +861,12 @@
    "label": "Mango Rice · 12k · RTC",
    "short": "12k · RTC",
    "rollouts": 1,
-   "grasped_right": 1,
+   "grasped_right": 0,
    "lifted": 0,
    "released": 0,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 0,
-    "grasped": 1,
+    "no_grasp": 1,
     "carried": 0,
     "released": 0
    },
@@ -892,20 +879,21 @@
    "by_source": {
     "R3": {
      "rollouts": 1,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "by_destination": {
     "L6": {
      "rollouts": 1,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "mango-rice-12000-sync",
@@ -924,7 +912,6 @@
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 2,
-    "grasped": 0,
     "carried": 3,
     "released": 1
    },
@@ -991,7 +978,6 @@
     "seen_in_slot": 0,
     "stages": {
      "no_grasp": 1,
-     "grasped": 0,
      "carried": 0,
      "released": 0
     },
@@ -1000,7 +986,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "mango-sorbet-4000-sync",
@@ -1013,13 +1000,12 @@
    "label": "Mango Sorbet · 4k · sync",
    "short": "4k · sync",
    "rollouts": 11,
-   "grasped_right": 10,
+   "grasped_right": 9,
    "lifted": 9,
    "released": 1,
    "seen_in_slot": 1,
    "stages": {
-    "no_grasp": 1,
-    "grasped": 1,
+    "no_grasp": 2,
     "carried": 8,
     "released": 1
    },
@@ -1037,7 +1023,7 @@
     },
     "L3": {
      "rollouts": 4,
-     "grasped_right": 4,
+     "grasped_right": 3,
      "released": 0
     },
     "L6": {
@@ -1059,7 +1045,7 @@
    "by_destination": {
     "L1": {
      "rollouts": 2,
-     "grasped_right": 2,
+     "grasped_right": 1,
      "released": 0
     },
     "L6": {
@@ -1091,7 +1077,6 @@
     "seen_in_slot": 0,
     "stages": {
      "no_grasp": 0,
-     "grasped": 0,
      "carried": 1,
      "released": 0
     },
@@ -1100,7 +1085,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-220"
   },
   {
    "key": "plain-bagel-16000-sync",
@@ -1119,7 +1105,6 @@
    "seen_in_slot": 51,
    "stages": {
     "no_grasp": 5,
-    "grasped": 0,
     "carried": 26,
     "released": 51
    },
@@ -1271,7 +1256,6 @@
     "seen_in_slot": 20,
     "stages": {
      "no_grasp": 4,
-     "grasped": 0,
      "carried": 17,
      "released": 20
     },
@@ -1316,7 +1300,8 @@
     }
    },
    "scored_by": "notes",
-   "restarts": 11
+   "restarts": 11,
+   "train_set": "vial-sort-slots-220"
   },
   {
    "key": "pretzel-one-250-rtc",
@@ -1335,7 +1320,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 2,
-    "grasped": 0,
     "carried": 1,
     "released": 0
    },
@@ -1376,7 +1360,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "pretzel-two-500-rtc",
@@ -1389,13 +1374,12 @@
    "label": "Pretzel Two · 500 · RTC",
    "short": "500 · RTC",
    "rollouts": 17,
-   "grasped_right": 10,
+   "grasped_right": 6,
    "lifted": 6,
    "released": 1,
    "seen_in_slot": 0,
    "stages": {
-    "no_grasp": 7,
-    "grasped": 4,
+    "no_grasp": 11,
     "carried": 5,
     "released": 1
    },
@@ -1426,24 +1410,24 @@
     },
     "R3": {
      "rollouts": 9,
-     "grasped_right": 8,
+     "grasped_right": 5,
      "released": 0
     },
     "R6": {
      "rollouts": 4,
-     "grasped_right": 1,
+     "grasped_right": 0,
      "released": 0
     }
    },
    "by_destination": {
     "L1": {
      "rollouts": 3,
-     "grasped_right": 2,
+     "grasped_right": 1,
      "released": 0
     },
     "L6": {
      "rollouts": 6,
-     "grasped_right": 5,
+     "grasped_right": 3,
      "released": 0
     },
     "R1": {
@@ -1458,13 +1442,14 @@
     },
     "bin": {
      "rollouts": 6,
-     "grasped_right": 2,
+     "grasped_right": 1,
      "released": 0
     }
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "spicy-chicken-7000-sync",
@@ -1483,7 +1468,6 @@
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 7,
-    "grasped": 0,
     "carried": 0,
     "released": 2
    },
@@ -1546,7 +1530,6 @@
     "seen_in_slot": 0,
     "stages": {
      "no_grasp": 5,
-     "grasped": 0,
      "carried": 0,
      "released": 0
     },
@@ -1556,7 +1539,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "spicy-chicken-9000-rtc",
@@ -1575,7 +1559,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 3,
-    "grasped": 0,
     "carried": 0,
     "released": 0
    },
@@ -1611,7 +1594,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "spicy-chicken-12000-rtc",
@@ -1630,7 +1614,6 @@
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 5,
-    "grasped": 0,
     "carried": 0,
     "released": 0
    },
@@ -1677,7 +1660,8 @@
    },
    "untrained": null,
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   },
   {
    "key": "spicy-chicken-12000-sync",
@@ -1696,7 +1680,6 @@
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 9,
-    "grasped": 0,
     "carried": 0,
     "released": 1
    },
@@ -1765,7 +1748,6 @@
     "seen_in_slot": 0,
     "stages": {
      "no_grasp": 1,
-     "grasped": 0,
      "carried": 0,
      "released": 0
     },
@@ -1774,7 +1756,8 @@
     }
    },
    "scored_by": "arm",
-   "restarts": 0
+   "restarts": 0,
+   "train_set": "vial-sort-slots-100"
   }
  ],
  "noted_models": [
@@ -1808,7 +1791,7 @@
    "label": "Crispy Falafel · 30k · sync",
    "short": "30k · sync",
    "rollouts": 4,
-   "grasped_right": 3,
+   "grasped_right": 2,
    "released": 1,
    "scored_by": "arm"
   },
@@ -1822,6 +1805,52 @@
  },
  "total": 245,
  "untrained": 62,
+ "demo_sets": {
+  "vial-sort-slots-220": {
+   "episodes": 220,
+   "per_source": {
+    "L1": 26,
+    "L3": 25,
+    "L4": 26,
+    "L6": 24,
+    "R1": 30,
+    "R3": 28,
+    "R4": 31,
+    "R6": 30
+   },
+   "per_destination": {
+    "L1": 37,
+    "L3": 31,
+    "L6": 25,
+    "R1": 27,
+    "R3": 32,
+    "R6": 27,
+    "bin": 41
+   }
+  },
+  "vial-sort-slots-100": {
+   "episodes": 100,
+   "per_source": {
+    "L1": 13,
+    "L3": 13,
+    "L4": 13,
+    "L6": 13,
+    "R1": 11,
+    "R3": 13,
+    "R4": 12,
+    "R6": 12
+   },
+   "per_destination": {
+    "L1": 15,
+    "L3": 10,
+    "L6": 10,
+    "R1": 10,
+    "R3": 15,
+    "R6": 15,
+    "bin": 25
+   }
+  }
+ },
  "left_out": {
   "short": 11,
   "unreadable": 2,
