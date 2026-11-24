@@ -1112,146 +1112,211 @@
    "ema": false,
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 31,
-   "grasped_right": 30,
-   "lifted": 30,
-   "released": 26,
-   "seen_in_slot": 21,
+   "rollouts": 82,
+   "grasped_right": 77,
+   "lifted": 77,
+   "released": 56,
+   "seen_in_slot": 51,
    "stages": {
-    "no_grasp": 1,
+    "no_grasp": 5,
     "grasped": 0,
-    "carried": 4,
-    "released": 26
+    "carried": 21,
+    "released": 56
    },
    "days": [
-    "20261109"
+    "20261109",
+    "20261124"
    ],
    "sessions": [
-    "016000_20261109_005026"
+    "016000_20261109_005026",
+    "016000_20261124_161825",
+    "016000_20261124_171208",
+    "016000_20261124_174531",
+    "016000_20261124_175359"
    ],
    "by_source": {
     "L1": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 2
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 5
     },
     "L2": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 4
     },
     "L3": {
+     "rollouts": 7,
+     "grasped_right": 7,
+     "released": 6
+    },
+    "L4": {
+     "rollouts": 7,
+     "grasped_right": 7,
+     "released": 3
+    },
+    "L5": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 2
+    },
+    "L6": {
      "rollouts": 6,
+     "grasped_right": 6,
+     "released": 5
+    },
+    "R1": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
+    },
+    "R2": {
+     "rollouts": 7,
      "grasped_right": 6,
      "released": 6
     },
-    "L5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "L6": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 3
-    },
-    "R1": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
-    },
-    "R2": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
     "R3": {
-     "rollouts": 5,
-     "grasped_right": 5,
-     "released": 3
+     "rollouts": 8,
+     "grasped_right": 7,
+     "released": 5
+    },
+    "R4": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 4
     },
     "R5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 6
     },
     "R6": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 5,
-     "grasped_right": 5,
-     "released": 4
+     "rollouts": 9,
+     "grasped_right": 8,
+     "released": 7
+    },
+    "L2": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 1
     },
     "L3": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 2
-    },
-    "L5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "L6": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 3
-    },
-    "R1": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
-    },
-    "R3": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 1
-    },
-    "R4": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "R6": {
-     "rollouts": 6,
-     "grasped_right": 6,
+     "rollouts": 7,
+     "grasped_right": 7,
      "released": 6
     },
-    "bin": {
-     "rollouts": 4,
+    "L4": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "L5": {
+     "rollouts": 5,
      "grasped_right": 4,
      "released": 4
+    },
+    "L6": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 5
+    },
+    "R1": {
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 7
+    },
+    "R2": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 8,
+     "grasped_right": 7,
+     "released": 3
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 1
+    },
+    "R5": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 9,
+     "grasped_right": 9,
+     "released": 9
+    },
+    "bin": {
+     "rollouts": 12,
+     "grasped_right": 12,
+     "released": 12
     }
    },
    "untrained": {
-    "rollouts": 7,
-    "grasped_right": 6,
-    "lifted": 6,
-    "released": 6,
-    "seen_in_slot": 4,
+    "rollouts": 41,
+    "grasped_right": 37,
+    "lifted": 37,
+    "released": 22,
+    "seen_in_slot": 20,
     "stages": {
-     "no_grasp": 1,
+     "no_grasp": 4,
      "grasped": 0,
-     "carried": 0,
-     "released": 6
+     "carried": 15,
+     "released": 22
     },
     "moves": {
      "L1->L6": 1,
-     "L2->R6": 1,
-     "L3->R4": 1,
+     "L2->R1": 1,
+     "L2->R2": 1,
+     "L2->R3": 1,
+     "L2->R4": 1,
+     "L2->R5": 1,
+     "L2->R6": 2,
+     "L2->bin": 1,
+     "L3->R4": 2,
+     "L4->R2": 1,
+     "L4->R4": 1,
+     "L4->R5": 1,
+     "L5->R1": 1,
+     "L5->R2": 1,
+     "L5->R3": 1,
+     "L5->R4": 1,
+     "L5->R5": 1,
+     "L5->R6": 1,
      "L5->bin": 1,
+     "R2->L1": 1,
+     "R2->L2": 1,
+     "R2->L3": 1,
+     "R2->L4": 1,
+     "R2->L5": 1,
+     "R2->L6": 1,
      "R2->bin": 1,
-     "R3->L5": 1,
-     "R5->L1": 1
+     "R3->L5": 2,
+     "R4->L2": 1,
+     "R4->L4": 1,
+     "R4->L5": 1,
+     "R5->L1": 2,
+     "R5->L2": 1,
+     "R5->L3": 1,
+     "R5->L4": 1,
+     "R5->L5": 1,
+     "R5->L6": 1,
+     "R5->bin": 1
     }
    },
    "scored_by": "notes",
-   "restarts": 6
+   "restarts": 11
   },
   {
    "key": "pretzel-one-250-rtc",
@@ -1732,9 +1797,9 @@
    "name": "Plain Bagel",
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 31,
-   "grasped_right": 30,
-   "released": 26,
+   "rollouts": 82,
+   "grasped_right": 77,
+   "released": 56,
    "scored_by": "notes"
   },
   "flux": {
@@ -1755,12 +1820,12 @@
    "source_from": 5000
   }
  },
- "total": 194,
- "untrained": 28,
+ "total": 245,
+ "untrained": 62,
  "left_out": {
   "short": 11,
   "unreadable": 2,
   "earlier_scene": 11,
-  "restart": 12
+  "restart": 17
  }
 }

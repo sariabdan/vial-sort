@@ -819,12 +819,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 5,
       "grasped": 0,
-      "carried": 4,
-      "released": 26
+      "carried": 21,
+      "released": 56
      },
-     "takes": 31
+     "takes": 82
     }
    ]
   },

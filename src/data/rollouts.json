@@ -10016,6 +10016,2647 @@
      "strip": "016000_20261109_005026_t36.jpg"
     }
    ]
+  },
+  {
+   "name": "016000_20261124_161825",
+   "policy": "pi05",
+   "run": "pi05-a16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261124",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261124_161825_t0",
+     "take": 0,
+     "secs": 19.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L4->R1",
+     "task": "Move the vial from position 4 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "32",
+      "file": "A_16000.yaml",
+      "i": 31,
+      "outcome": "placed",
+      "ended": "R1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L4 (3.7)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 172,
+       "release": 460,
+       "at": "L4 (3.7)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t0.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t1",
+     "take": 1,
+     "secs": 21.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R1"
+     },
+     "move": "L4->R2",
+     "task": "Move the vial from position 4 of the left rack to slot 2 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "33",
+      "file": "A_16000.yaml",
+      "i": 32,
+      "outcome": "off_slot",
+      "ended": "R1",
+      "retried": false,
+      "note": "put in R1",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (2.9)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 170,
+       "release": 397,
+       "at": "L3 (2.9)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t1.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t2",
+     "take": 2,
+     "secs": 21.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R2"
+     },
+     "move": "L4->R3",
+     "task": "Move the vial from position 4 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "34",
+      "file": "A_16000.yaml",
+      "i": 33,
+      "outcome": "off_slot",
+      "ended": "R2",
+      "retried": false,
+      "note": "put in R2",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L3 (3.0)",
+     "to": "R1 (1.3)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 170,
+       "release": 416,
+       "at": "L3 (3.0)",
+       "put": "R1 (1.3)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t2.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t3",
+     "take": 3,
+     "secs": 17.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R3"
+     },
+     "move": "L4->R4",
+     "task": "Move the vial from position 4 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "35",
+      "file": "A_16000.yaml",
+      "i": 34,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "put in R3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (3.3)",
+     "to": "R2 (2.4)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 147,
+       "release": 394,
+       "at": "L3 (3.3)",
+       "put": "R2 (2.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t3.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t4",
+     "take": 4,
+     "secs": 15.8,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R3"
+     },
+     "move": "L4->R5",
+     "task": "Move the vial from position 4 of the left rack to slot 5 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "36",
+      "file": "A_16000.yaml",
+      "i": 35,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "put in R3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L4 (3.7)",
+     "to": "R3 (3.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 142,
+       "release": 426,
+       "at": "L4 (3.7)",
+       "put": "R3 (3.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t4.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t5",
+     "take": 5,
+     "secs": 16.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L4->R6",
+     "task": "Move the vial from position 4 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "37",
+      "file": "A_16000.yaml",
+      "i": 36,
+      "outcome": "placed",
+      "ended": "R6",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L3 (3.2)",
+     "to": "R6 (5.8)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 147,
+       "release": 404,
+       "at": "L3 (3.2)",
+       "put": "R6 (5.8)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t5.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t6",
+     "take": 6,
+     "secs": 12.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L4->bin",
+     "task": "Move the vial from position 4 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "38",
+      "file": "A_16000.yaml",
+      "i": 37,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L4 (3.6)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 275,
+       "at": "L4 (3.6)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t6.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t7",
+     "take": 7,
+     "secs": 24.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R4->L1",
+     "task": "Move the vial from position 4 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "39",
+      "file": "A_16000.yaml",
+      "i": 38,
+      "outcome": "placed",
+      "ended": "L1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R4 (4.2)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 105,
+       "release": 440,
+       "at": "R4 (4.2)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t7.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t8",
+     "take": 8,
+     "secs": 19.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "picked R6 and put in L2"
+     },
+     "move": "R4->L2",
+     "task": "Move the vial from position 4 of the right rack to slot 2 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "40",
+      "file": "A_16000.yaml",
+      "i": 39,
+      "outcome": "wrong_vial",
+      "ended": "source",
+      "retried": false,
+      "note": "picked R6 and put in L2",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (5.3)",
+     "to": "L3 (2.7)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 107,
+       "release": 405,
+       "at": "R5 (5.3)",
+       "put": "L3 (2.7)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t8.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t9",
+     "take": 9,
+     "secs": 20.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R4->L3",
+     "task": "Move the vial from position 4 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "41",
+      "file": "A_16000.yaml",
+      "i": 40,
+      "outcome": "placed",
+      "ended": "L3",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R4 (3.6) (+1 empty close)",
+     "to": "L3 (3.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 99,
+       "release": 372,
+       "at": "R4 (3.6)",
+       "put": "L3 (3.1)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 567,
+       "release": 582,
+       "at": "L5 (5.1)",
+       "put": "L6 (6.0)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261124_161825_t9.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t10",
+     "take": 10,
+     "secs": 15.7,
+     "checked": null,
+     "move": "R4->L4",
+     "task": "Move the vial from position 4 of the right rack to slot 4 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": true,
+     "noted": null,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (3.7)",
+     "to": "never let go -- held over L4 (3.7) (the right slot)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 105,
+       "release": 105,
+       "at": "R4 (3.7)",
+       "put": "R4 (3.7)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 106,
+       "release": null,
+       "at": "R4 (3.7)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t10.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t11",
+     "take": 11,
+     "secs": 24.3,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in L3"
+     },
+     "move": "R4->L4",
+     "task": "Move the vial from position 4 of the right rack to slot 4 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "42",
+      "file": "A_16000.yaml",
+      "i": 41,
+      "outcome": "off_slot",
+      "ended": "L3",
+      "retried": false,
+      "note": "put in L3",
+      "attempts": 2
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (3.8)",
+     "to": "L3 (3.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 88,
+       "release": 460,
+       "at": "R4 (3.8)",
+       "put": "L3 (3.1)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 461,
+       "release": 488,
+       "at": "L3 (3.0)",
+       "put": "L3 (3.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261124_161825_t11.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t12",
+     "take": 12,
+     "secs": 2.9,
+     "checked": null,
+     "move": "R4->L5",
+     "task": "Move the vial from position 4 of the right rack to slot 5 of the left rack.",
+     "stage": null,
+     "short": true,
+     "trained_move": false,
+     "restart": true,
+     "noted": null,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "take ended after 2.9 s",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261124_161825_t12.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t13",
+     "take": 13,
+     "secs": 24.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R4->L5",
+     "task": "Move the vial from position 4 of the right rack to slot 5 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "43",
+      "file": "A_16000.yaml",
+      "i": 42,
+      "outcome": "placed",
+      "ended": "L5",
+      "retried": false,
+      "note": "success",
+      "attempts": 2
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (3.8)",
+     "to": "L5 (4.8)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 102,
+       "release": 585,
+       "at": "R4 (3.8)",
+       "put": "L5 (4.8)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t13.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t14",
+     "take": 14,
+     "secs": 25.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put it in L5 (almost L6)"
+     },
+     "move": "R4->L6",
+     "task": "Move the vial from position 4 of the right rack to slot 6 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "44",
+      "file": "A_16000.yaml",
+      "i": 43,
+      "outcome": "off_slot",
+      "ended": "L5",
+      "retried": false,
+      "note": "put it in L5 (almost L6)",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R3 (3.4)",
+     "to": "L5 (5.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 110,
+       "release": 630,
+       "at": "R3 (3.4)",
+       "put": "L5 (5.1)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 671,
+       "release": 691,
+       "at": "L6 (6.0)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 692,
+       "release": 727,
+       "at": "L6 (6.0)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261124_161825_t14.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t15",
+     "take": 15,
+     "secs": 8.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R4->bin",
+     "task": "Move the vial from position 4 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "45",
+      "file": "A_16000.yaml",
+      "i": 44,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R4 (3.5)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 115,
+       "release": 217,
+       "at": "R4 (3.5)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t15.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t16",
+     "take": 16,
+     "secs": 19.1,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "it grabbed R1 and put in L1"
+     },
+     "move": "R3->L1",
+     "task": "Move the vial from position 3 of the right rack to slot 1 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "46",
+      "file": "A_16000.yaml",
+      "i": 45,
+      "outcome": "wrong_vial",
+      "ended": "source",
+      "retried": false,
+      "note": "it grabbed R1 and put in L1",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R2 (1.8)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 116,
+       "release": 465,
+       "at": "R2 (1.8)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t16.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t17",
+     "take": 17,
+     "secs": 20.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->L3",
+     "task": "Move the vial from position 3 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "47",
+      "file": "A_16000.yaml",
+      "i": 46,
+      "outcome": "placed",
+      "ended": "L3",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R3 (2.9)",
+     "to": "L3 (3.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 116,
+       "release": 517,
+       "at": "R3 (2.9)",
+       "put": "L3 (3.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t17.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t18",
+     "take": 18,
+     "secs": 22.3,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R3->L5",
+     "task": "Move the vial from position 3 of the right rack to slot 5 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "48",
+      "file": "A_16000.yaml",
+      "i": 47,
+      "outcome": "placed",
+      "ended": "L5",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (2.9)",
+     "to": "L5 (5.5)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 112,
+       "release": 521,
+       "at": "R3 (2.9)",
+       "put": "L5 (5.5)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t18.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t19",
+     "take": 19,
+     "secs": 18.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->R1",
+     "task": "Move the vial from position 1 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "49",
+      "file": "A_16000.yaml",
+      "i": 48,
+      "outcome": "placed",
+      "ended": "R1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 175,
+       "release": 412,
+       "at": "L1 (1.0)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t19.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t20",
+     "take": 20,
+     "secs": 12.9,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->bin",
+     "task": "Move the vial from position 1 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "50",
+      "file": "A_16000.yaml",
+      "i": 49,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 138,
+       "release": 265,
+       "at": "L1 (1.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t20.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t21",
+     "take": 21,
+     "secs": 15.9,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L1->R3",
+     "task": "Move the vial from position 1 of the left rack to slot 3 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "51",
+      "file": "A_16000.yaml",
+      "i": 50,
+      "outcome": "placed",
+      "ended": "R3",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L1 (1.0)",
+     "to": "R3 (2.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 153,
+       "release": 381,
+       "at": "L1 (1.0)",
+       "put": "R3 (2.9)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t21.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t22",
+     "take": 22,
+     "secs": 15.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->R3",
+     "task": "Move the vial from position 6 of the left rack to slot 3 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "52",
+      "file": "A_16000.yaml",
+      "i": 51,
+      "outcome": "placed",
+      "ended": "R3",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L6 (6.0)",
+     "to": "R2 (2.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 134,
+       "release": 465,
+       "at": "L6 (6.0)",
+       "put": "R2 (2.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t22.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t23",
+     "take": 23,
+     "secs": 10.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L6->bin",
+     "task": "Move the vial from position 6 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "53",
+      "file": "A_16000.yaml",
+      "i": 52,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "L5 (5.3)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 113,
+       "release": 253,
+       "at": "L5 (5.3)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_161825_t23.jpg"
+    },
+    {
+     "id": "016000_20261124_161825_t24",
+     "take": 24,
+     "secs": 28.1,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R3"
+     },
+     "move": "L3->R4",
+     "task": "Move the vial from position 3 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "54",
+      "file": "A_16000.yaml",
+      "i": 53,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "put in R3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (2.6) (+1 empty close)",
+     "to": "R3 (3.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 166,
+       "release": 773,
+       "at": "L3 (2.6)",
+       "put": "R3 (3.0)",
+       "empty": false,
+       "carried": true
+      },
+      {
+       "grasp": 805,
+       "release": 834,
+       "at": "R4 (3.6)",
+       "put": "R6 (6.0)",
+       "empty": true,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261124_161825_t24.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261124_171208",
+   "policy": "pi05",
+   "run": "pi05-a16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261124",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261124_171208_t0",
+     "take": 0,
+     "secs": 11.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R1->bin",
+     "task": "Move the vial from position 1 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "55",
+      "file": "A_16000.yaml",
+      "i": 54,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R1 (1.0)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 123,
+       "release": 271,
+       "at": "R1 (1.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_171208_t0.jpg"
+    },
+    {
+     "id": "016000_20261124_171208_t1",
+     "take": 1,
+     "secs": 11.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R6->bin",
+     "task": "Move the vial from position 6 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": true,
+     "restart": false,
+     "noted": {
+      "n": "56",
+      "file": "A_16000.yaml",
+      "i": 55,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [],
+     "from": "R6 (6.0)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 124,
+       "release": 225,
+       "at": "R6 (6.0)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_171208_t1.jpg"
+    },
+    {
+     "id": "016000_20261124_171208_t2",
+     "take": 2,
+     "secs": 14.1,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L2->bin",
+     "task": "Move the vial from position 2 of the left rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "57",
+      "file": "A_16000.yaml",
+      "i": 56,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.3)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 139,
+       "release": 275,
+       "at": "L1 (1.3)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_171208_t2.jpg"
+    },
+    {
+     "id": "016000_20261124_171208_t3",
+     "take": 3,
+     "secs": 8.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->bin",
+     "task": "Move the vial from position 5 of the right rack to the bin.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "58",
+      "file": "A_16000.yaml",
+      "i": 57,
+      "outcome": "placed",
+      "ended": "bin",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (4.8)",
+     "to": "bin",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 99,
+       "release": 205,
+       "at": "R5 (4.8)",
+       "put": "bin",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_171208_t3.jpg"
+    },
+    {
+     "id": "016000_20261124_171208_t4",
+     "take": 4,
+     "secs": 23.7,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L2->R1",
+     "task": "Move the vial from position 2 of the left rack to slot 1 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "59",
+      "file": "A_16000.yaml",
+      "i": 58,
+      "outcome": "placed",
+      "ended": "R1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.3)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 130,
+       "release": 537,
+       "at": "L1 (1.3)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_171208_t4.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261124_174531",
+   "policy": "pi05",
+   "run": "pi05-a16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261124",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261124_174531_t0",
+     "take": 0,
+     "secs": 13.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R1"
+     },
+     "move": "L2->R2",
+     "task": "Move the vial from position 2 of the left rack to slot 2 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "60",
+      "file": "A_16000.yaml",
+      "i": 59,
+      "outcome": "off_slot",
+      "ended": "R1",
+      "retried": false,
+      "note": "put in R1",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (1.6)",
+     "to": "R1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 144,
+       "release": 403,
+       "at": "L2 (1.6)",
+       "put": "R1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_174531_t0.jpg"
+    },
+    {
+     "id": "016000_20261124_174531_t1",
+     "take": 1,
+     "secs": 30.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R2"
+     },
+     "move": "L2->R3",
+     "task": "Move the vial from position 2 of the left rack to slot 3 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "61",
+      "file": "A_16000.yaml",
+      "i": 60,
+      "outcome": "off_slot",
+      "ended": "R2",
+      "retried": false,
+      "note": "put in R2",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L1 (1.4)",
+     "to": "R2 (2.4)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 146,
+       "release": 389,
+       "at": "L1 (1.4)",
+       "put": "R2 (2.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_174531_t1.jpg"
+    },
+    {
+     "id": "016000_20261124_174531_t2",
+     "take": 2,
+     "secs": 13.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R3"
+     },
+     "move": "L2->R4",
+     "task": "Move the vial from position 2 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "62",
+      "file": "A_16000.yaml",
+      "i": 61,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "put in R3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (1.6)",
+     "to": "R3 (2.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 127,
+       "release": 406,
+       "at": "L2 (1.6)",
+       "put": "R3 (2.9)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_174531_t2.jpg"
+    },
+    {
+     "id": "016000_20261124_174531_t3",
+     "take": 3,
+     "secs": 49.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed placing (kept hovering above R4 and then fell in front of rack)"
+     },
+     "move": "L2->R5",
+     "task": "Move the vial from position 2 of the left rack to slot 5 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "63",
+      "file": "A_16000.yaml",
+      "i": 62,
+      "outcome": "off_slot",
+      "ended": "R4",
+      "retried": false,
+      "note": "missed placing (kept hovering above R4 and then fell in front of rack)",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (1.6)",
+     "to": "R1 (1.1)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 133,
+       "release": 133,
+       "at": "L2 (1.6)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 134,
+       "release": 1452,
+       "at": "L2 (1.6)",
+       "put": "R1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_174531_t3.jpg"
+    },
+    {
+     "id": "016000_20261124_174531_t4",
+     "take": 4,
+     "secs": 13.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L2->R6",
+     "task": "Move the vial from position 2 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "64",
+      "file": "A_16000.yaml",
+      "i": 63,
+      "outcome": "placed",
+      "ended": "R6",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L2 (2.2)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 136,
+       "release": 326,
+       "at": "L2 (2.2)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_174531_t4.jpg"
+    }
+   ]
+  },
+  {
+   "name": "016000_20261124_175359",
+   "policy": "pi05",
+   "run": "pi05-a16k",
+   "run_source": "checkpoint path in the session log",
+   "day": "20261124",
+   "step": 16000,
+   "ema": false,
+   "mode": "sync",
+   "mode_inferred": false,
+   "assessed": true,
+   "cams": [
+    "left_bottom",
+    "left_top",
+    "right",
+    "top_down",
+    "wrist"
+   ],
+   "takes": [
+    {
+     "id": "016000_20261124_175359_t0",
+     "take": 0,
+     "secs": 27.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L1",
+     "task": "Move the vial from position 5 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "65",
+      "file": "A_16000.yaml",
+      "i": 64,
+      "outcome": "placed",
+      "ended": "L1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (4.7)",
+     "to": "L1 (1.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 112,
+       "release": 496,
+       "at": "R5 (4.7)",
+       "put": "L1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t0.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t1",
+     "take": 1,
+     "secs": 20.9,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in L3"
+     },
+     "move": "R5->L2",
+     "task": "Move the vial from position 5 of the right rack to slot 2 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "66",
+      "file": "A_16000.yaml",
+      "i": 65,
+      "outcome": "off_slot",
+      "ended": "L3",
+      "retried": false,
+      "note": "put in L3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (4.4)",
+     "to": "L3 (2.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 130,
+       "release": 614,
+       "at": "R4 (4.4)",
+       "put": "L3 (2.9)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t1.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t2",
+     "take": 2,
+     "secs": 17.5,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L3",
+     "task": "Move the vial from position 5 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "67",
+      "file": "A_16000.yaml",
+      "i": 66,
+      "outcome": "placed",
+      "ended": "L3",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (5.0)",
+     "to": "L3 (3.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 98,
+       "release": 461,
+       "at": "R5 (5.0)",
+       "put": "L3 (3.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t2.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t3",
+     "take": 3,
+     "secs": 32.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in L3"
+     },
+     "move": "R5->L4",
+     "task": "Move the vial from position 5 of the right rack to slot 4 of the left rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "68",
+      "file": "A_16000.yaml",
+      "i": 67,
+      "outcome": "off_slot",
+      "ended": "L3",
+      "retried": false,
+      "note": "put in L3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (5.0)",
+     "to": "never let go -- held over L4 (4.2) (the right slot)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 98,
+       "release": 146,
+       "at": "R5 (5.0)",
+       "put": "R6 (5.7)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 180,
+       "release": null,
+       "at": "R6 (5.9)",
+       "put": null,
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t3.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t4",
+     "take": 4,
+     "secs": 44.9,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L5",
+     "task": "Move the vial from position 5 of the right rack to slot 5 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "69",
+      "file": "A_16000.yaml",
+      "i": 68,
+      "outcome": "placed",
+      "ended": "L5",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R5 (5.2)",
+     "to": "L5 (5.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 108,
+       "release": 1227,
+       "at": "R5 (5.2)",
+       "put": "L5 (5.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t4.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t5",
+     "take": 5,
+     "secs": 18.8,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R5->L6",
+     "task": "Move the vial from position 5 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "70",
+      "file": "A_16000.yaml",
+      "i": 69,
+      "outcome": "placed",
+      "ended": "L6",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (4.4)",
+     "to": "L6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 118,
+       "release": 433,
+       "at": "R4 (4.4)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t5.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t6",
+     "take": 6,
+     "secs": 25.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R2"
+     },
+     "move": "L5->R1",
+     "task": "Move the vial from position 5 of the left rack to slot 1 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "71",
+      "file": "A_16000.yaml",
+      "i": 70,
+      "outcome": "off_slot",
+      "ended": "R2",
+      "retried": false,
+      "note": "put in R2",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (5.2)",
+     "to": "R1 (1.2)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 180,
+       "release": 560,
+       "at": "L5 (5.2)",
+       "put": "R1 (1.2)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t6.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t7",
+     "take": 7,
+     "secs": 5.5,
+     "checked": null,
+     "move": "L5->R2",
+     "task": "Move the vial from position 5 of the left rack to slot 2 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": true,
+     "noted": null,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "no grasp (hovered near L3 (3.0))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261124_175359_t7.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t8",
+     "take": 8,
+     "secs": 23.2,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed dropped (at R1)"
+     },
+     "move": "L5->R2",
+     "task": "Move the vial from position 5 of the left rack to slot 2 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "72",
+      "file": "A_16000.yaml",
+      "i": 71,
+      "outcome": "off_slot",
+      "ended": "R1",
+      "retried": false,
+      "note": "missed dropped (at R1)",
+      "attempts": 2
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (4.9)",
+     "to": "R1 (1.1)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 200,
+       "release": 514,
+       "at": "L5 (4.9)",
+       "put": "R1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t8.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t9",
+     "take": 9,
+     "secs": 25.0,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "grabbed L3 and even missed drop"
+     },
+     "move": "L5->R3",
+     "task": "Move the vial from position 5 of the left rack to slot 3 of the right rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "73",
+      "file": "A_16000.yaml",
+      "i": 72,
+      "outcome": "wrong_vial",
+      "ended": "source",
+      "retried": false,
+      "note": "grabbed L3 and even missed drop",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L3 (2.7)",
+     "to": "R1 (1.1)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 155,
+       "release": 721,
+       "at": "L3 (2.7)",
+       "put": "R1 (1.1)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t9.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t10",
+     "take": 10,
+     "secs": 27.4,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "put in R3"
+     },
+     "move": "L5->R4",
+     "task": "Move the vial from position 5 of the left rack to slot 4 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "74",
+      "file": "A_16000.yaml",
+      "i": 73,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "put in R3",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (5.3)",
+     "to": "R2 (2.4)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 119,
+       "release": 568,
+       "at": "L5 (5.3)",
+       "put": "R2 (2.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t10.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t11",
+     "take": 11,
+     "secs": 23.7,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed drop (at R3)"
+     },
+     "move": "L5->R5",
+     "task": "Move the vial from position 5 of the left rack to slot 5 of the right rack.",
+     "stage": "carried",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "75",
+      "file": "A_16000.yaml",
+      "i": 74,
+      "outcome": "off_slot",
+      "ended": "R3",
+      "retried": false,
+      "note": "missed drop (at R3)",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L4 (4.2)",
+     "to": "R3 (2.6)",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 117,
+       "release": 621,
+       "at": "L4 (4.2)",
+       "put": "R3 (2.6)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t11.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t12",
+     "take": 12,
+     "secs": 18.7,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "L5->R6",
+     "task": "Move the vial from position 5 of the left rack to slot 6 of the right rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "76",
+      "file": "A_16000.yaml",
+      "i": 75,
+      "outcome": "placed",
+      "ended": "R6",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "L5 (4.8)",
+     "to": "R6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 135,
+       "release": 433,
+       "at": "L5 (4.8)",
+       "put": "R6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t12.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t13",
+     "take": 13,
+     "secs": 31.3,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->L1",
+     "task": "Move the vial from position 2 of the right rack to slot 1 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "77",
+      "file": "A_16000.yaml",
+      "i": 76,
+      "outcome": "placed",
+      "ended": "L1",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (2.6)",
+     "to": "L1 (1.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 162,
+       "release": 623,
+       "at": "R3 (2.6)",
+       "put": "L1 (1.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t13.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t14",
+     "take": 14,
+     "secs": 21.2,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->L2",
+     "task": "Move the vial from position 2 of the right rack to slot 2 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "78",
+      "file": "A_16000.yaml",
+      "i": 77,
+      "outcome": "placed",
+      "ended": "L2",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R2 (2.4)",
+     "to": "L2 (2.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 125,
+       "release": 500,
+       "at": "R2 (2.4)",
+       "put": "L2 (2.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t14.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t15",
+     "take": 15,
+     "secs": 11.8,
+     "checked": null,
+     "move": "R2->L3",
+     "task": "Move the vial from position 2 of the right rack to slot 3 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": true,
+     "noted": null,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "no grasp (hovered near R3 (3.3))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261124_175359_t15.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t16",
+     "take": 16,
+     "secs": 37.4,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->L3",
+     "task": "Move the vial from position 2 of the right rack to slot 3 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "79",
+      "file": "A_16000.yaml",
+      "i": 78,
+      "outcome": "placed",
+      "ended": "L3",
+      "retried": false,
+      "note": "success",
+      "attempts": 2
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R2 (2.0)",
+     "to": "L3 (2.9)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 118,
+       "release": 528,
+       "at": "R2 (2.0)",
+       "put": "L3 (2.9)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t16.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t17",
+     "take": 17,
+     "secs": 44.3,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->L4",
+     "task": "Move the vial from position 2 of the right rack to slot 4 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "80",
+      "file": "A_16000.yaml",
+      "i": 79,
+      "outcome": "placed",
+      "ended": "L4",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R3 (2.5)",
+     "to": "L4 (4.4)",
+     "grasps": 2,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 174,
+       "release": 174,
+       "at": "R3 (2.5)",
+       "put": "R2 (2.3)",
+       "empty": false,
+       "carried": false
+      },
+      {
+       "grasp": 175,
+       "release": 1090,
+       "at": "R3 (2.5)",
+       "put": "L4 (4.4)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t17.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t18",
+     "take": 18,
+     "secs": 5.5,
+     "checked": null,
+     "move": "R2->L5",
+     "task": "Move the vial from position 2 of the right rack to slot 5 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": true,
+     "noted": null,
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R4 (3.6)",
+     "to": "never lifted",
+     "grasps": 1,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 123,
+       "release": null,
+       "at": "R4 (3.6)",
+       "put": null,
+       "empty": false,
+       "carried": false
+      }
+     ],
+     "strip": "016000_20261124_175359_t18.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t19",
+     "take": 19,
+     "secs": 16.5,
+     "checked": {
+      "vial": "not_in_slot",
+      "why": "missed pickup"
+     },
+     "move": "R2->L5",
+     "task": "Move the vial from position 2 of the right rack to slot 5 of the left rack.",
+     "stage": "no_grasp",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "81",
+      "file": "A_16000.yaml",
+      "i": 80,
+      "outcome": "no_grasp",
+      "ended": "source",
+      "retried": false,
+      "note": "missed pickup",
+      "attempts": 2
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "no grasp (hovered near R3 (2.9))",
+     "to": "-",
+     "grasps": 0,
+     "src_ok": false,
+     "dst_ok": false,
+     "lifted": false,
+     "notes": [],
+     "holds": [],
+     "strip": "016000_20261124_175359_t19.jpg"
+    },
+    {
+     "id": "016000_20261124_175359_t20",
+     "take": 20,
+     "secs": 17.0,
+     "checked": {
+      "vial": "in_slot",
+      "why": "success"
+     },
+     "move": "R2->L6",
+     "task": "Move the vial from position 2 of the right rack to slot 6 of the left rack.",
+     "stage": "released",
+     "short": false,
+     "trained_move": false,
+     "restart": false,
+     "noted": {
+      "n": "82",
+      "file": "A_16000.yaml",
+      "i": 81,
+      "outcome": "placed",
+      "ended": "L6",
+      "retried": false,
+      "note": "success",
+      "attempts": 1
+     },
+     "flags": [
+      "move NEVER TRAINED",
+      "not a training sentence"
+     ],
+     "from": "R2 (2.5)",
+     "to": "L6 (6.0)",
+     "grasps": 1,
+     "src_ok": true,
+     "dst_ok": true,
+     "lifted": true,
+     "notes": [],
+     "holds": [
+      {
+       "grasp": 112,
+       "release": 455,
+       "at": "R2 (2.5)",
+       "put": "L6 (6.0)",
+       "empty": false,
+       "carried": true
+      }
+     ],
+     "strip": "016000_20261124_175359_t20.jpg"
+    }
+   ]
   }
  ]
 }

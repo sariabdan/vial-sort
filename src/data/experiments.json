@@ -33,8 +33,8 @@
      "text": "7 November, on one A100 80 GB of a university GPU cluster, in two 12-hour jobs: the first stopped itself after the 8,000-step checkpoint and the second resumed from it. 16,000 steps at batch 16 (2.3 passes over the data), learning rate 2.5e-5, 4.8 s per step, 37.8 GiB of GPU memory. Loss fell from 0.099 to 0.009."
     },
     {
-     "title": "On the robot, 9 November",
-     "text": "The same 31 moves as Mango Pudding, one after the other: 21 vials ended in the asked slot, against 11. It reached slot 6 every time it carried the vial there, and also slots 4 and 5, which no demonstration used as a destination. One move failed at the grasp: L1 → L6, the one move that is not in the 220 demonstrations. What is left is the drop: six times it reached the right slot and the vial ended in front of or behind the hole."
+     "title": "On the robot, 9 and 24 November",
+     "text": "82 moves over two days, scored from the operator's notes: the 31 on 9 November that Mango Pudding also ran (21 in the asked slot, against Mango Pudding's 11), and 51 on 24 November that used every slot as a source and as a destination. The vial ended in the asked slot in 51 of the 82. Every slot to the bin worked, 12 of 12. To slots 1, 3 and 6, the destinations it trained on: 33 of 48. To the slots no demonstration used as a destination: 5 of 11 on the left rack and 1 of 11 on the right, where, asked for R4, it put the vial in R3 four times out of five, asked for R2 it went to R1 all three times, and asked for R5 it ended at R3 or R4. It picked up the right vial in 77 of the 82; three times it took another one."
     },
     {
      "title": "Tested without the robot",
@@ -201,13 +201,13 @@
    ],
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "restart": 6
+    "restart": 11
    },
-   "last_day": "20261109",
+   "last_day": "20261124",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 31,
+   "rollouts": 82,
    "checkpoints": [
     16000
    ]
@@ -5047,146 +5047,211 @@
    "ema": false,
    "label": "Plain Bagel · 16k · sync",
    "short": "16k · sync",
-   "rollouts": 31,
-   "grasped_right": 30,
-   "lifted": 30,
-   "released": 26,
-   "seen_in_slot": 21,
+   "rollouts": 82,
+   "grasped_right": 77,
+   "lifted": 77,
+   "released": 56,
+   "seen_in_slot": 51,
    "stages": {
-    "no_grasp": 1,
+    "no_grasp": 5,
     "grasped": 0,
-    "carried": 4,
-    "released": 26
+    "carried": 21,
+    "released": 56
    },
    "days": [
-    "20261109"
+    "20261109",
+    "20261124"
    ],
    "sessions": [
-    "016000_20261109_005026"
+    "016000_20261109_005026",
+    "016000_20261124_161825",
+    "016000_20261124_171208",
+    "016000_20261124_174531",
+    "016000_20261124_175359"
    ],
    "by_source": {
     "L1": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 2
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 5
     },
     "L2": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 4
     },
     "L3": {
+     "rollouts": 7,
+     "grasped_right": 7,
+     "released": 6
+    },
+    "L4": {
+     "rollouts": 7,
+     "grasped_right": 7,
+     "released": 3
+    },
+    "L5": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 2
+    },
+    "L6": {
      "rollouts": 6,
+     "grasped_right": 6,
+     "released": 5
+    },
+    "R1": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
+    },
+    "R2": {
+     "rollouts": 7,
      "grasped_right": 6,
      "released": 6
     },
-    "L5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "L6": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 3
-    },
-    "R1": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
-    },
-    "R2": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
     "R3": {
-     "rollouts": 5,
-     "grasped_right": 5,
-     "released": 3
+     "rollouts": 8,
+     "grasped_right": 7,
+     "released": 5
+    },
+    "R4": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 4
     },
     "R5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 6
     },
     "R6": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
     }
    },
    "by_destination": {
     "L1": {
-     "rollouts": 5,
-     "grasped_right": 5,
-     "released": 4
+     "rollouts": 9,
+     "grasped_right": 8,
+     "released": 7
+    },
+    "L2": {
+     "rollouts": 3,
+     "grasped_right": 2,
+     "released": 1
     },
     "L3": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 2
-    },
-    "L5": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "L6": {
-     "rollouts": 4,
-     "grasped_right": 3,
-     "released": 3
-    },
-    "R1": {
-     "rollouts": 4,
-     "grasped_right": 4,
-     "released": 4
-    },
-    "R3": {
-     "rollouts": 3,
-     "grasped_right": 3,
-     "released": 1
-    },
-    "R4": {
-     "rollouts": 1,
-     "grasped_right": 1,
-     "released": 1
-    },
-    "R6": {
-     "rollouts": 6,
-     "grasped_right": 6,
+     "rollouts": 7,
+     "grasped_right": 7,
      "released": 6
     },
-    "bin": {
-     "rollouts": 4,
+    "L4": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 1
+    },
+    "L5": {
+     "rollouts": 5,
      "grasped_right": 4,
      "released": 4
+    },
+    "L6": {
+     "rollouts": 7,
+     "grasped_right": 6,
+     "released": 5
+    },
+    "R1": {
+     "rollouts": 8,
+     "grasped_right": 8,
+     "released": 7
+    },
+    "R2": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 0
+    },
+    "R3": {
+     "rollouts": 8,
+     "grasped_right": 7,
+     "released": 3
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 1
+    },
+    "R5": {
+     "rollouts": 3,
+     "grasped_right": 3,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 9,
+     "grasped_right": 9,
+     "released": 9
+    },
+    "bin": {
+     "rollouts": 12,
+     "grasped_right": 12,
+     "released": 12
     }
    },
    "untrained": {
-    "rollouts": 7,
-    "grasped_right": 6,
-    "lifted": 6,
-    "released": 6,
-    "seen_in_slot": 4,
+    "rollouts": 41,
+    "grasped_right": 37,
+    "lifted": 37,
+    "released": 22,
+    "seen_in_slot": 20,
     "stages": {
-     "no_grasp": 1,
+     "no_grasp": 4,
      "grasped": 0,
-     "carried": 0,
-     "released": 6
+     "carried": 15,
+     "released": 22
     },
     "moves": {
      "L1->L6": 1,
-     "L2->R6": 1,
-     "L3->R4": 1,
+     "L2->R1": 1,
+     "L2->R2": 1,
+     "L2->R3": 1,
+     "L2->R4": 1,
+     "L2->R5": 1,
+     "L2->R6": 2,
+     "L2->bin": 1,
+     "L3->R4": 2,
+     "L4->R2": 1,
+     "L4->R4": 1,
+     "L4->R5": 1,
+     "L5->R1": 1,
+     "L5->R2": 1,
+     "L5->R3": 1,
+     "L5->R4": 1,
+     "L5->R5": 1,
+     "L5->R6": 1,
      "L5->bin": 1,
+     "R2->L1": 1,
+     "R2->L2": 1,
+     "R2->L3": 1,
+     "R2->L4": 1,
+     "R2->L5": 1,
+     "R2->L6": 1,
      "R2->bin": 1,
-     "R3->L5": 1,
-     "R5->L1": 1
+     "R3->L5": 2,
+     "R4->L2": 1,
+     "R4->L4": 1,
+     "R4->L5": 1,
+     "R5->L1": 2,
+     "R5->L2": 1,
+     "R5->L3": 1,
+     "R5->L4": 1,
+     "R5->L5": 1,
+     "R5->L6": 1,
+     "R5->bin": 1
     }
    },
    "scored_by": "notes",
-   "restarts": 6,
+   "restarts": 11,
    "noted_moves": [
     {
      "n": "1",
@@ -5590,12 +5655,810 @@
      "attempts": 2,
      "note": "was going to slot 3 or 4 (missed grasp) but i retried with removing one of teh neighboring vials from the dest vial, and then it succeeded",
      "take": "016000_20261109_005026_t36"
+    },
+    {
+     "n": "32",
+     "move": "L4->R1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t0"
+    },
+    {
+     "n": "33",
+     "move": "L4->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R1",
+     "take": "016000_20261124_161825_t1"
+    },
+    {
+     "n": "34",
+     "move": "L4->R3",
+     "trained": true,
+     "demos": 7,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R2",
+     "take": "016000_20261124_161825_t2"
+    },
+    {
+     "n": "35",
+     "move": "L4->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "016000_20261124_161825_t3"
+    },
+    {
+     "n": "36",
+     "move": "L4->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "016000_20261124_161825_t4"
+    },
+    {
+     "n": "37",
+     "move": "L4->R6",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t5"
+    },
+    {
+     "n": "38",
+     "move": "L4->bin",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t6"
+    },
+    {
+     "n": "39",
+     "move": "R4->L1",
+     "trained": true,
+     "demos": 9,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t7"
+    },
+    {
+     "n": "40",
+     "move": "R4->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "wrong_vial",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "picked R6 and put in L2",
+     "take": "016000_20261124_161825_t8"
+    },
+    {
+     "n": "41",
+     "move": "R4->L3",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t9"
+    },
+    {
+     "n": "42",
+     "move": "R4->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 2,
+     "note": "put in L3",
+     "take": "016000_20261124_161825_t11"
+    },
+    {
+     "n": "43",
+     "move": "R4->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "016000_20261124_161825_t13"
+    },
+    {
+     "n": "44",
+     "move": "R4->L6",
+     "trained": true,
+     "demos": 3,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 1,
+     "note": "put it in L5 (almost L6)",
+     "take": "016000_20261124_161825_t14"
+    },
+    {
+     "n": "45",
+     "move": "R4->bin",
+     "trained": true,
+     "demos": 7,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t15"
+    },
+    {
+     "n": "46",
+     "move": "R3->L1",
+     "trained": true,
+     "demos": 7,
+     "outcome": "wrong_vial",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "it grabbed R1 and put in L1",
+     "take": "016000_20261124_161825_t16"
+    },
+    {
+     "n": "47",
+     "move": "R3->L3",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t17"
+    },
+    {
+     "n": "48",
+     "move": "R3->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t18"
+    },
+    {
+     "n": "49",
+     "move": "L1->R1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t19"
+    },
+    {
+     "n": "50",
+     "move": "L1->bin",
+     "trained": true,
+     "demos": 3,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t20"
+    },
+    {
+     "n": "51",
+     "move": "L1->R3",
+     "trained": true,
+     "demos": 9,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t21"
+    },
+    {
+     "n": "52",
+     "move": "L6->R3",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t22"
+    },
+    {
+     "n": "53",
+     "move": "L6->bin",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_161825_t23"
+    },
+    {
+     "n": "54",
+     "move": "L3->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "016000_20261124_161825_t24"
+    },
+    {
+     "n": "55",
+     "move": "R1->bin",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_171208_t0"
+    },
+    {
+     "n": "56",
+     "move": "R6->bin",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_171208_t1"
+    },
+    {
+     "n": "57",
+     "move": "L2->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_171208_t2"
+    },
+    {
+     "n": "58",
+     "move": "R5->bin",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "bin",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_171208_t3"
+    },
+    {
+     "n": "59",
+     "move": "L2->R1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_171208_t4"
+    },
+    {
+     "n": "60",
+     "move": "L2->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R1",
+     "take": "016000_20261124_174531_t0"
+    },
+    {
+     "n": "61",
+     "move": "L2->R3",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R2",
+     "take": "016000_20261124_174531_t1"
+    },
+    {
+     "n": "62",
+     "move": "L2->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "016000_20261124_174531_t2"
+    },
+    {
+     "n": "63",
+     "move": "L2->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R4",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed placing (kept hovering above R4 and then fell in front of rack)",
+     "take": "016000_20261124_174531_t3"
+    },
+    {
+     "n": "64",
+     "move": "L2->R6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_174531_t4"
+    },
+    {
+     "n": "65",
+     "move": "R5->L1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t0"
+    },
+    {
+     "n": "66",
+     "move": "R5->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "016000_20261124_175359_t1"
+    },
+    {
+     "n": "67",
+     "move": "R5->L3",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t2"
+    },
+    {
+     "n": "68",
+     "move": "R5->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "016000_20261124_175359_t3"
+    },
+    {
+     "n": "69",
+     "move": "R5->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L5",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t4"
+    },
+    {
+     "n": "70",
+     "move": "R5->L6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t5"
+    },
+    {
+     "n": "71",
+     "move": "L5->R1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R2",
+     "take": "016000_20261124_175359_t6"
+    },
+    {
+     "n": "72",
+     "move": "L5->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 2,
+     "note": "missed dropped (at R1)",
+     "take": "016000_20261124_175359_t8"
+    },
+    {
+     "n": "73",
+     "move": "L5->R3",
+     "trained": false,
+     "demos": 0,
+     "outcome": "wrong_vial",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "grabbed L3 and even missed drop",
+     "take": "016000_20261124_175359_t9"
+    },
+    {
+     "n": "74",
+     "move": "L5->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "016000_20261124_175359_t10"
+    },
+    {
+     "n": "75",
+     "move": "L5->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop (at R3)",
+     "take": "016000_20261124_175359_t11"
+    },
+    {
+     "n": "76",
+     "move": "L5->R6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t12"
+    },
+    {
+     "n": "77",
+     "move": "R2->L1",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t13"
+    },
+    {
+     "n": "78",
+     "move": "R2->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t14"
+    },
+    {
+     "n": "79",
+     "move": "R2->L3",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "016000_20261124_175359_t16"
+    },
+    {
+     "n": "80",
+     "move": "R2->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L4",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t17"
+    },
+    {
+     "n": "81",
+     "move": "R2->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "no_grasp",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 2,
+     "note": "missed pickup",
+     "take": "016000_20261124_175359_t19"
+    },
+    {
+     "n": "82",
+     "move": "R2->L6",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "016000_20261124_175359_t20"
     }
    ],
    "moves": [
     {
+     "move": "L1->R1",
+     "demos": 4,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "L1->R3",
+     "demos": 9,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 1
+     }
+    },
+    {
+     "move": "L2->R6",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "L3->R4",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 1
+     }
+    },
+    {
      "move": "L3->R6",
      "demos": 4,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 2,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "L6->R3",
+     "demos": 4,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 1
+     }
+    },
+    {
+     "move": "R3->L1",
+     "demos": 7,
+     "rollouts": 2,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R3->L3",
+     "demos": 5,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 1
+     }
+    },
+    {
+     "move": "R3->L5",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "R5->L1",
+     "demos": 0,
      "rollouts": 2,
      "grasped_right": 2,
      "lifted": 2,
@@ -5624,36 +6487,6 @@
      }
     },
     {
-     "move": "L1->R1",
-     "demos": 4,
-     "rollouts": 1,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 1,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 0,
-      "released": 1
-     }
-    },
-    {
-     "move": "L1->R3",
-     "demos": 9,
-     "rollouts": 1,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 1,
-      "released": 0
-     }
-    },
-    {
      "move": "L1->R6",
      "demos": 4,
      "rollouts": 1,
@@ -5669,13 +6502,103 @@
      }
     },
     {
-     "move": "L2->R6",
+     "move": "L1->bin",
+     "demos": 3,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L2->R1",
      "demos": 0,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
      "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L2->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
      "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L2->R3",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L2->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L2->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L2->bin",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
@@ -5714,8 +6637,8 @@
      }
     },
     {
-     "move": "L3->R4",
-     "demos": 0,
+     "move": "L3->bin",
+     "demos": 7,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -5729,8 +6652,188 @@
      }
     },
     {
-     "move": "L3->bin",
+     "move": "L4->R1",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L4->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L4->R3",
      "demos": 7,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L4->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L4->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L4->R6",
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L4->bin",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L5->R1",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L5->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L5->R3",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "L5->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L5->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L5->R6",
+     "demos": 0,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
@@ -5789,22 +6892,22 @@
      }
     },
     {
-     "move": "L6->R3",
+     "move": "L6->R6",
      "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
-     "released": 0,
-     "seen_in_slot": 0,
+     "released": 1,
+     "seen_in_slot": 1,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
-      "carried": 1,
-      "released": 0
+      "carried": 0,
+      "released": 1
      }
     },
     {
-     "move": "L6->R6",
+     "move": "L6->bin",
      "demos": 4,
      "rollouts": 1,
      "grasped_right": 1,
@@ -5879,7 +6982,22 @@
      }
     },
     {
-     "move": "R2->bin",
+     "move": "R1->bin",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R2->L1",
      "demos": 0,
      "rollouts": 1,
      "grasped_right": 1,
@@ -5894,43 +7012,88 @@
      }
     },
     {
-     "move": "R3->L1",
-     "demos": 7,
-     "rollouts": 1,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 1,
-      "released": 0
-     }
-    },
-    {
-     "move": "R3->L3",
-     "demos": 5,
-     "rollouts": 1,
-     "grasped_right": 1,
-     "lifted": 1,
-     "released": 0,
-     "seen_in_slot": 0,
-     "stages": {
-      "no_grasp": 0,
-      "grasped": 0,
-      "carried": 1,
-      "released": 0
-     }
-    },
-    {
-     "move": "R3->L5",
+     "move": "R2->L2",
      "demos": 0,
      "rollouts": 1,
      "grasped_right": 1,
      "lifted": 1,
      "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R2->L3",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R2->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R2->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
      "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "R2->L6",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R2->bin",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,
@@ -5969,7 +7132,187 @@
      }
     },
     {
-     "move": "R5->L1",
+     "move": "R4->L1",
+     "demos": 9,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "grasped": 0,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "R4->L3",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R4->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L6",
+     "demos": 3,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R4->bin",
+     "demos": 7,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R5->L2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R5->L3",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R5->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R5->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R5->L6",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R5->bin",
      "demos": 0,
      "rollouts": 1,
      "grasped_right": 1,
@@ -6036,6 +7379,21 @@
      "lifted": 1,
      "released": 1,
      "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "grasped": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R6->bin",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
      "stages": {
       "no_grasp": 0,
       "grasped": 0,

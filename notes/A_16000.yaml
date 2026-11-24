@@ -13,7 +13,7 @@
 # retried: the note says it took more than one try
 model: plain-bagel
 source: notes/A_16000.txt
-sessions: ["016000_20261109_005026"]
+sessions: ["016000_20261109_005026", "016000_20261124_161825", "016000_20261124_171208", "016000_20261124_174531", "016000_20261124_175359"]
 moves:
   - n: "1"
     move: R3->L1
@@ -232,3 +232,360 @@ moves:
     retried: true
     note: "was going to slot 3 or 4 (missed grasp) but i retried with removing one of teh neighboring vials from the dest vial, and then it succeeded"
     takes: ["016000_20261109_005026_t35", "016000_20261109_005026_t36"]
+  - n: "32"
+    move: L4->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t0"]
+  - n: "33"
+    move: L4->R2
+    outcome: off_slot
+    ended: R1
+    retried: false
+    note: "put in R1"
+    takes: ["016000_20261124_161825_t1"]
+  - n: "34"
+    move: L4->R3
+    outcome: off_slot
+    ended: R2
+    retried: false
+    note: "put in R2"
+    takes: ["016000_20261124_161825_t2"]
+  - n: "35"
+    move: L4->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["016000_20261124_161825_t3"]
+  - n: "36"
+    move: L4->R5
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["016000_20261124_161825_t4"]
+  - n: "37"
+    move: L4->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t5"]
+  - n: "38"
+    move: L4->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t6"]
+  - n: "39"
+    move: R4->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t7"]
+  - n: "40"
+    move: R4->L2
+    outcome: wrong_vial
+    ended: source
+    retried: false
+    note: "picked R6 and put in L2"
+    takes: ["016000_20261124_161825_t8"]
+  - n: "41"
+    move: R4->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t9"]
+  - n: "42"
+    move: R4->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["016000_20261124_161825_t10", "016000_20261124_161825_t11"]
+  - n: "43"
+    move: R4->L5
+    outcome: placed
+    ended: L5
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t12", "016000_20261124_161825_t13"]
+  - n: "44"
+    move: R4->L6
+    outcome: off_slot
+    ended: L5
+    retried: false
+    note: "put it in L5 (almost L6)"
+    takes: ["016000_20261124_161825_t14"]
+  - n: "45"
+    move: R4->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t15"]
+  - n: "46"
+    move: R3->L1
+    outcome: wrong_vial
+    ended: source
+    retried: false
+    note: "it grabbed R1 and put in L1"
+    takes: ["016000_20261124_161825_t16"]
+  - n: "47"
+    move: R3->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t17"]
+  - n: "48"
+    move: R3->L5
+    outcome: placed
+    ended: L5
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t18"]
+  - n: "49"
+    move: L1->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t19"]
+  - n: "50"
+    move: L1->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t20"]
+  - n: "51"
+    move: L1->R3
+    outcome: placed
+    ended: R3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t21"]
+  - n: "52"
+    move: L6->R3
+    outcome: placed
+    ended: R3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t22"]
+  - n: "53"
+    move: L6->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_161825_t23"]
+  - n: "54"
+    move: L3->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["016000_20261124_161825_t24"]
+  - n: "55"
+    move: R1->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_171208_t0"]
+  - n: "56"
+    move: R6->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_171208_t1"]
+  - n: "57"
+    move: L2->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_171208_t2"]
+  - n: "58"
+    move: R5->bin
+    outcome: placed
+    ended: bin
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_171208_t3"]
+  - n: "59"
+    move: L2->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_171208_t4"]
+  - n: "60"
+    move: L2->R2
+    outcome: off_slot
+    ended: R1
+    retried: false
+    note: "put in R1"
+    takes: ["016000_20261124_174531_t0"]
+  - n: "61"
+    move: L2->R3
+    outcome: off_slot
+    ended: R2
+    retried: false
+    note: "put in R2"
+    takes: ["016000_20261124_174531_t1"]
+  - n: "62"
+    move: L2->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["016000_20261124_174531_t2"]
+  - n: "63"
+    move: L2->R5
+    outcome: off_slot
+    ended: R4
+    retried: false
+    note: "missed placing (kept hovering above R4 and then fell in front of rack)"
+    takes: ["016000_20261124_174531_t3"]
+  - n: "64"
+    move: L2->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_174531_t4"]
+  - n: "65"
+    move: R5->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t0"]
+  - n: "66"
+    move: R5->L2
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["016000_20261124_175359_t1"]
+  - n: "67"
+    move: R5->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t2"]
+  - n: "68"
+    move: R5->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["016000_20261124_175359_t3"]
+  - n: "69"
+    move: R5->L5
+    outcome: placed
+    ended: L5
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t4"]
+  - n: "70"
+    move: R5->L6
+    outcome: placed
+    ended: L6
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t5"]
+  - n: "71"
+    move: L5->R1
+    outcome: off_slot
+    ended: R2
+    retried: false
+    note: "put in R2"
+    takes: ["016000_20261124_175359_t6"]
+  - n: "72"
+    move: L5->R2
+    outcome: off_slot
+    ended: R1
+    retried: false
+    note: "missed dropped (at R1)"
+    takes: ["016000_20261124_175359_t7", "016000_20261124_175359_t8"]
+  - n: "73"
+    move: L5->R3
+    outcome: wrong_vial
+    ended: source
+    retried: false
+    note: "grabbed L3 and even missed drop"
+    takes: ["016000_20261124_175359_t9"]
+  - n: "74"
+    move: L5->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["016000_20261124_175359_t10"]
+  - n: "75"
+    move: L5->R5
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop (at R3)"
+    takes: ["016000_20261124_175359_t11"]
+  - n: "76"
+    move: L5->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t12"]
+  - n: "77"
+    move: R2->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t13"]
+  - n: "78"
+    move: R2->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t14"]
+  - n: "79"
+    move: R2->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t15", "016000_20261124_175359_t16"]
+  - n: "80"
+    move: R2->L4
+    outcome: placed
+    ended: L4
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t17"]
+  - n: "81"
+    move: R2->L5
+    outcome: no_grasp
+    ended: source
+    retried: false
+    note: "missed pickup"
+    takes: ["016000_20261124_175359_t18", "016000_20261124_175359_t19"]
+  - n: "82"
+    move: R2->L6
+    outcome: placed
+    ended: L6
+    retried: false
+    note: "success"
+    takes: ["016000_20261124_175359_t20"]

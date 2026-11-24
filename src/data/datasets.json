@@ -1058,9 +1058,85 @@
    "id": "sari-abdan/rollout_pi05_016000_20261109_005026",
    "name": "rollout_pi05_016000_20261109_005026",
    "kind": "rollout",
-   "updated": "2026-11-10",
+   "updated": "2026-11-24",
    "episodes": 37,
    "frames": 25738,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Plain Bagel"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261124_161825",
+   "name": "rollout_pi05_016000_20261124_161825",
+   "kind": "rollout",
+   "updated": "2026-11-24",
+   "episodes": 25,
+   "frames": 13560,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Plain Bagel"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261124_171208",
+   "name": "rollout_pi05_016000_20261124_171208",
+   "kind": "rollout",
+   "updated": "2026-11-24",
+   "episodes": 5,
+   "frames": 2079,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Plain Bagel"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261124_174531",
+   "name": "rollout_pi05_016000_20261124_174531",
+   "kind": "rollout",
+   "updated": "2026-11-24",
+   "episodes": 5,
+   "frames": 3619,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "left_top",
+    "left_bottom",
+    "right",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Plain Bagel"
+  },
+  {
+   "id": "sari-abdan/rollout_pi05_016000_20261124_175359",
+   "name": "rollout_pi05_016000_20261124_175359",
+   "kind": "rollout",
+   "updated": "2026-11-24",
+   "episodes": 21,
+   "frames": 14885,
    "fps": 30,
    "cameras": [
     "top_down",

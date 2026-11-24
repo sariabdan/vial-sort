@@ -30,3 +30,82 @@ A 16000: plain bagel
 28: L3 R4: success
 29: L5 bin: success
 30: R2 bin: was going to slot 3 or 4 (missed grasp) but i retried with removing one of teh neighboring vials from the dest vial, and then it succeeded 
+
+
+# vial in L4
+32: L4 R1: success
+33: L4 R2: put in R1
+34: L4 R3: put in R2
+35: L4 R4: put in R3 
+36: L4 R5: put in R3
+37: L4 R6: success
+38: L4 bin: success
+
+# ── Block 2, vial at R4: the same test on the other rack. (7) ──
+# vial in R4
+39: R4 L1: success
+40: R4 L2: picked R6 and put in L2
+41: R4 L3: success
+42: R4 L4: put in L3
+43: R4 L5: success
+44: R4 L6: put it in L5 (almost L6)
+45: R4 bin: success
+
+# ── Block 3, second tries: the 9 Nov failures (slot 2 instead of 1 or 3, drops in front, stuck between 3 and 4), L3 -> R4 (it reached the never-trained R4 once), and the rest of the slots to the bin. (13) ──
+# vial in R3
+46: R3 L1: it grabbed R1 and put in L1
+47: R3 L3: success
+48: R3 L5: success
+# vial in L1
+49: L1 R1: success
+50: L1 bin: success
+51: L1 R3: success
+# vial in L6
+52: L6 R3: success
+53: L6 bin: success
+# vial in L3
+54: L3 R4: put in R3
+# vial in R1
+55: R1 bin: success
+# vial in R6
+56: R6 bin: success
+# vial in L2
+57: L2 bin: success
+# vial in R5
+58: R5 bin: success
+
+# ── Block 4, vial at L2: source 2 is in no training prompt (on 9 Nov it went for L4 first). Put it back in L2 every time. (6) ──
+# vial in L2
+59: L2 R1: success
+60: L2 R2: put in R1
+61: L2 R3: put in R2
+62: L2 R4: put in R3
+63: L2 R5: missed placing (kept hovering above R4 and then fell in front of rack)
+64: L2 R6: success
+
+# ── Block 5, vial at R5: source 5 is in no training prompt. (6) ──
+# vial in R5
+65: R5 L1: success
+66: R5 L2: put in L3
+67: R5 L3: success
+68: R5 L4: put in L3
+69: R5 L5: success
+70: R5 L6: success
+
+# ── Block 6, vial at L5: the other untrained source, left rack. (6) ──
+# vial in L5
+71: L5 R1: put in R2
+72: L5 R2: missed dropped (at R1)
+73: L5 R3: grabbed L3 and even missed drop
+74: L5 R4: put in R3
+75: L5 R5: missed drop (at R3)
+76: L5 R6: success
+
+# ── Block 7, vial at R2: the other untrained source, right rack (on 9 Nov it went for R3/R4 first). (6) ──
+# vial in R2
+77: R2 L1: success
+78: R2 L2: success
+79: R2 L3: success
+80: R2 L4: success
+81: R2 L5: missed pickup
+82: R2 L6: success

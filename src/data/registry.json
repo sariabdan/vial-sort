@@ -29,13 +29,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "restart": 6
+    "restart": 11
    },
-   "last_day": "20261109",
+   "last_day": "20261124",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 31,
+   "rollouts": 82,
    "checkpoints": [
     16000
    ]
