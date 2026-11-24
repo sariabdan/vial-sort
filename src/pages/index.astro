@@ -34,7 +34,8 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
     <div class="wrap">
       <h2>What the rollouts show</h2>
       <p>
-        {`The runs of October and November, scored from the arm's motion over ${results.total} rollouts, a rollout being one autonomous attempt at one command. ` +
+        {`The runs of October and November, ${results.total} rollouts, a rollout being one autonomous attempt at one command. They are scored from ` +
+          `the arm's motion` + (results.noted_models.length ? `, except ${results.noted_models.join(' and ')}, scored from the operator's notes at the robot. ` : '. ') +
           `The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}
       </p>
       <OctoberTiles />

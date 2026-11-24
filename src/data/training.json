@@ -819,12 +819,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 0,
+      "no_grasp": 1,
       "grasped": 0,
       "carried": 4,
-      "released": 20
+      "released": 26
      },
-     "takes": 24
+     "takes": 31
     }
    ]
   },
@@ -1647,12 +1647,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 4,
+      "no_grasp": 7,
       "grasped": 0,
-      "carried": 8,
-      "released": 12
+      "carried": 9,
+      "released": 15
      },
-     "takes": 24
+     "takes": 31
     }
    ]
   },
@@ -1876,11 +1876,11 @@
      "ema": false,
      "stages": {
       "no_grasp": 9,
-      "grasped": 5,
-      "carried": 8,
+      "grasped": 7,
+      "carried": 10,
       "released": 11
      },
-     "takes": 33
+     "takes": 37
     }
    ]
   },
@@ -2503,12 +2503,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 2,
+      "no_grasp": 7,
       "grasped": 0,
       "carried": 0,
       "released": 2
      },
-     "takes": 4
+     "takes": 9
     },
     {
      "step": 9000,
@@ -2539,12 +2539,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 8,
+      "no_grasp": 9,
       "grasped": 0,
       "carried": 0,
       "released": 1
      },
-     "takes": 9
+     "takes": 10
     }
    ]
   },
@@ -3203,12 +3203,12 @@
      "mode": "sync",
      "ema": false,
      "stages": {
-      "no_grasp": 1,
+      "no_grasp": 2,
       "grasped": 0,
       "carried": 3,
       "released": 1
      },
-     "takes": 5
+     "takes": 6
     }
    ]
   },

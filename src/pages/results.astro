@@ -115,11 +115,6 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
                   `${r.restarts ? ` (${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside their move)` : ''}. ` +
                   `The vial was in the slot in ${r.seen_in_slot} of the ${r.released} let go at the asked slot.`}</p>
               )}
-              {r.untrained && (
-                <p class="bar-untr">{`Beside it, not counted in n: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves ` +
-                  `it was never trained on (${Object.keys(r.untrained.moves).map(moveLabel).join(', ')}). The vial ended in the asked slot in ` +
-                  `${r.untrained.seen_in_slot} of them, by eye.`}</p>
-              )}
             </div>
           ))}
         </div>
@@ -128,10 +123,10 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
           <summary>Show the numbers as a table</summary>
           <div class="table-scroll">
             <table class="data">
-              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}<th class="r">Untrained moves, beside n</th><th class="r">of those, vial in the asked slot</th></tr></thead>
+              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}<th class="r">Of them, on untrained moves</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}<td class="r num">{r.untrained?.rollouts ?? 0}</td><td class="r num">{r.untrained ? r.untrained.seen_in_slot : '–'}</td></tr>
+                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}<td class="r num">{r.untrained?.rollouts ?? 0}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -166,6 +161,10 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
           <div class="slot-row" data-row={r.key}>
             <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="note">{`${r.rollouts} rollouts`}</span></h3>
             <RackMaps maps={mapsOf(r)} />
+            {r.untrained && (
+              <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
+                `${r.untrained.rollouts} on moves it was never trained on (${Object.keys(r.untrained.moves).map(moveLabel).join(', ')}).`}</p>
+            )}
           </div>
         ))}
         <p class="note empty" id="slots-empty" hidden>Nothing ticked.</p>
@@ -201,7 +200,8 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
             `good or bad rollout moves a row a long way, and the rows are not a controlled comparison: they differ in training data, ` +
             `length and mode. These were test runs during development, and the moves are uneven. The scorer reads the arm, not the vial` +
             (noted ? ` (${noted} are scored from the operator's notes instead). ` : '. ') +
-            `Left out: ${lo.short} rollouts under 3 seconds, ${lo.untrained} on moves no demonstration contains, ${lo.unreadable} with a command ` +
+            `The counts include ${results.untrained} rollouts on moves no demonstration contains; under each row's slot maps it says how many. ` +
+            `Left out: ${lo.short} rollouts under 3 seconds, ${lo.unreadable} with a command ` +
             `the scorer cannot read` + (lo.restart ? `, ${lo.earlier_scene} from an earlier table layout and ${lo.restart} restarts of a move ` +
               `the operator noted once` : ` and ${lo.earlier_scene} from an earlier table layout`) + `. For a person-scored evaluation of a different, earlier ` +
             `system see `}<a href={url('previous/results/')}>the August evaluation</a>{`; the two should not be compared.`}
@@ -263,6 +263,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .seg:last-child { border-radius: 0 4px 4px 0; }
   .seg:only-child { border-radius: 4px; }
   .bar-n { font-size: var(--step--1); color: var(--ink-2); text-align: right; }
+  .split { margin-top: 0.7rem; font-size: 0.78rem; }
   .bar-untr { grid-column: 2 / 4; margin: 0.15rem 0 0.5rem; font-size: 0.78rem; line-height: 1.35; color: var(--ink-2); max-width: none; }
   .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
   .twin summary { cursor: pointer; width: fit-content; }

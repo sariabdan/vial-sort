@@ -29,14 +29,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "restart": 6,
-    "untrained": 7
+    "restart": 6
    },
    "last_day": "20261109",
    "rows": [
     "plain-bagel-16000-sync"
    ],
-   "rollouts": 24,
+   "rollouts": 31,
    "checkpoints": [
     16000
    ]
@@ -70,14 +69,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "restart": 6,
-    "untrained": 7
+    "restart": 6
    },
    "last_day": "20261109",
    "rows": [
     "mango-pudding-16000-sync"
    ],
-   "rollouts": 24,
+   "rollouts": 31,
    "checkpoints": [
     16000
    ]
@@ -111,14 +109,13 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "short": 3,
-    "untrained": 4
+    "short": 3
    },
    "last_day": "20261104",
    "rows": [
     "mango-lassi-4000-sync"
    ],
-   "rollouts": 33,
+   "rollouts": 37,
    "checkpoints": [
     4000
    ]
@@ -151,14 +148,12 @@
    "passes": 0.57,
    "has_loss": false,
    "hyper_source": "the train_config.json saved with the checkpoint",
-   "left_out": {
-    "untrained": 1
-   },
+   "left_out": {},
    "last_day": "20261104",
    "rows": [
     "mango-sorbet-4000-sync"
    ],
-   "rollouts": 10,
+   "rollouts": 11,
    "checkpoints": [
     4000
    ]
@@ -191,14 +186,12 @@
    "passes": 0.57,
    "has_loss": false,
    "hyper_source": "the train_config.json saved with the checkpoint",
-   "left_out": {
-    "untrained": 2
-   },
+   "left_out": {},
    "last_day": "20261104",
    "rows": [
     "mango-chutney-4000-sync"
    ],
-   "rollouts": 5,
+   "rollouts": 7,
    "checkpoints": [
     4000
    ]
@@ -232,7 +225,6 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "untrained": 6,
     "unreadable": 2,
     "short": 2
    },
@@ -243,7 +235,7 @@
     "spicy-chicken-12000-rtc",
     "spicy-chicken-12000-sync"
    ],
-   "rollouts": 21,
+   "rollouts": 27,
    "checkpoints": [
     7000,
     9000,
@@ -279,8 +271,7 @@
    "has_loss": true,
    "hyper_source": "the train_config.json saved with the checkpoint",
    "left_out": {
-    "short": 2,
-    "untrained": 1
+    "short": 2
    },
    "last_day": "20261021",
    "rows": [
@@ -289,7 +280,7 @@
     "mango-rice-12000-rtc",
     "mango-rice-12000-sync"
    ],
-   "rollouts": 9,
+   "rollouts": 10,
    "checkpoints": [
     10000,
     12000

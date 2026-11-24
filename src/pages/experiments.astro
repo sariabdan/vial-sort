@@ -74,8 +74,8 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
         </p>
         <StageLegend defs />
         <p class="note after">
-          {`${scored} rollouts are scored. Left out: ${lo.short} that ended within 3 seconds, ${lo.untrained} that asked for moves no ` +
-            `demonstration contains (this includes the held-out slots), ${lo.unreadable} whose command the scorer cannot read, ` +
+          {`${scored} rollouts are scored, ${results.untrained} of them on moves no demonstration contains (this includes the ` +
+            `held-out slots). Left out: ${lo.short} that ended within 3 seconds, ${lo.unreadable} whose command the scorer cannot read, ` +
             (lo.restart ? `${lo.earlier_scene} from an earlier layout of the table, and ${lo.restart} restarts of a move the operator noted once.`
               : `and ${lo.earlier_scene} from an earlier layout of the table.`)}
         </p>

@@ -94,14 +94,14 @@
    "memory": "37.8 GB",
    "step_s": 4.81,
    "robot": {
-    "takes": 24,
-    "released": 20,
-    "right_vial": 24,
+    "takes": 31,
+    "released": 26,
+    "right_vial": 30,
     "stages": {
-     "no_grasp": 0,
+     "no_grasp": 1,
      "grasped": 0,
      "carried": 4,
-     "released": 20
+     "released": 26
     }
    },
    "rate_hz": null,
@@ -120,14 +120,14 @@
    "memory": "37.8 GB",
    "step_s": 4.81,
    "robot": {
-    "takes": 24,
-    "released": 12,
-    "right_vial": 20,
+    "takes": 31,
+    "released": 15,
+    "right_vial": 24,
     "stages": {
-     "no_grasp": 4,
+     "no_grasp": 7,
      "grasped": 0,
-     "carried": 8,
-     "released": 12
+     "carried": 9,
+     "released": 15
     }
    },
    "rate_hz": null,
@@ -146,13 +146,13 @@
    "memory": "37.9 GB",
    "step_s": 3.8,
    "robot": {
-    "takes": 33,
+    "takes": 37,
     "released": 11,
-    "right_vial": 24,
+    "right_vial": 28,
     "stages": {
      "no_grasp": 9,
-     "grasped": 5,
-     "carried": 8,
+     "grasped": 7,
+     "carried": 10,
      "released": 11
     }
    },
@@ -172,11 +172,11 @@
    "memory": "37.9 GB",
    "step_s": 3.5,
    "robot": {
-    "takes": 21,
+    "takes": 27,
     "released": 3,
     "right_vial": 3,
     "stages": {
-     "no_grasp": 18,
+     "no_grasp": 24,
      "grasped": 0,
      "carried": 0,
      "released": 3
@@ -198,11 +198,11 @@
    "memory": "37.9 GB",
    "step_s": 3.45,
    "robot": {
-    "takes": 9,
+    "takes": 10,
     "released": 2,
     "right_vial": 8,
     "stages": {
-     "no_grasp": 1,
+     "no_grasp": 2,
      "grasped": 2,
      "carried": 4,
      "released": 2

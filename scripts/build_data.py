@@ -506,14 +506,16 @@ def freeze(t):
 
 def october(gate_rows, runs_json):
     """Registry (one entry per model), results (one row per model + checkpoint + mode), and per-model
-    experiments (hyperparameters, checkpoint rows, move tables). Scored rollouts are trained moves over
-    3 s (the cuts tools/assess_rollouts.py makes). A session with operator's notes counts each noted move
-    once, scored from the note (rollouts()); its restarts are left out, counted as such."""
+    experiments (hyperparameters, checkpoint rows, move tables). Scored rollouts are every rollout over 3 s
+    with a readable command (the cuts tools/assess_rollouts.py makes), moves the model never trained on
+    included: n is the total, and each row also says how many were on untrained moves. A session with
+    operator's notes counts each noted move once, scored from the note (rollouts()); its restarts are left
+    out, counted as such."""
     sessions = json.loads((OUT / "rollouts.json").read_text())["sessions"]
     by_run = {m["run"]: m for m in MODELS}
     cov = ws100_coverage()
     rows, left_out = {}, defaultdict(Counter)
-    untr = defaultdict(lambda: {"total": new_tally(), "moves": Counter()})  # untrained moves, shown beside a row, never in it
+    untr = defaultdict(lambda: {"total": new_tally(), "moves": Counter()})  # the part of a row on untrained moves
     scored_by, restarts, noted = defaultdict(Counter), Counter(), defaultdict(list)
     demos_of = lambda run, mv: (WS220_DEMOS if run in WS220_RUNS else cov["demos"]).get(mv, 0)
     for s in sessions:
@@ -538,13 +540,10 @@ def october(gate_rows, runs_json):
                 left_out[m["id"]]["earlier_scene"] += 1  # 7 Oct, before the racks moved: the assessment cannot read it
             elif not t["move"]:
                 left_out[m["id"]]["unreadable"] += 1
-            elif not t["trained_move"]:
-                left_out[m["id"]]["untrained"] += 1
-                if t["stage"]:
+            else:
+                if not t["trained_move"]:  # in n like the rest; counted apart too, for the pages to say how many
                     tally(untr[key]["total"], t)
                     untr[key]["moves"][t["move"]] += 1
-                    scored_by[key]["notes" if nt else "arm"] += 1
-            else:
                 scored_by[key]["notes" if nt else "arm"] += 1
                 r = rows.setdefault(key, {"total": new_tally(), "moves": defaultdict(new_tally), "src": defaultdict(new_tally),
                                           "dst": defaultdict(new_tally), "sessions": [], "days": set()})
@@ -619,7 +618,8 @@ def october(gate_rows, runs_json):
                 eye["checked"] += 1
     byk = {r["key"]: r for r in results}
     tiles = {fam: {"key": k, "name": byk[k]["name"], "label": byk[k]["label"], "short": byk[k]["short"], "rollouts": byk[k]["rollouts"],
-                   "grasped_right": byk[k]["grasped_right"], "released": byk[k]["released"]} for fam, k in heads.items()}
+                   "grasped_right": byk[k]["grasped_right"], "released": byk[k]["released"], "scored_by": byk[k]["scored_by"]}
+             for fam, k in heads.items()}
     tiles["gate"] = {"checkpoints": len(gate_rows), "dest_passed": sum(g["dest"] for g in gate_rows),
                      "dest_frames": gate_rows[-1]["dest_of"], "source_passed": sum(g["source"] for g in gate_rows),
                      "source_from": next(g["step"] for g in gate_rows if all(h["source"] for h in gate_rows if h["step"] >= g["step"]))}
@@ -633,7 +633,8 @@ def october(gate_rows, runs_json):
                                                                        for r in results)],
                       "defaults": list(heads.values()), "eye": dict(eye), "tiles": tiles,
                       "total": sum(r["rollouts"] for r in results),
-                      "left_out": {k: sum(v[k] for v in left_out.values()) for k in ("short", "untrained", "unreadable", "earlier_scene", "restart")}})
+                      "untrained": sum((r["untrained"] or {}).get("rollouts", 0) for r in results),
+                      "left_out": {k: sum(v[k] for v in left_out.values()) for k in ("short", "unreadable", "earlier_scene", "restart")}})
     write("october", {"stages": stages, "coverage": cov, "tiles": tiles, "eye": dict(eye)})
 
 
@@ -783,7 +784,7 @@ def rollouts(clips, checked, notes):
                           "lifted": r.get("lifted"), "notes": r.get("notes", []),
                           "holds": [{k: h[k] for k in ("grasp", "release", "at", "put", "empty", "carried")} for h in r["holds"]],
                           "strip": r.get("strip") if assessed else None})
-            if stage and trained_move and not restart:
+            if stage and not restart and mv:
                 robot[run][(s["step"], s["mode"], "_ema_" in name)][stage] += 1
             clips.append({"id": tid, "kind": "take", "day": s["day"], "secs": r["secs"],
                           "cams": {c.split(".")[-1]: video_of(root, row, c) for c in cams},

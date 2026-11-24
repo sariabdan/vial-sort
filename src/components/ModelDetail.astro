@@ -20,7 +20,6 @@ const k = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000}k` : String(
 const left = m.left_out as Record<string, number>;
 const leftText = [
   left.short && `${left.short} ended within 3 seconds`,
-  left.untrained && `${left.untrained} asked for moves no demonstration contains`,
   left.unreadable && `${left.unreadable} had a command the scorer cannot read`,
   left.earlier_scene && `${left.earlier_scene} ran on an earlier layout of the table`,
   left.restart && `${left.restart} were restarts of a move the operator noted once`,
@@ -68,8 +67,8 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
           `missed. The notes do not tell grasped-but-not-lifted apart from missed.`}</p>
       ))}
       {rows.filter((r) => r.untrained).map((r) => (
-        <p class="note">{`Beside the table, ${r.short}: ${r.untrained.rollouts} rollout${r.untrained.rollouts === 1 ? '' : 's'} on moves no demonstration ` +
-          `it trained on contains (${Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')}). The right vial was grasped in ` +
+        <p class="note">{`Of the ${r.rollouts} rollouts at ${r.short}, ${r.untrained.rollouts} ${r.untrained.rollouts === 1 ? 'was' : 'were'} on moves no demonstration ` +
+          `it trained on contains (${Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')}). Of those ${r.untrained.rollouts}, the right vial was grasped in ` +
           `${r.untrained.grasped_right}, the arm let go at the asked slot in ${r.untrained.released}, and the vial was seen in that slot in ${r.untrained.seen_in_slot}.`}</p>
       ))}
       <div class="table-scroll">
@@ -99,7 +98,7 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       <div class="moves">
         {rows.map((r) => r.noted_moves ? (
           <details open={r.key === biggest}>
-            <summary>{`${r.short}: ${r.noted_moves.length} moves as noted at the robot, ${r.rollouts} of them trained`}</summary>
+            <summary>{`${r.short}: ${r.noted_moves.length} moves as noted at the robot, ${r.noted_moves.filter((x) => x.trained).length} of them trained`}</summary>
             <div class="table-scroll">
               <table class="data noted">
                 <thead>
@@ -111,7 +110,7 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
                   {r.noted_moves.map((mv) => (
                     <tr class:list={[!mv.trained && 'untrained']}>
                       <td class="r num">{mv.n}</td>
-                      <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">not trained, beside n</span>}</td>
+                      <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">never trained on</span>}</td>
                       <td class="r num">{mv.demos}</td>
                       <td class="what-col"><i class="sw" style={`background: var(--st-${stageIdx(mv.stage) + 1})`}></i>{OUTCOME[mv.outcome] ?? mv.outcome}
                         {mv.attempts > 1 && <span class="tag">{`${mv.attempts} rollouts, the last one counted`}</span>}</td>
