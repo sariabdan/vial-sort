@@ -7,7 +7,8 @@ import october from '../data/october.json';
 import ws220 from '../data/ws220.json';
 import datasets from '../data/datasets.json';
 import media from '../data/media.json';
-import { url, HF, visualizer, date, CAMERA_NAMES } from '../lib/site';
+import experiments from '../data/experiments.json';
+import { url, HF, visualizer, date, CAMERA_NAMES, andList, demoSet } from '../lib/site';
 
 const cov = october.coverage;
 const c2 = ws220;
@@ -18,6 +19,7 @@ const runs = datasets.datasets.filter((d) => d.kind === 'rollout');
 const minutes = (frames: number | null, fps: number | null) => (frames && fps ? Math.round(frames / fps / 60) : null);
 const w = cov.wordings;
 const pools = cov.pools;
+const trainedOn = (set: string) => andList(experiments.models.filter((m) => demoSet(m.data) === set).map((m) => m.name));
 
 const cams = [
   { key: 'top_down', text: 'The only high-angle view. It sees both racks, the bin and the arm at once, with no people in it.' },
@@ -88,7 +90,7 @@ const parts = (sentence: string): Part[] => {
             <tr><th scope="row">How</th><td>Twenty runs of five, one destination per run</td><td>One layout recorded three times, to three different destinations</td></tr>
             <tr><th scope="row">Moves</th><td>{Object.keys(cov.demos).length} moves, none inside one rack</td><td>{c2.moves} moves, {c2.same_rack} demonstrations inside one rack</td></tr>
             <tr><th scope="row">Size</th><td class="num">{cov.episodes} episodes, {cov.frames.toLocaleString('en-GB')} frames, {cov.minutes} min</td><td class="num">{c2.episodes} episodes, {c2.frames.toLocaleString('en-GB')} frames, {c2.minutes} min</td></tr>
-            <tr><th scope="row">Trained</th><td>The October models</td><td>The November models (Plain Bagel, Mango Pudding)</td></tr>
+            <tr><th scope="row">Trained</th><td>{trainedOn('100')}</td><td>{trainedOn('220')}</td></tr>
             <tr><th scope="row">On Hugging Face</th><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td><td><a href={`${HF}/datasets/${R220}`}>vial-sort-slots-220</a></td></tr>
           </tbody>
         </table>

@@ -68,12 +68,12 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
         <p class="note">{`${r.short} is scored from the operator's notes at the robot, not read from the arm: one rollout per noted ` +
           `move${r.restarts ? `, its ${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside the move` : ''}. A vial that ended in ` +
           `the asked slot counts as in the asked slot; one dropped in front of or behind it, put in another slot or never let go counts ` +
-          `as not in the asked slot; one never picked up, as missed. The notes do not tell grasped-but-not-lifted apart from missed.`}</p>
+          `as not in the asked slot; one never picked up, as never picked it up.`}</p>
       ))}
       {rows.filter((r) => r.untrained).map((r) => (
         <p class="note">{`Of the ${r.rollouts} rollouts at ${r.short}, ${r.untrained.rollouts} ${r.untrained.rollouts === 1 ? 'was' : 'were'} on moves no demonstration ` +
           `it trained on contains (${Object.keys(r.untrained.moves).length <= 8 ? Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')
-            : `${Object.keys(r.untrained.moves).length} different moves${r.noted_moves ? ', all in the table below' : ''}`}). Of those ${r.untrained.rollouts}, the right vial was grasped in ` +
+            : `${Object.keys(r.untrained.moves).length} different moves${r.noted_moves ? ', all in the table below' : ''}`}). Of those ${r.untrained.rollouts}, the right vial was picked up in ` +
           `${r.untrained.grasped_right} and it ended in the asked slot in ${r.untrained.released}.`}</p>
       ))}
       <div class="table-scroll">
@@ -212,7 +212,8 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       <div class="clips">
         {clips.map((f) => (
           <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-            vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'red') as 'red'} used={(f as { used?: string[] }).used ?? m.cams} />
+            vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'neutral') as 'red'} used={(f as { used?: string[] }).used ?? m.cams}
+            outcome={f.stage} kind={(f as { kind?: string }).kind} />
         ))}
       </div>
     </>
@@ -232,6 +233,7 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   h5 { font-size: var(--step-0); font-weight: 620; margin: 0 0 0.3rem; }
   .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: -0.05rem; }
   .stages th { font-size: var(--step--1); vertical-align: bottom; }
+  table.stages { width: auto; min-width: min(100%, 40rem); }  /* a few numbers: keep them near their labels on a wide page */
   .zero { color: var(--steel); }
   .noted td { vertical-align: top; }
   .noted .what-col, .noted .ended { white-space: nowrap; }

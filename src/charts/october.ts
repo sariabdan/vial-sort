@@ -14,7 +14,7 @@ const fromUrl = () => {
   return r === null ? null : r.split(',').filter((k) => byKey.has(k));
 };
 const state = new Set<string>(fromUrl() ?? results.defaults);
-let scale: 'share' | 'count' = 'share';
+let scale: 'share' | 'count' = 'count'; // the number of rollouts by default (the boss: counts, not %)
 const stageOn = new Set(results.stages.map((s) => s.key));
 
 function ticks(mode: 'share' | 'count', max: number) {

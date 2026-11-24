@@ -108,7 +108,37 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
       // Every clip marked data-auto plays, muted and looping, while it is on screen and pauses when it is not,
       // so a page of thirty clips decodes a few at a time. A tap or click pauses or resumes it.
       // With reduced motion requested nothing starts on its own and the browser's controls appear.
+      // Every video on the site also opens full screen, from its button or a double-click, with the browser's controls
+      // while it is. Videos without a button (the home hero, the data page, the August pages) get one here.
       const clips = [...document.querySelectorAll<HTMLVideoElement>('video[data-auto]')];
+      type FsVideo = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+      const videos = [...document.querySelectorAll<FsVideo>('video')];
+      videos.forEach((v) => { v.dataset.ownControls = v.controls ? '1' : ''; });
+      const full = (v: FsVideo) => {
+        v.controls = true;
+        if (v.requestFullscreen) v.requestFullscreen().catch(() => { v.controls = v.dataset.ownControls === '1'; });
+        else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();  // iPhone Safari
+        v.play().catch(() => {});
+      };
+      videos.forEach((v) => {
+        let b = v.parentElement?.querySelector<HTMLButtonElement>(':scope > [data-fullscreen]') ?? null;
+        if (!b && !v.controls) {
+          const frame = document.createElement('div');
+          frame.className = 'fs-frame';
+          v.replaceWith(frame);
+          frame.append(v);
+          b = document.createElement('button');
+          b.type = 'button'; b.className = 'fs'; b.dataset.fullscreen = ''; b.textContent = 'Full screen';
+          b.setAttribute('aria-label', 'Show this video full screen');
+          frame.append(b);
+        }
+        b?.addEventListener('click', () => full(v));
+        v.addEventListener('dblclick', () => full(v));
+      });
+      document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) videos.forEach((v) => { v.controls = v.dataset.ownControls === '1' || reduceMotion(); });
+      });
+      function reduceMotion() { return matchMedia('(prefers-reduced-motion: reduce)').matches; }
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduce) {
         clips.forEach((v) => { v.controls = true; v.loop = false; });
@@ -166,7 +196,7 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
   .subnav { border-top: 1px solid var(--rule); background: var(--raise); margin: 0; }
   .subnav .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.6rem; padding-block: 0.55rem; font-size: var(--step--1); color: var(--ink-2); }
   .subnav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; list-style: none; margin: 0; padding: 0; }
-  nav ul { display: flex; gap: 1.3rem; list-style: none; margin: 0; padding: 0; }
+  nav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.3rem; list-style: none; margin: 0; padding: 0; }
   nav a { text-decoration: none; color: var(--ink-2); }
   nav a:hover { color: var(--ink); text-decoration: underline; }
   nav a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }

@@ -23,6 +23,7 @@ import yaml
 SITE = Path(__file__).resolve().parents[1]
 LR = Path(os.environ.get("LEROBOT", Path.home() / "lerobot"))
 MEDIA = SITE / "public/media"
+BUILD = SITE / "build"
 FPS = 30
 TOP_CROP = "crop=360:360:40:10"  # the table, arm and both racks in the 640x480 top-down view
 H264 = ["-c:v", "libx264", "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an"]
@@ -160,15 +161,19 @@ def main():
                      "caption": h["caption"].format(name=which(h["take"])[0]["name"]), "src": rel(out), "poster": rel(MEDIA / "hero.jpg"), **probe(out),
                      "grasp": round(grasp, 2), "release": round(release, 2)}
 
-    # featured rollouts: every feed the session recorded on one canvas
-    for f in cur.get("featured") or []:
+    # featured rollouts: every feed the session recorded on one canvas. The three per model that
+    # scripts/build_data.py picks (build/featured.json, captions final); else the curation.yaml list.
+    picked = BUILD / "featured.json"
+    featured = json.loads(picked.read_text()) if picked.exists() else \
+        [{**f, "caption": f["caption"].format(name=which(f["take"])[0]["name"])} for f in cur.get("featured") or []]
+    for f in featured:
         take, out = takes[f["take"]], MEDIA / "takes" / f"{f['take']}.mp4"
         start, _, used = take_clip(take, clips[f["take"]], None, out, a.force, crf=28, grid=True)
         first = take["holds"][0]["grasp"] / FPS - start if take["holds"] else 1.0
         poster(out, first + 0.3, out.with_suffix(".jpg"), a.force)
         m, row = which(f["take"])
         media["featured"].append({"take": f["take"], "model": m["family"], "model_id": m["id"], "row": row, "used": used,
-                                  "move": take["move"], "stage": take["stage"], "caption": f["caption"].format(name=m["name"]),
+                                  "move": take["move"], "stage": take["stage"], "kind": f.get("kind"), "caption": f["caption"],
                                   "vial": f.get("vial"), "at": f.get("at"), "miss": f.get("miss"), "src": rel(out),
                                   "poster": rel(out.with_suffix(".jpg")), **probe(out)})
 

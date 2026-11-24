@@ -32,6 +32,7 @@ const { title, description } = frontmatter;
   .doc-body :global(ul),
   .doc-body :global(ol) { max-width: var(--measure); padding-left: 1.25rem; margin: 0.7rem 0; }
   .doc-body :global(li + li) { margin-top: 0.35rem; }
+  .doc-body :global(:not(pre) > code) { overflow-wrap: anywhere; }  /* long paths wrap instead of widening the page */
   .doc-body :global(table) {
     display: block; overflow-x: auto; max-width: 100%;
     border-collapse: collapse; margin: 1rem 0 0.4rem;

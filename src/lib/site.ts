@@ -10,6 +10,12 @@ export const pct = (x: number, digits = 0) => `${(x * 100).toFixed(digits)}%`;
 /** 'R3->L3' → 'R3 → L3', the project's notation. */
 export const moveLabel = (m: string | null | undefined) => (m ? m.replace('->', ' → ') : '');
 
+/** ['a', 'b', 'c'] → 'a, b and c'. */
+export const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+
+/** The demonstration set a model trained on, from its `data` line: '100', '220', or undefined for an earlier set. */
+export const demoSet = (data: string | null | undefined) => /^vial-sort-slots-(\d+)/.exec(data ?? '')?.[1];
+
 /** The five cameras of the October rig, in the order every page lists them. */
 export const CAMERA_NAMES: Record<string, string> = {
   top_down: 'Overhead',

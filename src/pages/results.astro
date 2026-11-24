@@ -5,7 +5,6 @@ import StageLegend from '../components/StageLegend.astro';
 import Clip from '../components/Clip.astro';
 import Term from '../components/Term.astro';
 import results from '../data/results.json';
-import october from '../data/october.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
@@ -14,8 +13,9 @@ import { demoCells, rateCells, type RackMap } from '../lib/rackmaps';
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
 const stages = results.stages;
-const cov = october.coverage;
-const bounds = [10, 12, 14, 19];
+// one demonstration scale for both training sets (10–41 per slot), so the 220 set reads darker than the 100 set
+const bounds = [15, 22, 29, 36];
+const demoSets = results.demo_sets as Record<string, { episodes: number; per_source: Record<string, number>; per_destination: Record<string, number> }>;
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
 const lo = results.left_out;
 const eye = results.eye as Record<string, number>;
@@ -29,14 +29,16 @@ const untrMoves = (m: Record<string, number>) => {
 
 const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
-const mapsOf = (r: (typeof rows)[number]): RackMap[] => [
-  { caption: 'Grasped the right vial, by source slot', ramp: 'st', cells: rateCells(slotRate(r.by_source, 'grasped_right'), 'as the source', 'grasped the right vial') },
-  { caption: 'In the asked slot, by destination', ramp: 'st', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'ended in the asked slot') },
-];
-const demoMaps: RackMap[] = [
-  { caption: 'Demonstrations, by the slot the vial was taken from', ramp: 'd', cells: demoCells(cov.per_source, 'as the source', bounds) },
-  { caption: 'Demonstrations, by where the vial was put', ramp: 'd', cells: demoCells(cov.per_destination, 'as the destination', bounds) },
-];
+// per row: its own training set's demonstrations beside how it did, source maps on the left, destination maps on the right
+const mapsOf = (r: (typeof rows)[number]): RackMap[] => {
+  const d = r.train_set ? demoSets[r.train_set] : null;
+  return [
+    ...(d ? [{ caption: `Demonstrations in ${r.train_set}, by source slot`, ramp: 'd' as const, cells: demoCells(d.per_source, 'as the source', bounds) }] : []),
+    ...(d ? [{ caption: `Demonstrations in ${r.train_set}, by destination`, ramp: 'd' as const, cells: demoCells(d.per_destination, 'as the destination', bounds) }] : []),
+    { caption: 'Picked up the right vial, by source slot', ramp: 'rate', cells: rateCells(slotRate(r.by_source, 'grasped_right'), 'as the source', 'picked up the right vial') },
+    { caption: 'In the asked slot, by destination', ramp: 'rate', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'ended in the asked slot') },
+  ];
+};
 const clips = media.featured as (typeof media.featured)[number][];
 const total = results.total;
 const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof typeof r.stages];
@@ -44,7 +46,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
 <Base
   page="results"
   title="Results"
-  description="Compare any of the October models and checkpoints: how far their rollouts got, slot by slot, and the rollouts themselves."
+  description="Compare any of the models and checkpoints: how far their rollouts got, slot by slot next to what each trained on, and the rollouts themselves."
 >
   <section class="section head">
     <div class="wrap">
@@ -97,12 +99,12 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
         <div class="block-head">
           <h2 id="h-far">How far each one got</h2>
           <div class="seg-ctl" role="group" aria-label="Bar scale">
-            <button type="button" class="quiet-btn" aria-pressed="true" data-scale="share">Share of its rollouts</button>
-            <button type="button" class="quiet-btn" aria-pressed="false" data-scale="count">Number of rollouts</button>
+            <button type="button" class="quiet-btn" aria-pressed="true" data-scale="count">Number of rollouts</button>
+            <button type="button" class="quiet-btn" aria-pressed="false" data-scale="share">Share of its rollouts</button>
           </div>
         </div>
         <StageLegend inline />
-        <div class="bars" id="bars" data-mode="share" style="--max: 1">
+        <div class="bars" id="bars" data-mode="count" style="--max: 1">
           <div class="axis" id="axis" aria-hidden="true"></div>
           {rows.map((r) => (
             <div class="bar-row" data-row={r.key}>
@@ -149,23 +151,23 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
       <section class="block" aria-labelledby="h-slot">
         <h2 id="h-slot">Slot by slot</h2>
         <p>
-          {`Where on the table each ticked row succeeded. The racks are drawn left rack, bin, right rack, slots 1 to 6 in each. ` +
-            `A number is rollouts that got through out of rollouts that started or ended there; a darker slot is a better share. ` +
-            `Four rows are shown at most.`}
+          {`Where on the table each ticked row succeeded, next to what it trained on: the demonstrations of its own training set ` +
+            `(the models trained on 100 and on 220 demonstrations differ). The racks are drawn left rack, bin, right rack, slots 1 to 6 ` +
+            `in each. Under a slot: rollouts that got through out of rollouts that started or ended there. Four rows are shown at most.`}
         </p>
         <ul class="legend">
-          <li>Demonstrations:</li>
-          {['10', '11–12', '13–14', '15–19', '20 or more'].map((t, i) => <li><i style={`background: var(--d-${i + 1})`}></i>{t}</li>)}
+          <li>Demonstrations per slot:</li>
+          {['15 or fewer', '16–22', '23–29', '30–36', '37 or more'].map((t, i) => <li><i style={`background: var(--d-${i + 1})`}></i>{t}</li>)}
         </ul>
-        <RackMaps maps={demoMaps} />
         <ul class="legend rate">
-          <li>Share of rollouts that got through:</li>
-          {['up to 25%', 'up to 50%', 'up to 75%', 'over 75%'].map((t, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{t}</li>)}
+          <li>Rollouts that got through:</li>
+          {['up to 25%', 'up to 50%', 'up to 75%', 'over 75%'].map((t, i) => <li><i style={`background: var(--rate-${i + 1})`}></i>{t}</li>)}
           <li><i class="none"></i>none</li>
         </ul>
         {rows.map((r) => (
           <div class="slot-row" data-row={r.key}>
-            <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="note">{`${r.rollouts} rollouts`}</span></h3>
+            <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="note">{`${r.rollouts} rollouts` +
+              (r.train_set ? `, trained on ${r.train_set} (${demoSets[r.train_set].episodes} demonstrations)` : '')}</span></h3>
             <RackMaps maps={mapsOf(r)} />
             {r.untrained && (
               <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
@@ -192,7 +194,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
           {clips.map((f) => (
             <div class="clip-wrap" data-row={f.row} data-stage={f.stage}>
               <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'red') as 'red'} used={f.used} />
+                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'neutral') as 'red'} used={f.used} outcome={f.stage} kind={f.kind} />
             </div>
           ))}
         </div>
@@ -252,25 +254,25 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
   .stage-filter .quiet-btn[aria-pressed='false'] { opacity: 0.55; }
 
   .bars { display: grid; gap: 0.5rem; margin-top: 0.4rem; }
-  .axis { display: grid; grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr) 3.4rem; column-gap: 0.8rem; font-size: 0.72rem; color: var(--steel); }
+  .axis { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4rem; column-gap: 0.8rem; font-size: 0.9rem; color: var(--steel); }
   .axis :global(.ticks) { position: relative; height: 1.1rem; grid-column: 2; }
   .axis :global(.ticks span) { position: absolute; transform: translateX(-50%); }
   .axis :global(.ticks span:first-child) { transform: none; }
   .axis :global(.ticks span:last-child) { transform: translateX(-100%); }
-  .bar-row { display: grid; grid-template-columns: minmax(7rem, 14rem) minmax(0, 1fr) 3.4rem; align-items: center; gap: 0 0.8rem; }
+  .bar-row { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4rem; align-items: center; gap: 0 0.8rem; }
   .bar-row[hidden] { display: none; }
-  .bar-label { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step--1); line-height: 1.3; }
+  .bar-label { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); line-height: 1.3; }
   .bar-label i { width: 0.65rem; height: 0.65rem; border-radius: 50%; flex: none; }
-  .bar { display: flex; height: 1.9rem; gap: 1px; }
-  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums;
+  .bar { display: flex; height: 2.5rem; gap: 2px; }
+  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; font-weight: 650; font-variant-numeric: tabular-nums;
          overflow: hidden; min-width: 0; width: calc(var(--share) * 1%); }
   .bars[data-mode='count'] .seg { width: calc(var(--count) / var(--max) * 100%); }
   .seg:first-child { border-radius: 4px 0 0 4px; }
   .seg:last-child { border-radius: 0 4px 4px 0; }
   .seg:only-child { border-radius: 4px; }
-  .bar-n { font-size: var(--step--1); color: var(--ink-2); text-align: right; }
-  .split { margin-top: 0.7rem; font-size: 0.78rem; }
-  .bar-untr { grid-column: 2 / 4; margin: 0.15rem 0 0.5rem; font-size: 0.78rem; line-height: 1.35; color: var(--ink-2); max-width: none; }
+  .bar-n { font-size: var(--step-0); color: var(--ink-2); text-align: right; white-space: nowrap; }
+  .split { margin-top: 0.7rem; font-size: var(--step--1); }
+  .bar-untr { grid-column: 2 / 4; margin: 0.25rem 0 0.6rem; font-size: var(--step--1); line-height: 1.4; color: var(--ink-2); max-width: none; }
   .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
   .twin summary { cursor: pointer; width: fit-content; }
   .twin tr[hidden] { display: none; }
@@ -292,9 +294,10 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
     .clips { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 40rem) {
-    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 3rem; }
+    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 4.6rem; }
     .axis :global(.ticks) { grid-column: 1; }
     .bar-label { grid-column: 1 / -1; margin-bottom: 0.2rem; }
     .bar-row { row-gap: 0.1rem; }
+    .bar-untr { grid-column: 1 / -1; }  /* the note under a bar: full width, not the desktop's columns 2–4 */
   }
 </style>

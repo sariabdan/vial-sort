@@ -16,6 +16,7 @@
   --vial-red: #c9302c;
   --vial-lime: #a3b10d;
   --vial-cyan: #0898a0;
+  --vial-neutral: #7c8791;  /* a picked clip whose vial colour was not recorded */
 
   /* models: categorical slots in fixed order, the same on every page */
   --m-pi05: #2a78d6;
@@ -31,9 +32,14 @@
   /* text that sits on each ramp step */
   --o4t-1: #0b1f33; --o4t-2: #ffffff; --o4t-3: #ffffff; --o4t-4: #ffffff;
 
-  /* how far a rollout got, worst → best, the same four colours for every model */
-  --st-1: #6bb98a; --st-2: #369a64; --st-3: #187748; --st-4: #09492a;
-  --stt-1: #0d1a12; --stt-2: #0d1a12; --stt-3: #ffffff; --stt-4: #ffffff;
+  /* how far a rollout got, worst → best, the same three colours for every model: never picked it up (red),
+     picked up but not in the asked slot (orange), in the asked slot (teal). Checked with the dataviz skill's
+     validate_palette.js, every pair, light and dark (teal, not green: red and green fail for colour-blind readers). */
+  --st-1: #b42828; --st-2: #e9893f; --st-3: #00897a;
+  --stt-1: #ffffff; --stt-2: #1d2328; --stt-3: #ffffff;
+  /* the slot maps: how often a slot worked, one teal ramp light → dark (ordinal-validated); not the outcome colours */
+  --rate-1: #6db9ad; --rate-2: #35998b; --rate-3: #0e7466; --rate-4: #0a4a42;
+  --ratet-1: #1d2328; --ratet-2: #ffffff; --ratet-3: #ffffff; --ratet-4: #ffffff;
 
   /* training demonstrations: violet, light → dark = few → many */
   --d-1: #a1a0f3; --d-2: #817ce7; --d-3: #6554da; --d-4: #4c33b8; --d-5: #35168e;
@@ -51,14 +57,14 @@
   --plot-background: var(--page);
 
   --font: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --step--1: 0.85rem;
+  --step--1: 0.95rem;
   --step-0: 1.0625rem;
   --step-1: 1.33rem;
   --step-2: 1.66rem;
   --step-3: 2.07rem;
   --step-4: 2.6rem;
   --step-5: 3.24rem;
-  --wide: 72rem;
+  --wide: 110rem;
   --measure: 66ch;
   --gutter: clamp(1rem, 4vw, 2.5rem);
 }
@@ -68,7 +74,7 @@
     color-scheme: dark;
     --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
     --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
-    --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd;
+    --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd; --vial-neutral: #9aa5ae;
     --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181;
     --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
     --o4t-1: #ffffff; --o4t-2: #ffffff; --o4t-3: #0b1f33; --o4t-4: #0b1f33;
@@ -78,8 +84,10 @@
     --dt-1: #ffffff; --dt-2: #ffffff; --dt-3: #151b20; --dt-4: #151b20; --dt-5: #151b20;
     --obt-1: #ffffff; --obt-2: #ffffff; --obt-3: #151b20; --obt-4: #151b20; --obt-5: #151b20;
     --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
-    --st-1: #1e7048; --st-2: #2f9964; --st-3: #60c28e; --st-4: #b3e5ca;
-    --stt-1: #ffffff; --stt-2: #0d1a12; --stt-3: #0d1a12; --stt-4: #0d1a12;
+    --st-1: #c8394a; --st-2: #bd8429; --st-3: #12a28f;
+    --stt-1: #ffffff; --stt-2: #151b20; --stt-3: #151b20;
+    --rate-1: #175c53; --rate-2: #1d806f; --rate-3: #2fa392; --rate-4: #7fd1c3;
+    --ratet-1: #ffffff; --ratet-2: #ffffff; --ratet-3: #151b20; --ratet-4: #151b20;
     --good-text: #0ca30c; --critical-text: #e66767;
   }
 }
@@ -97,8 +105,10 @@
   --dt-1: #ffffff; --dt-2: #ffffff; --dt-3: #151b20; --dt-4: #151b20; --dt-5: #151b20;
   --obt-1: #ffffff; --obt-2: #ffffff; --obt-3: #151b20; --obt-4: #151b20; --obt-5: #151b20;
   --oot-1: #ffffff; --oot-2: #ffffff; --oot-3: #151b20; --oot-4: #151b20; --oot-5: #151b20;
-  --st-1: #1e7048; --st-2: #2f9964; --st-3: #60c28e; --st-4: #b3e5ca;
-  --stt-1: #ffffff; --stt-2: #0d1a12; --stt-3: #0d1a12; --stt-4: #0d1a12;
+  --st-1: #c8394a; --st-2: #bd8429; --st-3: #12a28f;
+  --stt-1: #ffffff; --stt-2: #151b20; --stt-3: #151b20;
+  --rate-1: #175c53; --rate-2: #1d806f; --rate-3: #2fa392; --rate-4: #7fd1c3;
+  --ratet-1: #ffffff; --ratet-2: #ffffff; --ratet-3: #151b20; --ratet-4: #151b20;
   --good-text: #0ca30c; --critical-text: #e66767;
 }
 
@@ -183,3 +193,9 @@ table.data td.r, table.data th.r { text-align: right; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* full screen: a button on every video (src/components/Clip.astro, or added by the script in src/layouts/Base.astro) */
+.fs-frame { position: relative; }
+.fs { position: absolute; top: 0.5rem; right: 0.5rem; z-index: 1; font: inherit; font-size: var(--step--1); line-height: 1.2; color: #fff;
+      background: rgb(0 0 0 / 0.62); border: 1px solid rgb(255 255 255 / 0.5); border-radius: 4px; padding: 0.3rem 0.65rem; cursor: pointer; }
+.fs:hover, .fs:focus-visible { background: rgb(0 0 0 / 0.85); }

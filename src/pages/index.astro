@@ -19,7 +19,7 @@ const shown = registry.models.filter((m) => !m.probe && media.featured.some((f) 
 const clipsOf = (id: string) => media.featured.filter((f) => f.model_id === id);
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
 const newest = results.tiles.pi05;
-const vial = (f: { vial?: string | null }) => (f.vial ?? 'red') as 'red' | 'lime' | 'cyan';
+const vial = (f: { vial?: string | null }) => (f.vial ?? 'neutral') as 'red' | 'lime' | 'cyan' | 'neutral';
 const USER_HF = 'sari-abdan';
 const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 ---
@@ -49,14 +49,14 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
   <section class="section">
     <div class="wrap">
       <h2>Rollouts from the October and November models</h2>
-      <p>Every camera the model saw, at once. They loop; click one to pause it.</p>
+      <p>{`Every camera the model saw, at once. One rollout per model here, the one that ended best; each model's three, one of each outcome, are on `}<a href={url('results/')}>Results</a>{` and `}<a href={url('experiments/')}>Experiments</a>{`. They loop: click one to pause it, double-click or use its button for full screen.`}</p>
       {shown.map((m) => (
         <>
           <h3 class="model"><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}<span class="note">{FAMILY[m.family]}</span></h3>
           <div class="clips">
-            {clipsOf(m.id).map((f) => (
+            {clipsOf(m.id).slice(0, 1).map((f) => (
               <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={vial(f)} used={f.used} />
+                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={vial(f)} used={f.used} outcome={f.stage} kind={f.kind} />
             ))}
           </div>
         </>

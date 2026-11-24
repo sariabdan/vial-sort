@@ -17,12 +17,22 @@ interface Props {
   label?: string;
   /** cameras the model saw; the clip shows every feed the session recorded */
   used?: string[];
+  /** the outcome (stage key) and a one-line label of what kind of rollout this is, shown above the video */
+  outcome?: string | null;
+  kind?: string | null;
 }
-const { src, poster, w, h, caption, move, vialAt, missAt, vial, label, used } = Astro.props;
+const { src, poster, w, h, caption, move, vialAt, missAt, vial, label, used, outcome, kind } = Astro.props;
+const STAGE_NUM: Record<string, number> = { no_grasp: 1, carried: 2, released: 3 };
 ---
 <figure class="clip">
-  <video src={url(src)} poster={url(poster)} width={w} height={h} muted loop playsinline data-auto preload="metadata"
-    aria-label={label ?? `Recorded rollout, ${moveLabel(move)}`}></video>
+  {kind && (
+    <p class="kind"><i style={outcome && STAGE_NUM[outcome] ? `background: var(--st-${STAGE_NUM[outcome]})` : undefined}></i>{kind}</p>
+  )}
+  <div class="frame">
+    <video src={url(src)} poster={url(poster)} width={w} height={h} muted loop playsinline data-auto preload="metadata"
+      aria-label={label ?? `Recorded rollout, ${moveLabel(move)}`}></video>
+    <button type="button" class="fs" data-fullscreen aria-label="Show this video full screen">Full screen</button>
+  </div>
   <figcaption>
     {move && (
       <div class="clip-head">
@@ -37,6 +47,9 @@ const { src, poster, w, h, caption, move, vialAt, missAt, vial, label, used } = 
 
 <style>
   .clip { margin: 0; display: grid; gap: 0.7rem; align-content: start; }
+  .kind { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); font-weight: 620; color: var(--ink); margin: 0; }
+  .kind i { width: 0.95rem; height: 0.95rem; border-radius: 3px; flex: none; background: var(--steel); }
+  .frame { position: relative; }
   video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; }
   .clip-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: center; margin-bottom: 0.35rem; }
   .clip-head .move { font-size: var(--step-1); }

@@ -55,14 +55,13 @@ V5_STAGES = [("missed_pickup", "Missed the pickup"), ("wrong_target", "Wrong via
 # Noted sessions take it from the notes; rollouts scored from the arm count the arm letting go at the asked slot,
 # unless a person saw the vial was not in it (curation.yaml `checked`), which makes it "carried".
 # The keys stay as they were ("released" is the success stage) so older data and code keep working.
-WS_STAGES = [("no_grasp", "Missed the vial"), ("grasped", "Grasped, not lifted"),
-             ("carried", "Lifted, not in the asked slot"), ("released", "In the asked slot")]
+WS_STAGES = [("no_grasp", "Never picked it up"), ("carried", "Picked up, not in the asked slot"),
+             ("released", "In the asked slot")]
 STAGE_DEF = {
-    "no_grasp": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty "
-                "hole, or not at all.",
-    "grasped": "The gripper closed on the right vial but the arm never lifted it.",
-    "carried": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in "
-               "front of or behind the asked slot, or never let go before the rollout ended.",
+    "no_grasp": "The arm never picked up the vial in the asked source slot: the gripper closed on another vial, on an "
+                "empty hole or not at all, or closed on the right vial but never lifted it.",
+    "carried": "The arm picked up the right vial, but it did not end in the asked slot: let go at another slot, dropped "
+               "in front of or behind the asked slot, or never let go before the rollout ended.",
     "released": "The vial ended in the asked slot. With the operator's notes, that is what the operator saw. Scored from "
                 "the arm, it is the arm letting go at the asked slot (within half a slot), unless a person saw the vial "
                 "was not in it.",
@@ -76,6 +75,12 @@ CAMERAS = ["top_down", "left_top", "left_bottom", "right", "wrist"]
 
 def load_models():
     return yaml.safe_load((SITE / "models.yaml").read_text())["models"]
+
+
+def train_set_of(m):
+    """The public training set a model learned from ('vial-sort-slots-220' / '-100'), from models.yaml `data`."""
+    first = (m.get("data") or "").split(",")[0].strip()
+    return first if first.startswith("vial-sort-slots-") else None
 
 
 MODELS = load_models()
@@ -302,8 +307,7 @@ def models(runs, kpi):
 
 # ── the October (WS100) work ────────────────────────────────────────────────────────────────────
 
-FUNNEL = [("rollouts", "Rollouts"), ("grasped_right", "Grasped the right vial"), ("lifted", "Lifted it"),
-          ("released", "In the asked slot")]
+FUNNEL = [("rollouts", "Rollouts"), ("grasped_right", "Picked up the right vial"), ("released", "In the asked slot")]
 GATE = re.compile(r"step (\d+) \| SOURCE:(\w+) ROLES:(\w+) DEST:(\w+) \| source pan ([^|]+)\| dest (\d+)/(\d+) \| "
                   r"go rows (\d+)/(\d+): (\d+)/(\d+) \| insertion err ([\d.]+) deg, gripper err ([\d.]+)")
 
@@ -574,6 +578,7 @@ def october(gate_rows, runs_json):
                               "moves": dict(sorted(untr[(mid, step, mode, ema)]["moves"].items()))}
                              if (mid, step, mode, ema) in untr else None),
                "scored_by": "notes" if by["notes"] else "arm", "restarts": restarts[(mid, step, mode, ema)],
+               "train_set": train_set_of(m),
                "noted_moves": [{k: v for k, v in x.items() if k != "_order"}
                                for x in sorted(noted[(mid, step, mode, ema)], key=lambda x: x["_order"])] or None,
                "moves": [{"move": mv, "demos": demos_of(m["run"], mv), **freeze(t)}
@@ -638,8 +643,124 @@ def october(gate_rows, runs_json):
                       "defaults": list(heads.values()), "eye": dict(eye), "tiles": tiles,
                       "total": sum(r["rollouts"] for r in results),
                       "untrained": sum((r["untrained"] or {}).get("rollouts", 0) for r in results),
+                      "demo_sets": demo_sets(cov),
                       "left_out": {k: sum(v[k] for v in left_out.values()) for k in ("short", "unreadable", "earlier_scene", "restart")}})
     write("october", {"stages": stages, "coverage": cov, "tiles": tiles, "eye": dict(eye)})
+    pick_featured(sessions, results)
+
+
+def demo_sets(cov):
+    """Demonstrations per slot of each training set, by its public name: what the Results page draws beside a row."""
+    w = json.loads((OUT / "ws220.json").read_text())
+    return {"vial-sort-slots-220": {"episodes": w["episodes"], "per_source": w["per_source"], "per_destination": w["per_destination"]},
+            "vial-sort-slots-100": {"episodes": cov["episodes"], "per_source": cov["per_source"],
+                                    "per_destination": cov["per_destination"]}}
+
+
+# ── the rollouts every model shows: three, one of each outcome ──────────────────────────────────
+
+CLIP_STAGES = ("released", "carried", "no_grasp")  # success first
+
+
+def day_text(day):
+    return datetime.strptime(day, "%Y%m%d").strftime("%-d %b %Y")
+
+
+def clip_story(t, name, step, day):
+    """(caption, where the vial ended for the small rack drawing) of an automatically picked rollout: the operator's
+    words where the session was noted, else what the arm did."""
+    dst = t["move"].split("->")[1]
+    head = f"{name} at {kstep(step)} steps, {day_text(day)}."
+    nt = t.get("noted")
+    if nt:
+        o, e = nt["outcome"], nt["ended"]
+        at = (dst if o in ("placed", "drop_missed") else "source" if o in ("no_grasp", "wrong_vial")
+              else f"held:{e.split('/')[0]}" if o == "never_let_go" and e else e or "source")
+        return f"{head} The operator's note: “{nt['note']}”.", at
+    to, seen = t.get("to") or "", (t.get("checked") or {}).get("vial")
+    slot = lambda x: (re.search(r"\b[LR][1-6]\b", x or "") or [None])[0]
+    if t["stage"] == "released":
+        return f"{head} The arm let go at the asked slot" + ("; a person saw the vial in it." if seen == "in_slot" else "."), dst
+    if t["stage"] == "carried":
+        if "never let go" in to:
+            w = slot(to.split("held over")[-1])
+            return f"{head} It picked up the vial and never let go" + (f", holding it over {w}." if w else "."), (f"held:{w}" if w else "source")
+        if seen == "not_in_slot" and t.get("dst_ok"):
+            return f"{head} The arm let go at the asked slot, but a person saw the vial was not in it.", dst
+        w = slot(to)
+        return f"{head} It picked up the vial and let go at {w or 'another slot'}.", (w or dst)
+    return f"{head} It never picked up the vial.", "source"
+
+
+def clip_kind(t):
+    """The one-line label above a picked clip: what kind of rollout it is, in the operator's terms where noted."""
+    nt = t.get("noted")
+    if nt:
+        o, e = nt["outcome"], nt["ended"]
+        return {"placed": "Success: in the asked slot", "drop_missed": "Missed drop: beside the asked slot",
+                "off_slot": f"Wrong slot: put in {e}" if e else "Wrong slot", "never_let_go": "Never let go",
+                "wrong_vial": "Failed pickup: took another vial", "no_grasp": "Failed pickup: never picked it up"}[o]
+    to, seen = t.get("to") or "", (t.get("checked") or {}).get("vial")
+    if t["stage"] == "released":
+        return "Success: in the asked slot"
+    if t["stage"] == "carried":
+        if "never let go" in to:
+            return "Never let go"
+        if seen == "not_in_slot" and t.get("dst_ok"):
+            return "Missed drop: beside the asked slot"
+        w = (re.search(r"\b[LR][1-6]\b", to) or [None])[0]
+        return f"Wrong slot: let go at {w}" if w else "Wrong slot"
+    return "Failed pickup: never picked it up"
+
+
+def pick_featured(sessions, results):
+    """Three rollouts per model, one of each outcome, from its headline row (highest step, sync, raw weights), so every
+    model shows the same. A take listed in curation.yaml `featured` wins (with its caption); then rollouts with the
+    operator's notes, then ones a person checked, trained moves, the newest session, a typical length. A model without
+    one of the outcomes gets another of those it has. Written to build/featured.json for scripts/make_clips.py."""
+    cur = {f["take"]: f for f in (yaml.safe_load((SITE / "curation.yaml").read_text()) or {}).get("featured") or []}
+    by_run = {m["run"]: m for m in MODELS}
+    takes_of = defaultdict(list)
+    for s in sessions:
+        m = by_run.get(s["run"])
+        if m is None:
+            continue
+        key = f"{m['id']}-{s['step']}-{s['mode']}{'-ema' if s['ema'] else ''}"
+        for t in s["takes"]:
+            if t.get("stage") and t.get("move") and not t.get("restart") and (t.get("noted") or not t["short"]):
+                takes_of[key].append((s, t))
+    rows_of = defaultdict(list)
+    for r in results:
+        rows_of[r["model"]].append(r)
+    out = []
+    for m in MODELS:
+        rs = rows_of.get(m["id"])
+        if not rs:
+            continue
+        row = max([r for r in rs if r["mode"] == "sync" and not r["ema"]] or rs, key=lambda r: (r["step"], r["rollouts"]))
+        cands = takes_of[row["key"]]
+        if not cands:
+            continue
+        mid = sorted(t["secs"] for _, t in cands)[len(cands) // 2]
+        rank = lambda c: (c[1]["id"] not in cur, not c[1].get("noted"), not (c[1].get("checked") or {}).get("vial"),
+                          not c[1]["trained_move"], -int(c[0]["name"].split("_")[-2] + c[0]["name"].split("_")[-1]),
+                          abs(c[1]["secs"] - mid), c[1]["id"])
+        picked = []
+        for stage in CLIP_STAGES:
+            pool = sorted((c for c in cands if c[1]["stage"] == stage), key=rank)
+            if pool:
+                picked.append(pool[0])
+        rest = sorted((c for c in cands if c not in picked), key=lambda c: (CLIP_STAGES.index(c[1]["stage"]), rank(c)))
+        picked += rest[: max(0, 3 - len(picked))]
+        for s, t in picked:
+            f = cur.get(t["id"])
+            cap, at = clip_story(t, m["name"], s["step"], s["day"])
+            out.append({"take": t["id"], "model_id": m["id"], "row": row["key"], "kind": clip_kind(t),
+                        "caption": f["caption"].format(name=m["name"]) if f else cap,
+                        "vial": (f or {}).get("vial"), "at": (f or {}).get("at") if f else at, "miss": (f or {}).get("miss")})
+    BUILD.mkdir(exist_ok=True)
+    (BUILD / "featured.json").write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+    print(f"  build/featured.json ({len(out)} rollouts, {len({f['model_id'] for f in out})} models)")
 
 
 # ── rollouts ────────────────────────────────────────────────────────────────────────────────────
@@ -679,7 +800,7 @@ def ws_stage(r, check=None):
     if r["src_ok"] and r["lifted"]:
         return "carried"
     if r["src_ok"]:
-        return "grasped"
+        return "no_grasp"  # closed on the right vial but never lifted it: never picked it up
     return "no_grasp"
 
 
