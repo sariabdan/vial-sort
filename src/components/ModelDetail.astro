@@ -26,7 +26,7 @@ const leftText = [
 ].filter(Boolean).join(', ');
 // A row scored from the operator's notes (notes/*.yaml) lists every noted move in the order it was run.
 const OUTCOME: Record<string, string> = {
-  placed: 'In the slot', drop_missed: 'Let go at the slot, ended beside it', off_slot: 'Let go at another slot',
+  placed: 'In the slot', drop_missed: 'Dropped beside the asked slot', off_slot: 'Let go at another slot',
   never_let_go: 'Never let go', no_grasp: 'Never picked it up', wrong_vial: 'Took another vial',
 };
 const stageIdx = (key: string) => stages.findIndex((s) => s.key === key);
@@ -67,15 +67,14 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       {rows.filter((r) => r.scored_by === 'notes').map((r) => (
         <p class="note">{`${r.short} is scored from the operator's notes at the robot, not read from the arm: one rollout per noted ` +
           `move${r.restarts ? `, its ${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside the move` : ''}. A vial that ended in ` +
-          `the asked slot, or was let go there and ended beside it, counts as let go at the asked slot (the vial was in the slot in ` +
-          `${r.seen_in_slot} of ${r.released}); one put in another slot or never let go, as let go elsewhere; one never picked up, as ` +
-          `missed. The notes do not tell grasped-but-not-lifted apart from missed.`}</p>
+          `the asked slot counts as in the asked slot; one dropped in front of or behind it, put in another slot or never let go counts ` +
+          `as not in the asked slot; one never picked up, as missed. The notes do not tell grasped-but-not-lifted apart from missed.`}</p>
       ))}
       {rows.filter((r) => r.untrained).map((r) => (
         <p class="note">{`Of the ${r.rollouts} rollouts at ${r.short}, ${r.untrained.rollouts} ${r.untrained.rollouts === 1 ? 'was' : 'were'} on moves no demonstration ` +
           `it trained on contains (${Object.keys(r.untrained.moves).length <= 8 ? Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')
             : `${Object.keys(r.untrained.moves).length} different moves${r.noted_moves ? ', all in the table below' : ''}`}). Of those ${r.untrained.rollouts}, the right vial was grasped in ` +
-          `${r.untrained.grasped_right}, the arm let go at the asked slot in ${r.untrained.released}, and the vial was seen in that slot in ${r.untrained.seen_in_slot}.`}</p>
+          `${r.untrained.grasped_right} and it ended in the asked slot in ${r.untrained.released}.`}</p>
       ))}
       <div class="table-scroll">
         <table class="data stages">

@@ -86,9 +86,9 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
           </p>
         )}
         <p class="note">
-          {`Because the scorer reads the arm and not the vial, a person also watched ${eye.checked} of the rollouts that let go at the ` +
-            `asked slot: the vial was in the slot in ${eye.in_slot}, not in it in ${eye.not_in_slot}, and could not be told in ${eye.unclear}. ` +
-            `This is shown beside the scores and is never added to them.`}
+          {`Because the scorer reads the arm and not the vial, a person also watched ${eye.checked} of the rollouts scored from the arm: ` +
+            `the vial was in the slot in ${eye.in_slot}, not in it in ${eye.not_in_slot} (those count as not in the asked slot, whatever ` +
+            `the arm did), and could not be told in ${eye.unclear}.`}
         </p>
       </div>
     </div>

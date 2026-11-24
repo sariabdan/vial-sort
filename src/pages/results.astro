@@ -31,7 +31,7 @@ const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; 
   Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
 const mapsOf = (r: (typeof rows)[number]): RackMap[] => [
   { caption: 'Grasped the right vial, by source slot', ramp: 'st', cells: rateCells(slotRate(r.by_source, 'grasped_right'), 'as the source', 'grasped the right vial') },
-  { caption: 'Let go at the asked slot, by destination', ramp: 'st', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'let go at the asked slot') },
+  { caption: 'In the asked slot, by destination', ramp: 'st', cells: rateCells(slotRate(r.by_destination, 'released'), 'as the destination', 'ended in the asked slot') },
 ];
 const demoMaps: RackMap[] = [
   { caption: 'Demonstrations, by the slot the vial was taken from', ramp: 'd', cells: demoCells(cov.per_source, 'as the source', bounds) },
@@ -118,7 +118,7 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
               {r.scored_by === 'notes' && (
                 <p class="bar-untr">{`Scored from the operator's notes, not the arm: one rollout per noted move` +
                   `${r.restarts ? ` (${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside their move)` : ''}. ` +
-                  `The vial was in the slot in ${r.seen_in_slot} of the ${r.released} let go at the asked slot.`}</p>
+                  `A vial dropped in front of or behind the slot counts as a failure.`}</p>
               )}
             </div>
           ))}
@@ -138,10 +138,11 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
           </div>
         </details>
         <p class="note after">
-          {`A rollout is counted once, in the furthest outcome it reached. `}<Term k="letgo">Let go at the asked slot</Term>{` is read from the arm: ` +
-            `a person who watched the rollouts that reached it found the vial in the slot ${eye.in_slot} times, not in it ${eye.not_in_slot} times, ` +
-            `and could not tell ${eye.unclear} times.` +
-            (noted ? ` ${noted} are the exception: they are scored from the operator's notes at the robot, move by move.` : '')}
+          {`A rollout is counted once, in the furthest outcome it reached. For models without notes, `}<Term k="letgo">in the asked slot</Term>{` ` +
+            `is read from the arm: it let go at the asked slot. A person checked ${eye.checked} of those rollouts: the vial was in the slot ` +
+            `${eye.in_slot} times, not in it ${eye.not_in_slot} times (those count as not in the asked slot, whatever the arm did), and could ` +
+            `not be told ${eye.unclear} times.` +
+            (noted ? ` ${noted} are scored from the operator's notes at the robot, move by move, and a vial dropped in front of or behind the slot is a failure.` : '')}
         </p>
       </section>
 

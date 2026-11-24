@@ -21,7 +21,7 @@ export const GLOSSARY: Record<string, Entry> = {
   eyecheck: { term: 'Eye check', def: 'A person watching the cameras to see where the vial actually ended. Done for only some rollouts, so it is reported beside the scores, never inside them.' },
   grasp: { term: 'Grasped', def: 'The gripper closed on the vial in the slot the command asked to take it from. It does not mean the vial was lifted.' },
   lifted: { term: 'Lifted (picked up)', def: 'After a grasp, the arm raised the vial out of its slot.' },
-  letgo: { term: 'Let go at the asked slot', def: 'The arm opened the gripper at the destination slot the command asked for, within half a slot. It does not prove the vial ended in the hole.' },
+  letgo: { term: 'In the asked slot', def: 'The vial ended in the slot the command asked for. A vial dropped in front of or behind the slot does not count. With the operator\'s notes, it is what the operator saw; for models without notes it is read from the arm (it let go at the asked slot, within half a slot), unless a person saw the vial was not in it.' },
   sync: { term: 'Sync mode', def: 'The robot pauses while the model computes its next chunk of actions, then runs the chunk. Smooth enough, but it stalls at every replan.' },
   rtc: { term: 'RTC', def: 'Real-time chunking: the model computes the next chunk while the arm is still running the last one. π0.5 supports it; FLUX 3 Action does not, so FLUX is always sync.' },
   ema: { term: 'EMA weights', def: 'A slowly moving average of the weights over training, saved next to the raw weights. A rollout is run with one or the other.' },

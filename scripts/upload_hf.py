@@ -75,10 +75,10 @@ def results_block(run_id, step, what, when="October 2026"):
     return f"""## What it did on the robot
 
 Across every tested checkpoint of this run ({what}), {when}, there are {r["takes"]} scored takes: the right vial was
-gripped in **{right}** and let go at the asked slot in **{r["stages"]["released"]}**. At {step:,} steps alone: {n} takes, the right
-vial gripped in {right_here} and let go at the asked slot in {placed_here}. The takes were scored by a script that reads the
-arm's joint poses; it cannot see the vial, so "let go at the asked slot" means the arm opened there, which is the project's
-"right destination". Some of these takes were also watched on video and had the vial in the hole. They were test runs during development,
+gripped in **{right}** and put in the asked slot in **{r["stages"]["released"]}**. At {step:,} steps alone: {n} takes, the right
+vial gripped in {right_here} and put in the asked slot in {placed_here}. Takes without the operator's notes were scored by a
+script that reads the arm's joint poses; it cannot see the vial, so for them "in the asked slot" means the arm let go there,
+unless a person watching the video saw the vial was not in the hole (then it counts as a failure). They were test runs during development,
 not a planned evaluation, and the numbers are small. The recordings are in the `rollout_*` datasets of this account{tail}."""
 
 

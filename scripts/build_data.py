@@ -50,18 +50,22 @@ EVAL_FROM, ABORTED_S = "2026-08-22T18:50", 20
 # the WS100 takes the four stages tools/assess_rollouts.py can read off the arm.
 V5_STAGES = [("missed_pickup", "Missed the pickup"), ("wrong_target", "Wrong vial or slot"),
              ("missed_drop", "Missed the drop"), ("complete", "Complete")]
-# How far a rollout got, worst to best. The last stage is what the project's own reports call "right
-# destination": the arm let go at the slot the prompt asked for. Whether the vial really ended in the
-# hole is a separate, unevenly sampled eye check (curation.yaml), reported beside it, never folded in.
+# How far a rollout got, worst to best. The last stage is success: the vial ended in the asked slot. A vial dropped
+# in front of or behind the asked slot is a failure, like one put in another slot (the operator's rule, 24 Nov).
+# Noted sessions take it from the notes; rollouts scored from the arm count the arm letting go at the asked slot,
+# unless a person saw the vial was not in it (curation.yaml `checked`), which makes it "carried".
+# The keys stay as they were ("released" is the success stage) so older data and code keep working.
 WS_STAGES = [("no_grasp", "Missed the vial"), ("grasped", "Grasped, not lifted"),
-             ("carried", "Lifted, let go elsewhere or not at all"), ("released", "Let go at the asked slot")]
+             ("carried", "Lifted, not in the asked slot"), ("released", "In the asked slot")]
 STAGE_DEF = {
     "no_grasp": "The gripper never closed on the vial in the asked source slot: it closed on another slot, on an empty "
                 "hole, or not at all.",
     "grasped": "The gripper closed on the right vial but the arm never lifted it.",
-    "carried": "The arm lifted the right vial, then let go at a different slot or never let go before the rollout ended.",
-    "released": "The arm let go at the slot the command asked for (within half a slot). It does not prove the vial ended "
-                "in the hole: the scorer reads the arm, not the vial.",
+    "carried": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in "
+               "front of or behind the asked slot, or never let go before the rollout ended.",
+    "released": "The vial ended in the asked slot. With the operator's notes, that is what the operator saw. Scored from "
+                "the arm, it is the arm letting go at the asked slot (within half a slot), unless a person saw the vial "
+                "was not in it.",
 }
 
 # Every model the site describes lives in models.yaml. RUNS (the ones with a training log) and PROBES are
@@ -299,7 +303,7 @@ def models(runs, kpi):
 # ── the October (WS100) work ────────────────────────────────────────────────────────────────────
 
 FUNNEL = [("rollouts", "Rollouts"), ("grasped_right", "Grasped the right vial"), ("lifted", "Lifted it"),
-          ("released", "Let go at the asked slot")]
+          ("released", "In the asked slot")]
 GATE = re.compile(r"step (\d+) \| SOURCE:(\w+) ROLES:(\w+) DEST:(\w+) \| source pan ([^|]+)\| dest (\d+)/(\d+) \| "
                   r"go rows (\d+)/(\d+): (\d+)/(\d+) \| insertion err ([\d.]+) deg, gripper err ([\d.]+)")
 
@@ -697,7 +701,7 @@ WS220_DEMOS = {}  # move -> demonstrations of it in the 220 (src/data/ws220.json
 # Arm tests the operator noted move by move (notes/*.yaml, written by scripts/notes_to_yaml.py) are scored from
 # the notes, not the arm: one rollout per noted move, its result on the move's last take, the takes before it
 # restarts. What each outcome is on the site's scale:
-NOTE_STAGE = {"placed": "released", "drop_missed": "released", "off_slot": "carried", "never_let_go": "carried",
+NOTE_STAGE = {"placed": "released", "drop_missed": "carried", "off_slot": "carried", "never_let_go": "carried",
               "no_grasp": "no_grasp", "wrong_vial": "no_grasp"}
 
 
@@ -775,6 +779,8 @@ def rollouts(clips, checked, notes):
                     chk = {"vial": "in_slot" if nt["outcome"] == "placed" else "not_in_slot", "why": nt["note"]}
                     noted = {k: nt[k] for k in ("n", "file", "i", "outcome", "ended", "retried", "note")} | \
                             {"attempts": len(nt["takes"])}
+            if stage == "released" and (chk or {}).get("vial") == "not_in_slot":
+                stage = "carried"  # the arm let go at the asked slot, but a person saw the vial was not in it: a failure
             takes.append({"id": tid, "take": r["take"], "secs": round(r["secs"], 1), "checked": chk,
                           "move": move_code(mv) if mv else None, "task": r.get("task"),
                           "stage": stage, "short": r["short"], "trained_move": trained_move,

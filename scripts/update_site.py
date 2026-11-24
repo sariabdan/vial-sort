@@ -38,7 +38,7 @@ LR = Path(os.environ.get("LEROBOT", Path.home() / "lerobot"))
 PY = sys.executable
 SITE_URL = "https://sariabdan.github.io/vial-sort/"
 OUTPUTS = ("notes/", "src/data/", "public/media/")  # what this script writes and publishes
-NOTE_STAGE = {"placed": "released", "drop_missed": "released", "off_slot": "carried", "never_let_go": "carried",
+NOTE_STAGE = {"placed": "released", "drop_missed": "carried", "off_slot": "carried", "never_let_go": "carried",  # = build_data.py
               "no_grasp": "no_grasp", "wrong_vial": "no_grasp"}
 LINE = re.compile(r"^\s*(\d+)\s*:\s*([LR][1-6]|bin)\s+([LR][1-6]|bin)\s*:", re.I)
 warnings = []
@@ -213,7 +213,7 @@ def changes():
     out = []
     for r in new:
         a = o.get(r["key"])
-        fmt = lambda x: f"n={x['rollouts']}, let go at the asked slot {x['released']}, in the slot {x['seen_in_slot']}"
+        fmt = lambda x: f"n={x['rollouts']}, in the asked slot {x['released']}"
         if a is None:
             out.append(f"{r['label']}: new row, {fmt(r)}")
         elif (a["rollouts"], a["released"], a["seen_in_slot"]) != (r["rollouts"], r["released"], r["seen_in_slot"]):
