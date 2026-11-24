@@ -12,13 +12,13 @@
   },
   {
    "key": "carried",
-   "label": "Lifted, let go elsewhere or not at all",
-   "def": "The arm lifted the right vial, then let go at a different slot or never let go before the rollout ended."
+   "label": "Lifted, not in the asked slot",
+   "def": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
   },
   {
    "key": "released",
-   "label": "Let go at the asked slot",
-   "def": "The arm let go at the slot the command asked for (within half a slot). It does not prove the vial ended in the hole: the scorer reads the arm, not the vial."
+   "label": "In the asked slot",
+   "def": "The vial ended in the asked slot. With the operator's notes, that is what the operator saw. Scored from the arm, it is the arm letting go at the asked slot (within half a slot), unless a person saw the vial was not in it."
   }
  ],
  "coverage": {
@@ -224,7 +224,7 @@
    "short": "16k · sync",
    "rollouts": 82,
    "grasped_right": 77,
-   "released": 56,
+   "released": 51,
    "scored_by": "notes"
   },
   "flux": {

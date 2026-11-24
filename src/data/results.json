@@ -12,13 +12,13 @@
   },
   {
    "key": "carried",
-   "label": "Lifted, let go elsewhere or not at all",
-   "def": "The arm lifted the right vial, then let go at a different slot or never let go before the rollout ended."
+   "label": "Lifted, not in the asked slot",
+   "def": "The arm lifted the right vial, but it did not end in the asked slot: let go at another slot, dropped in front of or behind the asked slot, or never let go before the rollout ended."
   },
   {
    "key": "released",
-   "label": "Let go at the asked slot",
-   "def": "The arm let go at the slot the command asked for (within half a slot). It does not prove the vial ended in the hole: the scorer reads the arm, not the vial."
+   "label": "In the asked slot",
+   "def": "The vial ended in the asked slot. With the operator's notes, that is what the operator saw. Scored from the arm, it is the arm letting go at the asked slot (within half a slot), unless a person saw the vial was not in it."
   }
  ],
  "funnel": [
@@ -36,7 +36,7 @@
   },
   {
    "key": "released",
-   "label": "Let go at the asked slot"
+   "label": "In the asked slot"
   }
  ],
  "rows": [
@@ -485,13 +485,13 @@
    "rollouts": 37,
    "grasped_right": 28,
    "lifted": 21,
-   "released": 11,
+   "released": 6,
    "seen_in_slot": 6,
    "stages": {
     "no_grasp": 9,
     "grasped": 7,
-    "carried": 10,
-    "released": 11
+    "carried": 15,
+    "released": 6
    },
    "days": [
     "20261104"
@@ -508,7 +508,7 @@
     "L1": {
      "rollouts": 6,
      "grasped_right": 5,
-     "released": 2
+     "released": 0
     },
     "L3": {
      "rollouts": 7,
@@ -523,12 +523,12 @@
     "R1": {
      "rollouts": 6,
      "grasped_right": 5,
-     "released": 3
+     "released": 2
     },
     "R3": {
      "rollouts": 8,
      "grasped_right": 8,
-     "released": 3
+     "released": 2
     },
     "R4": {
      "rollouts": 1,
@@ -538,14 +538,14 @@
     "R6": {
      "rollouts": 5,
      "grasped_right": 3,
-     "released": 1
+     "released": 0
     }
    },
    "by_destination": {
     "L1": {
      "rollouts": 6,
      "grasped_right": 5,
-     "released": 1
+     "released": 0
     },
     "L3": {
      "rollouts": 3,
@@ -560,17 +560,17 @@
     "L6": {
      "rollouts": 9,
      "grasped_right": 8,
-     "released": 3
+     "released": 2
     },
     "R1": {
      "rollouts": 5,
      "grasped_right": 3,
-     "released": 2
+     "released": 1
     },
     "R3": {
      "rollouts": 4,
      "grasped_right": 3,
-     "released": 1
+     "released": 0
     },
     "R4": {
      "rollouts": 1,
@@ -580,7 +580,7 @@
     "R6": {
      "rollouts": 4,
      "grasped_right": 2,
-     "released": 1
+     "released": 0
     },
     "bin": {
      "rollouts": 4,
@@ -622,13 +622,13 @@
    "rollouts": 31,
    "grasped_right": 24,
    "lifted": 24,
-   "released": 15,
+   "released": 11,
    "seen_in_slot": 11,
    "stages": {
     "no_grasp": 7,
     "grasped": 0,
-    "carried": 9,
-    "released": 15
+    "carried": 13,
+    "released": 11
    },
    "days": [
     "20261108",
@@ -642,7 +642,7 @@
     "L1": {
      "rollouts": 4,
      "grasped_right": 3,
-     "released": 2
+     "released": 1
     },
     "L2": {
      "rollouts": 1,
@@ -652,7 +652,7 @@
     "L3": {
      "rollouts": 6,
      "grasped_right": 5,
-     "released": 2
+     "released": 1
     },
     "L5": {
      "rollouts": 1,
@@ -667,7 +667,7 @@
     "R1": {
      "rollouts": 4,
      "grasped_right": 4,
-     "released": 3
+     "released": 2
     },
     "R2": {
      "rollouts": 1,
@@ -677,7 +677,7 @@
     "R3": {
      "rollouts": 5,
      "grasped_right": 5,
-     "released": 3
+     "released": 2
     },
     "R5": {
      "rollouts": 1,
@@ -694,12 +694,12 @@
     "L1": {
      "rollouts": 5,
      "grasped_right": 3,
-     "released": 3
+     "released": 2
     },
     "L3": {
      "rollouts": 3,
      "grasped_right": 3,
-     "released": 2
+     "released": 1
     },
     "L5": {
      "rollouts": 1,
@@ -714,7 +714,7 @@
     "R1": {
      "rollouts": 4,
      "grasped_right": 3,
-     "released": 3
+     "released": 1
     },
     "R3": {
      "rollouts": 3,
@@ -1015,13 +1015,13 @@
    "rollouts": 11,
    "grasped_right": 10,
    "lifted": 9,
-   "released": 2,
+   "released": 1,
    "seen_in_slot": 1,
    "stages": {
     "no_grasp": 1,
     "grasped": 1,
-    "carried": 7,
-    "released": 2
+    "carried": 8,
+    "released": 1
    },
    "days": [
     "20261104"
@@ -1038,7 +1038,7 @@
     "L3": {
      "rollouts": 4,
      "grasped_right": 4,
-     "released": 1
+     "released": 0
     },
     "L6": {
      "rollouts": 1,
@@ -1075,7 +1075,7 @@
     "R6": {
      "rollouts": 3,
      "grasped_right": 3,
-     "released": 2
+     "released": 1
     },
     "bin": {
      "rollouts": 1,
@@ -1115,13 +1115,13 @@
    "rollouts": 82,
    "grasped_right": 77,
    "lifted": 77,
-   "released": 56,
+   "released": 51,
    "seen_in_slot": 51,
    "stages": {
     "no_grasp": 5,
     "grasped": 0,
-    "carried": 21,
-    "released": 56
+    "carried": 26,
+    "released": 51
    },
    "days": [
     "20261109",
@@ -1138,12 +1138,12 @@
     "L1": {
      "rollouts": 7,
      "grasped_right": 6,
-     "released": 5
+     "released": 4
     },
     "L2": {
      "rollouts": 8,
      "grasped_right": 8,
-     "released": 4
+     "released": 3
     },
     "L3": {
      "rollouts": 7,
@@ -1168,7 +1168,7 @@
     "R1": {
      "rollouts": 5,
      "grasped_right": 5,
-     "released": 5
+     "released": 4
     },
     "R2": {
      "rollouts": 7,
@@ -1178,7 +1178,7 @@
     "R3": {
      "rollouts": 8,
      "grasped_right": 7,
-     "released": 5
+     "released": 4
     },
     "R4": {
      "rollouts": 7,
@@ -1193,7 +1193,7 @@
     "R6": {
      "rollouts": 5,
      "grasped_right": 5,
-     "released": 5
+     "released": 4
     }
    },
    "by_destination": {
@@ -1220,7 +1220,7 @@
     "L5": {
      "rollouts": 5,
      "grasped_right": 4,
-     "released": 4
+     "released": 3
     },
     "L6": {
      "rollouts": 7,
@@ -1230,7 +1230,7 @@
     "R1": {
      "rollouts": 8,
      "grasped_right": 8,
-     "released": 7
+     "released": 5
     },
     "R2": {
      "rollouts": 3,
@@ -1255,7 +1255,7 @@
     "R6": {
      "rollouts": 9,
      "grasped_right": 9,
-     "released": 9
+     "released": 7
     },
     "bin": {
      "rollouts": 12,
@@ -1267,13 +1267,13 @@
     "rollouts": 41,
     "grasped_right": 37,
     "lifted": 37,
-    "released": 22,
+    "released": 20,
     "seen_in_slot": 20,
     "stages": {
      "no_grasp": 4,
      "grasped": 0,
-     "carried": 15,
-     "released": 22
+     "carried": 17,
+     "released": 20
     },
     "moves": {
      "L1->L6": 1,
@@ -1331,13 +1331,13 @@
    "rollouts": 3,
    "grasped_right": 1,
    "lifted": 1,
-   "released": 1,
+   "released": 0,
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 2,
     "grasped": 0,
-    "carried": 0,
-    "released": 1
+    "carried": 1,
+    "released": 0
    },
    "days": [
     "20261019"
@@ -1349,7 +1349,7 @@
     "L4": {
      "rollouts": 1,
      "grasped_right": 1,
-     "released": 1
+     "released": 0
     },
     "R3": {
      "rollouts": 2,
@@ -1366,7 +1366,7 @@
     "R1": {
      "rollouts": 1,
      "grasped_right": 1,
-     "released": 1
+     "released": 0
     },
     "bin": {
      "rollouts": 1,
@@ -1391,13 +1391,13 @@
    "rollouts": 17,
    "grasped_right": 10,
    "lifted": 6,
-   "released": 3,
+   "released": 1,
    "seen_in_slot": 0,
    "stages": {
     "no_grasp": 7,
     "grasped": 4,
-    "carried": 3,
-    "released": 3
+    "carried": 5,
+    "released": 1
    },
    "days": [
     "20261019"
@@ -1427,7 +1427,7 @@
     "R3": {
      "rollouts": 9,
      "grasped_right": 8,
-     "released": 2
+     "released": 0
     },
     "R6": {
      "rollouts": 4,
@@ -1444,7 +1444,7 @@
     "L6": {
      "rollouts": 6,
      "grasped_right": 5,
-     "released": 2
+     "released": 0
     },
     "R1": {
      "rollouts": 1,
@@ -1799,7 +1799,7 @@
    "short": "16k · sync",
    "rollouts": 82,
    "grasped_right": 77,
-   "released": 56,
+   "released": 51,
    "scored_by": "notes"
   },
   "flux": {

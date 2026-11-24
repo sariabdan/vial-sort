@@ -95,13 +95,13 @@
    "step_s": 4.81,
    "robot": {
     "takes": 82,
-    "released": 56,
+    "released": 51,
     "right_vial": 77,
     "stages": {
      "no_grasp": 5,
      "grasped": 0,
-     "carried": 21,
-     "released": 56
+     "carried": 26,
+     "released": 51
     }
    },
    "rate_hz": null,
@@ -121,13 +121,13 @@
    "step_s": 4.81,
    "robot": {
     "takes": 31,
-    "released": 15,
+    "released": 11,
     "right_vial": 24,
     "stages": {
      "no_grasp": 7,
      "grasped": 0,
-     "carried": 9,
-     "released": 15
+     "carried": 13,
+     "released": 11
     }
    },
    "rate_hz": null,
@@ -147,13 +147,13 @@
    "step_s": 3.8,
    "robot": {
     "takes": 37,
-    "released": 11,
+    "released": 6,
     "right_vial": 28,
     "stages": {
      "no_grasp": 9,
      "grasped": 7,
-     "carried": 10,
-     "released": 11
+     "carried": 15,
+     "released": 6
     }
    },
    "rate_hz": null,

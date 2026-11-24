@@ -821,8 +821,8 @@
      "stages": {
       "no_grasp": 5,
       "grasped": 0,
-      "carried": 21,
-      "released": 56
+      "carried": 26,
+      "released": 51
      },
      "takes": 82
     }
@@ -1649,8 +1649,8 @@
      "stages": {
       "no_grasp": 7,
       "grasped": 0,
-      "carried": 9,
-      "released": 15
+      "carried": 13,
+      "released": 11
      },
      "takes": 31
     }
@@ -1877,8 +1877,8 @@
      "stages": {
       "no_grasp": 9,
       "grasped": 7,
-      "carried": 10,
-      "released": 11
+      "carried": 15,
+      "released": 6
      },
      "takes": 37
     }
@@ -5728,8 +5728,8 @@
      "stages": {
       "no_grasp": 2,
       "grasped": 0,
-      "carried": 0,
-      "released": 1
+      "carried": 1,
+      "released": 0
      },
      "takes": 3
     }
@@ -5746,8 +5746,8 @@
      "stages": {
       "no_grasp": 7,
       "grasped": 4,
-      "carried": 3,
-      "released": 3
+      "carried": 5,
+      "released": 1
      },
      "takes": 17
     }
