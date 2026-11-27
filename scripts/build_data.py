@@ -574,6 +574,31 @@ def freeze(t):
     return {**{k: v for k, v in t.items() if k != "stages"}, "stages": {k: t["stages"][k] for k, _ in WS_STAGES}}
 
 
+# The confusion matrix of a row scored from notes (Results, "The score, step by step"): a row per slot asked for, a
+# column per place the vial ended, in the site's outcome words. Its diagonal is the score's "in the asked slot".
+CM_SLOTS = [*(f"L{i}" for i in range(1, 7)), "bin", *(f"R{i}" for i in range(1, 7))]
+CM_COLS = [*CM_SLOTS, "beside", "held", "none"]  # beside the asked slot, never let go, never picked up the right vial
+
+
+def confusion_of(moves, by_dst, where):
+    """{asked slot: {column: rollouts}} of one row's noted moves. Asserted against the row's by_destination tally, so
+    the matrix and the score can never disagree."""
+    m = defaultdict(Counter)
+    for x in moves:
+        asked, o = x["move"].split("->")[1], x["outcome"]
+        col = (asked if o == "placed" else x["ended"] if o == "off_slot" else "beside" if o == "drop_missed"
+               else "held" if o == "never_let_go" else "none")
+        if col not in CM_COLS:
+            sys.exit(f"{where} #{x['n']} {x['move']}: '{x['note']}' ended at {col!r}, not a slot the matrix has")
+        m[asked][col] += 1
+    for s, c in m.items():
+        t = by_dst.get(s, {})
+        if c[s] != t.get("released") or sum(c.values()) != t.get("rollouts"):
+            sys.exit(f"{where} {s}: the matrix has {c[s]} of {sum(c.values())} in the slot, the score "
+                     f"{t.get('released')} of {t.get('rollouts')}")
+    return {s: dict(m[s]) for s in CM_SLOTS if s in m}
+
+
 def october(gate_rows, runs_json):
     """Registry (one entry per model), results (one row per model + checkpoint + mode), and per-model
     experiments (hyperparameters, checkpoint rows, move tables). Scored rollouts are every rollout over 3 s
@@ -640,6 +665,8 @@ def october(gate_rows, runs_json):
                               "moves": dict(sorted(untr[(mid, step, mode, ema)]["moves"].items()))}
                              if (mid, step, mode, ema) in untr else None),
                "scored_by": "notes" if by["notes"] else "arm", "restarts": restarts[(mid, step, mode, ema)],
+               "confusion": (confusion_of(noted[(mid, step, mode, ema)], pick(r["dst"]), f"{mid} at {step}")
+                             if by["notes"] else None),
                "train_set": train_set_of(m),
                "noted_moves": [{k: v for k, v in x.items() if k != "_order"}
                                for x in sorted(noted[(mid, step, mode, ema)], key=lambda x: x["_order"])] or None,

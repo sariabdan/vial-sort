@@ -39,6 +39,48 @@ export function scoreRun(by: ByDestination): RunScore {
 
 export const pctOf = (x: number | null) => (x === null ? '–' : `${Math.round(x * 100)}%`);
 
+// ── the score worked out with a run's own numbers (Results: "How the score is calculated") ──
+// In machine-learning words, a slot's share is its recall (true positives over all rollouts asked for it), and the
+// total is the mean of the recalls: balanced accuracy, which weighs every slot the same however often it was tried.
+
+/** 412.698 -> "412.7", 550 -> "550": one decimal, none when it is whole. */
+export const num1 = (x: number) => String(Math.round(x * 10) / 10);
+
+export interface WorkedPart {
+  slots: { s: string; got: number; n: number; pct: number }[];  // the slots tried, with their share in percent
+  missing: string[];                                             // the slots of this part never tried
+  sum: number;                                                   // sum of the shares, in percent
+  count: number;
+  mean: number | null;                                           // in percent
+}
+
+/** The mean over `slots`, step by step: what scoreRun computes, kept apart so it can be written out. */
+export function workedPart(by: ByDestination, slots: string[]): WorkedPart {
+  const tried = slots.filter((s) => by[s]?.rollouts);
+  const parts = tried.map((s) => ({ s, got: by[s].released, n: by[s].rollouts, pct: (100 * by[s].released) / by[s].rollouts }));
+  const sum = parts.reduce((a, p) => a + p.pct, 0);
+  return { slots: parts, missing: slots.filter((s) => !by[s]?.rollouts), sum, count: parts.length,
+           mean: parts.length ? sum / parts.length : null };
+}
+
+/** "(L1 2/2 = 100 + R3 1/2 = 50) ÷ 2 = 150 ÷ 2 = 75%" */
+export const workedLine = (p: WorkedPart) =>
+  p.count ? `(${p.slots.map((x) => `${x.s} ${x.got}/${x.n} = ${num1(x.pct)}`).join(' + ')}) ÷ ${p.count} = ` +
+            `${num1(p.sum)} ÷ ${p.count} = ${num1(p.mean!)}%` : 'no slot tried';
+
+/** The median of a run's slot shares (in percent), to show what the mean is chosen over. */
+export function medianShare(by: ByDestination): number | null {
+  const v = RACK_SLOTS.filter((s) => by[s]?.rollouts).map((s) => (100 * by[s].released) / by[s].rollouts).sort((a, b) => a - b);
+  if (!v.length) return null;
+  const h = Math.floor(v.length / 2);
+  return v.length % 2 ? v[h] : (v[h - 1] + v[h]) / 2;
+}
+
+/** Plain accuracy over the rack slots: every rollout pooled, which lets a slot tried often count more. */
+export function pooled(by: ByDestination): { got: number; n: number } {
+  return RACK_SLOTS.reduce((a, s) => ({ got: a.got + (by[s]?.released ?? 0), n: a.n + (by[s]?.rollouts ?? 0) }), { got: 0, n: 0 });
+}
+
 /** "Disqualified: under 10 rollouts at 12 of 12 slots", "Passed", "Below 70%" */
 export const verdictText = (s: RunScore) =>
   s.verdict === 'passed' ? 'Passed' : s.verdict === 'below' ? `Below ${PASS_MARK * 100}%`

@@ -21,6 +21,10 @@ export const GLOSSARY: Record<string, Entry> = {
   score: { term: 'Total accuracy', def: 'The score of a run: for each of the 12 rack slots as the destination, the share of its rollouts that ended in the asked slot, then the mean of those 12 shares. The bin is left out. A run passes with at least 10 rollouts at every slot and a total of at least 70%; fewer than 10 at any slot disqualifies it. Explained under “How a run is scored” on the Experiments page.' },
   trainacc: { term: 'Trained-slot accuracy', def: 'The same mean over slots 1, 3 and 6 of both racks: the destinations the demonstrations used.' },
   heldacc: { term: 'Held-out accuracy', def: 'The same mean over slots 2, 4 and 5 of both racks, which no demonstration used as a destination.' },
+  balanced: { term: 'Balanced accuracy', def: 'The mean of the recall of every rack slot: each slot counts the same, however many rollouts went there. The total accuracy of the score is this number, with the bin left out.' },
+  recall: { term: 'Recall', def: 'Of the rollouts asked to end in a slot, the share that ended in it: true positives over all rollouts asked for that slot. Also called the true positive rate.' },
+  precision: { term: 'Precision', def: 'Of the vials that ended at a slot, the share that were asked to end there. Low precision means vials meant for other slots land there. It is not part of the score.' },
+  confusion: { term: 'Confusion matrix', def: 'A table with a row for each slot asked for and a column for each place a vial ended. The diagonal counts the rollouts that ended where they were asked; everything else on a row is a miss.' },
   weak: { term: 'Weak slot', def: 'A rack slot where half or fewer of the rollouts asked to end there ended in the asked slot. The score table lists them worst first, to show where the score is lost.' },
   eyecheck: { term: 'Eye check', def: 'A person watching the cameras to see where the vial actually ended. Done for only some of the rollouts scored from the arm; a vial a person saw outside the asked slot counts as not in it.' },
   grasp: { term: 'Picked up', def: 'The arm closed the gripper on the vial in the slot the command asked to take it from and lifted it out. Closing on it without lifting it counts as never picked up.' },
@@ -39,5 +43,5 @@ export const GLOSSARY: Record<string, Entry> = {
 /** The order the glossary is printed in: what a reader meets first. */
 export const GLOSSARY_ORDER = [
   'rollout', 'session', 'checkpoint', 'step', 'pass', 'demonstration', 'command', 'wording', 'move', 'slot', 'rack', 'source', 'heldout',
-  'scorer', 'grasp', 'letgo', 'score', 'trainacc', 'heldacc', 'weak', 'eyecheck', 'n', 'sync', 'rtc', 'ema', 'lora', 'finetune', 'loss', 'gate', 'operator',
+  'scorer', 'grasp', 'letgo', 'score', 'balanced', 'recall', 'precision', 'confusion', 'trainacc', 'heldacc', 'weak', 'eyecheck', 'n', 'sync', 'rtc', 'ema', 'lora', 'finetune', 'loss', 'gate', 'operator',
 ];

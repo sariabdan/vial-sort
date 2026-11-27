@@ -106,13 +106,15 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
       <h2>How a run is scored</h2>
       <p>
         {`A run is one model at one checkpoint in one mode. Its score is built slot by slot, so every place on the table counts ` +
-          `the same however many rollouts went there. This is the score on the Results page and in each model's entry below.`}
+          `the same however many rollouts went there. This is the score on the Results page and in each model's entry below. `}
+        <a href={url('results/#score-ref')}>The Results page works it out with each run's own numbers</a>{`, with a table of where every vial ended.`}
       </p>
       <ol class="steps">
         <li>For each of the 12 rack slots as the destination: the share of its rollouts that ended in the asked slot.</li>
         <li>
           <Term k="score">Total accuracy</Term>{`: the mean of those 12 shares. The bin is left out: it is an easy target and ` +
-            `would lift the score.`}
+            `would lift the score. In machine-learning words, each share is that slot's `}<Term k="recall">recall</Term>{` and the ` +
+            `total is the `}<Term k="balanced">balanced accuracy</Term>{`.`}
         </li>
         <li>
           <Term k="trainacc">Trained-slot accuracy</Term>{` and `}<Term k="heldacc">held-out accuracy</Term>{`: the same mean over ` +

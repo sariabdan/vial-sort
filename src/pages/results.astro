@@ -9,8 +9,9 @@ import results from '../data/results.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
-import { slotDemos, slotGot, untrainedSlots, type SlotMap } from '../lib/rackmaps';
-import { scoreRun, pctOf, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
+import { slotDemos, slotGot, untrainedSlots, byBounds, type SlotMap } from '../lib/rackmaps';
+import { scoreRun, pctOf, num1, workedPart, workedLine, medianShare, pooled, MIN_PER_SLOT, PASS_MARK, WEAK_AT,
+  RACK_SLOTS, TRAINED_SLOTS, HELD_OUT_SLOTS } from '../lib/score';
 
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
@@ -46,6 +47,46 @@ const clips = media.featured as (typeof media.featured)[number][];
 const total = results.total;
 const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof typeof r.stages];
 const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'disqualified').length;
+
+// ── How the score is calculated (top) and The score, step by step (bottom) ──
+const formula = [
+  'share(slot) = rollouts that ended in the slot ÷ rollouts asked to end there',
+  '            = the slot\'s recall: TP ÷ (TP + FN)',
+  'Total       = mean of the 12 shares, the bin left out',
+  '            = balanced accuracy',
+  'Trained     = mean of the shares of slots 1, 3 and 6 of both racks',
+  'Held-out    = mean of the shares of slots 2, 4 and 5 of both racks',
+].join('\n');
+const notTried = (missing: string[], of: number) =>
+  missing.length && missing.length < of ? ` (not tried: ${missing.join(', ')})` : '';
+type Conf = Record<string, Record<string, number>>;
+const CM_SLOTS = [...['L1', 'L2', 'L3', 'L4', 'L5', 'L6'], 'bin', ...['R1', 'R2', 'R3', 'R4', 'R5', 'R6']];
+const cmCols = [
+  ...CM_SLOTS.map((s) => ({ k: s, label: s, extra: false, title: `Ended at ${s === 'bin' ? 'the bin' : s}` })),
+  { k: 'beside', label: 'Dropped beside', extra: true, title: 'Dropped in front of or behind the asked slot' },
+  { k: 'held', label: 'Never let go', extra: true, title: 'Carried the vial and never let go' },
+  { k: 'none', label: 'Not picked up', extra: true, title: 'Never picked up the asked vial (or took another one)' },
+];
+const HEAT = [0.2, 0.4, 0.6, 0.8];  // share of the row: five steps of the blue ramp
+const sumOf = (o: Record<string, number> = {}) => Object.values(o).reduce((a, b) => a + b, 0);
+const colTotal = (c: Conf, k: string) => Object.values(c).reduce((a, r) => a + (r[k] ?? 0), 0);
+const endedAt = (k: string, s: string) =>
+  k === s ? 'ended in it' : k === 'beside' ? 'dropped beside it' : k === 'held' ? 'never let go'
+    : k === 'none' ? 'never picked up the right vial' : `ended at ${k === 'bin' ? 'the bin' : k}`;
+const withMatrix = rows.filter((r) => r.confusion);
+const pooledText = withMatrix.map((r) => {
+  const p = pooled(r.by_destination);
+  return `${r.label}: ${p.got} of ${p.n} pooled (${pctOf(p.got / p.n)}) against ${pctOf(scoreRun(r.by_destination).total)} balanced`;
+}).join('; ');
+const medEx = withMatrix.map((r) => ({ r, med: medianShare(r.by_destination), s: scoreRun(r.by_destination),
+  zeros: RACK_SLOTS.filter((x) => r.by_destination[x as keyof typeof r.by_destination]?.rollouts &&
+                                  !r.by_destination[x as keyof typeof r.by_destination].released) }))
+  .filter((x) => x.med !== null && x.s.total !== null)
+  .sort((a, b) => Math.abs(b.med! - 100 * b.s.total!) - Math.abs(a.med! - 100 * a.s.total!))[0];
+const medianText = medEx
+  ? `${medEx.r.label}: its ${medEx.s.tried} slot shares have a median of ${Math.round(medEx.med!)}% but a mean of ` +
+    `${pctOf(medEx.s.total)}. The median does not see ${medEx.zeros.length ? `its ${medEx.zeros.length} slots at 0% (${medEx.zeros.join(', ')})` : 'its weakest slots'}; the mean does.`
+  : '';
 ---
 <Base
   page="results"
@@ -110,6 +151,35 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
         </p>
         <ScoreTable rows={rows} follow />
         <p class="note empty" id="score-empty" hidden>Nothing ticked. Pick at least one row on the left.</p>
+        <div class="calc">
+          <h3 id="h-calc">How the score is calculated</h3>
+          <p>
+            {`It is called `}<Term k="balanced">balanced accuracy</Term>{`: for each slot, the share of the rollouts asked to end ` +
+              `there that ended in it, which is the slot's `}<Term k="recall">recall</Term>{`, then the mean of the 12. Every slot counts ` +
+              `the same however many rollouts went there, and the bin is left out.`}
+          </p>
+          <pre class="formula">{formula}</pre>
+          {rows.map((r) => {
+            const tr = workedPart(r.by_destination, TRAINED_SLOTS), ho = workedPart(r.by_destination, HELD_OUT_SLOTS);
+            const n = tr.count + ho.count;
+            return (
+              <div class="calc-row" data-row={r.key}>
+                <p class="calc-name"><i style={`background: var(--m-${r.family})`}></i>{r.label}</p>
+                <dl class="calc-parts">
+                  <dt>Trained slots (1, 3, 6)</dt><dd><code>{workedLine(tr)}</code>{notTried(tr.missing, 6)}</dd>
+                  <dt>Held-out slots (2, 4, 5)</dt><dd><code>{workedLine(ho)}</code>{notTried(ho.missing, 6)}</dd>
+                  <dt>Total</dt>
+                  <dd>
+                    <code>{n ? `(${num1(tr.sum)} + ${num1(ho.sum)}) ÷ ${n} = ${num1((tr.sum + ho.sum) / n)}%` : 'no slot tried'}</code>{' '}
+                    {n > 0 && <strong>{`rounded: ${pctOf(scoreRun(r.by_destination).total)}`}</strong>}
+                  </dd>
+                </dl>
+              </div>
+            );
+          })}
+          <p class="note empty" id="calc-empty" hidden>Nothing ticked.</p>
+          <p class="note">{`What every term means, and a table of where each vial ended: `}<a href="#score-ref">The score, step by step</a>.</p>
+        </div>
       </section>
 
       <section class="block" aria-labelledby="h-far">
@@ -240,6 +310,111 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
             `system see `}<a href={url('previous/results/')}>the August evaluation</a>{`; the two should not be compared.`}
         </p>
       </section>
+
+      <section class="block" aria-labelledby="h-ref" id="score-ref">
+        <h2 id="h-ref">The score, step by step</h2>
+        <p>{`What every word of the score means, from one rollout to the verdict, and then where every vial of the ticked rows ended.`}</p>
+        <ol class="ref-steps">
+          <li>
+            <strong>One rollout asks for one slot.</strong>{` For a slot S, a true positive (TP) is a rollout asked to end in S whose ` +
+              `vial ended in S. A false negative (FN) is a rollout asked for S whose vial ended anywhere else: at another slot, ` +
+              `beside S, still in the gripper, or never picked up. There are no true negatives: every rollout asks for some slot, so ` +
+              `doing nothing is never the right answer.`}
+          </li>
+          <li>
+            <strong>{`A slot's share is its `}<Term k="recall">recall</Term>.</strong>{` TP ÷ (TP + FN): the number under each ` +
+              `destination in `}<a href="#h-slot">Slot by slot</a>{`, and the Recall column of the tables below.`}
+          </li>
+          <li>
+            <strong>{`The total is the `}<Term k="balanced">balanced accuracy</Term>.</strong>{` The mean of the 12 recalls, the bin left ` +
+              `out. Pooling every rollout instead (plain accuracy) would let the slots a run was tried at most decide its score. ` +
+              (pooledText ? `${pooledText}.` : '')}
+          </li>
+          <li>
+            <strong>Trained and held-out.</strong>{` The same mean over slots 1, 3 and 6 of both racks, the destinations the ` +
+              `demonstrations used, and over slots 2, 4 and 5, which no demonstration used as a destination: the untrained slots ` +
+              `ringed in Slot by slot.`}
+          </li>
+          <li>
+            <strong>Pass and weak.</strong>{` A run passes with at least ${MIN_PER_SLOT} rollouts at every one of the 12 slots and a ` +
+              `total of at least ${PASS_MARK * 100}%. A slot at ${WEAK_AT * 100}% or below is weak.`}
+          </li>
+          <li>
+            <strong>The mean, not the median.</strong>{` ${medianText}`}
+          </li>
+        </ol>
+
+        <h3 id="h-cm">Where every vial ended</h3>
+        <p>
+          {`A `}<Term k="confusion">confusion matrix</Term>{` for each ticked row scored from the operator's notes. A row is the ` +
+            `slot asked for; a column is where the vial ended: at a slot (in it, or beside it when it was not the asked slot), ` +
+            `beside the asked slot, still held, or never picked up. The outlined cell on the diagonal counts the rollouts that ` +
+            `ended in the asked slot (TP); the rest of the row are its misses (FN). Recall, on the right, is the share the score ` +
+            `uses. `}<Term k="precision">Precision</Term>{`, at the bottom, is how many of the vials that ended at a slot were ` +
+            `asked to end there.`}
+        </p>
+        <ul class="legend cm-key">
+          {HEAT.concat(1).map((b, i) => <li><i style={`background: var(--ob-${i + 1})`}></i>{`up to ${Math.round(b * 100)}% of the row`}</li>)}
+          <li><i class="k-diag"></i>{`the asked slot`}</li>
+        </ul>
+        {rows.map((r) => {
+          const c = r.confusion as Conf | null;
+          if (!c) return (
+            <p class="cm-row cm-none" data-row={r.key}>{`${r.label}: scored from the arm, which reads where the gripper let go ` +
+              `but cannot see where the vial ended, so it has no table.`}</p>
+          );
+          return (
+            <div class="cm-row" data-row={r.key}>
+              <p class="calc-name"><i style={`background: var(--m-${r.family})`}></i>{r.label}{' '}<span class="sub">{`${r.rollouts} rollouts`}</span></p>
+              <div class="table-scroll">
+                <table class="cm">
+                  <caption class="visually-hidden">{`Where each vial of ${r.label} ended, by the slot asked for`}</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col" class="corner">Asked ↓ · ended →</th>
+                      {cmCols.map((col) => <th scope="col" class:list={['ch', { extra: col.extra }]} title={col.title}>{col.label}</th>)}
+                      <th scope="col" class="r">Recall</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {CM_SLOTS.map((s) => {
+                      const row = c[s] ?? {}, n = sumOf(row);
+                      return (
+                        <tr class:list={{ none: !n }}>
+                          <th scope="row">{s}</th>
+                          {cmCols.map((col) => {
+                            const v = row[col.k] ?? 0, k = v ? byBounds(v / n, HEAT) : 0;
+                            return (
+                              <td class:list={['cell', { diag: col.k === s, on: v > 0 }]}
+                                style={v ? `--bg: var(--ob-${k}); --fg: var(--obt-${k})` : undefined}
+                                title={v ? `Asked for ${s}, ${endedAt(col.k, s)}: ${v} of ${n}` : undefined}>{v || ''}</td>
+                            );
+                          })}
+                          <td class="r rec">{n ? `${row[s] ?? 0}/${n} = ${pctOf((row[s] ?? 0) / n)}` : '–'}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th scope="row">Precision</th>
+                      {cmCols.map((col) => {
+                        const tot = col.extra ? 0 : colTotal(c, col.k);
+                        return <td class="prec">{tot ? `${c[col.k]?.[col.k] ?? 0}/${tot}` : ''}</td>;
+                      })}
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              {c.bin && <p class="note">{`The bin row is shown for completeness; the score leaves it out.`}</p>}
+            </div>
+          );
+        })}
+        <p class="note empty" id="cm-empty" hidden>Nothing ticked.</p>
+        <p class="note after" id="cm-more" hidden>More than four rows are ticked: the first four are shown.</p>
+        <p class="note">{`Why the rule is built this way, as agreed with the supervisor: `}<a href={url('experiments/#score')}>How a run is scored</a>.</p>
+      </section>
     </div>
   </div>
 </Base>
@@ -313,6 +488,44 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
   .slot-score { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1.6rem; margin: 0 0 1.2rem; font-size: var(--step-0); color: var(--ink-2); }
   .slot-score strong { font-size: var(--step-1); font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
   .slot-score .how { flex-basis: 100%; font-size: var(--step--1); }
+
+  /* How the score is calculated (under the Score table) */
+  .calc { margin-top: 1.8rem; padding-top: 1.3rem; border-top: 1px dashed var(--rule); }
+  .calc h3, #score-ref h3 { font-size: var(--step-1); margin: 0 0 0.5rem; }
+  #score-ref h3 { margin-top: 2rem; }
+  .formula { margin: 0.7rem 0 1.1rem; padding: 0.7rem 0.9rem; background: var(--raise); border: 1px solid var(--rule); border-radius: 6px;
+             font-size: var(--step--1); line-height: 1.65; overflow-x: auto; white-space: pre; }
+  .calc-row { margin: 1rem 0; }
+  .calc-row[hidden], .cm-row[hidden] { display: none; }
+  .calc-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem; font-weight: 650; margin-bottom: 0.35rem; }
+  .calc-name i { width: 0.75rem; height: 0.75rem; border-radius: 50%; flex: none; align-self: center; }
+  .calc-name .sub { font-weight: 400; color: var(--ink-2); }
+  .calc-parts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.3rem 1.1rem; margin: 0; font-size: var(--step--1); }
+  .calc-parts dt { color: var(--ink-2); }
+  .calc-parts dd { margin: 0; }
+  .calc-parts code { white-space: normal; font-size: inherit; }
+  .calc-parts strong { margin-left: 0.6rem; font-size: var(--step-0); white-space: nowrap; }
+  @media (max-width: 40rem) { .calc-parts { grid-template-columns: minmax(0, 1fr); } .calc-parts dd { margin-bottom: 0.4rem; } }
+
+  /* The score, step by step (bottom) */
+  .ref-steps { display: grid; gap: 0.7rem; padding-left: 1.4rem; margin: 0.8rem 0 0; }
+  .cm-key { margin-top: 0.9rem; }
+  .cm-key i { width: 1rem; height: 1rem; border-radius: 3px; }
+  .cm-key .k-diag { background: var(--page); box-shadow: inset 0 0 0 2px var(--ink); }
+  .cm-row { margin-top: 1.7rem; }
+  .cm-none { color: var(--ink-2); font-size: var(--step--1); }
+  table.cm { border-collapse: separate; border-spacing: 2px; font-variant-numeric: tabular-nums; font-size: var(--step--1); margin-top: 0.4rem; }
+  table.cm th, table.cm td { padding: 0.32rem 0.3rem; text-align: center; min-width: 2.15rem; }
+  table.cm thead th { color: var(--ink-2); font-weight: 600; vertical-align: bottom; }
+  table.cm thead th.extra { max-width: 4.8rem; white-space: normal; line-height: 1.2; }
+  table.cm .corner { text-align: left; white-space: nowrap; padding-right: 0.7rem; font-weight: 500; }
+  table.cm tbody th, table.cm tfoot th { text-align: left; font-weight: 600; padding-right: 0.7rem; white-space: nowrap; }
+  table.cm td.cell { background: var(--bg, var(--raise)); color: var(--fg, var(--ink)); border-radius: 3px; font-weight: 650; }
+  table.cm td.cell.on:hover { filter: brightness(1.12); }
+  table.cm td.diag { box-shadow: inset 0 0 0 2px var(--ink); }
+  table.cm td.rec { text-align: right; white-space: nowrap; padding-left: 0.8rem; color: var(--ink); }
+  table.cm tr.none th, table.cm tr.none td.rec { color: var(--steel); font-weight: 500; }
+  table.cm tfoot th, table.cm tfoot td { color: var(--ink-2); padding-top: 0.5rem; white-space: nowrap; }
   .slot-row { margin-top: 2.4rem; }
   .slot-row[hidden] { display: none; }
   .slot-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }
