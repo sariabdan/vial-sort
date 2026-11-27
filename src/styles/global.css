@@ -24,6 +24,7 @@
   --m-groot: #1baf7a;
   --m-pi0: #eda100;
   --m-act: #e87ba4;
+  --m-isaac: #8a5cd0;
 
   /* how far a take got: v5 eval (4 outcomes), WS100 takes in π0.5 blue and FLUX orange (5 stages) */
   --o4-1: #6da7ec; --o4-2: #2a78d6; --o4-3: #1c5cab; --o4-4: #0d366b;
@@ -76,7 +77,7 @@
     --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
     --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
     --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd; --vial-neutral: #9aa5ae;
-    --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181;
+    --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181; --m-isaac: #a07de0;
     --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
     --o4t-1: #ffffff; --o4t-2: #ffffff; --o4t-3: #0b1f33; --o4t-4: #0b1f33;
     --ob-1: #184f95; --ob-2: #256abf; --ob-3: #3987e5; --ob-4: #6da7ec; --ob-5: #b7d3f6;
@@ -96,7 +97,7 @@
   --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
   --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
   --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd;
-  --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181;
+  --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181; --m-isaac: #a07de0;
   --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
   --o4t-1: #ffffff; --o4t-2: #ffffff; --o4t-3: #0b1f33; --o4t-4: #0b1f33;
   --ob-1: #184f95; --ob-2: #256abf; --ob-3: #3987e5; --ob-4: #6da7ec; --ob-5: #b7d3f6;

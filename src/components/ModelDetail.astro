@@ -16,7 +16,7 @@ const { m } = Astro.props;
 const stages = experiments.stages;
 const rows = experiments.rows.filter((r) => r.model === m.id);
 const clips = (media.featured as { model_id?: string }[]).filter((f) => f.model_id === m.id) as (typeof media.featured)[number][];
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const k = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000}k` : String(n));
 const left = m.left_out as Record<string, number>;
 const leftText = [

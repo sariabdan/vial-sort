@@ -16,7 +16,7 @@ const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
 const stages = results.stages;
 const demoSets = results.demo_sets as Record<string, { episodes: number; per_source: Record<string, number>; per_destination: Record<string, number> }>;
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const lo = results.left_out;
 const eye = results.eye as Record<string, number>;
 const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);

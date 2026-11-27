@@ -11,7 +11,7 @@ import { url, HF, andList, demoSet } from '../lib/site';
 import { scoreRun, pctOf, verdictText, RACK_SLOTS, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 const models = experiments.models;
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const scored = results.total;
 const lo = results.left_out;
 const eye = results.eye as Record<string, number>;

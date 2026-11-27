@@ -69,7 +69,7 @@ STAGE_DEF = {
 
 # Every model the site describes lives in models.yaml. RUNS (the ones with a training log) and PROBES are
 # views of it; the legacy "model" key ("pi05" | "flux") is what the colour tokens are named after.
-FAMILY_KEY = {"pi05": "pi05", "flux3": "flux"}
+FAMILY_KEY = {"pi05": "pi05", "flux3": "flux", "isaac": "isaac"}
 CAMERAS = ["top_down", "left_top", "left_bottom", "right", "wrist"]
 
 
@@ -227,8 +227,13 @@ REC = re.compile(r"(\d+)/\d+ \[[^\]]*\]INFO (\S+ \S+) \S+ step:\S+ .*?loss:([\d.
                  r".*?step_s:([\d.]+) .*?mem_gb:([\d.]+)(?: video_mse:([\d.]+) action_mse:([\d.]+))?")
 
 
-def parse_log(path, first):
-    """[{step, t, loss, ...}] of one log; the step is the tqdm count plus where the run resumed."""
+FLOW_LOSS = re.compile(r"flow_loss:([\d.]+)")
+
+
+def parse_log(path, first, flow=False):
+    """[{step, t, loss, ...}] of one log; the step is the tqdm count plus where the run resumed. flow=True (Isaac) takes
+    the action expert's flow loss as the loss: Isaac's `loss` also holds the frozen language model's text losses, which
+    stay near 5 because nothing trains them."""
     out = []
     text = path.read_bytes().decode("utf-8", "replace").replace("\r", "\n")
     if path.suffix == ".out":           # Slurm log of a cluster job: lerobot turns tqdm off there
@@ -242,6 +247,11 @@ def parse_log(path, first):
         m = REC.search(chunk)
         if m:
             n, ts, loss, gn, lr, ss, mem, vid, act = m.groups()
+            if flow:
+                f = FLOW_LOSS.search(chunk)
+                if not f:
+                    continue
+                loss = f.group(1)
             out.append({"step": first + int(n), "t": datetime.strptime(ts, "%Y-%m-%d %H:%M:%S"),
                         "loss": float(loss), "grad_norm": float(gn), "lr": float(lr), "step_s": float(ss),
                         "mem_gb": float(mem), **({"action_mse": float(act), "video_mse": float(vid)} if act else {})})
@@ -253,7 +263,7 @@ def training(robot):
     for spec in RUNS:
         recs, wall = [], 0.0
         for name, first in spec["logs"]:
-            rs = parse_log(LR / "outputs" / name, first)
+            rs = parse_log(LR / "outputs" / name, first, flow=spec["model"] == "isaac")
             if rs:
                 wall += (rs[-1]["t"] - rs[0]["t"]).total_seconds() + rs[0]["step_s"] * (rs[0]["step"] - first)
             recs += rs
@@ -469,7 +479,59 @@ def hyper_flux(c, m, steps):
     ]
 
 
-HYPER = {"pi05": hyper_pi05, "flux3": hyper_flux}
+def hyper_isaac(c, m, steps):
+    """Isaac 0.5 fine-tuned with only its action expert training. The saved config says train_expert_only false: the
+    expert-only switch is ~/lerobot/tools/isaac/finetune.py (ISAAC_TRAIN=expert), outside the config."""
+    p, b, s = c["policy"], c["batch_size"], c.get("scheduler") or {}
+    peak = p["optimizer_action_expert_lr"]
+    final = peak * s["decay_lr"] / s["peak_lr"] if s.get("peak_lr") else None
+    tf = _g(c, "dataset", "image_transforms", "tfs", default={})
+    aug = (f"colour jitter (brightness ±20%, contrast ±20%, saturation ±50%, hue ±0.05), sharpness, and a small shift and "
+           f"rotation (≤5% and ±5°); up to {_g(c, 'dataset', 'image_transforms', 'max_num_transforms')} applied to each image"
+           if tf else "none")
+    slot = {v.split(".")[-1]: k.split(".")[-1] for k, v in (c.get("rename_map") or {}).items()}
+    return [
+        {"group": "What trains", "rows": [
+            ["Starting weights", m["base"], "Perceptron's Isaac 0.5, already fine-tuned by them on SO-100 and SO-101 arms."],
+            ["Parameters trained", "The action expert only",
+             "About 0.58 billion of the model's 36 billion parameters receive gradients: the part that turns what the model "
+             "sees into joint targets. The vision encoder and the language model stay as Perceptron released them."],
+            ["Precision", p["dtype"] + (", the trained part kept in 32-bit floats" if p.get("train_storage_fp32") else ""),
+             "Number format of the computation, and of the weights that train."]]},
+        {"group": "Optimiser", "rows": [
+            ["Optimiser", "AdamW", "The update rule."],
+            ["Peak learning rate", _num(peak), "The step size at its largest, for the action expert."],
+            ["Betas", ", ".join(_num(x) for x in c["optimizer"]["betas"]), "How strongly AdamW remembers past gradients."],
+            ["Weight decay", _num(p["optimizer_weight_decay"]), "A pull of the weights toward zero."],
+            ["Gradient clipping", _num(p["optimizer_grad_clip_norm"]), "Largest allowed size of one update's gradient."]]},
+        {"group": "Learning-rate schedule", "rows": [
+            ["Shape", "Linear warm-up, then cosine decay", "The learning rate rises, then falls smoothly."],
+            ["Warm-up steps", _num(p["optimizer_warmup_steps"]), "Steps over which the rate rises to its peak."],
+            ["Decay steps", _num(s.get("num_decay_steps")), "Steps over which it falls to the final rate."],
+            ["Final learning rate", _num(float(f"{final:.3g}")) if final else "–", "The rate at the end of the decay: a tenth of the peak."]]},
+        {"group": "Batches and length", "rows": [
+            ["Batch size", _num(b), "Frames per optimiser step."],
+            ["Steps", _num(steps), "Optimiser steps. Checkpoints were saved every " + _num(c["save_freq"]) + "."],
+            ["Passes over the data", f"{steps * b / m['frames']:.2f}", "Steps × batch size ÷ frames in the training data."],
+            ["Validation split", "8 demonstrations held out",
+             "They were left out of training and scored offline: the predicted next second against what the demonstration did."]]},
+        {"group": "What it sees and predicts", "rows": [
+            ["Cameras", ", ".join(f"{cam} (its '{slot[cam]}' slot)" if cam in slot else cam for cam in m["cams"]) or "–",
+             "The checkpoint has exactly two camera slots, so it sees two of the five cameras."],
+            ["Image size", " × ".join(str(x) for x in p["image_size"]), "Each camera image is resized to this many pixels."],
+            ["Action chunk", f"{p['chunk_size']} actions", "Future joint targets one forward pass predicts (2 s at 30 Hz); "
+             "on the arm the first 30 run before it plans again."],
+            ["Denoising steps", _num(p["num_inference_steps"]), "Steps the action expert takes to turn noise into a chunk when running."],
+            ["Clock", "seconds since the start", "Each prediction is also told how long the rollout has been running."],
+            ["Normalisation", "state and action by quantiles, Isaac's ranges widened to fit",
+             "The checkpoint's own 1st and 99th percentiles are kept, widened only where this data reaches further, so the "
+             "joint values mean what they meant to it before."]]},
+        {"group": "Image augmentation", "rows": [["Augmentation", aug, "Random changes to each training image."]]},
+        {"group": "Reproducibility", "rows": [["Seed", _num(c["seed"]), "Fixes the random choices."]]},
+    ]
+
+
+HYPER = {"pi05": hyper_pi05, "flux3": hyper_flux, "isaac": hyper_isaac}
 
 
 def config_of(m):
@@ -525,7 +587,7 @@ def october(gate_rows, runs_json):
     rows, left_out = {}, defaultdict(Counter)
     untr = defaultdict(lambda: {"total": new_tally(), "moves": Counter()})  # the part of a row on untrained moves
     scored_by, restarts, noted = defaultdict(Counter), Counter(), defaultdict(list)
-    demos_of = lambda run, mv: (WS220_DEMOS if run in WS220_RUNS else cov["demos"]).get(mv, 0)
+    demos_of = lambda run, mv: (demos_in(run) if run in WS220_RUNS or run in WS212_RUNS else cov["demos"]).get(mv, 0)
     for s in sessions:
         m = by_run.get(s["run"])
         if m is None:
@@ -609,7 +671,7 @@ def october(gate_rows, runs_json):
     # the model each family's headline uses: its newest model with scored rollouts, and that model's
     # highest-step sync row on raw weights (RTC never lifted the vial with these checkpoints, EMA is a variant)
     heads = {}
-    for fam in ("pi05", "flux"):
+    for fam in ("pi05", "flux", "isaac"):
         cands = [m for m in reg if m["model"] == fam and m["rollouts"] and not m["probe"]]
         if cands:
             newest = max(cands, key=lambda m: m["last_day"])
@@ -652,7 +714,14 @@ def october(gate_rows, runs_json):
 def demo_sets(cov):
     """Demonstrations per slot of each training set, by its public name: what the Results page draws beside a row."""
     w = json.loads((OUT / "ws220.json").read_text())
+    per_src, per_dst = Counter(), Counter()
+    for mv, n in ws212_demos().items():
+        a, b = mv.split("->")
+        per_src[a] += n
+        per_dst[b] += n
     return {"vial-sort-slots-220": {"episodes": w["episodes"], "per_source": w["per_source"], "per_destination": w["per_destination"]},
+            WS212_SET: {"episodes": sum(ws212_demos().values()), "per_source": dict(sorted(per_src.items())),
+                        "per_destination": dict(sorted(per_dst.items()))},
             "vial-sort-slots-100": {"episodes": cov["episodes"], "per_source": cov["per_source"],
                                     "per_destination": cov["per_destination"]}}
 
@@ -768,12 +837,17 @@ def pick_featured(sessions, results):
 # November runs, by the checkpoint folder the session log names (tools/rollout_logged.py, session.json)
 CKPT_RUN = [("ws220_canon_ft012000_v2/", "pi05-b16k"), ("ws220_canon_base16k/", "pi05-a16k"),
             ("checkpoints/004000_q37g/", "pi05-b4k-q37g"), ("checkpoints/004000_q37/", "pi05-b4k-q37"),
-            ("ws220_canon_ft012000/", "pi05-b4k")]
+            ("ws220_canon_ft012000/", "pi05-b4k"), ("isaac_expert_ws212_b12_21000/", "isaac-i21k")]
+# Isaac's first session (25 Nov, 4 takes) ran before the operator's 42-move sheet and has no notes. Scoring it from the
+# arm beside the noted sheet would mix the two in one row, so it gets a run of its own that no model in models.yaml claims.
+SESSION_RUN = {"021000_20261125_204715": ("isaac-i21k-unnoted", "Isaac's first test session, before the noted sheet")}
 
 
 def run_of(policy, day, step, name=None):
     """(training run, how we know) of a rollout session. Sessions before tools/rollout_logged.py
     carry no checkpoint path, so this is read off the shell history and what each run kept."""
+    if name in SESSION_RUN:
+        return SESSION_RUN[name]
     if name:
         sj = LR / f"outputs/{policy}_rollouts/_sessions/{name}/session.json"
         if sj.exists():
@@ -818,6 +892,23 @@ def video_of(root, row, cam):
 
 WS220_RUNS = ("pi05-b4k", "pi05-b4k-q37", "pi05-b4k-q37g", "pi05-b16k", "pi05-a16k")
 WS220_DEMOS = {}  # move -> demonstrations of it in the 220 (src/data/ws220.json)
+# Isaac trained on the 220 minus the 8 demonstrations its offline check holds out (episodes 7, 34, 61, 88, 115, 142, 169,
+# 196), read from its training copy; the Results page names that set WS212_SET.
+WS212_RUNS = ("isaac-i21k",)
+WS212_SET = "vial-sort-slots-220 minus 8 held out"
+WS212_DEMOS = {}
+
+
+def ws212_demos():
+    if not WS212_DEMOS:
+        eps = pd.read_parquet(LR / "data/vial-sort-ws212_isaac/meta/episodes", columns=["tasks"])
+        WS212_DEMOS.update(Counter(move_code(parse_move(t[0])) for t in eps["tasks"]))
+    return WS212_DEMOS
+
+
+def demos_in(run):
+    """move -> demonstrations of it in the training set of a WS220-era run."""
+    return ws212_demos() if run in WS212_RUNS else WS220_DEMOS
 
 # Arm tests the operator noted move by move (notes/*.yaml, written by scripts/notes_to_yaml.py) are scored from
 # the notes, not the arm: one rollout per noted move, its result on the move's last take, the takes before it
@@ -870,7 +961,7 @@ def rollouts(clips, checked, notes):
     out, robot = [], defaultdict(lambda: defaultdict(Counter))
     for s, assessed in sessions:
         name = s["name"]
-        policy = "pi05" if s["policy"].startswith("pi05") else "flux"
+        policy = "pi05" if s["policy"].startswith("pi05") else "isaac" if s["policy"].startswith("isaac") else "flux"
         root = LR / "outputs" / f"{policy}_rollouts" / name
         run, how = run_of(policy, s["day"], s["step"], name)
         eps, cams = episode_rows(root)
@@ -881,10 +972,10 @@ def rollouts(clips, checked, notes):
             tid = f"{name}_t{r['take']}"
             stage = ws_stage(r, checked.get(tid)) if assessed and not r["short"] else None
             trained_move = not any("NEVER" in f or "no move" in f for f in r["flags"])
-            if run in WS220_RUNS and mv:
+            if (run in WS220_RUNS or run in WS212_RUNS) and mv:
                 # assess_rollouts checks against the 100-demonstration sheet, which has no move inside one rack;
-                # these models trained on the 220, so a move counts as trained if the 220 contain it
-                trained_move = move_code(mv) in WS220_DEMOS
+                # these models trained on the 220 (Isaac: 212 of them), so a move counts as trained if those contain it
+                trained_move = demos_in(run).get(move_code(mv), 0) > 0
                 r = {**r, "flags": [f for f in r["flags"] if "NEVER" not in f] if trained_move else r["flags"]}
             chk, noted, restart = checked.get(tid), None, False
             if name in note_sessions:

@@ -20,6 +20,43 @@
 # Sources for the text: ee/MODELS_SEP_OCT_2026.md (23 Oct 2026) and the training logs.
 
 models:
+  - id: isaac-expert
+    name: Isaac 0.5 Expert
+    run: isaac-i21k
+    family: isaac
+    what: Isaac 0.5 (Perceptron) with only its action expert trained, on the 220 demonstrations minus 8 held out, from two cameras
+    base: PerceptronAI/Isaac-0.5-SO100_101
+    data: vial-sort-slots-220 minus 8 held out, idle start and end cut, operator removed from the wrist camera's start frames, one sentence per move
+    frames: 108253
+    cams: [top_down, wrist]
+    logs: [[isaac/isaac_expert_ws212_b12_21000.log, 0]]
+    config: isaac_expert_ws212_b12_21000/checkpoints/021000/pretrained_model/train_config.json
+    notes:
+      - title: How it was trained
+        text: >-
+          24 to 25 November, on the workstation's RTX PRO 6000 (96 GB), in 13 hours: 21,000 steps at batch 12 (2.33 passes
+          over the data), 2.2 s per step, 88 GB of GPU memory. Isaac has 36 billion parameters; training all of them needs
+          far more memory than these GPUs have, so only its action expert trained (0.58 billion), and the vision encoder and
+          language model stayed as Perceptron released them. The action expert's flow loss fell from 0.041 to 0.003. Its
+          checkpoint has two camera slots, so it saw the wrist and top_down cameras only, where π0.5 sees all five. Eight
+          demonstrations were held out of training to score it offline.
+      - title: On the robot, 25 to 27 November
+        text: >-
+          42 moves, scored from the operator's notes: eight blocks of five or six moves, each block from one source slot
+          (L1, R1, L3, R3, L4, R4, L6 and R6) to the other rack, 30 of them to slots 2, 4 and 5, which no demonstration used
+          as a destination. The vial ended in the asked slot in 20 of the 42. To slots 1, 3 and 6, the destinations it
+          trained on: 11 of 12. To slot 2: 9 of 10, on both racks. To slots 4 and 5: 0 of 20; it put the vial in slot 3
+          fifteen times and in slot 4 five times, never in slot 5. It picked up the right vial in 41 of the 42. The bin and
+          the source slots 2 and 5 were not tried. It plans 60 actions in about half a second and runs 30 of them, about 21
+          actions a second on the arm. Its first test session (4 moves on 25 November, before the sheet) has no notes and
+          is not counted.
+      - title: Tested without the robot
+        text: >-
+          On the 8 demonstrations held out of training, its predicted next second is 2.8° off per joint on average, against
+          5.2° for holding still and 8.4° for the checkpoint before this training; the gripper opened or closed the right
+          way 19 times in 21. The four saved checkpoints, 5,250 to 21,000 steps, score within 0.15° of each other, and the
+          last one was kept.
+
   - id: plain-bagel
     name: Plain Bagel
     run: pi05-a16k

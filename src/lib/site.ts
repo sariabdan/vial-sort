@@ -35,6 +35,7 @@ export const visualizer = (repo: string, episode = 0) =>
 export const MODELS: Record<string, { label: string; color: string }> = {
   pi05: { label: 'π0.5', color: 'var(--m-pi05)' },
   flux: { label: 'FLUX 3 Action', color: 'var(--m-flux)' },
+  isaac: { label: 'Isaac 0.5', color: 'var(--m-isaac)' },
   groot: { label: 'GR00T N1.5', color: 'var(--m-groot)' },
   pi0: { label: 'π0', color: 'var(--m-pi0)' },
   act: { label: 'ACT', color: 'var(--m-act)' },

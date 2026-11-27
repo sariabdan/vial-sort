@@ -57,7 +57,7 @@ for (const run of training.runs) {
       marginTop: 26,   // room for the "↑ Loss" label above the top tick at the larger text size
       marginBottom: 26,
       x: { domain: [0, run.steps], tickFormat: kStep, ticks: width < 500 ? 3 : 6, label: null },
-      y: { type: 'log', domain: lossDomain[run.model], label: run.model === 'flux' ? 'Loss (video + action)' : 'Loss',
+      y: { type: 'log', domain: lossDomain[run.model], label: run.model === 'flux' ? 'Loss (video + action)' : run.model === 'isaac' ? 'Flow loss (action expert)' : 'Loss',
            ticks: 3, tickFormat: '~g', labelAnchor: 'top' },
       marks: [
         Plot.gridY({ stroke: 'var(--grid)', strokeOpacity: 1, ticks: 3 }),

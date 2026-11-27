@@ -17,7 +17,7 @@ const checkpoints = ['vial-sort-pi05-ws100-canon-12000', 'vial-sort-pi05-ws100-a
 const shown = registry.models.filter((m) => !m.probe && media.featured.some((f) => f.model_id === m.id))
   .sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''));
 const clipsOf = (id: string) => media.featured.filter((f) => f.model_id === id);
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action' } as Record<string, string>;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const newest = results.tiles.pi05;
 const vial = (f: { vial?: string | null }) => (f.vial ?? 'neutral') as 'red' | 'lime' | 'cyan' | 'neutral';
 const USER_HF = 'sari-abdan';

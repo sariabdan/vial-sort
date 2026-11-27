@@ -87,7 +87,7 @@ def stale_days():
     reports = LR / "outputs/rollout_reports"
     have = {d.name: (d / "report.json").stat().st_mtime for d in reports.glob("*") if (d / "report.json").exists()}
     newest = {}
-    for base in ("pi05_rollouts", "flux_rollouts"):
+    for base in ("pi05_rollouts", "flux_rollouts", "isaac_rollouts"):
         for rec in (LR / "outputs" / base).glob("*"):
             m = re.search(r"_(\d{8})_\d{6}$", rec.name)
             info = rec / "meta/info.json"
@@ -178,9 +178,9 @@ def check_hub(yamls):
         return
     for y in yamls:
         for s in y["sessions"]:
-            if f"rollout_pi05_{s}" not in on_hub and f"rollout_flux_{s}" not in on_hub:
+            if not any(f"rollout_{pol}_{s}" in on_hub for pol in ("pi05", "flux", "isaac")):
                 warnings.append(f"{s} is not on Hugging Face: in ~/lerobot run  .venv/bin/python tools/upload_session.py "
-                                f"outputs/pi05_rollouts/{s}")
+                                f"outputs/<pi05|flux|isaac>_rollouts/{s}")
 
 
 # ── 6. the site against the notes ─────────────────────────────────────────────────────────────────
