@@ -33,7 +33,8 @@ export function rateCells(by: Record<string, { n: number; ok: number }>, role: s
 }
 
 // ── Results' slot maps (SlotMaps.astro): one solid colour per map, the number under each slot is the value ──
-export type SlotCell = { code: string; on: boolean; text: string; title: string };
+// untr: the row's training set has no demonstration with this slot in this role (an untrained slot), drawn ringed
+export type SlotCell = { code: string; on: boolean; text: string; title: string; untr?: boolean };
 export type SlotMap = { caption: string; kind: 'demo' | 'got'; role: 'source' | 'destination'; cells: SlotCell[] };
 const NEVER: SlotCell = { code: 'bin', on: false, text: '', title: 'The bin is never a source' };
 
@@ -43,17 +44,24 @@ export function slotDemos(counts: Record<string, number>, role: SlotMap['role'],
     cells: PLACES.map((c) => {
       if (c === 'bin' && role === 'source') return NEVER;
       const v = counts[c] ?? 0;
-      return { code: c, on: v > 0, text: String(v), title: `${name(c)} as the ${role}: ${v} demonstration${v === 1 ? '' : 's'}` };
+      return { code: c, on: v > 0, text: String(v), untr: v === 0,
+        title: `${name(c)} as the ${role}: ${v} demonstration${v === 1 ? '' : 's'}${v ? '' : ' (untrained)'}` };
     }) };
 }
 
-/** Rollouts per slot: filled when any rollout started (source) or ended (destination) there; the text is got/tried. */
-export function slotGot(got: Record<string, { n: number; ok: number }>, role: SlotMap['role'], caption: string, verb: string): SlotMap {
+/** Rollouts per slot: filled when any rollout started (source) or ended (destination) there; the text is got/tried.
+ *  `untrained` names the slots its training set never used in this role; they are ringed like on the demonstration maps. */
+export function slotGot(got: Record<string, { n: number; ok: number }>, role: SlotMap['role'], caption: string, verb: string,
+                        untrained: Set<string> = new Set()): SlotMap {
   return { caption, kind: 'got', role,
     cells: PLACES.map((c) => {
       if (c === 'bin' && role === 'source') return NEVER;
-      const g = got[c];
-      if (!g || !g.n) return { code: c, on: false, text: '–', title: `${name(c)} as the ${role}: no rollouts` };
-      return { code: c, on: true, text: `${g.ok}/${g.n}`, title: `${name(c)} as the ${role}: ${g.ok} of ${g.n} rollouts ${verb}` };
+      const g = got[c], untr = untrained.has(c), tag = untr ? ' (untrained)' : '';
+      if (!g || !g.n) return { code: c, on: false, text: '–', untr, title: `${name(c)} as the ${role}${tag}: no rollouts` };
+      return { code: c, on: true, text: `${g.ok}/${g.n}`, untr, title: `${name(c)} as the ${role}${tag}: ${g.ok} of ${g.n} rollouts ${verb}` };
     }) };
 }
+
+/** The slots a training set never used in a role (0 demonstrations there), the bin as a source left out. */
+export const untrainedSlots = (counts: Record<string, number>, role: SlotMap['role']) =>
+  new Set(PLACES.filter((c) => !(c === 'bin' && role === 'source') && !(counts[c] ?? 0)));

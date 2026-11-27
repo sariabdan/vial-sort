@@ -9,8 +9,8 @@ import results from '../data/results.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
-import { slotDemos, slotGot, type SlotMap } from '../lib/rackmaps';
-import { scoreRun, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
+import { slotDemos, slotGot, untrainedSlots, type SlotMap } from '../lib/rackmaps';
+import { scoreRun, pctOf, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 const rows = results.rows;
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
@@ -35,9 +35,11 @@ const mapsOf = (r: (typeof rows)[number]): SlotMap[] => {
   const d = r.train_set ? demoSets[r.train_set] : null;
   return [
     ...(d ? [slotDemos(d.per_source, 'source', r.train_set!)] : []),
-    slotGot(slotRate(r.by_source, 'grasped_right'), 'source', 'Picked up the right vial, by source slot', 'picked up the right vial'),
+    slotGot(slotRate(r.by_source, 'grasped_right'), 'source', 'Picked up the right vial, by source slot', 'picked up the right vial',
+      d ? untrainedSlots(d.per_source, 'source') : undefined),
     ...(d ? [slotDemos(d.per_destination, 'destination', r.train_set!)] : []),
-    slotGot(slotRate(r.by_destination, 'released'), 'destination', 'In the asked slot, by destination', 'ended in the asked slot'),
+    slotGot(slotRate(r.by_destination, 'released'), 'destination', 'In the asked slot, by destination', 'ended in the asked slot',
+      d ? untrainedSlots(d.per_destination, 'destination') : undefined),
   ];
 };
 const clips = media.featured as (typeof media.featured)[number][];
@@ -174,11 +176,23 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
           <li><i class="k-got"></i>{`Rollouts: how many got through, of how many started or ended at that slot`}</li>
           <li><i class="k-demo"></i>{`Demonstrations: how many of its training set started or ended there`}</li>
           <li><i class="k-none"></i>{`Empty: none there`}</li>
+          <li><i class="k-untr"></i>{`Dashed ring: an untrained slot, one its training set never used in that role (2 and 5 as a source; 2, 4 and 5 as a destination)`}</li>
         </ul>
         {rows.map((r) => (
           <div class="slot-row" data-row={r.key}>
             <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}<span class="sub">{`${r.rollouts} rollouts` +
               (r.train_set ? `, trained on ${r.train_set} (${demoSets[r.train_set].episodes} demonstrations)` : '')}</span></h3>
+            {(() => {
+              const s = scoreRun(r.by_destination);
+              return (
+                <p class="slot-score">
+                  <span>{`Trained slots (1, 3, 6): `}<strong>{pctOf(s.trained)}</strong></span>
+                  <span>{`Untrained slots (2, 4, 5): `}<strong>{pctOf(s.held)}</strong></span>
+                  <span>{`All slots, the average: `}<strong>{pctOf(s.total)}</strong></span>
+                  <span class="how">{`in the asked slot, the mean over the slots it was tried at`}</span>
+                </p>
+              );
+            })()}
             <SlotMaps maps={mapsOf(r)} />
             {r.untrained && (
               <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
@@ -295,6 +309,10 @@ const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'dis
   .slot-key .k-got { background: var(--slot-got); }
   .slot-key .k-demo { background: var(--slot-demo); }
   .slot-key .k-none { background: var(--page); border: 1.5px solid var(--rack); }
+  .slot-key .k-untr { background: var(--page); border: 1.5px solid var(--rack); outline: 2px dashed var(--ink-2); outline-offset: 2px; }
+  .slot-score { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1.6rem; margin: 0 0 1.2rem; font-size: var(--step-0); color: var(--ink-2); }
+  .slot-score strong { font-size: var(--step-1); font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .slot-score .how { flex-basis: 100%; font-size: var(--step--1); }
   .slot-row { margin-top: 2.4rem; }
   .slot-row[hidden] { display: none; }
   .slot-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }

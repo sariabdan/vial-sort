@@ -28,7 +28,7 @@ const binOf = (m: SlotMap) => m.cells.find((c) => c.code === 'bin');
               <div class="racks">
                 <div class="tray" role="group" aria-label="Left rack">
                   {rack(m, 'L').map((c) => (
-                    <div class="slot" title={c.title}>
+                    <div class:list={['slot', { untr: c.untr }]} title={c.title}>
                       <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
                       <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
                     </div>
@@ -42,7 +42,7 @@ const binOf = (m: SlotMap) => m.cells.find((c) => c.code === 'bin');
                 )}
                 <div class="tray" role="group" aria-label="Right rack">
                   {rack(m, 'R').map((c) => (
-                    <div class="slot" title={c.title}>
+                    <div class:list={['slot', { untr: c.untr }]} title={c.title}>
                       <i class:list={['dot', { on: c.on }]} aria-hidden="true"></i>
                       <b class:list={{ off: !c.on, long: c.text.length > 4 }}><span class="visually-hidden">{`${c.code}: `}</span>{c.text}</b>
                     </div>
@@ -78,6 +78,8 @@ const binOf = (m: SlotMap) => m.cells.find((c) => c.code === 'bin');
   .dot { width: 1.85rem; height: 1.85rem; border-radius: 50%; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
   .box { width: calc(var(--bw) - 0.6rem); height: 2.6rem; border-radius: 6px; box-sizing: border-box; border: 1.5px solid var(--rack); background: var(--page); }
   .demo .on { background: var(--slot-demo); border-color: var(--slot-demo); }
+  /* a slot the training set never used in this role: a dashed ring around the circle, on every map of the row */
+  .untr .dot { outline: 2px dashed var(--ink-2); outline-offset: 3px; }
   .got .on { background: var(--slot-got); border-color: var(--slot-got); }
 
   .slot b { font-size: 1.45rem; font-weight: 680; line-height: 1.2; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
