@@ -104,6 +104,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -154,6 +155,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -199,6 +201,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -244,6 +247,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -310,6 +314,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -375,6 +380,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -552,6 +558,50 @@
    },
    "scored_by": "notes",
    "restarts": 3,
+   "confusion": {
+    "L1": {
+     "L1": 2
+    },
+    "L2": {
+     "L2": 5
+    },
+    "L3": {
+     "L3": 2
+    },
+    "L4": {
+     "L3": 5
+    },
+    "L5": {
+     "L3": 3,
+     "L4": 2
+    },
+    "L6": {
+     "L6": 2
+    },
+    "R1": {
+     "R1": 2
+    },
+    "R2": {
+     "R2": 4,
+     "beside": 1
+    },
+    "R3": {
+     "R3": 1,
+     "beside": 1
+    },
+    "R4": {
+     "R3": 4,
+     "beside": 1
+    },
+    "R5": {
+     "none": 1,
+     "R4": 1,
+     "R3": 3
+    },
+    "R6": {
+     "R6": 2
+    }
+   },
    "train_set": "vial-sort-slots-220 minus 8 held out"
   },
   {
@@ -637,6 +687,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-220"
   },
   {
@@ -773,6 +824,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-220"
   },
   {
@@ -925,6 +977,46 @@
    },
    "scored_by": "notes",
    "restarts": 6,
+   "confusion": {
+    "L1": {
+     "L1": 2,
+     "none": 2,
+     "beside": 1
+    },
+    "L3": {
+     "beside": 1,
+     "L2": 1,
+     "L3": 1
+    },
+    "L5": {
+     "L4": 1
+    },
+    "L6": {
+     "L5": 1,
+     "none": 2,
+     "L6": 1
+    },
+    "bin": {
+     "bin": 4
+    },
+    "R1": {
+     "beside": 2,
+     "R1": 1,
+     "none": 1
+    },
+    "R3": {
+     "R2": 2,
+     "R1": 1
+    },
+    "R4": {
+     "none": 1
+    },
+    "R6": {
+     "R3": 3,
+     "R6": 2,
+     "none": 1
+    }
+   },
    "train_set": "vial-sort-slots-220"
   },
   {
@@ -970,6 +1062,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1025,6 +1118,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1070,6 +1164,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1164,6 +1259,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1263,6 +1359,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-220"
   },
   {
@@ -1478,6 +1575,65 @@
    },
    "scored_by": "notes",
    "restarts": 11,
+   "confusion": {
+    "L1": {
+     "L2": 1,
+     "L1": 7,
+     "none": 1
+    },
+    "L2": {
+     "none": 1,
+     "L3": 1,
+     "L2": 1
+    },
+    "L3": {
+     "L2": 1,
+     "L3": 6
+    },
+    "L4": {
+     "L3": 2,
+     "L4": 1
+    },
+    "L5": {
+     "beside": 1,
+     "L5": 3,
+     "none": 1
+    },
+    "L6": {
+     "L6": 5,
+     "none": 1,
+     "L5": 1
+    },
+    "bin": {
+     "bin": 12
+    },
+    "R1": {
+     "R1": 5,
+     "beside": 2,
+     "R2": 1
+    },
+    "R2": {
+     "R1": 3
+    },
+    "R3": {
+     "R3": 3,
+     "R2": 3,
+     "held": 1,
+     "none": 1
+    },
+    "R4": {
+     "R4": 1,
+     "R3": 4
+    },
+    "R5": {
+     "R3": 2,
+     "R4": 1
+    },
+    "R6": {
+     "R6": 7,
+     "beside": 2
+    }
+   },
    "train_set": "vial-sort-slots-220"
   },
   {
@@ -1538,6 +1694,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1626,6 +1783,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1717,6 +1875,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1772,6 +1931,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1838,6 +1998,7 @@
    "untrained": null,
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   },
   {
@@ -1934,6 +2095,7 @@
    },
    "scored_by": "arm",
    "restarts": 0,
+   "confusion": null,
    "train_set": "vial-sort-slots-100"
   }
  ],
