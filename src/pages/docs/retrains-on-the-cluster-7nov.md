@@ -3,6 +3,15 @@ layout: ../../layouts/Doc.astro
 title: "Retraining π0.5 on a university cluster, 6–7 Nov"
 date: "2026-11-07"
 description: "Two full fine-tunes on the 220 contrastive demonstrations, one from the earlier checkpoint and one from the pi05 base, trained side by side on two 80 GB A100 GPUs in 12-hour jobs."
+models:
+  - { id: plain-bagel, was: "A" }
+  - { id: mango-pudding, was: "B" }
+points:
+  - "Two full fine-tunes of π0.5 on the same 220 demonstrations, 16,000 steps each: B from the 12k checkpoint of the 100-demonstration run, A from the public pi05_base."
+  - "Both finished at a loss of about 0.009."
+  - "Both use the original normalisation percentiles, pinned for all six joints."
+  - "4.8 seconds per step on one 80 GB A100; each run took two chained 12-hour jobs."
+  - "The offline probes were flat across checkpoints, so none beat the final one."
 ---
 
 ## The two runs

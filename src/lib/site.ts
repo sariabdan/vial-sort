@@ -10,6 +10,11 @@ export const pct = (x: number, digits = 0) => `${(x * 100).toFixed(digits)}%`;
 /** 'R3->L3' → 'R3 → L3', the project's notation. */
 export const moveLabel = (m: string | null | undefined) => (m ? m.replace('->', ' → ') : '');
 
+/** A written account split into its sentences, each kept word for word, so a page can show it as a list instead of
+ *  one block. A sentence ends at . ! or ? followed by a space and a capital, a digit or an opening quote, which leaves
+ *  "2.5e-5", "4.8 s per step" and "R3 or R4." whole. */
+export const sentences = (text: string) => text.split(/(?<=[.!?])\s+(?=[A-Z0-9“])/).map((s) => s.trim()).filter(Boolean);
+
 /** ['a', 'b', 'c'] → 'a, b and c'. */
 export const andList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
 

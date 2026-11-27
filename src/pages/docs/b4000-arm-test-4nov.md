@@ -3,6 +3,16 @@ layout: ../../layouts/Doc.astro
 title: "Arm test, 4 Nov: π0.5 B at 4000 steps"
 date: "2026-11-04"
 description: "The first retrain on the 220 contrastive demonstrations lost its grasp. The cause was a normalisation mismatch, not the policy."
+models:
+  - { id: mango-lassi, was: "B at 4000" }
+  - { id: mango-sorbet, was: "004000_q37" }
+  - { id: mango-chutney, was: "004000_q37g" }
+points:
+  - "6 of 35 rollouts fully succeeded and 14 failed at the grasp. The gate was not met."
+  - "The cause of the grasp failures: merging the datasets widened the gripper's normalisation range from 37.4° to 50.8°, so every inherited gripper command came out about 36% too wide."
+  - "With the ranges pinned back (004000_q37), 9 of 10 rollouts picked the vial up, but only 1 of 10 placed it right: the arm went to the middle of the rack whatever the digit."
+  - "Pinning only the gripper (004000_q37g) was worse, 0 of 4 grasped. Both joints had to be pinned, and all six are pinned for the retrain."
+  - "Plan: retrain B with the pinned quantiles, to 16,000 steps."
 ---
 
 Checkpoint `outputs/pi05_full_vial-sort-ws220_canon_ft012000/checkpoints/004000`

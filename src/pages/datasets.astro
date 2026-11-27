@@ -3,6 +3,9 @@ import Base from '../layouts/Base.astro';
 import CoverageMatrix from '../components/CoverageMatrix.astro';
 import CameraChips from '../components/CameraChips.astro';
 import Term from '../components/Term.astro';
+import SlotVials from '../components/SlotVials.astro';
+import RackGlyph from '../components/RackGlyph.astro';
+import results from '../data/results.json';
 import october from '../data/october.json';
 import ws220 from '../data/ws220.json';
 import datasets from '../data/datasets.json';
@@ -20,6 +23,23 @@ const minutes = (frames: number | null, fps: number | null) => (frames && fps ? 
 const w = cov.wordings;
 const pools = cov.pools;
 const trainedOn = (set: string) => andList(experiments.models.filter((m) => demoSet(m.data) === set).map((m) => m.name));
+// The page is a panel with tabs (the style of Results). Its first tab shows the two training sets as two rows of
+// vials, one per slot, in the same two columns, so the sets compare slot by slot.
+// what each coloured part of a command is called under the sentence on the Commands tab, with the size of its pool
+const PART: Record<string, string> = {
+  verb: `verb · ${pools.verb.length}`, obj: `object · ${pools.object.length}`, slot: `slot · ${pools.slot_count}`,
+  rack: `rack · ${pools.rack.left.length}`, bin: `bin · ${pools.bin.length}`, tmpl: 'form',
+};
+const demoSets = results.demo_sets as Record<string, { episodes: number; per_source: Record<string, number>; per_destination: Record<string, number> }>;
+const sets = [
+  { anchor: 'set-100', repo: 'sari-abdan/vial-sort-slots-100', episodes: cov.episodes, moves: Object.keys(cov.demos).length, minutes: cov.minutes, frames: cov.frames,
+    recorded: 'Recorded 14 October 2026', how: 'Twenty runs of five, one destination per run; no move inside one rack.',
+    trained: trainedOn('100'), demos: demoSets['vial-sort-slots-100'] },
+  { anchor: 'set-220', repo: R220, episodes: c2.episodes, moves: c2.moves, minutes: c2.minutes, frames: c2.frames,
+    recorded: '70 of the 100, then 51 on 28 October and 99 on 3 November',
+    how: `One layout recorded three times, to three different destinations; ${c2.same_rack} demonstrations inside one rack.`,
+    trained: trainedOn('220'), demos: demoSets['vial-sort-slots-220'] },
+].filter((s) => s.demos);
 
 const cams = [
   { key: 'top_down', text: 'The only high-angle view. It sees both racks, the bin and the arm at once, with no people in it.' },
@@ -73,187 +93,233 @@ const parts = (sentence: string): Part[] => {
   title="Data"
   description="The teleoperated demonstrations, 100 behind the October models and 220 behind the November ones: the five cameras, which moves were recorded and which were held out, how the commands were worded, and every robot recording, public on Hugging Face."
 >
-  <section class="section">
-    <div class="wrap">
+  <div class="wrap panel-page" data-no-onpage data-tabset data-await>
+    <header class="panel-head">
       <h1>Data</h1>
-      <p class="lead">
-        Five cameras watched a person move a vial with a leader arm. There are two training sets: the first 100
-        demonstrations, and 220 that keep 70 of those and add 150 recorded so the destination can only come from the
-        command. Both sets and every robot recording are public on Hugging Face in the LeRobot format.
+      <p class="note">
+        Five cameras watched a person move a vial with a leader arm. Two training sets, 100 and 220 demonstrations, and every robot
+        recording are public on Hugging Face in the LeRobot format.
       </p>
-      <div class="table-scroll">
-        <table class="data" id="sets">
-          <caption class="visually-hidden">The two training sets side by side</caption>
-          <thead><tr><th></th><th>100 demonstrations</th><th>220 demonstrations</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Recorded</th><td>14 October 2026</td><td>70 of the 100, then 51 on 28 October and 99 on 3 November</td></tr>
-            <tr><th scope="row">How</th><td>Twenty runs of five, one destination per run</td><td>One layout recorded three times, to three different destinations</td></tr>
-            <tr><th scope="row">Moves</th><td>{Object.keys(cov.demos).length} moves, none inside one rack</td><td>{c2.moves} moves, {c2.same_rack} demonstrations inside one rack</td></tr>
-            <tr><th scope="row">Size</th><td class="num">{cov.episodes} episodes, {cov.frames.toLocaleString('en-GB')} frames, {cov.minutes} min</td><td class="num">{c2.episodes} episodes, {c2.frames.toLocaleString('en-GB')} frames, {c2.minutes} min</td></tr>
-            <tr><th scope="row">Trained</th><td>{trainedOn('100')}</td><td>{trainedOn('220')}</td></tr>
-            <tr><th scope="row">On Hugging Face</th><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td><td><a href={`${HF}/datasets/${R220}`}>vial-sort-slots-220</a></td></tr>
-          </tbody>
-        </table>
-      </div>
+    </header>
+    <div class="tabstrip" role="tablist" aria-label="Parts of the data">
+      <button type="button" role="tab" data-t="sets" aria-selected="true">Cameras, command, demonstrations</button>
+      <button type="button" role="tab" data-t="commands" aria-selected="false">Command wording</button>
+      <button type="button" role="tab" data-t="moves" aria-selected="false">Move by move</button>
+      <button type="button" role="tab" data-t="how" aria-selected="false">How it was recorded</button>
+      <button type="button" role="tab" data-t="recordings" aria-selected="false">Robot recordings</button>
     </div>
-  </section>
 
-  <section class="section">
-    <div class="wrap">
-      <h2>Five cameras</h2>
-      <p>One instant of one demonstration, seen by each camera. All five are recorded at 30 frames a second.</p>
-      <ul class="cams">
-        {cams.map((c) => (
-          <li>
-            <img src={url(`img/cams/${c.key}.webp`)} width="640" height="480" loading="lazy" alt={`${CAMERA_NAMES[c.key]}: ${c.text}`} />
-            <strong>{CAMERA_NAMES[c.key]} <span class="key">{c.key}</span></strong>
-            <span class="note">{c.text}</span>
-          </li>
-        ))}
-      </ul>
-      {demo && (
-        <figure class="demo">
-          <video src={url(demo.src)} poster={url(demo.poster)} width={demo.w} height={demo.h} muted loop playsinline data-auto preload="metadata"
-            aria-label="One demonstration, seen by all five cameras at once"></video>
-          <figcaption class="note">{demo.caption} The large view is the overhead camera; the four small ones are, from the top left, across the table, near eye level, from the side and the wrist.</figcaption>
-        </figure>
-      )}
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap two">
-      <div>
-        <h2>Racks and slots</h2>
-        <p>
-          {`Left and right are read from the follower arm: the left rack is the rack to the left of the arm, which is the `}<strong>top</strong>{` rack in the overhead view, ` +
-            `and the right rack is the bottom one. The bin sits between them. Slot 1 is the one nearest the arm. In August the left rack was the one on the left of the side camera.`}
-        </p>
-      </div>
-      <div>
-        <h2>How the commands were written</h2>
-        <p>
-          {`A command names the vial by its position and never by its colour: “Move the vial from position 3 of the right rack to slot 6 of the left rack.” ` +
-            `Addressing the source slot keeps the instruction unambiguous even when two vials share a colour. Choosing which vial to move, the step from a colour to a position, ` +
-            `is left to the person who types the command.`}
-        </p>
-        <p>
-          {`The recording tool takes one label per run, but the source changes in every demonstration of a run. So each run was recorded with its ` +
-            `destination only. Afterwards one script read the recording sheet, which says which slot held the target and where it went, and rewrote ` +
-            `every demonstration’s command once. The video was not touched and nothing was recorded again.`}
-        </p>
-        <p>
-          {`Each wording is one draw from independent pools: ${verbs} verbs, ${objects} object nouns, ${slotForms} ways to say a slot, ${rackForms} ways to say a rack, ` +
-            `${binForms} ways to say the bin and ${templates} sentence forms. Multiplied out that is ${verbs} × ${objects} × (${slotForms} × ${rackForms}) × (${slotForms} × ${rackForms}) × ${templates} ` +
-            `= ${rackToRack.toLocaleString('en-GB')}, about ${sci(rackToRack)}, wordings of one rack-to-rack move, and ${toBin.toLocaleString('en-GB')} for a move to the bin.`}
-        </p>
-        <p>
-          {`The draw is not random: the k-th demonstration of a move gets the k-th combination, so repeated demonstrations of one move are phrased differently. ` +
-            `The result is ${w.distinct} different wordings across ${w.moves} moves, with at most ${w.max_per_move} wordings of any one move.`}
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>The wording pools</h2>
-      <p>The same six colours mark the parts of the example wordings below.</p>
-      <div class="table-scroll">
-        <table class="data pools">
-          <thead><tr><th>Part</th><th class="r">Forms</th><th>Values</th></tr></thead>
-          <tbody>
-            {pool.map((p) => (
-              <tr><th scope="row"><span class={`tag ${p.cls}`}>{p.name}</span></th><td class="r num">{p.n}</td><td class="vals">{p.values}</td></tr>
+    <section data-p="sets" id="sets">
+      <div class="seen-split">
+      <aside class="seen">
+        <p class="blk-h">What the model sees<span>five cameras</span></p>
+        <div class="viewer" data-viewer>
+          {cams.map((c, i) => (
+            <figure class="big" data-cam={c.key} hidden={i > 0}>
+              <img src={url(`img/cams/${c.key}.webp`)} width="640" height="480" loading={i ? 'lazy' : 'eager'} alt={`${CAMERA_NAMES[c.key]}: ${c.text}`} />
+              <figcaption><b>{CAMERA_NAMES[c.key]}</b><span class="key">{c.key}</span><span class="what">{c.text}</span></figcaption>
+            </figure>
+          ))}
+          <div class="thumbs" role="group" aria-label="Choose a camera view">
+            {cams.map((c, i) => (
+              <button type="button" data-cam-pick={c.key} aria-pressed={i === 0 ? 'true' : 'false'} title={CAMERA_NAMES[c.key]}>
+                <img src={url(`img/cams/${c.key}.webp`)} width="640" height="480" loading="lazy" alt="" />
+                <span>{CAMERA_NAMES[c.key]}</span>
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <p class="note cam-note">One instant of one demonstration, seen by each camera. All five are recorded at 30 frames a second. Pick a view to enlarge it.</p>
+      </aside>
+      <div class="seen-main">
+
+      <p class="blk-h">What it is told<span>one sentence</span></p>
+      <div class="told">
+        <p class="sentence">
+          {parts(w.example[0]).map((p) => (p.cls
+            ? <span class="part"><span class={`tag ${p.cls}`}>{p.text}</span><small>{PART[p.cls]}</small></span>
+            : <span class="part plain"><span>{p.text}</span><small>&nbsp;</small></span>))}
+        </p>
+        <ul class="told-facts">
+          <li><b>By position, never by colour</b><span>so a command stays unambiguous when two vials share a colour.</span></li>
+          <li><b class="num">{`${w.distinct} wordings across ${w.moves} moves`}</b><span>{`drawn from ${rackToRack.toLocaleString('en-GB')} possible for one move, so repeats of a move are phrased differently.`}</span></li>
+          <li><a href="#commands">How the commands are worded →</a></li>
+        </ul>
       </div>
-      <h3 class="sub">The recorded wordings of one move</h3>
-      <p>
-        {`The move R3 → L6 has ${w.example.length} demonstrations. These are their commands, exactly as they are stored in the set:`}
-      </p>
-      <ul class="examples">
-        {w.example.map((e) => (
-          <li>“{parts(e).map((p) => (p.cls ? <span class={`tag ${p.cls}`}>{p.text}</span> : p.text))}”</li>
+
+      <p class="blk-h">What it learned from<span>demonstrations, slot by slot</span></p>
+      <ul class="legend set-key" aria-label="How to read the vials">
+        <li class="key-lead">A vial fills to the number of demonstrations at that slot, against the most in its row:</li>
+        <li><i class="kv"><i></i></i>demonstrations</li>
+        <li><i class="kv kh"><i></i></i>none: a held-out slot, kept back so a model can be tested on it</li>
+        <li>Slots 1 to 6, left to right.</li>
+      </ul>
+      <div class="sets-table">
+        <div class="st-row st-head" aria-hidden="true">
+          <span class="st-who"></span>
+          <div class="st-cap"><p><b>Start in</b><span>the slot the vial is taken from</span></p><div class="caps"><span class="c6">left rack</span><span class="c6">right rack</span></div></div>
+          <div class="st-cap"><p><b>End in</b><span>the slot the vial is put in</span></p><div class="caps"><span class="c6">left rack</span><span class="cb">bin</span><span class="c6">right rack</span></div></div>
+        </div>
+        {sets.map((s) => (
+          <div class="st-row" id={s.anchor}>
+            <div class="st-who">
+              <p class="st-name"><i></i><a href={`${HF}/datasets/${s.repo}`}>{s.repo.split('/')[1]}</a></p>
+              <p class="st-big"><b class="num">{s.episodes}</b><span>demonstrations</span></p>
+              <p class="st-parts">{`${s.moves} moves · ${s.minutes} min · ${s.frames.toLocaleString('en-GB')} frames`}</p>
+              <p class="st-parts">{s.recorded}</p>
+            </div>
+            <SlotVials demoOnly demos={s.demos} label={`${s.episodes} demonstrations`} />
+            <p class="st-foot">{s.how}{s.trained && <>{' Trained: '}<b>{s.trained}</b>.</>}{' '}<a href={visualizer(s.repo)}>Watch any episode</a></p>
+          </div>
         ))}
-      </ul>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>The 100 demonstrations</h2>
-      <p>
-        {`Recorded on one afternoon, 14 October. Each demonstration is one `}<Term k="move">move</Term>{`: ` +
-          `take the vial from one slot and put it in another slot or the bin. The set is `}<a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>sari-abdan/vial-sort-slots-100</a>{`, ` +
-          `and any episode can be `}<a href={visualizer('sari-abdan/vial-sort-slots-100')}>watched in the browser</a>{`.`}
-      </p>
-      <h3 class="sub">How it was recorded</h3>
-      <ul class="rules">
-          <li>Twenty runs of five demonstrations, each run in one sitting.</li>
-          <li>For a rack destination the vial always starts in the other rack.</li>
-          <li>Three vial colours, red, cyan and dark green. In 95 of the 100 scenes a second vial of the target’s colour stands on the source rack, so colour never identifies the vial to move; the 5 exceptions are the first run.</li>
-          <li>The bin was moved to a new spot every ten demonstrations, with small nudges in between, and the first frame of every demonstration is saved so each spot is on record.</li>
-          <li>The room got darker through the afternoon. The side cameras are almost black in demonstrations 75 to 99; the overhead camera stays readable.</li>
-          <li>The arm is homed before every demonstration, and at the start the operator leans over the robot, so the person is in the wrist and across-the-table views.</li>
-          <li>The wrist camera dropped off the bus three times (demonstrations 47, 53 and 60). Those three were recorded again.</li>
-      </ul>
-      <h3 class="sub">Every move that was recorded</h3>
-      <p>
-        {`Rows are the slot the vial started in, columns where it was put, and each number is how many demonstrations there are of that move. `}
-        <Term k="heldout">Held-out</Term>{` slots are hatched: they were never recorded, so a model can be tested on them. Every cross-rack move between the other slots, and every slot to the bin, ` +
-          `is there.`}
-      </p>
-      <CoverageMatrix demos={cov.demos} slots={cov.slots} heldSources={cov.heldout_sources} heldDestinations={cov.heldout_destinations} />
-      <p class="note after">
-        {`${Object.keys(cov.demos).length} different moves; 75 go from one rack to the other and 25 to the bin. No move stays inside a rack. ` +
-          `Slots 2 and 5 are never a source, and slots 2, 4 and 5 are never a destination (slot 4 is only ever a source).`}
-      </p>
-    </div>
-  </section>
-
-  <section class="section" id="ws220">
-    <div class="wrap">
-      <h2>The 220 demonstrations</h2>
-      <p>
-        {`The same five cameras. With the 100, every run of five had one destination and was recorded in one sitting, so the pictures gave the destination away ` +
-          `and the models learned to read it there. In the 150 new demonstrations one layout is recorded three times in a row with three ` +
-          `different destinations, so only the command can tell them apart. The set is `}<a href={`${HF}/datasets/${R220}`}>{R220}</a>{`, and any episode can be `}<a href={visualizer(R220)}>watched in the browser</a>{`.`}
-      </p>
-      <h3 class="sub">Every move that was recorded</h3>
-      <p>
-        {`Laid out like the matrix above, now with moves inside one rack: ${c2.same_rack} of the ${c2.episodes}. The held-out slots are the same, ` +
-          `and so is one gap: no demonstration goes from L1 to L6.`}
-      </p>
-      <CoverageMatrix demos={c2.demos} slots={c2.slots} heldSources={c2.heldout_sources} heldDestinations={c2.heldout_destinations} />
-      <p class="note after">
-        {`${c2.moves} different moves; ${c2.to_bin} go to the bin and ${c2.same_rack} stay inside one rack. Every source slot has ` +
-          `${Math.min(...Object.values(c2.per_source))} to ${Math.max(...Object.values(c2.per_source))} demonstrations.`}
-      </p>
-      <h3 class="sub">Where they come from</h3>
-      <div class="table-scroll">
-        <table class="data">
-          <thead><tr><th>Part</th><th>Recorded</th><th class="r">Episodes</th><th class="r">Frames</th><th>Also published alone</th></tr></thead>
-          <tbody>
-            <tr><td>The first 70 of the 100 (runs 15 to 20 were too dark and were dropped)</td><td>14 October</td><td class="r">{b2.ws100.episodes}</td><td class="r">{b2.ws100.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td></tr>
-            <tr><td>Three destinations per layout, first sitting</td><td>{date(b2.contrast.first ?? '')}</td><td class="r">{b2.contrast.episodes}</td><td class="r">{b2.contrast.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R51}`}>vial-sort-contrast-51</a></td></tr>
-            <tr><td>Three destinations per layout, second sitting, with the RealSense depth stream as well</td><td>{date(b2['contrast+depth'].first ?? '')}</td><td class="r">{b2['contrast+depth'].episodes}</td><td class="r">{b2['contrast+depth'].frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R99}`}>vial-sort-contrast-99-depth</a></td></tr>
-          </tbody>
-        </table>
       </div>
-      <p class="note after">The training set leaves the depth stream out: the November models see the five colour cameras only. The across-the-table camera sits slightly differently in the first 70 than in the later 150, and it was knocked again on 4 November; see <a href={url('docs/a16000-arm-test-9nov/')}>the note of 9 November</a>.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>Robot recordings</h2>
-      <p>
-        {`Every autonomous session on Hugging Face, one episode per `}<Term k="rollout">rollout</Term>{`, with every camera the model saw. ` +
-          `The `}<a href={url('results/')}>results</a>{` score every session, including the ones not uploaded.`}
+      <p class="note after">
+        Slots 2 and 5 are never a source, and slots 2, 4 and 5 are never a destination (slot 4 is only ever a source). The training set leaves
+        the depth stream out: the November models see the five colour cameras only.
       </p>
-      <div class="table-scroll">
+      </div>
+      </div>
+    </section>
+
+    <section data-p="moves" hidden>
+      <p class="note lead-in">
+        {`Rows are the slot the vial started in, columns where it was put, and each number is how many demonstrations there are of that move. `}
+        <Term k="heldout">Held-out</Term>{` slots are hatched: they were never recorded, so a model can be tested on them.`}
+      </p>
+      <div class="two-up">
+        <div>
+          <h2>{`The ${cov.episodes} demonstrations`}</h2>
+          <CoverageMatrix demos={cov.demos} slots={cov.slots} heldSources={cov.heldout_sources} heldDestinations={cov.heldout_destinations} />
+          <p class="note after">{`${Object.keys(cov.demos).length} different moves; 75 go from one rack to the other and 25 to the bin. No move stays inside a rack.`}</p>
+        </div>
+        <div>
+          <h2>{`The ${c2.episodes} demonstrations`}</h2>
+          <CoverageMatrix demos={c2.demos} slots={c2.slots} heldSources={c2.heldout_sources} heldDestinations={c2.heldout_destinations} />
+          <p class="note after">
+            {`${c2.moves} different moves; ${c2.to_bin} go to the bin and ${c2.same_rack} stay inside one rack. One gap: no demonstration goes from L1 to L6.`}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section data-p="how" hidden>
+      <div class="two-up">
+        <div>
+          <h2>{`The ${cov.episodes}, on one afternoon`}</h2>
+          <p>
+            {`Recorded on 14 October. Each demonstration is one `}<Term k="move">move</Term>{`: take the vial from one slot and put it in another slot or the bin.`}
+          </p>
+          <ul class="points two">
+            <li><b>Twenty runs of five</b><span>Each run in one sitting, with one destination per run.</span></li>
+            <li><b>Always from the other rack</b><span>For a rack destination the vial always starts in the other rack.</span></li>
+            <li><b>Colour never identifies the vial</b><span>Three vial colours, red, cyan and dark green. In 95 of the 100 scenes a second vial of the target’s colour stands on the source rack; the 5 exceptions are the first run.</span></li>
+            <li><b>The bin moves</b><span>To a new spot every ten demonstrations, with small nudges in between. The first frame of every demonstration is saved so each spot is on record.</span></li>
+            <li><b>The light fades</b><span>The room got darker through the afternoon. The side cameras are almost black in demonstrations 75 to 99; the overhead camera stays readable.</span></li>
+            <li><b>The operator is in view</b><span>The arm is homed before every demonstration, and at the start the operator leans over the robot, so the person is in the wrist and across-the-table views.</span></li>
+            <li class="quiet"><b>Three recorded again</b><span>The wrist camera dropped off the bus three times (demonstrations 47, 53 and 60). Those three were recorded again.</span></li>
+          </ul>
+        </div>
+        <div id="ws220">
+          <h2>{`The ${c2.episodes}, so only the command names the destination`}</h2>
+          <ul class="points two">
+            <li class="fail"><b>The 100: the picture gave the destination away</b><span>Every run of five had one destination and was recorded in one sitting, so the pictures gave the destination away and the models learned to read it there.</span></li>
+            <li class="pass"><b>The 150 new: only the command differs</b><span>One layout is recorded three times in a row with three different destinations, so only the command can tell them apart.</span></li>
+          </ul>
+          <div class="table-scroll">
+            <table class="data">
+              <thead><tr><th>Part</th><th>Recorded</th><th class="r">Episodes</th><th class="r">Frames</th><th>Also published alone</th></tr></thead>
+              <tbody>
+                <tr><td>The first 70 of the 100 (runs 15 to 20 were too dark and were dropped)</td><td>14 October</td><td class="r">{b2.ws100.episodes}</td><td class="r">{b2.ws100.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>vial-sort-slots-100</a></td></tr>
+                <tr><td>Three destinations per layout, first sitting</td><td>{date(b2.contrast.first ?? '')}</td><td class="r">{b2.contrast.episodes}</td><td class="r">{b2.contrast.frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R51}`}>vial-sort-contrast-51</a></td></tr>
+                <tr><td>Three destinations per layout, second sitting, with the RealSense depth stream as well</td><td>{date(b2['contrast+depth'].first ?? '')}</td><td class="r">{b2['contrast+depth'].episodes}</td><td class="r">{b2['contrast+depth'].frames.toLocaleString('en-GB')}</td><td><a href={`${HF}/datasets/${R99}`}>vial-sort-contrast-99-depth</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note after">The across-the-table camera sits slightly differently in the first 70 than in the later 150, and it was knocked again on 4 November; see <a href={url('docs/a16000-arm-test-9nov/')}>the note of 9 November</a>.</p>
+        </div>
+      </div>
+
+      <h2 class="both-head">In both sets</h2>
+      <div class="two-up">
+        <div>
+          <h3>Racks and slots</h3>
+          <div class="rack-fig"><RackGlyph asked="R3->L6" vialAt="L6" size="hero" vial="red" /></div>
+          <p class="note">The table as every page draws it, here with the move R3 → L6.</p>
+          <ul class="points two">
+            <li><b>Left and right are the arm's</b><span>{`The left rack is the rack to the left of the follower arm, which is the `}<strong>top</strong>{` rack in the overhead view, and the right rack is the bottom one.`}</span></li>
+            <li><b>The bin</b><span>Sits between the two racks.</span></li>
+            <li><b>Slot 1</b><span>Is the one nearest the arm.</span></li>
+            <li class="quiet"><b>In August it was different</b><span>The left rack was the one on the left of the side camera.</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>One demonstration, seen by all five cameras</h3>
+          {demo && (
+            <figure class="demo">
+              <video src={url(demo.src)} poster={url(demo.poster)} width={demo.w} height={demo.h} muted loop playsinline data-auto preload="metadata"
+                aria-label="One demonstration, seen by all five cameras at once"></video>
+              <figcaption class="note">{demo.caption} The large view is the overhead camera; the four small ones are, from the top left, across the table, near eye level, from the side and the wrist.</figcaption>
+            </figure>
+          )}
+          <p class="note">This one is from the first 100; the 220 were recorded with the same five cameras.</p>
+        </div>
+      </div>
+    </section>
+
+    <section data-p="commands" hidden>
+      <div class="two-up">
+        <div>
+          <h2>A command, part by part</h2>
+          <figure class="anatomy">
+            <p class="sentence">
+              {parts(w.example[0]).map((p) => (p.cls
+                ? <span class="part"><span class={`tag ${p.cls}`}>{p.text}</span><small>{PART[p.cls]}</small></span>
+                : <span class="part plain"><span>{p.text}</span><small>&nbsp;</small></span>))}
+            </p>
+            <figcaption class="note">One recorded command for R3 → L6. Each coloured part is drawn from its own pool of forms.</figcaption>
+          </figure>
+          <p class="sum" aria-label={`${rackToRack.toLocaleString('en-GB')} wordings of one rack-to-rack move`}>
+            <span class="f"><b class="num">{verbs}</b><small>verbs</small></span><i>×</i>
+            <span class="f"><b class="num">{objects}</b><small>objects</small></span><i>×</i>
+            <span class="f"><b class="num">{slotForms * rackForms}</b><small>{`source: ${slotForms} slot × ${rackForms} rack forms`}</small></span><i>×</i>
+            <span class="f"><b class="num">{slotForms * rackForms}</b><small>destination</small></span><i>×</i>
+            <span class="f"><b class="num">{templates}</b><small>sentence forms</small></span><i>=</i>
+            <span class="f total"><b class="num">{rackToRack.toLocaleString('en-GB')}</b><small>{`wordings of one move (${toBin.toLocaleString('en-GB')} to the bin)`}</small></span>
+          </p>
+          <ul class="facts-3">
+            <li><b>By position, never by colour</b><span>The source slot is named, so a command stays unambiguous when two vials share a colour. Choosing the vial is left to the person typing.</span></li>
+            <li><b>Written once, afterwards</b><span>A run was recorded with its destination only. One script then read the recording sheet and rewrote every command. No video was touched.</span></li>
+            <li><b>{`${w.distinct} wordings across ${w.moves} moves`}</b><span>{`Not random: the k-th demonstration of a move gets the k-th combination, so repeats are phrased differently, at most ${w.max_per_move} per move.`}</span></li>
+          </ul>
+        </div>
+        <div>
+          <h2>The wording pools</h2>
+          <div class="table-scroll">
+            <table class="data pools">
+              <thead><tr><th>Part</th><th class="r">Forms</th><th>Values</th></tr></thead>
+              <tbody>
+                {pool.map((p) => (
+                  <tr><th scope="row"><span class={`tag ${p.cls}`}>{p.name}</span></th><td class="r num">{p.n}</td><td class="vals">{p.values}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <h3>{`The ${w.example.length} recorded wordings of R3 → L6`}</h3>
+          <ul class="examples">
+            {w.example.map((e) => (
+              <li>“{parts(e).map((p) => (p.cls ? <span class={`tag ${p.cls}`}>{p.text}</span> : p.text))}”</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section data-p="recordings" hidden>
+      <p class="note lead-in">
+        {`${runs.length} autonomous sessions on Hugging Face, ${runs.reduce((s, t) => s + t.episodes, 0)} rollouts, one episode per `}<Term k="rollout">rollout</Term>{`, with every camera the model saw. ` +
+          `Filled chips are the cameras stored in that recording. The `}<a href={url('results/')}>results</a>{` score every session, including the ones not uploaded.`}
+      </p>
+      <div class="table-scroll rec-box">
         <table class="data recs">
           <thead><tr><th>Recording</th><th>Model</th><th>Uploaded</th><th class="r">Rollouts</th><th class="r">Minutes</th><th>Cameras recorded</th><th></th></tr></thead>
           <tbody>
@@ -271,27 +337,135 @@ const parts = (sentence: string): Part[] => {
           </tbody>
         </table>
       </div>
-      <p class="after note">Filled chips are the cameras stored in that recording. The August datasets, versions 1 to 5, are under <a href={url('previous/data/')}>previous work</a>.</p>
-    </div>
-  </section>
+      <p class="note after">The August datasets, versions 1 to 5, are under <a href={url('previous/data/')}>previous work</a>.</p>
+    </section>
+  </div>
 </Base>
 
+<script>
+  // The camera viewer on the first tab: the small picture that is clicked, or reached with the keyboard, is shown large
+  // with its name and what it sees. Without this script the first view stays large and the others stay small.
+  document.querySelectorAll<HTMLElement>('[data-viewer]').forEach((viewer) => {
+    const bigs = [...viewer.querySelectorAll<HTMLElement>('[data-cam]')];
+    const picks = [...viewer.querySelectorAll<HTMLElement>('[data-cam-pick]')];
+    const show = (key: string) => {
+      bigs.forEach((b) => (b.hidden = b.dataset.cam !== key));
+      picks.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.camPick === key)));
+    };
+    picks.forEach((p) => {
+      p.addEventListener('click', () => show(p.dataset.camPick!));
+      p.addEventListener('focus', () => show(p.dataset.camPick!));
+    });
+  });
+</script>
+
 <style>
-  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
-  .two h2 { margin-bottom: 0.9rem; }
-  .two p + p { margin-top: 0.9rem; }
-  .demo { margin: 2rem 0 0; display: grid; gap: 0.6rem; max-width: 60rem; }
+  .after { margin-top: 0.8rem; }
+  .lead-in { max-width: 60rem; margin-bottom: 0.8rem; }
+  .two-up { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem clamp(1.5rem, 3vw, 3rem); align-items: start; }
+  .two-up p + p { margin-top: 0.6rem; }
+
+  /* the two sets as rows of vials, in the same two columns, so they compare slot by slot (as the runs do on Results) */
+  .set-key { margin: 0 0 0.7rem; font-size: 0.8rem; gap: 0.25rem 0.9rem; color: var(--ink-2); }
+  .set-key .key-lead { color: var(--ink); font-weight: 620; }
+  .set-key .kv { display: flex; align-items: flex-end; overflow: hidden; box-sizing: border-box; width: 9px; height: 18px; border: 1.25px solid var(--steel); border-top: 0; border-radius: 0 0 5px 5px; background: var(--page); }
+  .set-key .kv i { display: block; width: 100%; height: 75%; border-radius: 0; background: var(--slot-demo); }
+  .set-key .kh { border: 1.5px dashed var(--ink); border-top: 0; }
+  .set-key .kh i { height: 0; }
+  .sets-table { container-type: inline-size; --vw: 21px; --vh: 44px; --vgap: 10px; --vbin: 32px; display: grid;
+                --from: calc(12 * var(--vw) + var(--vgap)); --into: calc(12 * var(--vw) + var(--vbin) + 2 * var(--vgap)); }
+  .st-row { display: grid; grid-template-columns: var(--from) var(--into); gap: 0.4rem 1.4rem; align-items: end; justify-content: start; padding: 0.8rem 0 0.7rem; border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
+  .st-head { border-top: 0; padding: 0 0 0.35rem; }
+  .st-who { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.9rem; }
+  .st-head .st-who { display: none; }
+  .st-who p, .st-foot, .st-cap p { margin: 0; max-width: none; }
+  .st-name { display: flex; align-items: center; gap: 0.4rem; font-weight: 620; }
+  .st-name i { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--slot-demo); flex: none; }
+  .st-big { display: flex; align-items: baseline; gap: 0.4rem; }
+  .st-big b { font-size: 1.5rem; font-weight: 680; font-stretch: 112%; line-height: 1; }
+  .st-big span, .st-parts { font-size: 0.8rem; color: var(--ink-2); }
+  .st-foot { grid-column: 1 / -1; font-size: 0.82rem; color: var(--ink-2); }
+  .st-foot b { color: var(--ink); font-weight: 620; }
+  .st-cap p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.5rem; font-size: 0.9rem; margin: 0 0 0.3rem; }
+  .st-cap p b { font-weight: 650; }
+  .st-cap p span { font-size: 0.75rem; color: var(--ink-2); }
+  .caps { display: flex; gap: var(--vgap); font-size: 0.7rem; color: var(--steel); line-height: 1; }
+  .caps .c6 { width: calc(6 * var(--vw)); }
+  .caps .cb { width: var(--vbin); text-align: center; }
+  @container (min-width: 60rem) {
+    .sets-table { --vw: 26px; --vh: 52px; --vgap: 14px; --vbin: 34px; }
+    .st-row { grid-template-columns: 15rem var(--from) var(--into); gap: 0.4rem 2rem; }
+    .st-who, .st-head .st-who { grid-column: auto; display: grid; gap: 0.25rem; align-content: end; }
+    .st-big b { font-size: 2rem; }
+    .st-foot { grid-column: 2 / -1; }
+  }
+  @container (max-width: 36rem) {
+    .st-row { grid-template-columns: minmax(0, 1fr); }
+    .st-head { display: none; }
+  }
+
+  /* the first tab in three blocks: what the model sees, what it is told, what it learned from */
+  .blk-h { display: flex; align-items: baseline; gap: 0.6rem; margin: 0 0 0.45rem; max-width: none; font-size: 0.8rem; font-weight: 680; letter-spacing: 0.05em; text-transform: uppercase; }
+  .blk-h span { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--ink-2); }
+  .told + .blk-h { margin-top: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); }
+  .told { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 0.8rem 2rem; align-items: start; }
+  /* the cameras as a side column: one view large, the five as small pictures under it to pick from */
+  .seen-split { display: grid; grid-template-columns: 22rem minmax(0, 1fr); gap: 1rem 1.6rem; align-items: start; }
+  .seen { position: sticky; top: 0.5rem; min-width: 0; }
+  .seen-main { min-width: 0; }
+  .viewer { display: grid; gap: 0.5rem; }
+  .big { margin: 0; display: grid; gap: 0.35rem; }
+  .big[hidden] { display: none; }
+  .big img { width: 100%; height: auto; border-radius: 6px; background: var(--raise); }
+  .big figcaption { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.45rem; min-height: 3.6rem; align-content: start; }
+  .big figcaption b { font-weight: 650; }
+  .big .what { flex-basis: 100%; font-size: 0.84rem; color: var(--ink-2); line-height: 1.4; }
+  .thumbs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.35rem; }
+  .thumbs button { font: inherit; display: grid; gap: 0.2rem; padding: 0; border: 0; background: none; color: var(--ink-2); cursor: pointer; text-align: left; }
+  .thumbs img { width: 100%; height: auto; border-radius: 4px; outline: 2px solid transparent; outline-offset: 1px; opacity: 0.7; }
+  .thumbs button:hover img { opacity: 1; }
+  .thumbs button[aria-pressed='true'] img { outline-color: var(--ink); opacity: 1; }
+  .thumbs button[aria-pressed='true'] { color: var(--ink); }
+  .thumbs span { font-size: 0.66rem; line-height: 1.15; }
+  .told .sentence { font-size: 1.15rem; }
+  .told-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; font-size: 0.84rem; }
+  .told-facts li { display: flex; flex-wrap: wrap; gap: 0 0.4rem; }
+  .told-facts b { font-weight: 650; }
+  .told-facts span { color: var(--ink-2); }
+  .told-facts a { font-weight: 560; }
+  /* the five camera views in one strip, above the demonstrations */
+  .cam-strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; max-width: 62rem; }
+  .cam-strip li { display: grid; gap: 0.25rem; align-content: start; }
+  .cam-strip img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .cam-strip li > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.4rem; font-size: 0.82rem; }
+  .cam-strip b { font-weight: 620; }
+  .cam-note { margin: 0.4rem 0 1rem; max-width: none; }
+  .demo { margin: 0.4rem 0 0.4rem; display: grid; gap: 0.5rem; max-width: 34rem; }
   .demo video { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
-  .cams { list-style: none; margin: 1.4rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem clamp(1rem, 2.5vw, 2rem); }
-  .cams li { display: grid; gap: 0.3rem; align-content: start; }
-  .cams img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
-  .key { font-weight: 400; color: var(--steel); font-size: var(--step--1); margin-left: 0.3rem; }
-  .rules { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.55rem; }
-  .sub { margin-top: 1.8rem; margin-bottom: 0.5rem; font-size: var(--step-1); }
-  .after { margin-top: 1.2rem; }
+  .key { font-weight: 400; color: var(--steel); font-size: 0.75rem; }
+  /* the Commands tab: one command with each part named under it, the sum of the pools, three facts */
+  .anatomy { margin: 0.5rem 0 0; padding: 1rem 1.1rem 0.8rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
+  .sentence { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.7rem 0.4rem; margin: 0; max-width: none; font-size: 1.25rem; font-weight: 560; line-height: 1.2; }
+  .part { display: grid; justify-items: start; gap: 0.3rem; }
+  .part small { font-size: 0.68rem; font-weight: 400; color: var(--ink-2); white-space: nowrap; }
+  .anatomy figcaption { margin-top: 0.7rem; }
+  .sum { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0.5rem 0.6rem; margin: 1rem 0 0; max-width: none; }
+  .sum .f { display: grid; gap: 0.1rem; padding: 0.3rem 0.6rem; border: 1px solid var(--rule); border-radius: 6px; max-width: 9.5rem; }
+  .sum .f b { font-size: 1.2rem; font-weight: 680; line-height: 1.1; }
+  .sum .f small { font-size: 0.68rem; color: var(--ink-2); line-height: 1.25; }
+  .sum .total { border-color: var(--ink); background: var(--raise); }
+  .sum i { font-style: normal; align-self: center; color: var(--ink-2); }
+  .facts-3 { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.7rem; }
+  .facts-3 li { display: grid; gap: 0.25rem; align-content: start; padding-top: 0.5rem; border-top: 2px solid var(--ink); }
+  .facts-3 b { font-weight: 650; line-height: 1.25; }
+  .facts-3 span { font-size: 0.82rem; color: var(--ink-2); line-height: 1.4; }
+  .both-head { margin: 1.6rem 0 0.2rem; padding-top: 0.9rem; border-top: 1px solid var(--rule); }
+  .two-up h3:first-child { margin-top: 0.3rem; }
+  .points.two { grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+  .rack-fig { max-width: 30rem; margin: 0.4rem 0 0.2rem; padding: 0.6rem 0.8rem 0.2rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
   .pools th[scope='row'] { white-space: nowrap; }
-  .vals { color: var(--ink-2); font-size: var(--step--1); }
-  .examples { list-style: none; margin: 0.8rem 0 0; padding: 0; display: grid; gap: 0.7rem; font-size: var(--step-0); }
+  .vals { color: var(--ink-2); font-size: 0.82rem; }
+  .examples { list-style: none; margin: 0.4rem 0 0; padding: 0; display: grid; gap: 0.45rem; }
   .tag { border-bottom: 3px solid var(--tag, var(--rack)); padding-bottom: 1px; }
   .tag.verb { --tag: var(--m-pi05); }
   .tag.obj { --tag: var(--m-groot); }
@@ -299,6 +473,9 @@ const parts = (sentence: string): Part[] => {
   .tag.rack { --tag: var(--m-act); }
   .tag.bin { --tag: var(--m-flux); }
   .tag.tmpl { --tag: var(--d-3); }
-  @media (max-width: 60rem) { .cams { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 52rem) { .two { grid-template-columns: minmax(0, 1fr); } }
+  /* the recordings: all of them, in a box as tall as the screen allows, with the header staying put */
+  .rec-box { max-height: calc(100vh - 15rem); overflow-y: auto; border-block: 1px solid var(--rule); }
+  .rec-box thead th { position: sticky; top: 0; background: var(--page); z-index: 1; }
+  @media (max-width: 56rem) { .seen-split { grid-template-columns: minmax(0, 1fr); } .seen { position: static; max-width: 30rem; } }
+  @media (max-width: 56rem) { .two-up, .facts-3 { grid-template-columns: minmax(0, 1fr); } .cam-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 </style>

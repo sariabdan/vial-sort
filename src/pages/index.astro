@@ -1,18 +1,55 @@
 ---
+// The home page tells the whole project on one page: a summary card, three numbers, then eight numbered sections
+// with one picture, chart or video each. Everything detailed lives on the reference pages (Data, Training, Models,
+// Testing, Results, Lab notes), which the last section lists. Every number here is read from the same data files as
+// those pages; none is typed in.
 import Base from '../layouts/Base.astro';
+import Chapter from '../components/Chapter.astro';
 import Hero from '../components/Hero.astro';
-import OctoberTiles from '../components/OctoberTiles.astro';
+import Clip from '../components/Clip.astro';
 import october from '../data/october.json';
+import ws220 from '../data/ws220.json';
 import results from '../data/results.json';
 import datasets from '../data/datasets.json';
-import { url, HF, CODE, visualizer } from '../lib/site';
+import experiments from '../data/experiments.json';
+import media from '../data/media.json';
+import { url, HF, CODE, CAMERA_NAMES } from '../lib/site';
+import { scoreRun, pctOf, PASS_MARK } from '../lib/score';
+import { PROBE } from '../lib/probe';
 
 const cov = october.coverage;
-const hub = new Set(datasets.models.map((m) => m.name));
-const checkpoints = ['vial-sort-pi05-ws100-canon-12000', 'vial-sort-pi05-ws100-allcams-12000', 'vial-sort-flux3-ws100-30000'].filter((n) => hub.has(n));
-const newest = results.tiles.pi05;
-const USER_HF = 'sari-abdan';
+const rows = results.rows;
+const stages = results.stages;
+const t = results.tiles;
+const p = t.pi05;
+const newest = rows.find((r) => r.key === p.key)!;
+const score = scoreRun(newest.by_destination);
+const anyPassed = rows.some((r) => scoreRun(r.by_destination).verdict === 'passed');
+// a model's row with the most rollouts
+const biggest = (model: string) => rows.filter((r) => r.model === model).sort((a, b) => b.rollouts - a.rollouts)[0];
+const nameOf = (run: string) => experiments.models.find((m) => m.run === run);
+// the three π0.5 runs the story compares: trained on the 100, then the two retrains on the 220
+const first = biggest(nameOf('pi05-canon')!.id), fromFirst = biggest(nameOf('pi05-b16k')!.id);
+const compared = [
+  { r: first, how: 'trained on the 100 demonstrations' },
+  { r: fromFirst, how: `continued from ${first.name}, on the 220` },
+  { r: newest, how: 'trained from the base model on the 220' },
+].filter((x) => x.r);
+const clips = ['released', 'carried', 'no_grasp']
+  .map((s) => media.featured.find((f) => f.row === newest.key && f.stage === s)).filter((f) => !!f);
 const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
+const sessions = datasets.datasets.filter((d) => d.kind === 'rollout').length;
+const maxRun = Math.max(...rows.map((r) => r.rollouts));
+const refs = [
+  { href: 'datasets/', name: 'Data', text: `The five cameras, the ${cov.episodes} and the ${ws220.episodes} demonstrations move by move, how the commands were worded, and all ${sessions} robot recordings.` },
+  { href: 'training/', name: 'Training', text: 'The offline tests of what a model reads from its command, and every loss curve.' },
+  { href: 'models/', name: 'Models', text: `All ${experiments.models.length} models: what each started from, what it saw, and its settings.` },
+  { href: 'method/', name: 'Testing', text: 'How a rollout is run and scored, how the score of a run is built, and what the numbers cannot say.' },
+  { href: 'results/', name: 'Results', text: `Every model and checkpoint on the robot: ${results.total} scored rollouts, slot by slot and move by move, with videos.` },
+  { href: 'docs/', name: 'Lab notes', text: 'The dated notes of each arm test and retrain, as written at the time.' },
+  { href: 'previous/', name: 'Previous work', text: 'The August system on the Thor rig: its evaluation, datasets and report.' },
+  { href: 'glossary/', name: 'Glossary', text: 'The words the site uses in a defined sense.' },
+];
 ---
 <Base
   page="home"
@@ -21,101 +58,219 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 >
   <Hero />
 
-  <section class="section">
-    <div class="wrap">
-      <h2>What the rollouts show</h2>
-      <p>{`The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}</p>
-      <OctoberTiles />
-      <p class="after">
-        <a href={url('results/')}>{`Every model and checkpoint, ${results.total} rollouts, with videos`}</a>{` · `}<a href={url('experiments/#caveats')}>what the numbers cannot say</a>
-      </p>
+  <section class="top">
+    <div class="story">
+      <div class="tldr">
+        <p class="tldr-tag">In short</p>
+        <p class="tldr-main">
+          {`The newest model, ${p.name}, picks up the right vial in ${p.grasped_right} of ${p.rollouts} moves and `}
+          <strong>{`puts it in the asked slot in ${p.released}`}</strong>.
+        </p>
+        <div class="tldr-cols">
+          <div>
+            <p class="eyebrow">What works</p>
+            <p>{`To the slots the demonstrations used as a destination, the vial ends in the asked slot `}<strong>{pctOf(score.trained)}</strong>{` of the time.`}</p>
+          </div>
+          <div>
+            <p class="eyebrow">What is open</p>
+            <p>{`To the slots no demonstration used as a destination it is `}<strong>{pctOf(score.held)}</strong>{anyPassed ? '.' : `, and no run has reached the pass mark of ${PASS_MARK * 100}% yet.`}</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="stats">
+        <li><span class="big">{p.grasped_right}<span class="of">{` of ${p.rollouts}`}</span></span><span>moves in which it picked up the right vial</span></li>
+        <li><span class="big">{p.released}<span class="of">{` of ${p.rollouts}`}</span></span><span>moves that ended with the vial in the asked slot</span></li>
+        <li><span class="big">{pctOf(score.total)}</span><span>{`its score, the mean over the 12 rack slots; a run passes at ${PASS_MARK * 100}%`}</span></li>
+      </ul>
+      <p class="note stats-note">{`${p.label}, ${p.scored_by === 'notes' ? "scored from the operator's notes at the robot" : 'scored from the arm'}. `}<a href={url('method/#score')}>How the score is built</a></p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap setup">
+  <Chapter no="01" label="Setup and data" id="setup" title="A 3D-printed arm, five cameras, 220 demonstrations">
+    <div class="setup">
       <div>
-        <h2>The setup</h2>
         <p>
-          The arm is an SO-101, a 3D-printed six-joint design, built as a pair: a person moves the leader arm and
-          the follower copies it. That is how the demonstrations were recorded.
+          The arm is an SO-101, a 3D-printed six-joint design, built as a leader and a follower. Every model on
+          this site came out of the same three steps.
         </p>
-        <p>
-          {`Five cameras record at ${cov.fps} frames a second: one overhead, two across the table at different heights, one ` +
-            `from the side and one on the wrist. The vials are translucent plastic in three colours, and the policies see ` +
-            `only the colour images.`}
-        </p>
-        <p>
-          {`Three kinds of model learn from these demonstrations: π0.5, FLUX 3 Action and Isaac 0.5. Each run has a name on ` +
-            `this site, and the `}<a href={url('experiments/')}>Experiments page</a>{` says what each is and how it was set up.`}
-        </p>
-        <p><a href={url('datasets/')}>How the data was recorded and worded</a></p>
+        <ol class="steps">
+          <li><strong>Demonstrate</strong><span>A person moves the leader arm and the follower copies it, while five cameras record.</span></li>
+          <li><strong>Train</strong><span>Three kinds of model learn from the demonstrations: π0.5, FLUX 3 Action and Isaac 0.5.</span></li>
+          <li><strong>Run</strong><span>The model reads the cameras and the joint angles and drives the six joints. Nobody steers it.</span></li>
+        </ol>
+        <p class="cams-intro">{`Every demonstration is one move, seen by five cameras at ${cov.fps} frames a second.`}</p>
+        <ul class="cams">
+          {cams.map((c) => (
+            <li><img src={url(`img/cams/${c}.webp`)} width="640" height="480" loading="lazy" alt={`The ${CAMERA_NAMES[c]} camera's view of the table`} /><span class="note">{CAMERA_NAMES[c]}</span></li>
+          ))}
+        </ul>
+        <ul class="facts">
+          <li><strong>{ws220.episodes}</strong> demonstrations</li>
+          <li><strong>{ws220.moves}</strong> different moves</li>
+          <li><strong>{ws220.minutes}</strong> minutes</li>
+          <li><strong>{ws220.same_rack}</strong> inside one rack</li>
+        </ul>
+        <p class="more"><a href={url('datasets/')}>How the data was recorded and worded →</a>{' · '}<a href={url('models/')}>What each model is →</a></p>
       </div>
       <figure class="rig">
         <img src={url('img/setup_current.webp')} width="1362" height="1599" loading="lazy"
           alt="The current rig, labelled: the right, top-down, left-top and left-bottom cameras on stands and an arm above the table, the wrist camera on the follower arm, two racks with coloured vials, the bin, the follower arm on the left and the leader arm in the foreground." />
-        <figcaption class="note">The current rig, with every part labelled: the five cameras, the two racks, the bin, the follower arm that does the work and the leader arm a person moves. The five camera views are on the <a href={url('datasets/')}>Data page</a>.</figcaption>
+        <figcaption class="note">The current rig, with every part labelled: the five cameras, the two racks, the bin, the follower arm that does the work and the leader arm a person moves.</figcaption>
       </figure>
     </div>
-  </section>
+  </Chapter>
 
-  <section class="section">
-    <div class="wrap">
-      <h2>Data and code</h2>
-      <ul class="links">
-        <li>
-          <a href={`${HF}/datasets/sari-abdan/vial-sort-slots-100`}>The 100 demonstrations</a>
-          <span class="note">LeRobot format on Hugging Face. <a href={visualizer('sari-abdan/vial-sort-slots-100')}>Watch any episode in the browser</a>.</span>
-        </li>
-        <li>
-          <a href={url('datasets/')}>The robot recordings</a>
-          <span class="note">{`${datasets.datasets.filter((d) => d.kind === 'rollout').length} sessions, each with every camera its model saw, on Hugging Face.`}</span>
-        </li>
-        {checkpoints.length > 0 && (
-          <li>
-            <a href={`${HF}/${USER_HF}/${checkpoints[0]}`}>The October checkpoints</a>
-            <span class="note">The newest π0.5 run, the all-camera π0.5 run and the FLUX 3 Action adapter, on Hugging Face. None of them completes the task reliably.</span>
-          </li>
-        )}
-        <li>
-          <a href={CODE}>The code so far</a>
-          <span class="note">{`The project's LeRobot fork on GitHub. The October rollout and assessment scripts are not published yet${checkpoints.length ? '' : ', nor are the October checkpoints'}.`}</span>
-        </li>
+  <Chapter no="02" label="The problem" id="problem" title="The first models read the destination off the picture">
+    <p>{`The first ${cov.episodes} demonstrations were recorded one destination per sitting, so the picture gave the destination away. In the newer ones one layout is recorded three times, to three different destinations.`}</p>
+    <p>{`${first.name}, trained on the ${cov.episodes}, reached for the vial the command named. Where to put it, it took from the camera images: each sitting had one destination, and the picture says which sitting it is.`}</p>
+    <figure class="chart-card">
+      <figcaption>{`A probe on training frames of ${first.name}: how often the arm does what the row says`}</figcaption>
+      <div class="hbars">
+        {PROBE.filter((x) => x.short).map((x) => (
+          <div class="hbar">
+            <span class="hbar-label">{x.short}</span>
+            <span class="hbar-track"><i style={`width: ${x.at12k}%`}></i></span>
+            <span class="hbar-n num">{x.at12k}%</span>
+          </div>
+        ))}
+      </div>
+    </figure>
+    <p>{`In the offline test, ${t.gate.dest_passed} of its ${t.gate.checkpoints} checkpoints read the destination slot from the command.`}</p>
+    <p class="more"><a href={url('training/')}>The offline tests in full →</a></p>
+  </Chapter>
+
+  <Chapter no="03" label="Results" id="results" title="With the new data, the destination follows the command">
+    <p>{`${newest.name}, trained from the base model on the ${ws220.episodes}, put the vial in the asked slot in ${newest.stages.released} of ${newest.rollouts} moves.`}</p>
+    <figure class="chart-card">
+      <figcaption>How far each model's rollouts got</figcaption>
+      <ul class="legend">
+        {stages.map((s, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{s.label}</li>)}
       </ul>
-    </div>
-  </section>
+      <div class="sbars">
+        {compared.map(({ r, how }) => (
+          <div class="sbar">
+            <span class="sbar-label"><strong>{r.name}</strong><span class="note">{how}</span></span>
+            <span class="sbar-track">
+              {stages.map((s, i) => {
+                const n = r.stages[s.key as keyof typeof r.stages];
+                return n > 0 && <i style={`flex: ${n}; background: var(--st-${i + 1}); color: var(--stt-${i + 1})`}>{n}</i>;
+              })}
+            </span>
+            <span class="sbar-n num">{`n = ${r.rollouts}`}</span>
+          </div>
+        ))}
+      </div>
+    </figure>
+    <h3 class="sub">What is not solved</h3>
+    <ul class="open">
+      <li><strong>Unseen destinations.</strong>{` ${pctOf(score.held)} on the slots no demonstration used as a destination, against ${pctOf(score.trained)} on the others.`}</li>
+      <li><strong>The pass mark.</strong>{anyPassed ? ` A run passes at ${PASS_MARK * 100}% with at least 10 rollouts at every slot.` : ` No run has reached ${PASS_MARK * 100}% with at least 10 rollouts at every slot.`}</li>
+      <li><strong>Small numbers.</strong>{` The biggest run has ${maxRun} rollouts and many have a handful, so one rollout moves a run a long way.`}</li>
+    </ul>
+    <p class="note caveat">These are test runs made during development, not a planned evaluation. <a href={url('method/#caveats')}>What the numbers cannot say</a></p>
+    <p class="more"><a href={url('results/')}>{`Every model, score and move: ${results.total} rollouts →`}</a>{' · '}<a href={url('docs/')}>The dated notes of each arm test →</a></p>
+  </Chapter>
 
-  <section class="section earlier">
-    <div class="wrap">
-      <h2>Before this</h2>
-      <p>
-        The first complete system, in August, was π0.5 with a frozen backbone, trained on 150 demonstrations and
-        scored by a person over 79 rollouts. Its evaluation, datasets and report are kept.
-      </p>
-      <p class="go"><a class="quiet-btn big" href={url('previous/')}>See the previous work</a></p>
+  <Chapter no="04" label="Clips" id="clips" title="Rollouts on video">
+    <p>{`One rollout of ${newest.name} for each outcome. They loop; click one to pause it.`}</p>
+    <div class="clips">
+      {clips.map((f) => (
+        <Clip src={f!.src} poster={f!.poster} w={f!.w} h={f!.h} caption={f!.caption} move={f!.move}
+          vialAt={f!.at ?? undefined} missAt={f!.miss ?? undefined} vial={(f!.vial ?? 'neutral') as 'red'} outcome={f!.stage} kind={f!.kind} />
+      ))}
     </div>
-  </section>
+    <p class="more"><a href={`${url('results/')}#h-watch`}>Rollouts of every model →</a></p>
+  </Chapter>
+
+  <Chapter no="05" label="The pages" id="pages" title="Everything in detail">
+    <ul class="refs">
+      {refs.map((r) => <li><a href={url(r.href)}>{r.name}</a><span class="note">{r.text}</span></li>)}
+    </ul>
+    <p class="more ext"><a href={`${HF}/sari-abdan`}>Data and models on Hugging Face</a>{' · '}<a href={CODE}>Code on GitHub</a></p>
+  </Chapter>
 </Base>
 
 <style>
-  .after { margin-top: 1.6rem; }
-  .setup { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
-  .setup h2 { margin-bottom: 0.9rem; }
-  .rig { margin: 0; }
-  .rig img { width: 100%; max-width: 34rem; height: auto; border-radius: 4px; }
-  .rig figcaption { margin-top: 0.6rem; max-width: 34rem; }
-  .five { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
-  .five li { display: block; }
-  .five li.wide { grid-column: 1 / -1; }
-  .five img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
-  .five .wide img { aspect-ratio: 16 / 9; object-fit: cover; }
-  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.1rem; }
-  .links li { display: grid; gap: 0.15rem; }
-  .links li > a { font-size: var(--step-1); font-stretch: 112%; font-weight: 560; width: fit-content; }
-  .go { margin-top: 1.2rem; }
-  .big { display: inline-block; text-decoration: none; font-size: var(--step-1); padding: 0.45rem 1.4rem; background: var(--raise); border-color: var(--steel); }
-  code { font-family: inherit; font-weight: 560; }
+  .top { padding-block: 0.5rem clamp(1.5rem, 4vw, 2.5rem); }
+  .setup { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+  .setup p { max-width: 60ch; }
+  .cams-intro { margin-top: 1.8rem; }
+  .sub { font-size: var(--step-1); margin: 2rem 0 0.8rem; }
+  .caveat { margin-top: 1.2rem; }
+
+  .tldr { position: relative; max-width: 62rem; padding: clamp(1.6rem, 4vw, 2.4rem) clamp(1.2rem, 4vw, 2.4rem) clamp(1.4rem, 3vw, 2rem);
+          border: 1.5px solid var(--ink); border-radius: 8px; background: var(--raise); box-shadow: 0.45rem 0.45rem 0 var(--accent); }
+  .tldr-tag { position: absolute; top: -0.95rem; left: 1.4rem; margin: 0; padding: 0.1rem 0.7rem; font-size: var(--step--1); font-weight: 680; font-stretch: 112%;
+              letter-spacing: 0.04em; text-transform: uppercase; background: var(--accent); color: var(--page); border: 1.5px solid var(--ink); border-radius: 5px; }
+  .tldr-main { font-size: clamp(1.45rem, 3vw, var(--step-3)); line-height: 1.22; font-weight: 620; font-stretch: 108%; max-width: 30ch; }
+  .tldr-main strong, .tldr-cols strong { color: var(--accent); font-weight: inherit; }
+  .tldr-cols strong { font-weight: 680; }
+  .tldr-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(1.5rem, 4vw, 3rem); margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); }
+  .tldr-cols > div + div { border-left: 1px solid var(--rule); padding-left: clamp(1.5rem, 4vw, 3rem); }
+  .eyebrow { font-size: 0.95rem; font-weight: 680; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+
+  .stats { max-width: 62rem; list-style: none; margin: clamp(2.4rem, 5vw, 3.4rem) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
+  .stats li { display: grid; align-content: start; gap: 0.4rem; padding: 1.1rem clamp(1rem, 3vw, 2rem) 0 0; color: var(--ink-2); line-height: 1.4; }
+  .stats li + li { border-left: 1px solid var(--rule); padding-left: clamp(1rem, 3vw, 2rem); }
+  .big { font-size: var(--step-5); font-weight: 680; font-stretch: 112%; line-height: 1; color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .of { font-size: var(--step-1); font-weight: 560; color: var(--ink); }
+  .stats-note { margin-top: 1rem; }
+
+  .more { margin-top: 1.4rem; font-weight: 560; }
+  .steps { list-style: none; counter-reset: step; margin: 1.6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .steps li { counter-increment: step; display: grid; align-content: start; gap: 0.3rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
+  .steps li::before { content: counter(step); display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--ink); color: var(--page); font-weight: 680; font-size: var(--step--1); margin-bottom: 0.3rem; }
+  .steps strong { font-size: var(--step-1); font-stretch: 112%; }
+  .steps span { color: var(--ink-2); font-size: var(--step--1); line-height: 1.45; }
+  .rig { margin: 0; max-width: 34rem; }
+  .rig img { width: 100%; height: auto; border-radius: 6px; }
+  .rig figcaption { margin-top: 0.6rem; }
+
+  .cams { list-style: none; margin: 0.8rem 0 1.2rem; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; }
+  .cams li { display: grid; gap: 0.25rem; }
+  .cams img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
+  .cams .note { font-size: 0.95rem; }
+  .facts { list-style: none; margin: 1.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .facts li { padding: 0.35rem 0.9rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--raise); color: var(--ink-2); font-size: var(--step--1); }
+  .facts strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  .chart-card { margin: 1.6rem 0; padding: 1.2rem clamp(1rem, 3vw, 1.6rem) 1.4rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); max-width: 52rem; }
+  .chart-card figcaption { font-weight: 620; font-stretch: 108%; margin-bottom: 0.9rem; }
+  .hbars { display: grid; gap: 0.9rem; }
+  .hbar { display: grid; grid-template-columns: minmax(0, 1fr) 3.6rem; gap: 0.25rem 0.8rem; align-items: center; }
+  .hbar-label { grid-column: 1 / -1; font-size: var(--step--1); color: var(--ink-2); }
+  .hbar-track { height: 1.5rem; background: var(--grid); border-radius: 4px; overflow: hidden; }
+  .hbar-track i { display: block; height: 100%; background: var(--accent); border-radius: 4px 0 0 4px; }
+  .hbar-n { font-weight: 680; text-align: right; }
+  .sbars { display: grid; gap: 1rem; }
+  .sbar { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 4.2rem; gap: 0.3rem 0.9rem; align-items: center; }
+  .sbar-label { display: grid; line-height: 1.3; }
+  .sbar-label .note { font-size: 0.95rem; }
+  .sbar-track { display: flex; gap: 2px; height: 2.4rem; }
+  .sbar-track i { display: grid; place-items: center; min-width: 1.4rem; font-style: normal; font-weight: 680; font-variant-numeric: tabular-nums; }
+  .sbar-track i:first-child { border-radius: 4px 0 0 4px; }
+  .sbar-track i:last-child { border-radius: 0 4px 4px 0; }
+  .sbar-track i:only-child { border-radius: 4px; }
+  .sbar-n { color: var(--ink-2); font-size: var(--step--1); text-align: right; white-space: nowrap; }
+
+  .clips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem clamp(1rem, 2.5vw, 1.8rem); margin-top: 1.4rem; }
+  .open { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; max-width: 60ch; }
+  .open li { padding-left: 1rem; border-left: 3px solid var(--accent); color: var(--ink-2); }
+  .open strong { color: var(--ink); }
+  .refs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 0.9rem; }
+  .refs li { display: grid; gap: 0.2rem; align-content: start; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
+  .refs a { font-size: var(--step-1); font-stretch: 112%; font-weight: 620; width: fit-content; }
+  .ext { font-weight: 400; }
+
   @media (max-width: 52rem) {
-    .setup { grid-template-columns: minmax(0, 1fr); }
+    .tldr-cols, .steps, .refs, .clips, .setup { grid-template-columns: minmax(0, 1fr); }
+    .tldr-cols > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); margin-top: 1rem; padding-top: 1rem; }
+    .stats { grid-template-columns: minmax(0, 1fr); }
+    .stats li + li { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); margin-top: 1rem; }
+    .big { font-size: var(--step-4); }
+    .cams { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .sbar { grid-template-columns: minmax(0, 1fr) 4.2rem; }
+    .sbar-label { grid-column: 1 / -1; }
   }
 </style>

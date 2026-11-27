@@ -1,21 +1,44 @@
 ---
 import Base from '../layouts/Base.astro';
-import SlotMaps from '../components/SlotMaps.astro';
-import ScoreTable from '../components/ScoreTable.astro';
-import StageLegend from '../components/StageLegend.astro';
+import SlotVials from '../components/SlotVials.astro';
 import Clip from '../components/Clip.astro';
 import MoveTable from '../components/MoveTable.astro';
 import results from '../data/results.json';
 import registry from '../data/registry.json';
 import experiments from '../data/experiments.json';
 import media from '../data/media.json';
-import { moveLabel, url } from '../lib/site';
-import { slotDemos, slotGot, untrainedSlots, byBounds, type SlotMap } from '../lib/rackmaps';
-import { pctOf, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
+import { moveLabel, url, demoSet, sentences } from '../lib/site';
+import { byBounds } from '../lib/rackmaps';
+import { pctOf, scoreRun, weakSlots, verdictText, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 // Results shows results only. What a word means, how a rollout or a run is scored, and what the numbers cannot say are
-// explained once, on Experiments, and linked from here.
+// explained once, on Testing (method.astro), and linked from here.
+// The page is one screen. On the left, every run in a short list that is also the picker: one line per model (its
+// newest run), its other checkpoints folded under it. On the right, the ticked runs as rows, in the order they were
+// ticked, one tab at a time: score, slots and video; what happened; every move. In the first tab every row has the
+// same two columns of vials, so the slots line up down the page and any number of runs can be compared.
+// src/charts/october.ts shows, orders and letters the rows and switches the tabs; every run's row is in the page.
 const rows = results.rows;
+// newest first, then the bigger run
+const board = [...rows].sort((a, b) => (b.days.at(-1) ?? '').localeCompare(a.days.at(-1) ?? '') || b.rollouts - a.rollouts);
+// one group per model, newest model first; inside a group its newest run leads and the rest fold under it
+const groups = [...new Set(board.map((r) => r.model))].map((id) => ({
+  id, rows: board.filter((r) => r.model === id),  // board order: the newest run of the model leads, the bigger one on a tie
+}));
+// "16k · sync" → "16k": the list has room for the checkpoint; the mode is named only when it is not the usual one
+const ckOf = (short: string) => short.replace(' · sync', '').replace(' · ', ' ');
+const maxN = Math.max(...rows.map((r) => r.rollouts));  // the list's bars are as long as the run has rollouts
+const dayOf = (d?: string) => (d && /^\d{8}$/.test(d)
+  ? new Date(`${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }) : '–');
+// sets worth comparing, offered as buttons: the newest run of each kind of model, and π0.5 from the first data set to the second
+const biggestRun = (run: string) => {
+  const id = registry.models.find((m) => m.run === run)?.id;
+  return rows.filter((r) => r.model === id).sort((a, b) => b.rollouts - a.rollouts)[0]?.key;
+};
+const presets = [
+  { label: 'Newest of each kind', keys: results.defaults },
+  { label: 'π0.5: 100 → 220 demonstrations', keys: ['pi05-canon', 'pi05-b16k', 'pi05-a16k'].map(biggestRun).filter((k): k is string => !!k) },
+].filter((p) => p.keys.length > 1);
 const models = registry.models.filter((m) => rows.some((r) => r.model === m.id));
 const stages = results.stages;
 const demoSets = results.demo_sets as Record<string, { episodes: number; per_source: Record<string, number>; per_destination: Record<string, number> }>;
@@ -24,21 +47,6 @@ const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as 
 const untrMoves = (m: Record<string, number>) => {
   const k = Object.keys(m);
   return k.length <= 8 ? k.map(moveLabel).join(', ') : `${k.length} different moves, each listed under Move by move`;
-};
-const slotRate = (by: Record<string, { rollouts: number; grasped_right: number; released: number }>, pick: 'grasped_right' | 'released') =>
-  Object.fromEntries(Object.entries(by).map(([k, v]) => [k, { n: v.rollouts, ok: v[pick] }]));
-// per row, in reading order for one column: demonstrations above rollouts, source first. Wide pages put the
-// source maps on the left and the destination maps on the right (SlotMaps.astro).
-const mapsOf = (r: (typeof rows)[number]): SlotMap[] => {
-  const d = r.train_set ? demoSets[r.train_set] : null;
-  return [
-    ...(d ? [slotDemos(d.per_source, 'source', r.train_set!)] : []),
-    slotGot(slotRate(r.by_source, 'grasped_right'), 'source', 'Picked up the right vial, by source slot', 'picked up the right vial',
-      d ? untrainedSlots(d.per_source, 'source') : undefined),
-    ...(d ? [slotDemos(d.per_destination, 'destination', r.train_set!)] : []),
-    slotGot(slotRate(r.by_destination, 'released'), 'destination', 'In the asked slot, by destination', 'ended in the asked slot',
-      d ? untrainedSlots(d.per_destination, 'destination') : undefined),
-  ];
 };
 const clips = media.featured as (typeof media.featured)[number][];
 const total = results.total;
@@ -73,222 +81,255 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
 <Base
   page="results"
   title="Results"
-  description="Every model on the robot: the score of each run, how far its rollouts got, where its vials ended, the rollouts themselves and every move it was asked."
+  description="Every model on the robot on one screen: all runs in a list, and up to four of them side by side with their score, where their vials ended, their rollouts on video and every move they were asked."
 >
-  <section class="section head">
-    <div class="wrap">
+  <div class="wrap dash" data-no-onpage>
+    <header class="dash-head">
       <h1>Results</h1>
-      <p class="lead">
-        {`Every model on the robot. Tick models and checkpoints on the left; every table, map and video below follows. A row is ` +
-          `one model at one checkpoint in one mode. These are test runs made during development, not a planned evaluation: `}
-        <a href={url('experiments/#caveats')}>what the numbers cannot say</a>.
+      <p class="note">
+        {`${rows.length} runs, ${total} scored rollouts. Tick the runs to compare. Development test runs: `}
+        <a href={url('method/#caveats')}>what the numbers cannot say</a>{' · '}<a href={url('method/#score')}>how the score is built</a>
       </p>
-    </div>
-  </section>
+    </header>
 
-  <div class="wrap work">
-    <aside class="rail" aria-label="Choose what to compare">
-      <details open class="rail-box">
-        <summary><h2>Compare</h2><span class="count" id="rail-count" aria-live="polite"></span></summary>
-        <div class="rail-actions">
-          <button type="button" class="quiet-btn" id="pick-newest">Newest</button>
-          <button type="button" class="quiet-btn" id="pick-all">All</button>
-          <button type="button" class="quiet-btn" id="pick-none">None</button>
-        </div>
-        <div class="rail-list">
-          {models.map((m) => (
-            <div class="rail-model" role="group" aria-label={m.name}>
-              <label class="model-box">
-                <input type="checkbox" data-model-box={m.id} />
-                <i style={`background: var(--m-${m.model})`}></i><strong>{m.name}</strong>
-                <span class="note">{FAMILY[m.family]}</span>
-              </label>
-              <ul>
-                {rows.filter((r) => r.model === m.id).map((r) => (
-                  <li>
-                    <label>
-                      <input type="checkbox" data-row-box={r.key} data-of={m.id} />
-                      <span>{r.short}</span><span class="note n">{`n = ${r.rollouts}`}</span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <p class="note rail-foot">
-          {`${total} scored rollouts in all. `}<a href={url('experiments/')}>What each model is</a>.
+    <aside class="runs" aria-label="Runs to compare">
+      <details class="runs-box" open>
+        <summary><strong>Runs</strong><span class="note" id="runs-count" aria-live="polite"></span></summary>
+        <p class="presets">
+          {presets.map((p) => <button type="button" class="quiet-btn" data-preset={p.keys.join(',')}>{p.label}</button>)}
+          <button type="button" class="quiet-btn" data-preset="">Clear</button>
         </p>
+        <p class="note" id="pick-note" role="status"></p>
+        <p class="list-head" aria-hidden="true"><span>Run, newest first</span><span>Rollouts</span><span>Score</span></p>
+        <div class="run-list">
+          {groups.map((g) => {
+            // one line of the tree: a run. As a child of its model it shows only its checkpoint and mode.
+            const line = (r: (typeof rows)[number], child = false) => (
+              <label class:list={['run', child && 'child']} data-run={r.key} title={`${r.label}: ${r.rollouts} rollouts, last on the robot ${dayOf(r.days.at(-1))}`}>
+                <input type="checkbox" data-row-box={r.key} data-of={r.model} />
+                <b class="letter"></b>
+                {!child && <i class="dot" style={`background: var(--m-${r.family})`}></i>}
+                <span class="nm">{child ? r.short : <>{r.name}<span class="ck">{ckOf(r.short)}</span></>}</span>
+                <span class="mini-track" aria-hidden="true">
+                  <span class="mini" style={`width: max(0.5rem, ${(r.rollouts / maxN) * 100}%)`}>
+                    {stages.map((st, i) => count(r, st.key) > 0 && <i style={`flex: ${count(r, st.key)}; background: var(--st-${i + 1})`}></i>)}
+                  </span>
+                </span>
+                <span class="n num">{r.rollouts}</span>
+                <span class="sc num">{pctOf(scoreRun(r.by_destination).total)}</span>
+              </label>
+            );
+            // a model with one run is a leaf; a model with several is a branch: its box ticks all of them, and its
+            // checkpoints are listed under it (open from the start; the twist closes a branch)
+            if (g.rows.length === 1) return line(g.rows[0]);
+            const lead = g.rows[0];
+            return (
+              <details class="node" open>
+                <summary class="run parent" title={`${lead.name}: ${g.rows.length} checkpoints. Its box ticks all of them; click the name to open the list.`}>
+                  <input type="checkbox" data-model-box={g.id} aria-label={`All ${g.rows.length} checkpoints of ${lead.name}`} />
+                  <i class="twist" aria-hidden="true"></i>
+                  <span class="nm"><i class="dot" style={`background: var(--m-${lead.family})`}></i>{lead.name}<span class="ck">{`${g.rows.length} runs`}</span></span>
+                  <span></span>
+                  <span class="n num">{g.rows.reduce((a, r) => a + r.rollouts, 0)}</span>
+                  <span class="sc num"></span>
+                </summary>
+                {g.rows.map((r) => line(r, true))}
+              </details>
+            );
+          })}
+        </div>
+        <ul class="legend key">
+          {stages.map((s, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{s.label}</li>)}
+          <li>Bar length: number of rollouts</li>
+        </ul>
       </details>
     </aside>
 
-    <div class="main" id="results-main">
-      <section class="block" aria-labelledby="h-score">
-        <h2 id="h-score">Score</h2>
-        <p class="lede">
-          {`Balanced accuracy over the 12 rack slots, the bin left out. A run passes with at least ${MIN_PER_SLOT} rollouts at every ` +
-            `slot and a total of at least ${PASS_MARK * 100}%. `}<a href={url('experiments/#score')}>How it is calculated</a>.
-        </p>
-        <ScoreTable rows={rows} follow />
-        <p class="note empty" id="score-empty" hidden>Nothing ticked. Pick at least one row on the left.</p>
-      </section>
+    <div class="view" data-await>
+      <div class="tabs" role="tablist" aria-label="What to compare">
+        <button type="button" role="tab" data-tab="compare" aria-selected="true">Score, slots and video</button>
+        <button type="button" role="tab" data-tab="ended" aria-selected="false">Where vials ended</button>
+        <button type="button" role="tab" data-tab="notes" aria-selected="false">What happened</button>
+        <button type="button" role="tab" data-tab="detail" aria-selected="false">Every move</button>
+      </div>
+      <p class="note empty" id="none-picked" hidden>Nothing is ticked. Tick a run in the list, or pick one of the sets above it.</p>
 
-      <section class="block" aria-labelledby="h-far">
-        <div class="block-head">
-          <h2 id="h-far">How far each one got</h2>
-          <div class="seg-ctl" role="group" aria-label="Bar scale">
-            <button type="button" class="quiet-btn" aria-pressed="true" data-scale="count">Number of rollouts</button>
-            <button type="button" class="quiet-btn" aria-pressed="false" data-scale="share">Share of its rollouts</button>
-          </div>
-        </div>
-        <StageLegend inline />
-        <div class="bars" id="bars" data-mode="count" style="--max: 1">
-          <div class="axis" id="axis" aria-hidden="true"></div>
-          {rows.map((r) => (
-            <div class="bar-row" data-row={r.key}>
-              <div class="bar-label"><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></div>
-              <div class="bar" role="img"
-                aria-label={`${r.label}: ${stages.map((s) => `${count(r, s.key)} ${s.label.toLowerCase()}`).join(', ')}`}>
-                {stages.map((s, i) => count(r, s.key) > 0 && (
-                  <span class="seg" style={`--count: ${count(r, s.key)}; --share: ${(count(r, s.key) / r.rollouts) * 100}; background: var(--st-${i + 1}); color: var(--stt-${i + 1})`}
-                    title={`${r.label}\n${s.label}: ${count(r, s.key)} of ${r.rollouts} rollouts`}>{count(r, s.key)}</span>
-                ))}
-              </div>
-              <div class="bar-n num">{`n = ${r.rollouts}`}</div>
-            </div>
-          ))}
-        </div>
-        <p class="note empty" id="bars-empty" hidden>Nothing ticked. Pick at least one row on the left.</p>
-        <details class="twin">
-          <summary>Show the numbers as a table</summary>
-          <div class="table-scroll">
-            <table class="data">
-              <thead><tr><th>Model and checkpoint</th><th class="r">Rollouts</th>{stages.map((s) => <th class="r">{s.label}</th>)}<th class="r">Of them, on untrained moves</th><th>Scored from</th></tr></thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr data-row={r.key}><td>{r.label}</td><td class="r num">{r.rollouts}</td>{stages.map((s) => <td class="r num">{count(r, s.key)}</td>)}<td class="r num">{r.untrained?.rollouts ?? 0}</td><td>{r.scored_by === 'notes' ? 'the operator’s notes' : 'the arm'}</td></tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
-        <p class="note after">{`Each rollout counts once, in the furthest outcome it reached. `}<a href={url('experiments/#scored')}>How a rollout is scored</a>.</p>
-      </section>
-
-      <section class="block" aria-labelledby="h-slot">
-        <h2 id="h-slot">Where the vials ended</h2>
-        <p class="lede">
-          {`For each ticked row, four at most: where its rollouts started and ended, slot by slot, beside the demonstrations it trained ` +
-            `on, and for rows scored from the operator's notes, where every vial ended. `}<a href={url('experiments/#read')}>How to read them</a>.
-        </p>
-        <ul class="legend slot-key">
-          <li><i class="k-got"></i>Rollouts: got through / tried at that slot</li>
-          <li><i class="k-demo"></i>Demonstrations in its training set</li>
-          <li><i class="k-none"></i>None there</li>
-          <li><i class="k-untr"></i>Held-out slot</li>
-          <li class="heat"><span>{HEAT.concat(1).map((_, i) => <i style={`background: var(--ob-${i + 1})`}></i>)}</span>Table: share of the row, light to dark</li>
+      <section class="panel" data-panel="compare" id="h-score">
+        <h2 class="visually-hidden">Score and slots</h2>
+        <ul class="legend map-key" aria-label="How to read the vials">
+          <li class="key-lead">A vial fills to the share of rollouts that got through:</li>
+          <li><i class="kv k3"><i></i></i>all</li>
+          <li><i class="kv k2"><i></i></i>half or more</li>
+          <li><i class="kv k1"><i></i></i>under half</li>
+          <li><i class="kv k0"><i></i></i>none</li>
+          <li><i class="kv kn"><i></i></i>not tried</li>
+          <li><i class="kv kh"><i></i></i>never demonstrated that way (held out)</li>
+          <li>Under each: got through / tried. Slots 1 to 6, left to right.</li>
+          <li><i class="kv kdm"><i></i></i>the demonstrations it trained on, under each run</li>
+          <li><label class="demo-switch"><input type="checkbox" id="show-demos" checked />Show demonstrations</label></li>
         </ul>
-        {rows.map((r) => {
-          const c = r.confusion as Conf | null;
-          return (
-            <div class="slot-row" data-row={r.key}>
-              <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}{' '}<span class="sub">{`${r.rollouts} rollouts` +
-                (r.train_set ? `, trained on ${r.train_set} (${demoSets[r.train_set].episodes} demonstrations)` : '')}</span></h3>
-              <SlotMaps maps={mapsOf(r)} />
-              {r.untrained && (
-                <p class="note split">{`${r.rollouts - r.untrained.rollouts} of the ${r.rollouts} rollouts were on moves it was trained on, ` +
-                  `${r.untrained.rollouts} on moves it was never trained on (${untrMoves(r.untrained.moves)}).`}</p>
-              )}
-              {c && (
-                <div class="cm-wrap">
-                  <p class="cm-title">Where every vial ended, by the slot asked for</p>
-                  <div class="table-scroll">
-                    <table class="cm">
-                      <caption class="visually-hidden">{`Where each vial of ${r.label} ended, by the slot asked for`}</caption>
-                      <thead>
-                        <tr>
-                          <th scope="col" class="corner">Asked ↓ · ended →</th>
-                          {cmCols.map((col) => <th scope="col" class:list={['ch', { extra: col.extra }]} title={col.title}>{col.label}</th>)}
-                          <th scope="col" class="r">Recall</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {CM_SLOTS.map((s) => {
-                          const row = c[s] ?? {}, n = sumOf(row);
-                          return (
-                            <tr class:list={{ none: !n }}>
-                              <th scope="row">{s}</th>
-                              {cmCols.map((col) => {
-                                const v = row[col.k] ?? 0, k = v ? byBounds(v / n, HEAT) : 0;
-                                return (
-                                  <td class:list={['cell', { diag: col.k === s, on: v > 0 }]}
-                                    style={v ? `--bg: var(--ob-${k}); --fg: var(--obt-${k})` : undefined}
-                                    title={v ? `Asked for ${s}, ${endedAt(col.k, s)}: ${v} of ${n}` : undefined}>{v || ''}</td>
-                                );
-                              })}
-                              <td class="r rec">{n ? `${row[s] ?? 0}/${n} = ${pctOf((row[s] ?? 0) / n)}` : '–'}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th scope="row">Precision</th>
-                          {cmCols.map((col) => {
-                            const tot = col.extra ? 0 : colTotal(c, col.k);
-                            return <td class="prec">{tot ? `${c[col.k]?.[col.k] ?? 0}/${tot}` : ''}</td>;
-                          })}
-                          <td></td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
+        <div class="runs-table">
+          <div class="rt-row rt-head" aria-hidden="true">
+            <span class="rt-who"></span>
+            <div class="rt-cap">
+              <p><b>Picked up from</b><span>the slot the vial started in</span></p>
+              <div class="caps"><span class="c6">left rack</span><span class="c6">right rack</span></div>
+            </div>
+            <div class="rt-cap">
+              <p><b>Placed into</b><span>the slot the command asked for</span></p>
+              <div class="caps"><span class="c6">left rack</span><span class="cb">bin</span><span class="c6">right rack</span></div>
+            </div>
+          </div>
+          {rows.map((r) => {
+            const s = scoreRun(r.by_destination), weak = weakSlots(r.by_destination);
+            const about = `${r.label}. ${verdictText(s)}. Weak slots: ${weak.length ? weak.join(', ') : 'none'}. Scored from ${r.scored_by === 'notes' ? 'the operator’s notes' : 'the arm'}.` +
+              (r.train_set ? ` Trained on ${r.train_set}.` : '');
+            return (
+              <div class="rt-row col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+                <div class="rt-who" title={about}>
+                  <p class="col-head">
+                    <button type="button" class="grip" aria-label={`Move ${r.label}: drag it, or press the up or down arrow key`} title="Drag to reorder">
+                      <svg viewBox="0 0 8 14" aria-hidden="true"><circle cx="2" cy="2" r="1.3" /><circle cx="6" cy="2" r="1.3" /><circle cx="2" cy="7" r="1.3" /><circle cx="6" cy="7" r="1.3" /><circle cx="2" cy="12" r="1.3" /><circle cx="6" cy="12" r="1.3" /></svg>
+                    </button>
+                    <b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></p>
+                  <p class="who-score"><b class="num">{pctOf(s.total)}</b><span>{`${r.rollouts} rollouts`}</span></p>
+                  <p class="who-parts">{`Trained slots `}<b class="num">{pctOf(s.trained)}</b>{` · held-out `}<b class="num">{pctOf(s.held)}</b></p>
+                  <span class="mini thin" role="img" aria-label={stages.map((st) => `${count(r, st.key)} ${st.label.toLowerCase()}`).join(', ')}
+                    title={stages.map((st) => `${st.label}: ${count(r, st.key)}`).join('\n')}>
+                    {stages.map((st, i) => count(r, st.key) > 0 && <i style={`flex: ${count(r, st.key)}; background: var(--st-${i + 1})`}></i>)}
+                  </span>
                 </div>
-              )}
-            </div>
-          );
-        })}
-        <p class="note empty" id="slots-empty" hidden>Nothing ticked.</p>
-        <p class="note after" id="slots-more" hidden>More than four rows are ticked: the first four are shown.</p>
-      </section>
-
-      <section class="block" aria-labelledby="h-watch">
-        <h2 id="h-watch">Rollouts to watch</h2>
-        <p class="lede">Rollouts of the ticked rows, every camera the model saw at once. They loop; click one to pause it. Filter by how far they got:</p>
-        <div class="seg-ctl stage-filter" role="group" aria-label="Show rollouts that reached">
-          {stages.map((s, i) => (
-            <button type="button" class="quiet-btn" aria-pressed="true" data-stage={s.key}><i style={`background: var(--st-${i + 1})`}></i>{s.label}</button>
-          ))}
+                <SlotVials bySource={r.by_source} byDestination={r.by_destination} demos={r.train_set ? demoSets[r.train_set] : null} label={r.label} />
+                {r.train_set && (
+                  <>
+                    <p class="who-demo" title={`Trained on ${r.train_set}`}><i></i><b class="num">{demoSets[r.train_set].episodes}</b>{` demonstrations it trained on`}</p>
+                    <SlotVials demoOnly demos={demoSets[r.train_set]} label={`${r.label}: its ${demoSets[r.train_set].episodes} training demonstrations`} />
+                  </>
+                )}
+              </div>
+            );
+          })}
         </div>
-        <div class="clips">
-          {clips.map((f) => (
-            <div class="clip-wrap" data-row={f.row} data-stage={f.stage}>
-              <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'neutral') as 'red'} used={f.used} outcome={f.stage} kind={f.kind} />
-            </div>
-          ))}
-        </div>
-        <p class="note empty" id="clips-empty" hidden>No rollout of the ticked rows matches. Only some rollouts were picked to be shown.</p>
-      </section>
-
-      <section class="block" aria-labelledby="h-moves">
-        <h2 id="h-moves">Move by move</h2>
-        <p class="lede">
-          {`Every move each ticked row was asked, four rows at most, with the number of demonstrations of that exact move in its ` +
-            `training set. Rows scored from the operator's notes list every note as written.`}
+        <p class="note foot">
+          Hover a vial for its slot and its demonstrations, and a run's name for its verdict and weak slots.
+          {' '}<a href={url('method/#read')}>How to read the vials</a>{' · '}<a href={url('method/#scored')}>How a rollout is scored</a>
         </p>
-        {rows.map((r) => {
-          const e = expRow.get(r.key);
-          return e && (
-            <div class="mv-row" data-row={r.key}>
-              <h3><i style={`background: var(--m-${r.family})`}></i>{r.label}{' '}<span class="sub">{`${r.rollouts} rollouts`}</span></h3>
-              {storyOf(r).map((n) => <p class="story"><strong>{`${n.title}.`}</strong>{` ${n.text}`}</p>)}
-              <MoveTable r={e} />
+
+        <div class="vids-head" id="h-watch">
+          <h3>One rollout of each</h3>
+          <div class="seg-ctl" role="group" aria-label="Show the rollout that">
+            {stages.slice().reverse().map((s) => (
+              <button type="button" class="quiet-btn" aria-pressed={s.key === 'released' ? 'true' : 'false'} data-stage={s.key}>
+                <i style={`background: var(--st-${stages.indexOf(s) + 1})`}></i>{s.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div class="cols wide vids">
+          {rows.map((r) => (
+            <div class="col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+              <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></p>
+              {clips.filter((f) => f.row === r.key).map((f) => (
+                <div class="clip-wrap" data-stage={f.stage} data-init-off={f.stage !== 'released' || undefined}>
+                  <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
+                    vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'neutral') as 'red'} used={f.used} outcome={f.stage} kind={f.kind} />
+                </div>
+              ))}
+              <p class="note no-clip" hidden>No rollout of this kind was picked to be shown for this run.</p>
             </div>
-          );
-        })}
-        <p class="note empty" id="mv-empty" hidden>Nothing ticked.</p>
-        <p class="note after" id="mv-more" hidden>More than four rows are ticked: the first four are shown.</p>
+          ))}
+        </div>
+      </section>
+
+      <section class="panel" data-panel="notes" id="h-said" hidden>
+        <h2 class="visually-hidden">What happened on the robot</h2>
+        <div class="cols stacked">
+          {rows.map((r) => (
+            <div class="col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+              <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></p>
+              {storyOf(r).length > 0
+                ? storyOf(r).map((n) => <div class="acct"><p class="acct-title">{n.title}</p><ul class="said">{sentences(n.text).map((s) => <li>{s}</li>)}</ul></div>)
+                : <p class="note">No written account for this run.</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="panel" data-panel="detail" id="h-moves" hidden>
+        <h2 class="visually-hidden">Every move</h2>
+        <p class="note cm-key">One line per ticked run, its moves side by side in the order they were run: scroll a line to the right for more. The bar on a card is how far the move got; a dashed card is a move it never trained on.</p>
+        <div class="stack">
+          {rows.map((r) => {
+            const e = expRow.get(r.key);
+            return (
+              <div class="wide-row" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+                <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span><span class="note">{`${r.rollouts} rollouts`}</span></p>
+                {e ? <MoveTable r={e} /> : <p class="note">No move list for this run.</p>}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="panel" data-panel="ended" id="h-ended" hidden>
+        <h2 class="visually-hidden">Where every vial ended</h2>
+        <p class="note cm-key">
+          A row is the slot the command asked for; a column is where the vial ended. The outlined cell is the asked slot, and the
+          shade is the share of the row, light to dark. Runs scored from the arm have no table: the arm cannot see where the vial ended.
+        </p>
+        <div class="stack">
+          {rows.map((r) => {
+            const c = r.confusion as Conf | null;
+            return (
+              <div class="wide-row" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+                <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span><span class="note">{`${r.rollouts} rollouts`}</span></p>
+                {c ? (
+                    <div class="table-scroll">
+                      <table class="cm">
+                        <caption class="visually-hidden">{`Where each vial of ${r.label} ended, by the slot asked for`}</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col" class="corner">Asked ↓ · ended →</th>
+                            {cmCols.map((col) => <th scope="col" class:list={['ch', { extra: col.extra }]} title={col.title}>{col.label}</th>)}
+                            <th scope="col" class="r">Recall</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {CM_SLOTS.map((s) => {
+                            const row = c[s] ?? {}, n = sumOf(row);
+                            return (
+                              <tr class:list={{ none: !n }}>
+                                <th scope="row">{s}</th>
+                                {cmCols.map((col) => {
+                                  const v = row[col.k] ?? 0, k = v ? byBounds(v / n, HEAT) : 0;
+                                  return (
+                                    <td class:list={['cell', { diag: col.k === s, on: v > 0 }]}
+                                      style={v ? `--bg: var(--ob-${k}); --fg: var(--obt-${k})` : undefined}
+                                      title={v ? `Asked for ${s}, ${endedAt(col.k, s)}: ${v} of ${n}` : undefined}>{v || ''}</td>
+                                  );
+                                })}
+                                <td class="r rec">{n ? `${row[s] ?? 0}/${n} = ${pctOf((row[s] ?? 0) / n)}` : '–'}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th scope="row">Precision</th>
+                            {cmCols.map((col) => {
+                              const tot = col.extra ? 0 : colTotal(c, col.k);
+                              return <td class="prec">{tot ? `${c[col.k]?.[col.k] ?? 0}/${tot}` : ''}</td>;
+                            })}
+                            <td></td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                ) : <p class="note">Scored from the arm, which cannot see where the vial ended.</p>}
+              </div>
+            );
+          })}
+        </div>
       </section>
     </div>
   </div>
@@ -299,70 +340,191 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
 </script>
 
 <style>
-  .head { padding-bottom: 1.5rem; }
-  .work { display: grid; grid-template-columns: 19rem minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; padding-bottom: 4rem; }
-  .rail { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--raise); }
-  .rail-box { padding: 0.9rem 1rem 1rem; }
-  .rail-box summary { display: flex; align-items: baseline; justify-content: space-between; cursor: pointer; list-style: none; }
-  .rail-box summary::-webkit-details-marker { display: none; }
-  .rail-box h2 { font-size: var(--step-1); }
-  .count { font-size: var(--step--1); color: var(--ink-2); }
-  .rail-actions { display: flex; gap: 0.4rem; margin: 0.8rem 0; }
-  .rail-list { display: grid; gap: 1rem; }
-  .model-box { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; flex-wrap: wrap; }
-  .model-box i { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
-  .rail ul { list-style: none; margin: 0.35rem 0 0 1.55rem; padding: 0; display: grid; gap: 0.2rem; }
-  .rail li label { display: flex; align-items: baseline; gap: 0.5rem; cursor: pointer; }
-  .rail li .n { margin-left: auto; font-variant-numeric: tabular-nums; }
-  .rail input { accent-color: var(--ink); }
-  .rail-foot { margin-top: 1rem; }
-  .main { display: grid; gap: 3.5rem; min-width: 0; }
-  .block { min-width: 0; }
-  .block + .block { padding-top: 2.5rem; border-top: 1px solid var(--rule); }
-  .block h2 { font-size: var(--step-2); margin-bottom: 0.6rem; }
-  .block-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.6rem 2rem; margin-bottom: 0.6rem; }  /* the scale buttons beside the heading, not at the far right */
-  .block-head h2 { margin: 0; }
-  .seg-ctl { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .seg-ctl .quiet-btn { display: inline-flex; align-items: center; gap: 0.4rem; }
-  .seg-ctl i { width: 0.7rem; height: 0.7rem; border-radius: 3px; }
-  .stage-filter { margin: 0.8rem 0 1.4rem; }
-  .stage-filter .quiet-btn[aria-pressed='false'] { opacity: 0.55; }
+  /* The whole page is one screen: the runs on the left, one tab of the comparison on the right. Smaller type than the
+     reading pages, because this is a panel to scan, not text to read. */
+  .dash { --gutter: 1rem; display: grid; grid-template-columns: 19.5rem minmax(0, 1fr); gap: 0.4rem 1.2rem; align-items: start;
+          padding-block: 0.9rem 2rem; font-size: 0.95rem; line-height: 1.4; }
+  .dash .note { font-size: 0.85rem; line-height: 1.4; }
+  .dash-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+  .dash-head h1 { font-size: var(--step-1); }
+  .dash-head p { max-width: none; }
 
-  .bars { display: grid; gap: 0.5rem; margin-top: 0.4rem; }
-  .axis { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4.8rem; column-gap: 0.8rem; font-size: 1.05rem; color: var(--steel); }
-  .axis :global(.ticks) { position: relative; height: 1.1rem; grid-column: 2; }
-  .axis :global(.ticks span) { position: absolute; transform: translateX(-50%); }
-  .axis :global(.ticks span:first-child) { transform: none; }
-  .axis :global(.ticks span:last-child) { transform: translateX(-100%); }
-  .bar-row { display: grid; grid-template-columns: minmax(9rem, 19rem) minmax(0, 1fr) 4.8rem; align-items: center; gap: 0 0.8rem; }
-  .bar-row[hidden] { display: none; }
-  .bar-label { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); line-height: 1.3; }
-  .bar-label i { width: 0.65rem; height: 0.65rem; border-radius: 50%; flex: none; }
-  .bar { display: flex; height: 2.8rem; gap: 2px; }
-  .seg { display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 650; font-variant-numeric: tabular-nums;
-         overflow: hidden; min-width: 0; width: calc(var(--share) * 1%); }
-  .bars[data-mode='count'] .seg { width: calc(var(--count) / var(--max) * 100%); }
-  .seg:first-child { border-radius: 4px 0 0 4px; }
-  .seg:last-child { border-radius: 0 4px 4px 0; }
-  .seg:only-child { border-radius: 4px; }
-  .bar-n { font-size: var(--step-0); color: var(--ink-2); text-align: right; white-space: nowrap; }
-  .split { margin-top: 0.8rem; font-size: var(--step-0); }
-  .twin { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-2); }
-  .twin summary { cursor: pointer; width: fit-content; }
-  .twin tr[hidden] { display: none; }
-  .after { margin-top: 1rem; }
-  .empty { margin-top: 1rem; }
+  /* the runs: the list is the leaderboard and the picker */
+  .runs { position: sticky; top: 0.5rem; max-height: calc(100vh - 8.2rem); overflow-y: auto; overflow-x: hidden; min-width: 0;
+          /* a slim scrollbar in its own gutter, clear of the scores, that only shows its thumb */
+          scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: var(--rack) transparent; padding-right: 0.6rem; }
+  .runs::-webkit-scrollbar { width: 8px; }
+  .runs::-webkit-scrollbar-track { background: transparent; }
+  .runs::-webkit-scrollbar-thumb { background: var(--rack); border-radius: 4px; }
+  .runs::-webkit-scrollbar-thumb:hover { background: var(--steel); }
+  .runs-box > summary { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; list-style: none; padding-block: 0.3rem; }
+  .runs-box > summary::-webkit-details-marker { display: none; }
+  .presets { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.2rem 0 0.4rem; }
+  .presets .quiet-btn { font-size: 0.8rem; padding: 0.05rem 0.55rem; }
+  #pick-note:empty { display: none; }
+  #pick-note { color: var(--critical-text); margin-bottom: 0.3rem; }
+  /* one line per run: tick, letter or model dot, name and checkpoint, a bar as long as its rollouts, their number, the score */
+  .list-head, .run { display: grid; grid-template-columns: 1.1rem 1.25rem minmax(0, 1fr) 2.8rem 1.4rem 2.4rem; column-gap: 0.35rem; align-items: center; }
+  .list-head { font-size: 0.75rem; color: var(--steel); padding: 0.2rem 0.3rem; border-bottom: 1px solid var(--rule); max-width: none; }
+  .list-head span:first-child { grid-column: 1 / 4; }
+  .list-head span:nth-child(2) { grid-column: 4 / 6; }
+  .list-head span:last-child { text-align: right; }
+  .run { padding: 0.24rem 0.3rem; border-radius: 4px; cursor: pointer; border-bottom: 1px solid var(--grid); }
+  .run:hover { background: var(--raise); }
+  .run:has(input:checked) { background: var(--raise); box-shadow: inset 3px 0 0 var(--ink); }
+  .run input { accent-color: var(--ink); margin: 0; cursor: pointer; }
+  .run .letter, .run .dot { grid-column: 2; grid-row: 1; justify-self: center; }
+  .run .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; }
+  .run:has(input:checked) .dot { display: none; }
+  .run .nm { font-weight: 620; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .run .ck { font-weight: 400; font-size: 0.78rem; color: var(--ink-2); margin-left: 0.4rem; }
+  .mini-track { display: block; }
+  .run .mini { height: 0.7rem; }
+  .run .n { font-size: 0.78rem; color: var(--ink-2); text-align: right; }
+  .run .sc { text-align: right; font-weight: 680; }
+  /* the tree: a model with several checkpoints is a branch. Its line has a box that ticks all of them and a twist that
+     opens the list; its checkpoints are the same lines, indented, named by checkpoint and mode only. */
+  .node > summary { list-style: none; }
+  .node > summary::-webkit-details-marker { display: none; }
+  .twist { grid-column: 2; justify-self: center; font-style: normal; font-size: 0.7rem; color: var(--ink-2); }
+  .twist::before { content: '▸'; }
+  .node[open] > summary .twist::before { content: '▾'; }
+  .run.parent .dot, .run.parent:has(input:checked) .dot { display: inline-block; margin-right: 0.4rem; vertical-align: 0.05rem; }
+  .run.parent .n { color: var(--steel); }
+  .run.child { background: none; }
+  .run.child .nm { grid-column: 3; font-weight: 400; padding-left: 0.5rem; color: var(--ink-2); }  /* a child has no model dot: its name still starts in the name column */
+  .run.child:has(input:checked) .nm { color: var(--ink); }
+  .node[open] { padding-bottom: 0.15rem; border-bottom: 1px solid var(--rule); }
+  .node[open] > .run.child { border-bottom-color: transparent; padding-block: 0.14rem; }
+  .key { margin: 0.6rem 0 0; font-size: 0.78rem; gap: 0.15rem 0.8rem; }
+  .key i { width: 0.6rem; height: 0.6rem; border-radius: 2px; }
+  .mini { display: flex; gap: 1px; }
+  .mini i { display: grid; place-items: center; min-width: 2px; font-style: normal; font-weight: 650; font-variant-numeric: tabular-nums; overflow: hidden; }
+  .mini i:first-child { border-radius: 3px 0 0 3px; }
+  .mini i:last-child { border-radius: 0 3px 3px 0; }
+  .mini i:only-child { border-radius: 3px; }
+  .mini.tall { height: 1.5rem; gap: 2px; font-size: 0.85rem; }
+  .mini.tall i { min-width: 1rem; }
+  :global(.letter) { display: inline-grid; place-items: center; width: 1.2rem; height: 1.2rem; border-radius: 50%; background: var(--ink); color: var(--page); font-size: 0.72rem; font-weight: 680; font-stretch: 100%; flex: none; }
+  :global(.letter:empty) { display: none; }
 
-  .slot-key { margin-top: 1.1rem; font-size: var(--step-0); color: var(--ink); gap: 0.5rem 1.6rem; }
-  .slot-key i { width: 1rem; height: 1rem; border-radius: 50%; box-sizing: border-box; }
-  .slot-key .k-got { background: var(--slot-got); }
-  .slot-key .k-demo { background: var(--slot-demo); }
-  .slot-key .k-none { background: var(--page); border: 1.5px solid var(--rack); }
-  .slot-key .k-untr { background: var(--page); border: 1.5px solid var(--rack); outline: 2px dashed var(--ink-2); outline-offset: 2px; }
+  /* the comparison: one tab at a time, so nothing stacks */
+  .view { min-width: 0; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 0.3rem; border-bottom: 1px solid var(--rule); margin-bottom: 0.8rem; }
+  .tabs button { font: inherit; font-weight: 560; color: var(--ink-2); background: none; border: 0; border-bottom: 3px solid transparent; padding: 0.35rem 0.7rem; margin-bottom: -1px; cursor: pointer; }
+  .tabs button:hover { color: var(--ink); }
+  .tabs button[aria-selected='true'] { color: var(--ink); border-bottom-color: var(--ink); }
+  .panel[hidden], .col[hidden], .wide-row[hidden], .clip-wrap[hidden], .empty[hidden] { display: none; }
+  .panel { scroll-margin-top: 4rem; }
+  .cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(11.5rem, 1fr)); gap: 1rem 1rem; align-items: start; overflow-x: auto; position: relative; }
+  .cols.wide { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .col { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem; align-content: start; }
+  .col p, .wide-row p { max-width: none; margin-top: 0; }
+  .col-head { display: flex; align-items: center; gap: 0.4rem; font-weight: 620; padding-bottom: 0.3rem; border-bottom: 2px solid var(--ink); line-height: 1.25; }
+  .col-head > i { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none; }
+  .col-head > span:not(.note), .verdict { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .col-head .note { margin-left: auto; font-weight: 400; }
+  .score-line { display: flex; align-items: baseline; gap: 0.6rem; }
+  .score-line b { font-size: 2.3rem; font-weight: 680; font-stretch: 112%; line-height: 1; }
+  .score-line span { font-size: 0.78rem; color: var(--ink-2); line-height: 1.25; }
+  .parts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 0 1rem; margin: 0; }
+  .parts dt { font-size: 0.75rem; color: var(--ink-2); }
+  .parts dd { margin: 0; font-weight: 650; font-size: 1.05rem; }
+  .weak { margin-top: 0.2rem; }
+  .foot { margin-top: 0.8rem; max-width: none; }
+  .story { color: var(--ink-2); font-size: 0.88rem; line-height: 1.5; }
+  .story strong { color: var(--ink); }
+  .stack { display: grid; gap: 1.2rem; }
+  .wide-row { display: grid; gap: 0.3rem; min-width: 0; }
+  .wide-row :global(details.fold) { margin-top: 0.3rem; }
+  .seg-ctl { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.8rem; }
+  .seg-ctl .quiet-btn { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; }
+  .seg-ctl i { width: 0.65rem; height: 0.65rem; border-radius: 3px; }
+  .seg-ctl .quiet-btn[aria-pressed='false'] { opacity: 0.6; }
 
+  /* the key to the slot tables (src/components/SlotTable.astro), once, above the columns */
+  .map-key { margin: 0 0 0.7rem; font-size: 0.8rem; gap: 0.25rem 0.9rem; color: var(--ink-2); }
+  .map-key .key-lead { color: var(--ink); font-weight: 620; }
+  /* small vials, drawn like the ones in src/components/SlotVials.astro */
+  .map-key .kv { display: flex; align-items: flex-end; overflow: hidden; box-sizing: border-box; width: 9px; height: 18px; border: 1.25px solid var(--steel); border-top: 0; border-radius: 0 0 5px 5px; background: var(--page); }
+  .map-key .kv i { display: block; width: 100%; border-radius: 0; background: var(--st-3); height: 100%; }
+  .map-key .k2 i { height: 65%; background: color-mix(in srgb, var(--st-3) 55%, white); }
+  .map-key .k1 i { height: 30%; background: var(--st-2); }
+  .map-key .k0 i, .map-key .kn i, .map-key .kh i { height: 0; }
+  .map-key .kdm i { height: 75%; background: var(--slot-demo); }
+  .map-key .kn { border-color: var(--rack); }
+  .map-key .kh { border: 1.5px dashed var(--ink); border-top: 0; }
+  /* the comparison: one row per run, the same two columns of vials in each, so the slots line up down the page.
+     The names of the columns and the rack captions are written once, above the first row. */
+  .runs-table { container-type: inline-size; --vw: 22px; --vh: 36px; --vgap: 10px; --vbin: 32px; display: grid;
+                /* the width of each strip, from the size of a vial: twelve slots and a gap; twelve slots, the bin and two gaps */
+                --from: calc(12 * var(--vw) + var(--vgap)); --into: calc(12 * var(--vw) + var(--vbin) + 2 * var(--vgap)); }
+  .runs-table .rt-row { display: grid; grid-template-columns: var(--from) var(--into); gap: 0.4rem 1.4rem; align-items: end; justify-content: start; padding: 0.6rem 0 0.5rem; border-top: 1px solid var(--rule); }
+  .runs-table .rt-row[hidden] { display: none; }
+  .runs-table .rt-head { border-top: 0; padding: 0 0 0.35rem; align-items: end; order: -1; }
+  /* under a run's vials, in the same row and the same two columns: the demonstrations it trained on, as shorter violet
+     vials, so what it was shown sits right under what it did. The switch in the legend hides them. */
+  /* a row is dragged by its handle to a new place among the runs (src/charts/october.ts); the order holds in every tab */
+  .grip { flex: none; display: grid; place-items: center; width: 1rem; height: 1.3rem; margin-left: -0.25rem; padding: 0; border: 0; border-radius: 3px; background: none; color: var(--steel); cursor: grab; touch-action: none; }
+  .grip:hover { color: var(--ink); background: var(--grid); }
+  .grip:active { cursor: grabbing; }
+  .grip svg { width: 0.5rem; height: 0.875rem; fill: currentColor; }
+  .runs-table .dragging { opacity: 0.4; }
+  .runs-table .drop-before { box-shadow: inset 0 3px 0 var(--focus); }
+  .runs-table .drop-after { box-shadow: inset 0 -3px 0 var(--focus); }
+  .cm-key { max-width: 60rem; margin-bottom: 1rem; }
+  .who-demo { grid-column: 1 / -1; display: flex; align-items: center; gap: 0.35rem; margin: 0.2rem 0 0; font-size: 0.75rem; color: var(--ink-2); max-width: none; }
+  .who-demo i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--slot-demo); flex: none; }
+  .who-demo b { color: var(--ink); font-weight: 650; }
+  .runs-table :global(.strip.is-demo) { --vh: 20px; margin-top: 0.1rem; }
+  .runs-table[data-demos='off'] :global(.strip.is-demo), .runs-table[data-demos='off'] .who-demo { display: none; }
+  .demo-switch { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--ink); font-weight: 560; padding: 0.05rem 0.55rem 0.05rem 0.4rem; border: 1px solid var(--rule); border-radius: 999px; }
+  .demo-switch:hover { border-color: var(--steel); }
+  .demo-switch input { accent-color: var(--slot-demo); margin: 0; }
+  .rt-who { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.9rem; min-width: 0; }
+  .rt-head .rt-who { display: none; }
+  .rt-who .col-head { border: 0; padding: 0; margin: 0; }
+  .who-score { display: flex; align-items: baseline; gap: 0.4rem; }
+  .who-score b { font-size: 1.35rem; font-weight: 680; font-stretch: 112%; line-height: 1; }
+  .who-score span, .who-parts { font-size: 0.8rem; color: var(--ink-2); }
+  .who-parts b { color: var(--ink); font-weight: 650; }
+  .mini.thin { height: 6px; width: 9rem; align-self: center; }
+  .rt-cap p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.5rem; font-size: 0.9rem; max-width: none; margin: 0 0 0.3rem; }
+  .rt-cap p b { font-weight: 650; }
+  .rt-cap p span { font-size: 0.75rem; color: var(--ink-2); }
+  .caps { display: flex; gap: var(--vgap); font-size: 0.7rem; color: var(--steel); line-height: 1; }
+  .caps .c6 { width: calc(6 * var(--vw)); }
+  .caps .cb { width: var(--vbin); text-align: center; }
+  /* with room, the run's name and numbers sit in a first column beside its vials, and the vials grow */
+  @container (min-width: 60rem) {
+    .runs-table { --vw: 26px; --vh: 40px; --vgap: 14px; --vbin: 34px; }
+    .runs-table .rt-row { grid-template-columns: 14rem var(--from) var(--into); gap: 0 2rem; padding: 0.7rem 0 0.55rem; }
+    .rt-who, .rt-head .rt-who { grid-column: auto; display: grid; gap: 0.25rem; align-content: end; }
+    .who-demo { grid-column: auto; align-self: end; padding-bottom: 1.1rem; margin: 0; }
+    .who-score b { font-size: 1.9rem; }
+    .mini.thin { width: 100%; }
+  }
+  /* on a phone the two strips stack */
+  @container (max-width: 36rem) {
+    .runs-table .rt-row { grid-template-columns: minmax(0, 1fr); }
+    .runs-table .rt-head { display: none; }
+  }
+  .cols.stacked { grid-template-columns: minmax(0, 1fr); max-width: 52rem; }
+  /* a run's written account, sentence by sentence */
+  .acct-title { font-weight: 650; margin: 0.2rem 0 0.25rem; }
+  .said { margin: 0; padding-left: 1rem; display: grid; gap: 0.3rem; color: var(--ink-2); font-size: 0.88rem; line-height: 1.45; }
+  .vids-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin: 1.4rem 0 0.7rem; padding-top: 0.9rem; border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
+  .vids-head h3 { font-size: 1.05rem; }
+  .vids-head .seg-ctl { margin: 0; }
+  /* the clips, without the camera list, so one row of them fits the screen */
+  .cols :global(.clip) { gap: 0.4rem; }
+  .cols :global(.clip .cams) { display: none; }
+  .cols :global(.clip .kind) { font-size: 0.9rem; }
+  .cols :global(.clip p) { font-size: 0.82rem; }
+  .cols :global(.clip-head .move) { font-size: 1.1rem; }
 
-  table.cm { border-collapse: separate; border-spacing: 2px; font-variant-numeric: tabular-nums; font-size: var(--step--1); margin-top: 0.4rem; }
-  table.cm th, table.cm td { padding: 0.32rem 0.3rem; text-align: center; min-width: 2.15rem; }
+  table.cm { border-collapse: separate; border-spacing: 2px; font-variant-numeric: tabular-nums; font-size: 0.85rem; margin-top: 0.4rem; }
+  table.cm th, table.cm td { padding: 0.25rem 0.25rem; text-align: center; min-width: 1.9rem; }
   table.cm thead th { color: var(--ink-2); font-weight: 600; vertical-align: bottom; }
   table.cm thead th.extra { max-width: 4.8rem; white-space: normal; line-height: 1.2; }
   table.cm .corner { text-align: left; white-space: nowrap; padding-right: 0.7rem; font-weight: 500; }
@@ -373,35 +535,15 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
   table.cm td.rec { text-align: right; white-space: nowrap; padding-left: 0.8rem; color: var(--ink); }
   table.cm tr.none th, table.cm tr.none td.rec { color: var(--steel); font-weight: 500; }
   table.cm tfoot th, table.cm tfoot td { color: var(--ink-2); padding-top: 0.5rem; white-space: nowrap; }
-  .slot-row { margin-top: 2.4rem; }
-  .slot-row[hidden] { display: none; }
-  .slot-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }
-  .slot-row h3 i { width: 0.75rem; height: 0.75rem; border-radius: 50%; align-self: center; }
-  .slot-row h3 .sub { font-size: var(--step-0); font-weight: 400; color: var(--ink-2); }
-  .lede { max-width: var(--measure); }
-  .slot-key .heat span { display: inline-flex; gap: 2px; }
-  .slot-key .heat i { width: 0.8rem; height: 1rem; border-radius: 2px; }
-  .cm-wrap { margin-top: 1.4rem; }
-  .cm-title { font-weight: 600; margin-bottom: 0.2rem; }
-  .mv-row { margin-top: 2.2rem; }
-  .mv-row[hidden] { display: none; }
-  .mv-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.7rem; font-size: var(--step-1); margin-bottom: 0.4rem; }
-  .mv-row h3 i { width: 0.75rem; height: 0.75rem; border-radius: 50%; align-self: center; }
-  .mv-row h3 .sub { font-size: var(--step-0); font-weight: 400; color: var(--ink-2); }
-  .story { max-width: var(--measure); color: var(--ink-2); margin: 0.3rem 0 0.4rem; }
-  .story strong { color: var(--ink); }
-  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.2rem clamp(1.2rem, 3vw, 2.5rem); }
-  .clip-wrap[hidden] { display: none; }
 
-  @media (max-width: 62rem) {
-    .work { grid-template-columns: minmax(0, 1fr); }
-    .rail { position: static; max-height: none; }
-    .clips { grid-template-columns: minmax(0, 1fr); }
-  }
-  @media (max-width: 40rem) {
-    .axis, .bar-row { grid-template-columns: minmax(0, 1fr) 5.2rem; }
-    .axis :global(.ticks) { grid-column: 1; }
-    .bar-label { grid-column: 1 / -1; margin-bottom: 0.2rem; }
-    .bar-row { row-gap: 0.1rem; }
+  /* narrower than a small laptop: the run list folds above the comparison */
+  @media (max-width: 56rem) {
+    .dash { grid-template-columns: minmax(0, 1fr); }
+    .runs { position: static; max-height: none; border: 1px solid var(--rule); border-radius: 6px; padding: 0.2rem 0.6rem 0.5rem; background: var(--raise); }
+    .runs-box > summary { cursor: pointer; }
+    .runs-box > summary strong::after { content: ' ▾'; }
+    .cols { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(13rem, 1fr); scroll-snap-type: x proximity; }
+    .cols.wide { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: minmax(0, 1fr); }
+    .col { scroll-snap-align: start; }
   }
 </style>

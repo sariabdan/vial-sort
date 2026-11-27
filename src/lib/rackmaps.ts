@@ -34,18 +34,22 @@ export function rateCells(by: Record<string, { n: number; ok: number }>, role: s
 
 // ── Results' slot maps (SlotMaps.astro): one solid colour per map, the number under each slot is the value ──
 // untr: the row's training set has no demonstration with this slot in this role (an untrained slot), drawn ringed
-export type SlotCell = { code: string; on: boolean; text: string; title: string; untr?: boolean };
+// level: how full the slot's colour is, 0 to 1. Rollouts: the share that got through (0 of 5 is an empty ring in the
+// map's colour, 5 of 5 is solid). Demonstrations: the count against the largest count on that map.
+export type SlotCell = { code: string; on: boolean; text: string; title: string; untr?: boolean; level?: number };
 export type SlotMap = { caption: string; kind: 'demo' | 'got'; role: 'source' | 'destination'; cells: SlotCell[] };
 const NEVER: SlotCell = { code: 'bin', on: false, text: '', title: 'The bin is never a source' };
 
 /** Demonstrations per slot of a row's training set: a slot is filled when it has any. */
 export function slotDemos(counts: Record<string, number>, role: SlotMap['role'], set: string): SlotMap {
-  return { caption: `Demonstrations in ${set}, by ${role === 'source' ? 'source slot' : 'destination'}`, kind: 'demo', role,
+  // the caption stays one line in a narrow column; the set's name is in the tooltip of each slot and beside the map
+  return { caption: `Demonstrations, by ${role === 'source' ? 'source slot' : 'destination'}`, kind: 'demo', role,
     cells: PLACES.map((c) => {
       if (c === 'bin' && role === 'source') return NEVER;
       const v = counts[c] ?? 0;
-      return { code: c, on: v > 0, text: String(v), untr: v === 0,
-        title: `${name(c)} as the ${role}: ${v} demonstration${v === 1 ? '' : 's'}${v ? '' : ' (untrained)'}` };
+      const most = Math.max(1, ...Object.values(counts));
+      return { code: c, on: v > 0, text: String(v), untr: v === 0, level: v / most,
+        title: `${name(c)} as the ${role}: ${v} demonstration${v === 1 ? '' : 's'} in ${set}${v ? '' : ' (untrained)'}` };
     }) };
 }
 
@@ -58,7 +62,7 @@ export function slotGot(got: Record<string, { n: number; ok: number }>, role: Sl
       if (c === 'bin' && role === 'source') return NEVER;
       const g = got[c], untr = untrained.has(c), tag = untr ? ' (untrained)' : '';
       if (!g || !g.n) return { code: c, on: false, text: '–', untr, title: `${name(c)} as the ${role}${tag}: no rollouts` };
-      return { code: c, on: true, text: `${g.ok}/${g.n}`, untr, title: `${name(c)} as the ${role}${tag}: ${g.ok} of ${g.n} rollouts ${verb}` };
+      return { code: c, on: true, text: `${g.ok}/${g.n}`, untr, level: g.ok / g.n, title: `${name(c)} as the ${role}${tag}: ${g.ok} of ${g.n} rollouts ${verb}` };
     }) };
 }
 

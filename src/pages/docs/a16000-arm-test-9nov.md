@@ -3,6 +3,16 @@ layout: ../../layouts/Doc.astro
 title: "Arm test, 9 Nov: π0.5 A at 16000 steps, against B"
 date: "2026-11-09"
 description: "A, trained from the pi05 base, on the same 31 moves as B: 21 placed correctly and it meets the 12-move gate narrowly. Also the probes and the camera check."
+models:
+  - { id: plain-bagel, was: "A at 16000" }
+  - { id: mango-pudding, was: "B at 16000" }
+points:
+  - "A placed the vial right in 21 of 31 moves; B, on the same moves, in 11."
+  - "A meets the 12-move gate with no margin: right slot in 9 of 12, right vial in 11 of 12, and only 7 of the 12 placed. On strict first tries it is 8 of 12, one short."
+  - "B's squeeze toward the middle of the rack is gone: slot 6 was reached in 9 of 9, and A reached slots 4 and 5, which were never trained as destinations. Slot 3 is its weak one."
+  - "Grasps: 1 failure in 31, against B's 7."
+  - "What is left is mostly the drop: 6 missed drops at the right slot, the gripper opening within 3–5° per joint of the successful ones."
+  - "The left_top camera was bumped on 4 Nov and every arm test since ran with it off. Whether that matters is not proven."
 ---
 
 - Checkpoint: `outputs/pi05_full_vial-sort-ws220_canon_base16k/checkpoints/016000` (from `lerobot/pi05_base`,

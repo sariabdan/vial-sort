@@ -4,7 +4,7 @@
 // The bin is left out: it is an easy target and would lift the score. Trained and held-out accuracy are the same mean
 // over slots 1, 3, 6 (the demonstrations' destinations) and 2, 4, 5 (never a destination in training) of both racks.
 // A run passes only with at least 10 rollouts at every slot and a total of at least 70%. Fewer than 10 at any slot
-// disqualifies it; its numbers are still shown, over the slots it was tried at. Explained on Experiments (#score).
+// disqualifies it; its numbers are still shown, over the slots it was tried at. Explained on Testing (method.astro, #score).
 
 export const RACK_SLOTS = ['L', 'R'].flatMap((r) => [1, 2, 3, 4, 5, 6].map((n) => `${r}${n}`));
 export const HELD_OUT_SLOTS = RACK_SLOTS.filter((s) => '245'.includes(s[1]));

@@ -45,15 +45,48 @@ const STAGE_NUM: Record<string, number> = { no_grasp: 1, carried: 2, released: 3
   </figcaption>
 </figure>
 
+<script>
+  // The vial on each card's small rack moves while its video plays: from the slot it started in to where it ended
+  // (the asked slot, another slot, held over one, or nowhere when it was never picked up), lifted over the racks on
+  // the way. The clips have no grasp and release times, so the dot follows the video's progress, not the exact moment:
+  // it is a picture of the move, not a clock. Paused, before the first play, and with reduced motion, it shows the end.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('.clip').forEach((clip) => {
+    const video = clip.querySelector('video');
+    const glyph = clip.querySelector<SVGSVGElement>('.rack-glyph');
+    const vial = glyph?.querySelector<SVGCircleElement>('[data-vial]');
+    const from = glyph?.querySelector<SVGCircleElement>(`[data-slot="${glyph.dataset.src}"]`);
+    if (reduce || !video || !glyph || !vial || !from) return;
+    const end = { x: Number(vial.getAttribute('cx')), y: Number(vial.getAttribute('cy')) };
+    const start = { x: Number(from.getAttribute('cx')), y: Number(from.getAttribute('cy')) };
+    if (start.x === end.x && start.y === end.y) return;  // never picked up: the vial stays where it is
+    const lift = Math.min(24, 8 + Math.abs(end.x - start.x) / 9);
+    const place = (p: number) => {
+      const e = p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2;
+      vial.setAttribute('cx', String(start.x + (end.x - start.x) * e));
+      vial.setAttribute('cy', String(start.y + (end.y - start.y) * e - Math.sin(Math.PI * e) * lift));
+    };
+    // still at the source for the first fifth of the clip, at the end for the last fifth
+    const sync = () => place(video.paused || !video.duration ? 1 : Math.min(1, Math.max(0, (video.currentTime / video.duration - 0.2) / 0.6)));
+    const frame = () => { sync(); if (!video.paused) requestAnimationFrame(frame); };
+    video.addEventListener('play', () => requestAnimationFrame(frame));
+    video.addEventListener('timeupdate', sync);  // keeps it right after a seek, and where the browser pauses animation frames
+    video.addEventListener('pause', sync);
+  });
+</script>
+
 <style>
   .clip { margin: 0; display: grid; gap: 0.7rem; align-content: start; }
   .kind { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); font-weight: 620; color: var(--ink); margin: 0; }
   .kind i { width: 0.95rem; height: 0.95rem; border-radius: 3px; flex: none; background: var(--steel); }
   .frame { position: relative; }
   video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; }
-  .clip-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: center; margin-bottom: 0.35rem; }
+  /* the asked move in words, then the racks at the full width of the card (they were a 12rem thumbnail beside it) */
+  .clip-head { display: grid; gap: 0.3rem; margin-bottom: 0.4rem; }
   .clip-head .move { font-size: var(--step-1); }
-  .clip-head :global(.rack-glyph) { max-width: 12rem; justify-self: end; }
+  .clip-head :global(.rack-glyph) { max-width: 30rem; }
+  .clip-head :global(.rack-glyph .slot), .clip-head :global(.rack-glyph .bin) { stroke-width: 1.6; }
+  .clip-head :global(.rack-glyph .arc) { stroke-width: 1.8; opacity: 1; }
   p { font-size: var(--step--1); color: var(--ink-2); }
   .cams { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.5rem; }
 </style>

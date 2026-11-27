@@ -47,28 +47,64 @@ function units(rows: RobotRow[], x: (r: RobotRow) => number | string) {
   return out;
 }
 
-for (const run of training.runs) {
-  mount(`loss-${run.id}`, (width) =>
-    Plot.plot({
+// The loss curves: the runs ticked in the page's list, one chart per kind of model (each kind measures its loss
+// differently, so only runs of one kind share an axis). A run keeps one colour, its place in a fixed order, the same
+// as its swatch in the list and the table (src/pages/training.astro).
+const SERIES = ['pi05', 'flux', 'groot', 'pi0', 'act', 'isaac'];
+const seriesColor = (id: string) => `var(--m-${SERIES[training.runs.findIndex((r) => r.id === id) % SERIES.length]})`;
+const LOSS_NAME: Record<string, string> = { flux: 'loss (video + action)', isaac: 'flow loss (action expert)' };
+const KIND: Record<string, string> = { pi05: 'π0.5', flux: 'FLUX 3 Action', isaac: 'Isaac 0.5' };
+const lossHost = document.querySelector<HTMLElement>('[data-loss]');
+const runBoxes = [...document.querySelectorAll<HTMLInputElement>('[data-run-box]')];
+function drawLoss() {
+  if (!lossHost) return;
+  const on = new Set(runBoxes.filter((b) => b.checked).map((b) => b.dataset.runBox));
+  const picked = training.runs.filter((r) => on.has(r.id));
+  document.querySelectorAll<HTMLElement>('[data-run-row]').forEach((tr) => (tr.hidden = !on.has(tr.dataset.runRow)));
+  document.querySelector<HTMLElement>('[data-loss-empty]')!.hidden = picked.length > 0;
+  const width = Math.round(lossHost.clientWidth);
+  if (!width) return;  // the tab is closed: it is drawn when it opens (the observer below)
+  const kinds = [...new Set(picked.map((r) => r.model))];
+  lossHost.style.minHeight = '';
+  lossHost.replaceChildren(...kinds.map((kind) => {
+    const mine = picked.filter((r) => r.model === kind);
+    const points = mine.flatMap((r) => r.points.map((p) => ({ ...p, run: r.id })));
+    const names = Object.fromEntries(mine.map((r) => [r.id, document.querySelector(`[data-run-row="${r.id}"] th`)?.textContent ?? r.id]));
+    const box = document.createElement('div');
+    const head = document.createElement('h3');
+    head.innerHTML = `${KIND[kind] ?? kind} <span>${LOSS_NAME[kind] ?? 'loss'}, ${mine.length} run${mine.length === 1 ? '' : 's'}</span>`;
+    box.append(head, Plot.plot({
       ...plotBase,
       ...M,
       width,
-      height: 180,
-      marginTop: 26,   // room for the "↑ Loss" label above the top tick at the larger text size
-      marginBottom: 26,
-      x: { domain: [0, run.steps], tickFormat: kStep, ticks: width < 500 ? 3 : 6, label: null },
-      y: { type: 'log', domain: lossDomain[run.model], label: run.model === 'flux' ? 'Loss (video + action)' : run.model === 'isaac' ? 'Flow loss (action expert)' : 'Loss',
-           ticks: 3, tickFormat: '~g', labelAnchor: 'top' },
+      height: kinds.length > 2 ? 150 : kinds.length === 2 ? 190 : 260,
+      marginTop: 10,
+      marginBottom: 24,
+      x: { domain: [0, Math.max(...mine.map((r) => r.steps))], tickFormat: kStep, ticks: width < 500 ? 3 : 6, label: null },
+      y: { type: 'log', domain: lossDomain[kind], label: null, ticks: 3, tickFormat: '~g' },
       marks: [
         Plot.gridY({ stroke: 'var(--grid)', strokeOpacity: 1, ticks: 3 }),
-        Plot.ruleX(run.robot.map((r) => r.step), { stroke: 'var(--rack)', strokeWidth: 1 }),
-        Plot.lineY(run.points, { x: 'step', y: 'loss', stroke: color(run.model), strokeWidth: 2 }),
-        Plot.dot(run.points, Plot.pointerX({ x: 'step', y: 'loss', r: 4, fill: color(run.model), stroke: 'var(--page)', strokeWidth: 2 })),
-        Plot.tip(run.points, Plot.pointerX({ x: 'step', y: 'loss', ...tip,
-          title: (d) => `${kStep(d.step)} steps\nloss ${d.loss.toPrecision(3)}${d.action_mse ? `\naction error ${d.action_mse.toPrecision(3)}` : ''}` })),
+        Plot.lineY(points, { x: 'step', y: 'loss', z: 'run', stroke: (d) => seriesColor(d.run), strokeWidth: 2 }),
+        Plot.dot(points, Plot.pointer({ x: 'step', y: 'loss', r: 4, fill: (d) => seriesColor(d.run), stroke: 'var(--page)', strokeWidth: 2 })),
+        Plot.tip(points, Plot.pointer({ x: 'step', y: 'loss', ...tip,
+          title: (d) => `${names[d.run]}\n${kStep(d.step)} steps\nloss ${d.loss.toPrecision(3)}${d.action_mse ? `\naction error ${d.action_mse.toPrecision(3)}` : ''}` })),
       ],
     }));
+    return box;
+  }));
+}
+if (lossHost) {
+  runBoxes.forEach((b) => b.addEventListener('change', drawLoss));
+  document.querySelectorAll<HTMLElement>('[data-runs]').forEach((b) => b.addEventListener('click', () => {
+    runBoxes.forEach((x) => (x.checked = b.dataset.runs === 'all'));
+    drawLoss();
+  }));
+  let lastWidth = 0;
+  new ResizeObserver(() => { const w = Math.round(lossHost.clientWidth); if (w !== lastWidth) { lastWidth = w; drawLoss(); } }).observe(lossHost);
+  drawLoss();
+}
 
+for (const run of training.runs) {
   if (!run.robot.length) continue;
   const data = units(run.robot, (r) => r.step);
   const tall = Math.max(...data.map((d) => d.i)) + 1;

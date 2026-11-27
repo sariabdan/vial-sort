@@ -2,7 +2,7 @@
 # joins each entry to its robot sessions (by `run`), its training log, and its train_config.json, and every
 # page loops over the result. To add a model, add an entry here and re-run build_data.py.
 #
-#   id            url-safe slug (the #hash on the Experiments page, the ?m= on the Results page)
+#   id            url-safe slug (the #hash on the Models page, the ?m= on the Results page)
 #   name          the custom name shown everywhere
 #   run           the run id build_data.run_of() gives this model's rollout sessions
 #   family        pi05 | flux3

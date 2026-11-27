@@ -3,6 +3,14 @@ layout: ../../layouts/Doc.astro
 title: "Arm test, 8–9 Nov: π0.5 B at 16000 steps"
 date: "2026-11-08"
 description: "B retrained from base12k with the quantiles pinned: 11 of 31 rollouts placed correctly, and the destination now follows the command."
+models:
+  - { id: mango-pudding, was: "B at 16000" }
+points:
+  - "11 of 31 moves placed right (35%). The 12-move gate is not passed: right slot in 7 of 12, right vial in 10 of 12."
+  - "The destination now comes from the command: with the scene unchanged, slot 1, 3 and 6 took the arm to different slots in the right order, but the far slots are pulled toward the middle."
+  - "7 moves had no grasp. The recorded actions show it is the model, not the gripper: when it closes, it closes as hard as in training."
+  - "The grasp failures cluster on the left same-rack pair L1↔L6 and on slot-6 sources, and the destination words change whether the grasp works."
+  - "Next: A at 16000 on the same moves, as a paired comparison."
 ---
 
 - Checkpoint: `outputs/pi05_full_vial-sort-ws220_canon_ft012000_v2/checkpoints/016000` (trained on the

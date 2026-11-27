@@ -1,5 +1,5 @@
 // Every word the October pages use in a narrower sense than everyday English, defined once. <Term k="…">
-// shows the definition on hover or focus; the Experiments page prints the whole list.
+// shows the definition on hover or focus; the Glossary page prints the whole list.
 
 export interface Entry { term: string; def: string }
 
@@ -18,7 +18,7 @@ export const GLOSSARY: Record<string, Entry> = {
   heldout: { term: 'Held out', def: 'Never recorded on purpose: slots 2 and 5 are never a source, and slots 2, 4 and 5 never a destination. They test whether a model can reach slots no demonstration used.' },
   demonstration: { term: 'Demonstration', def: 'One move recorded by a person driving the leader arm while the follower arm copied it, with all cameras and joint positions logged.' },
   scorer: { term: 'Scorer', def: 'A script (assess_rollouts) that reads the arm’s joint angles during a rollout, finds each grasp and release, and works out which slot the arm was at by matching its pose to the same moment in the demonstrations. It is accurate to about half a slot and cannot see the vial.' },
-  score: { term: 'Total accuracy', def: 'The score of a run: for each of the 12 rack slots as the destination, the share of its rollouts that ended in the asked slot, then the mean of those 12 shares. The bin is left out. A run passes with at least 10 rollouts at every slot and a total of at least 70%; fewer than 10 at any slot disqualifies it. Explained under “How a run is scored” on the Experiments page.' },
+  score: { term: 'Total accuracy', def: 'The score of a run: for each of the 12 rack slots as the destination, the share of its rollouts that ended in the asked slot, then the mean of those 12 shares. The bin is left out. A run passes with at least 10 rollouts at every slot and a total of at least 70%; fewer than 10 at any slot disqualifies it. Explained under “The score of a run” on the Testing page.' },
   trainacc: { term: 'Trained-slot accuracy', def: 'The same mean over slots 1, 3 and 6 of both racks: the destinations the demonstrations used.' },
   heldacc: { term: 'Held-out accuracy', def: 'The same mean over slots 2, 4 and 5 of both racks, which no demonstration used as a destination.' },
   balanced: { term: 'Balanced accuracy', def: 'The mean of the recall of every rack slot: each slot counts the same, however many rollouts went there. The total accuracy of the score is this number, with the bin left out.' },

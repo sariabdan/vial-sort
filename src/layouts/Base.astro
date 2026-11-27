@@ -6,17 +6,19 @@ import { url, CODE, HF } from '../lib/site';
 interface Props {
   title: string;
   description: string;
-  page: 'home' | 'results' | 'training' | 'datasets' | 'experiments' | 'docs' | 'previous';
+  page: 'home' | 'results' | 'training' | 'datasets' | 'method' | 'models' | 'glossary' | 'docs' | 'previous';
 }
 const { title, description, page } = Astro.props;
-// in the order a reader needs them: what was recorded, what was done, what came out, how the models learned,
-// then the dated notes (src/pages/docs/*.md) for the work after the October pages
+// in the order the work went: what was recorded, how the models were trained on it, what each model is, how they
+// were tested, what came out, then the dated notes (src/pages/docs/*.md) for the work after the October pages.
+// The glossary is linked from the footer.
 const nav = [
   { key: 'datasets', href: 'datasets/', label: 'Data' },
-  { key: 'experiments', href: 'experiments/', label: 'Experiments' },
-  { key: 'results', href: 'results/', label: 'Results' },
   { key: 'training', href: 'training/', label: 'Training' },
-  { key: 'docs', href: 'docs/', label: 'Docs' },
+  { key: 'models', href: 'models/', label: 'Models' },
+  { key: 'method', href: 'method/', label: 'Testing' },
+  { key: 'results', href: 'results/', label: 'Results' },
+  { key: 'docs', href: 'docs/', label: 'Lab notes' },
 ];
 // the August work, one level down; the sub-navigation shows only inside it
 const previous = [
@@ -47,6 +49,13 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
         const t = localStorage.getItem('theme');
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
       } catch (e) {}
+      // Pages that show part of what they hold (the ticked runs, one model, one tab) are written with all of it, so
+      // they still work without scripts. With scripts on, the parts that start hidden must not flash on screen before
+      // the page's script has run: the class below hides them from the first paint ([data-init-off]) and holds back a
+      // view until it is set up ([data-await]); src/styles/global.css has the two rules. If a script never runs, the
+      // class comes off after three seconds and everything shows.
+      document.documentElement.classList.add('js');
+      setTimeout(function () { document.documentElement.classList.remove('js'); }, 3000);
     </script>
   </head>
   <body>
@@ -87,6 +96,17 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
         </nav>
       )}
     </header>
+    <!-- The sections of a long page, filled from its headings by the script below; it stays hidden on a short page.
+         It sticks to the top while the header scrolls away, so one slim bar is all that stays on screen. -->
+    <nav class="onpage" aria-label="On this page" hidden>
+      <div class="wrap onpage-row">
+        <button type="button" class="onpage-toggle" aria-expanded="false" aria-controls="onpage-list">
+          <span class="onpage-word">On this page</span><span class="onpage-now"></span>
+        </button>
+        <ul id="onpage-list"></ul>
+        <a class="onpage-top" href="#top">↑ Top</a>
+      </div>
+    </nav>
     <main id="main">
       <slot />
     </main>
@@ -97,6 +117,7 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
           training logs and robot recordings when the site is built; none is typed in by hand.
         </p>
         <ul>
+          <li><a href={url('glossary/')}>Glossary</a></li>
           <li><a href={url('previous/report/')}>August report</a></li>
           <li><a href={`${HF}/sari-abdan`}>Data and models on Hugging Face</a></li>
           <li><a href={CODE}>Code on GitHub</a></li>
@@ -162,6 +183,101 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
       }
     </script>
     <script>
+      // "On this page": one link per section heading of a long page, the current one marked as the page
+      // scrolls. Headings without an id get one from their text. On a narrow screen the list folds behind a button.
+      const bar = document.querySelector<HTMLElement>('.onpage')!;
+      const list = bar.querySelector<HTMLUListElement>('ul')!;
+      const toggle = bar.querySelector<HTMLButtonElement>('.onpage-toggle')!;
+      const now = bar.querySelector<HTMLElement>('.onpage-now')!;
+      const heads = [...document.querySelectorAll<HTMLElement>('main h2, main .doc-body h1')]
+        .filter((h) => !h.closest('aside, summary, [hidden]'));
+      const labelOf = (h: HTMLElement) => {
+        if (h.dataset.nav) return h.dataset.nav;  // a heading can name its own short entry (the home page's sections)
+        const c = h.cloneNode(true) as HTMLElement;
+        c.querySelectorAll('.note, .sub, .count, .visually-hidden').forEach((x) => x.remove());
+        return (c.textContent ?? '').replace(/\s+/g, ' ').trim();
+      };
+      // only where there is something to jump over: three or more sections on a page over three screens long
+      // a page that is its own panel (Results: tabs, not sections) opts out with data-no-onpage
+      if (heads.length >= 3 && document.documentElement.scrollHeight > 3 * innerHeight && !document.querySelector('main [data-no-onpage]')) {
+        const used = new Set<string>();
+        const links = heads.map((h) => {
+          const label = labelOf(h);
+          if (!h.id) {
+            const base = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'section';
+            let id = base;
+            for (let n = 2; used.has(id) || document.getElementById(id); n++) id = `${base}-${n}`;
+            h.id = id;
+          }
+          used.add(h.id);
+          const a = document.createElement('a');
+          a.href = `#${h.id}`; a.textContent = label; a.title = label;
+          const li = document.createElement('li');
+          li.append(a); list.append(li);
+          return a;
+        });
+        bar.hidden = false;
+        document.documentElement.classList.add('has-onpage');
+        const close = () => { delete bar.dataset.open; toggle.setAttribute('aria-expanded', 'false'); };
+        toggle.addEventListener('click', () => {
+          if (bar.dataset.open) close(); else { bar.dataset.open = '1'; toggle.setAttribute('aria-expanded', 'true'); }
+        });
+        list.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) close(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+        let current = -1, queued = false;
+        const mark = () => {
+          queued = false;
+          let at = -1;
+          // at the very bottom the last section is the current one, even if its heading never reached the top
+          const bottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+          heads.forEach((h, i) => { if (h.offsetParent && (bottom || h.getBoundingClientRect().top <= innerHeight * 0.35)) at = i; });
+          if (at === current) return;
+          current = at;
+          links.forEach((a, i) => (i === at ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+          now.textContent = at >= 0 ? links[at].textContent : '';
+          const a = links[at];
+          if (a && !bar.dataset.open) list.scrollTo({ left: a.offsetLeft - (list.clientWidth - a.offsetWidth) / 2 });
+        };
+        addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(mark); } }, { passive: true });
+        mark();
+        // the ids were added after the browser looked for the address's target: go there now
+        if (location.hash.length > 1) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView();
+      }
+      // Tabs of a panel page: a [data-tabset] holds [data-t] buttons and [data-p] panels (several panels may share a
+      // name). The open tab is kept in the address as #name; an address that names something inside a panel opens
+      // that panel and goes there, so links to a section still arrive. data-tabset="quiet" leaves the address alone.
+      document.querySelectorAll<HTMLElement>('[data-tabset]').forEach((set) => {
+        const buttons = [...set.querySelectorAll<HTMLElement>('[data-t]')];
+        const panels = [...set.querySelectorAll<HTMLElement>('[data-p]')];
+        const names = buttons.map((b) => b.dataset.t!);
+        const show = (name: string, record: boolean) => {
+          buttons.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.t === name)));
+          panels.forEach((p) => (p.hidden = p.dataset.p !== name));
+          if (record && set.dataset.tabset !== 'quiet') try { history.replaceState(null, '', `${location.pathname}${location.search}#${name}`); } catch (e) {}
+        };
+        const follow = (first: boolean) => {
+          const hash = decodeURIComponent(location.hash.slice(1));
+          const target = hash && !names.includes(hash) ? document.getElementById(hash) : null;
+          const inside = target?.closest<HTMLElement>('[data-p]');
+          const name = names.includes(hash) ? hash : inside && set.contains(inside) ? inside.dataset.p! : first ? names[0] : null;
+          if (name) show(name, false);
+          if (inside) target!.scrollIntoView();
+        };
+        follow(true);
+        set.removeAttribute('data-await');  // the right tab is open: the view can show
+        addEventListener('hashchange', () => follow(false));
+        buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.t!, true)));
+      });
+      // a link to something inside a folded table opens the fold
+      const unfold = () => {
+        if (location.hash.length < 2) return;
+        let d = document.getElementById(decodeURIComponent(location.hash.slice(1)))?.closest('details');
+        while (d) { d.open = true; d = d.parentElement?.closest('details') ?? null; }
+      };
+      unfold();
+      addEventListener('hashchange', unfold);
+    </script>
+    <script>
       const button = document.getElementById('theme-toggle') as HTMLButtonElement;
       const root = document.documentElement;
       const dark = () =>
@@ -196,15 +312,21 @@ const built = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'l
   .subnav { border-top: 1px solid var(--rule); background: var(--raise); margin: 0; }
   .subnav .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.6rem; padding-block: 0.55rem; font-size: var(--step--1); color: var(--ink-2); }
   .subnav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; list-style: none; margin: 0; padding: 0; }
-  nav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.3rem; list-style: none; margin: 0; padding: 0; }
-  nav a { text-decoration: none; color: var(--ink-2); }
-  nav a:hover { color: var(--ink); text-decoration: underline; }
-  nav a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
+  .site-head nav ul { display: flex; flex-wrap: wrap; gap: 0.3rem 1.3rem; list-style: none; margin: 0; padding: 0; }
+  .site-head nav a { text-decoration: none; color: var(--ink-2); }
+  .site-head nav a:hover { color: var(--ink); text-decoration: underline; }
+  .site-head nav a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
   .site-foot { border-top: 1px solid var(--rule); margin-top: 2rem; padding-block: 2rem 2.6rem; font-size: var(--step--1); color: var(--ink-2); }
   .foot-row { display: grid; gap: 0.9rem; }
   .foot-row ul { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; list-style: none; padding: 0; margin: 0; }
   @media (max-width: 40rem) {
-    .head-row > nav { margin-left: 0; order: 3; width: 100%; }
+    /* two slim rows on a phone: name and buttons, then the five pages on one line */
+    .head-row { gap: 0.35rem 0.5rem; min-height: 0; padding-block: 0.55rem 0.45rem; flex-wrap: wrap; }
+    .mark { font-size: 1.1rem; gap: 0.45rem; }
+    .mark svg { width: 2rem; }
+    .head-row .quiet-btn { font-size: 1rem; padding: 0.1rem 0.65rem; }
+    .head-row > nav { margin-left: 0; order: 3; width: 100%; font-size: 0.94rem; }
+    .head-row > nav ul { flex-wrap: nowrap; justify-content: space-between; gap: 0.3rem; white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
     .switch { margin-left: auto; }
   }
 </style>

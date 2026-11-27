@@ -1,21 +1,63 @@
 ---
-// Layout of the dated notes in src/pages/docs/*.md. Frontmatter: title, date (YYYY-MM-DD), description.
+// Layout of the dated notes in src/pages/docs/*.md. Frontmatter: title, date (YYYY-MM-DD), description, and two
+// optional lists that make the summary above the note:
+//   points: the note's findings, a sentence each, in the note's own numbers
+//   models: { id, was } pairs, the id of a model in models.yaml and what the note calls it ("A at 16000")
+// The note itself follows as written. Its tables of more than 12 rows are folded behind one line that says how many
+// rows and which columns, like the lookup tables of the other pages (details.fold in src/styles/global.css).
 import Base from './Base.astro';
+import registry from '../data/registry.json';
 import { url, date } from '../lib/site';
 
 const { frontmatter } = Astro.props;
 const { title, description } = frontmatter;
+const points: string[] = frontmatter.points ?? [];
+const named = ((frontmatter.models ?? []) as { id: string; was: string }[])
+  .map((x) => ({ ...x, m: registry.models.find((m) => m.id === x.id) }))
+  .filter((x) => x.m);
+
+const FOLD_OVER = 12;
+const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const body = (await Astro.slots.render('default')).replace(/<table[\s\S]*?<\/table>/g, (table) => {
+  const rows = (table.split(/<tbody[^>]*>/)[1] ?? '').match(/<tr[\s>]/g)?.length ?? 0;
+  if (rows <= FOLD_OVER) return table;
+  const heads = [...table.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map((m) => plain(m[1])).filter(Boolean);
+  return `<details class="fold"><summary>${rows} rows${heads.length ? `: ${heads.join(', ')}` : ''}</summary>${table}</details>`;
+});
 ---
 <Base page="docs" title={title} description={description}>
   <section class="section">
     <div class="wrap doc">
-      <p class="doc-meta"><a href={url('docs/')}>Docs</a> · {date(String(frontmatter.date))}</p>
+      <p class="doc-meta"><a href={url('docs/')}>Lab notes</a> · {date(String(frontmatter.date))}</p>
       <h1>{title}</h1>
       <p class="lead">{description}</p>
+      {(points.length > 0 || named.length > 0) && (
+        <aside class="short" aria-label="In short">
+          {points.length > 0 && (
+            <>
+              <h2>In short</h2>
+              <ul>{points.map((p) => <li>{p}</li>)}</ul>
+            </>
+          )}
+          {named.length > 0 && (
+            <dl class="names">
+              <dt>Names on the rest of this site</dt>
+              {named.map((x) => (
+                <dd>
+                  <span class="was">{x.was}</span>{' is '}
+                  <a href={`${url('models/')}#${x.m!.id}`}>{x.m!.name}</a>
+                  {x.m!.rows.length > 0 && <>{' · '}<a href={`${url('results/')}?r=${x.m!.rows.join(',')}#h-score`}>its results</a></>}
+                </dd>
+              ))}
+            </dl>
+          )}
+        </aside>
+      )}
       <article class="doc-body">
-        <slot />
+        <p class="doc-meta as-written">The note, as written at the time:</p>
+        <Fragment set:html={body} />
       </article>
-      <p class="doc-meta doc-end"><a href={url('docs/')}>← All docs</a></p>
+      <p class="doc-meta doc-end"><a href={url('docs/')}>← All lab notes</a></p>
     </div>
   </section>
 </Base>
@@ -25,7 +67,16 @@ const { title, description } = frontmatter;
   .doc-meta { font-size: var(--step--1); color: var(--ink-2); margin-bottom: 0.7rem; }
   .doc h1 { margin-bottom: 0.9rem; }
   .doc-end { margin-top: 3rem; }
+  .short { margin-top: 1.8rem; padding: 1.1rem 1.3rem 1.2rem; border: 1px solid var(--rule); border-left: 3px solid var(--ink); border-radius: 0 6px 6px 0; background: var(--raise); }
+  .short h2 { font-size: var(--step-1); margin-bottom: 0.6rem; }
+  .short ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.45rem; max-width: var(--measure); }
+  .names { margin: 0; font-size: var(--step--1); color: var(--ink-2); display: grid; gap: 0.2rem; }
+  .short ul + .names { margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--rule); }
+  .names dt { font-weight: 600; color: var(--ink); }
+  .names dd { margin: 0; }
+  .was { font-weight: 560; color: var(--ink); }
   .doc-body { margin-top: 2.2rem; }
+  .as-written { margin-bottom: 0; }
   .doc-body :global(h2) { margin-top: 2.6rem; margin-bottom: 0.7rem; }
   .doc-body :global(h3) { margin-top: 1.8rem; margin-bottom: 0.5rem; }
   .doc-body :global(p) { margin-top: 0.8em; }

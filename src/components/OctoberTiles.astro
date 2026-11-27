@@ -3,6 +3,9 @@
 // rates: the rows are small, and a percentage of five rollouts would look more certain than it is.
 import results from '../data/results.json';
 
+// compact: the same four tiles at a smaller size, for the first screen of the home page
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
 const t = results.tiles;
 const p = t.pi05, f = t.flux, g = t.gate;
 const tiles = [
@@ -12,7 +15,7 @@ const tiles = [
   { big: g.dest_passed, of: g.checkpoints, text: 'checkpoints read the destination slot in the offline test', note: `Mango Rice, October. The source slot is read from ${g.source_from / 1000}k steps on.` },
 ];
 ---
-<ul class="tiles">
+<ul class:list={['tiles', compact && 'compact']}>
   {tiles.map((x) => (
     <li>
       <span class="value">{x.big}<span class="of">{` of ${x.of}`}</span></span>
@@ -28,5 +31,10 @@ const tiles = [
   .value { font-size: var(--step-5); font-weight: 600; line-height: 1; font-stretch: 112%; white-space: nowrap; }
   .of { font-size: var(--step-1); font-weight: 500; color: var(--ink-2); font-stretch: 100%; }
   .text { max-width: 22ch; line-height: 1.35; }
+  .compact li { padding-top: 0.6rem; gap: 0.15rem; }
+  .compact .value { font-size: var(--step-3); }
+  .compact .of { font-size: var(--step-0); }
+  .compact .text { max-width: 26ch; font-size: var(--step--1); color: var(--ink); }
+  .compact .note { font-size: 0.95rem; line-height: 1.4; }
   @media (max-width: 52rem) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

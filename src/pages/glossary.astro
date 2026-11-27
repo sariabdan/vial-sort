@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { GLOSSARY, GLOSSARY_ORDER } from '../lib/glossary';
+
+// Every word the site uses in a defined sense (src/lib/glossary.ts). The same definitions show on hover wherever
+// a dotted word appears (src/components/Term.astro).
+---
+<Base
+  page="glossary"
+  title="Glossary"
+  description="The words this site uses in a defined sense: rollout, run, sync mode, the three outcomes, the score and its parts."
+>
+  <section class="section">
+    <div class="wrap">
+      <h1>Glossary</h1>
+      <p class="lead">The words this site uses in a defined sense. Hover or focus a dotted word on any page to see its definition; all of them are here.</p>
+      <dl class="glossary">
+        {GLOSSARY_ORDER.map((k) => (
+          <div id={`g-${k}`}><dt>{GLOSSARY[k].term}</dt><dd>{GLOSSARY[k].def}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.3rem clamp(1.5rem, 4vw, 3.5rem); margin: 2rem 0 0; }
+  .glossary dt { font-weight: 620; }
+  .glossary dd { margin: 0.15rem 0 0; color: var(--ink-2); }
+  @media (max-width: 52rem) { .glossary { grid-template-columns: minmax(0, 1fr); } }
+</style>

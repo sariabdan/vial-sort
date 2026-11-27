@@ -1,103 +1,118 @@
 ---
-// One model described in full: what it is, what it saw, every hyperparameter with its meaning, and what happened while
-// it was built. How it did on the robot is on Results, linked from here (one home for every result). Everything comes
-// from models.yaml and the build; a model added there gets this section with no page change.
+// One model described in full, in three parts that the Models page shows one at a time as tabs (data-p, switched by
+// the script in src/layouts/Base.astro): what it is and what it saw; every hyperparameter with its meaning; and what
+// happened while it was built. How it did on the robot is on Results, linked from here (one home for every result).
+// Everything comes from models.yaml and the build; a model added there gets this entry with no page change.
 import experiments from '../data/experiments.json';
 import CameraChips from './CameraChips.astro';
-import { HF, url } from '../lib/site';
+import { HF, url, sentences } from '../lib/site';
 
 type Model = (typeof experiments.models)[number];
-interface Props { m: Model }
-const { m } = Astro.props;
+// shown: this is the model the page opens on; the others stay out of the first paint
+interface Props { m: Model; shown?: boolean }
+const { m, shown = true } = Astro.props;
 // the "On the robot …" notes are results: Results shows them with the model's moves
 const story = m.notes.filter((n) => !/^On the robot/i.test(n.title));
 const left = m.left_out as Record<string, number>;
 ---
-<article class="model" data-model={m.id} id={m.id}>
+<article class="model" data-model={m.id} id={m.id} data-init-off={!shown || undefined}>
   <header>
-    <h3><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}</h3>
+    <h2><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}</h2>
     <p class="what">{`${m.what}.`}</p>
   </header>
 
-  <dl class="facts">
-    <div><dt>Started from</dt><dd>{m.base}</dd></div>
-    <div><dt>Trained on</dt><dd>{m.data}</dd></div>
-    <div><dt>Cameras it saw</dt><dd><CameraChips used={m.cams} note={m.cams_note} /></dd></div>
-    {m.hub && <div><dt>Weights</dt><dd><a href={`${HF}/sari-abdan/${m.hub}`}>on Hugging Face</a></dd></div>}
-  </dl>
-  <p class="results-link">
-    {m.has_loss && <><a href={url('training/')}>{`How it trained: ${m.hours} h, ${m.mem_gb} GB →`}</a>{m.rows.length ? ' · ' : ''}</>}
-    {m.rows.length
-      ? <a href={`${url('results/')}?r=${m.rows.join(',')}#h-score`}>{`Its results on the robot, ${m.rollouts} rollouts →`}</a>
-      : m.scored
-        ? 'This model was never run on the robot.'
-        : `Its rollouts ran on an earlier layout of the table, which the scorer cannot read, so none are scored (${left.earlier_scene ?? 0} rollouts).`}
-  </p>
+  <div data-p="about">
+    <dl class="facts">
+      <div><dt>Started from</dt><dd>{m.base}</dd></div>
+      <div><dt>Trained on</dt><dd>{m.data}</dd></div>
+      <div><dt>Cameras it saw</dt><dd><CameraChips used={m.cams} note={m.cams_note} /></dd></div>
+      <div><dt>Steps</dt><dd class="num">{m.steps?.toLocaleString('en-GB') ?? '–'}</dd></div>
+      {m.has_loss && <div><dt>Training</dt><dd class="num">{`${m.hours} h, ${m.mem_gb} GB`}</dd></div>}
+      <div><dt>Weights</dt><dd>{m.hub ? <a href={`${HF}/sari-abdan/${m.hub}`}>on Hugging Face</a> : 'not published'}</dd></div>
+    </dl>
+    <p class="results-link">
+      {m.rows.length
+        ? <a href={`${url('results/')}?r=${m.rows.join(',')}#h-score`}>{`Its results on the robot, ${m.rollouts} rollouts →`}</a>
+        : m.scored
+          ? 'This model was never run on the robot.'
+          : `Its rollouts ran on an earlier layout of the table, which the scorer cannot read, so none are scored (${left.earlier_scene ?? 0} rollouts).`}
+      {m.has_loss && <>{' · '}<a href={url('training/')}>How it trained →</a></>}
+    </p>
+  </div>
 
-  <h4>Hyperparameters</h4>
-  <p class="note">{`Read from ${m.hyper_source}.`}</p>
-  {m.hyper.length ? m.hyper.map((g) => (
-    <div class="hyper">
-      <h5>{g.group}</h5>
-      <div class="table-scroll">
-        <table class="data hyp">
-          <tbody>
-            {g.rows.map(([label, value, def]) => (
-              <tr><th scope="row">{label}</th><td class="val">{value}</td><td class="def">{def}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )) : <p>No record of the settings survives.</p>}
-
-  {story.length > 0 && (
-    <>
-      <h4>What happened</h4>
-      <div class="story">
-        {story.map((n) => (
-          <div><h5>{n.title}</h5><p>{n.text}</p></div>
+  <div data-p="settings" hidden>
+    <p class="note">{`Read from ${m.hyper_source}.`}</p>
+    {m.hyper.length ? (
+      <div class="hyper-grid">
+        {m.hyper.map((g) => (
+          <div class="hyper">
+            <h3>{g.group}</h3>
+            <dl class="hyp">
+              {g.rows.map(([label, value, def]) => (
+                <div><dt>{label}</dt><dd class="val">{value}</dd><dd class="def">{def}</dd></div>
+              ))}
+            </dl>
+          </div>
         ))}
       </div>
-    </>
-  )}
+    ) : <p>No record of the settings survives.</p>}
+  </div>
 
-  {m.camera_choice && (
-    <>
-      <h4>Which camera FLUX looked through</h4>
-      <p>{m.camera_choice.intro}</p>
-      <div class="table-scroll">
-        <table class="data cam-choice">
-          <thead><tr><th>Run</th><th>Scene camera</th><th>Data</th><th>Result</th><th>Why</th></tr></thead>
-          <tbody>
-            {m.camera_choice.rows.map((c) => (
-              <tr><th scope="row">{c.run}</th><td>{c.camera}</td><td>{c.data}</td><td>{c.result}</td><td class="def">{c.why}</td></tr>
-            ))}
-          </tbody>
-        </table>
+  <div data-p="story" hidden>
+    {story.length > 0 ? (
+      <div class="story">
+        {story.map((n) => (
+          <div><h3>{n.title}</h3><ul class="said">{sentences(n.text).map((s) => <li>{s}</li>)}</ul></div>
+        ))}
       </div>
-    </>
-  )}
+    ) : <p class="note">Nothing was written down about how this model was built.</p>}
+    {m.camera_choice && (
+      <>
+        <h3>Which camera FLUX looked through</h3>
+        <p>{m.camera_choice.intro}</p>
+        <div class="table-scroll">
+          <table class="data cam-choice">
+            <thead><tr><th>Run</th><th>Scene camera</th><th>Data</th><th>Result</th><th>Why</th></tr></thead>
+            <tbody>
+              {m.camera_choice.rows.map((c) => (
+                <tr><th scope="row">{c.run}</th><td>{c.camera}</td><td>{c.data}</td><td>{c.result}</td><td class="def">{c.why}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )}
+  </div>
 </article>
 
 <style>
-  .model { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.2rem; min-width: 0; }
-  .model h3 { display: flex; align-items: center; gap: 0.6rem; font-size: var(--step-2); }
-  .dot { width: 0.85rem; height: 0.85rem; border-radius: 50%; flex: none; }
-  .what { color: var(--ink-2); margin-top: 0.4rem; }
-  .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 17rem)); gap: 0.9rem 2rem; margin: 1.2rem 0 0.4rem; }
+  .model { min-width: 0; container-type: inline-size; }
+  .model h2 { display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem; margin: 0; }
+  .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; flex: none; }
+  .what { color: var(--ink-2); margin: 0.2rem 0 0.9rem; max-width: 52rem; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 0.8rem 1.6rem; margin: 0; }
   .facts div { display: grid; gap: 0.1rem; align-content: start; }
-  .facts dt { font-size: var(--step--1); color: var(--ink-2); }
+  .facts dt { font-size: 0.8rem; color: var(--ink-2); }
   .facts dd { margin: 0; font-weight: 520; }
-  .results-link { margin-top: 1rem; font-weight: 560; }
-  h4 { font-size: var(--step-1); font-stretch: 112%; font-weight: 600; margin: 2.2rem 0 0.5rem; }
-  h5 { font-size: var(--step-0); font-weight: 620; margin: 0 0 0.3rem; }
-  .hyper { margin-top: 1rem; }
-  .hyper h5 { color: var(--ink-2); font-weight: 560; font-size: var(--step--1); text-transform: none; }
-  .hyp th { font-weight: 560; text-align: left; white-space: nowrap; width: 1%; padding-right: 1.2rem; }
-  .hyp .val { white-space: nowrap; width: 1%; padding-right: 1.2rem; font-variant-numeric: tabular-nums; }
-  .def { color: var(--ink-2); font-size: var(--step--1); min-width: 14rem; }
-  .story { display: grid; gap: 1.1rem; max-width: var(--measure); }
+  .results-link { margin-top: 1.1rem; font-weight: 560; max-width: none; }
+  /* The settings: every row has the same three columns (name, value, what it means) at the same widths in every
+     group, so the values line up down the page and the meaning always has room. One column of groups, no wider
+     than a line of the meaning reads comfortably. */
+  .hyper-grid { max-width: 60rem; margin-top: 0.5rem; }
+  .hyper { break-inside: avoid; margin-bottom: 1.1rem; }
+  .hyper h3 { margin: 0 0 0.2rem; padding-bottom: 0.25rem; font-size: 0.8rem; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+  .hyp { margin: 0; }
+  .hyp > div { display: grid; grid-template-columns: 10.5rem minmax(0, 13rem) minmax(0, 1fr); gap: 0.2rem 1rem; align-items: baseline; padding: 0.3rem 0; border-bottom: 1px solid var(--grid); }
+  .hyp dt { font-weight: 560; }
+  .hyp dd { margin: 0; }
+  .hyp .val { font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .def { color: var(--ink-2); font-size: 0.82rem; line-height: 1.4; }
+  @container (max-width: 34rem) { .hyp > div { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .hyp .def { grid-column: 1 / -1; } }
+  /* each account as its own sentences, one to a line, side by side where there is room */
+  .story { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1rem 1.6rem; max-width: 70rem; align-items: start; }
+  .story > div { padding-top: 0.45rem; border-top: 2px solid var(--ink); }
+  .story h3 { margin: 0 0 0.3rem; }
+  .said { margin: 0; padding-left: 1rem; display: grid; gap: 0.3rem; color: var(--ink-2); font-size: 0.88rem; line-height: 1.45; }
   .cam-choice th[scope='row'] { text-align: left; white-space: nowrap; }
-  .cam-choice td { vertical-align: top; min-width: 9rem; }
+  .cam-choice td { vertical-align: top; min-width: 8rem; }
 </style>

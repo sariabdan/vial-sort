@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import ModelDetail from '../components/ModelDetail.astro';
+import ModelTable from '../components/ModelTable.astro';
+import experiments from '../data/experiments.json';
+import { url, demoSet } from '../lib/site';
+
+// What each model is, as a panel (the style of Results): the list of models on the left, one model on the right in
+// three tabs. How they were tested and scored is on Testing (method.astro); how they did is on Results.
+// Links to one model use its id as the address: models/#<id>.
+const models = experiments.models;
+const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
+const onSet = (set: string) => models.filter((m) => demoSet(m.data) === set).length;
+const nameOf = (run: string) => models.find((m) => m.run === run)?.name ?? run;
+const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''))[0] ?? models[0];
+---
+<Base
+  page="models"
+  title="Models"
+  description="Every model trained for the vial-sorting task: what it is, what it started from, the cameras it saw, and each one in full with its hyperparameters and what happened while it was built."
+>
+  <div class="wrap panel-page" data-no-onpage>
+    <header class="panel-head">
+      <h1>Models</h1>
+      <p class="note">
+        {`${models.length} models: ${onSet('220')} trained on the 220 demonstrations and ${onSet('100')} on the 100; ${nameOf('flux-flux25')} on 25 earlier ones. ` +
+          `How they were tested: `}<a href={url('method/')}>Testing</a>{` · how they did: `}<a href={url('results/')}>Results</a>
+      </p>
+    </header>
+
+    <div class="panel-split">
+      <nav class="picker" aria-label="Model" data-picker>
+        <p class="list-head" aria-hidden="true"><span>Model</span><span>Steps</span><span>Rollouts</span></p>
+        {models.map((m) => (
+          <button type="button" class="pick" data-pick={m.id} aria-pressed={m.id === dflt.id ? 'true' : 'false'}>
+            <i style={`background: var(--m-${m.model})`}></i>
+            <span class="nm">{m.name}<span class="fam">{FAMILY[m.family]}</span></span>
+            <span class="num st">{m.steps ? `${Math.round(m.steps / 100) / 10}k` : '–'}</span>
+            <span class="num ro">{m.rows.length ? m.rollouts : '–'}</span>
+          </button>
+        ))}
+        <button type="button" class="pick more" data-pick="planned" aria-pressed="false">
+          <i class="none"></i><span class="nm">Planned and considered</span><span></span><span></span>
+        </button>
+        <p class="note list-foot">
+          {`${nameOf('pi05-noop')} and ${nameOf('pi05-trim2')} were short fine-tunes of ${nameOf('pi05-allcams')}, and their checkpoints are deleted. ` +
+            `The August policies are with the `}<a href={url('previous/')}>previous work</a>.
+        </p>
+      </nav>
+
+      <div class="view" data-tabset="quiet" data-model-view data-await>
+        <div class="tabstrip" role="tablist" aria-label="About this model">
+          <button type="button" role="tab" data-t="about" aria-selected="true">What it is</button>
+          <button type="button" role="tab" data-t="settings" aria-selected="false">Settings</button>
+          <button type="button" role="tab" data-t="story" aria-selected="false">What happened</button>
+        </div>
+        <div class="detail" data-default={dflt.id}>
+          {models.map((m) => <ModelDetail m={m} shown={m.id === dflt.id} />)}
+          <article data-model="planned" id="planned" hidden>
+            <h2>Planned next, and considered</h2>
+            <p class="note">Policies that are not trained yet, or were looked at and not trained.</p>
+            <ModelTable eras={['planned', 'considered']} />
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // One model shown at a time: the list on the left picks it. Without this script every model is listed one after
+  // another. The address carries the model (#plain-bagel); the tab of the model is not in the address.
+  const picker = document.querySelector<HTMLElement>('[data-picker]')!;
+  const detail = document.querySelector<HTMLElement>('.detail')!;
+  const articles = [...detail.querySelectorAll<HTMLElement>('[data-model]')];
+  const buttons = [...picker.querySelectorAll<HTMLButtonElement>('[data-pick]')];
+  const known = new Set(articles.map((a) => a.dataset.model));
+  function show(id: string, keepHash = false) {
+    articles.forEach((a) => { a.hidden = a.dataset.model !== id; a.removeAttribute('data-init-off'); });
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pick === id)));
+    detail.parentElement!.classList.toggle('no-tabs', id === 'planned');
+    if (!keepHash) try { history.replaceState(null, '', `#${id}`); } catch (e) {}
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.pick!)));
+  const fromHash = location.hash.slice(1);
+  show(known.has(fromHash) ? fromHash : detail.dataset.default!, !known.has(fromHash));
+  addEventListener('hashchange', () => { const h = location.hash.slice(1); if (known.has(h)) show(h, true); });
+</script>
+
+<style>
+  /* the list of models: one line each, the picked one marked */
+  .picker { position: sticky; top: 0.5rem; display: grid; min-width: 0; }
+  .list-head, .pick { display: grid; grid-template-columns: 0.9rem minmax(0, 1fr) 2.6rem 3.4rem; column-gap: 0.4rem; align-items: center; }
+  .list-head { font-size: 0.75rem; color: var(--steel); padding: 0.2rem 0.3rem; border-bottom: 1px solid var(--rule); max-width: none; margin: 0; }
+  .list-head span:first-child { grid-column: 1 / 3; }
+  .list-head span:not(:first-child) { text-align: right; }
+  .pick { font: inherit; color: var(--ink); text-align: left; background: none; border: 0; border-bottom: 1px solid var(--grid); border-radius: 4px; padding: 0.3rem; cursor: pointer; }
+  .pick:hover { background: var(--raise); }
+  .pick[aria-pressed='true'] { background: var(--raise); box-shadow: inset 3px 0 0 var(--ink); }
+  .pick i { width: 0.6rem; height: 0.6rem; border-radius: 50%; justify-self: center; }
+  .pick i.none { border: 1.5px dashed var(--steel); box-sizing: border-box; }
+  .pick .nm { font-weight: 620; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pick .fam { font-weight: 400; font-size: 0.78rem; color: var(--ink-2); margin-left: 0.4rem; }
+  .pick .st, .pick .ro { text-align: right; font-size: 0.82rem; color: var(--ink-2); }
+  .pick.more .nm { font-weight: 500; color: var(--ink-2); }
+  .list-foot { margin-top: 0.7rem; }
+  .view { min-width: 0; }
+  .view.no-tabs .tabstrip { display: none; }
+  .detail :global([data-model][hidden]) { display: none; }
+  .detail h2 { font-size: 1.5rem; margin: 0 0 0.3rem; }
+  @media (max-width: 56rem) { .picker { position: static; } }
+</style>

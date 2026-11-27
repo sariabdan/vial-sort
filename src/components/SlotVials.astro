@@ -1,0 +1,104 @@
+---
+// Results' slot-by-slot view of one run, drawn as the table stands: a glass vial in each of the six slots of the left
+// and the right rack, and the bin between them. It gives two strips, placed by the page as two columns of a run's row
+// (src/pages/results.astro): "Picked up from" (the vial started in that slot: did the arm pick up the right one?) and
+// "Placed into" (the command asked for that slot: did the vial end in it?). A vial fills to the share of its rollouts
+// that got through, in one of three colours (all, half or more, under half); none is an empty vial with its count in
+// red. The count under it is got through / tried. A dashed vial is a slot the run's training set never used in that
+// role (held out); a faint one was never tried. Every run's strips have the same width, so runs stacked as rows line
+// up slot by slot. The names of the strips, the rack captions and the legend are drawn once by the page.
+// The size of a vial comes from the page: --vw (a slot's width) and --vh (the tube's height).
+interface Got { rollouts: number; grasped_right: number; released: number }
+// With `demoOnly` the same two strips draw a training set instead of a run: each vial fills, in violet, to the number
+// of demonstrations that start in (or end in) that slot against the most on that strip, with the number under it.
+interface Props {
+  bySource?: Record<string, Got>;
+  byDestination?: Record<string, Got>;
+  demos?: { per_source: Record<string, number>; per_destination: Record<string, number> } | null;
+  demoOnly?: boolean;
+  label: string;
+}
+const { bySource = {}, byDestination = {}, demos = null, demoOnly = false, label } = Astro.props;
+const SLOTS = [1, 2, 3, 4, 5, 6];
+type V = { cls: string[]; fill: number; text: [string, string] | null; title: string };
+const vial = (g: Got | undefined, ok: number | undefined, demo: number | undefined, what: string): V => {
+  const held = demos !== null && !demo;
+  const d = demos ? `; ${demo ?? 0} demonstration${demo === 1 ? '' : 's'} in its training set` : '';
+  if (!g || !g.rollouts) return { cls: ['v', 'untried', held ? 'held' : ''], fill: 0, text: null, title: `${what}: not tried${d}` };
+  const n = g.rollouts, k = ok ?? 0;
+  const step = k === n ? 'all' : k === 0 ? 'none' : k / n < 0.5 ? 'some' : 'most';
+  return { cls: ['v', step, held ? 'held' : ''], fill: k ? Math.max(8, Math.round((k / n) * 100)) : 0, text: [String(k), String(n)],
+    title: `${what}: ${k} of ${n} rollouts${d}` };
+};
+const demoVial = (count: number | undefined, most: number, what: string): V => {
+  const c = count ?? 0;
+  return c
+    ? { cls: ['v', 'demo'], fill: Math.max(8, Math.round((c / most) * 100)), text: [String(c), ''], title: `${what}: ${c} demonstration${c === 1 ? '' : 's'}` }
+    : { cls: ['v', 'untried', 'held'], fill: 0, text: ['0', ''], title: `${what}: no demonstration (held out)` };
+};
+const most = (d?: Record<string, number>) => Math.max(1, ...Object.values(d ?? {}));
+const strips = [
+  { key: 'from', name: demoOnly ? 'demonstrations that start in each slot' : 'picked up from', by: bySource, pick: 'grasped_right' as const, d: demos?.per_source, word: demoOnly ? 'Starting in' : 'From', bin: false },
+  { key: 'into', name: demoOnly ? 'demonstrations that end in each slot' : 'placed into', by: byDestination, pick: 'released' as const, d: demos?.per_destination, word: demoOnly ? 'Ending in' : 'Into', bin: true },
+].map((s) => ({ ...s, most: most(s.d), at: (c: string, what: string) => (demoOnly ? demoVial(s.d?.[c], most(s.d), what) : vial(s.by[c], s.by[c]?.[s.pick], s.d?.[c], what)) }));
+const racks = [{ r: 'L', long: 'Left' }, { r: 'R', long: 'Right' }];
+---
+{strips.map((s) => {
+  const bin = s.bin ? s.at('bin', `${s.word} the bin`) : null;
+  const rack = (k: (typeof racks)[number]) => (
+    <div class="tubes">
+      {SLOTS.map((n) => {
+        const c = `${k.r}${n}`, v = s.at(c, `${s.word} ${k.long} ${n}`);
+        return (
+          <span class:list={v.cls} title={v.title}>
+            <i class="lip"></i>
+            <i class="tube"><i class="liquid" style={`height: ${v.fill}%`}></i><i class="shine"></i></i>
+            <span class="n">{v.text ? <><b>{v.text[0]}</b>{v.text[1] && `/${v.text[1]}`}</> : '–'}<span class="visually-hidden">{` ${c}`}</span></span>
+          </span>
+        );
+      })}
+    </div>
+  );
+  return (
+    <div class:list={['strip', s.key, demoOnly && 'is-demo']} role="group" aria-label={`${label}: ${s.name}, slot by slot`}>
+      {rack(racks[0])}
+      {bin && (
+        <span class:list={[...bin.cls, 'wide']} title={bin.title}>
+          <i class="lip"></i>
+          <i class="tube"><i class="liquid" style={`height: ${bin.fill}%`}></i><i class="shine"></i></i>
+          <span class="n">{bin.text ? <><b>{bin.text[0]}</b>{bin.text[1] && `/${bin.text[1]}`}</> : '–'}</span>
+        </span>
+      )}
+      {rack(racks[1])}
+    </div>
+  );
+})}
+
+<style>
+  .strip { display: flex; align-items: flex-end; gap: var(--vgap, 14px); }
+  .tubes { position: relative; display: flex; align-items: flex-end; }
+  /* the rack: a slim tray the vials stand in */
+  .tubes::before { content: ''; position: absolute; left: -3px; right: -3px; bottom: 1.05rem; height: 12px; border-radius: 6px; background: var(--rule); border: 1px solid var(--rack); }
+  .v { position: relative; width: var(--vw, 26px); display: grid; justify-items: center; }
+  .v.wide { width: var(--vbin, 34px); }
+  .lip { width: 16px; height: 2px; border-radius: 1px; background: var(--ink-2); }
+  .tube { position: relative; display: flex; align-items: flex-end; overflow: hidden; box-sizing: border-box; width: 13px; height: var(--vh, 40px);
+          border: 1.25px solid var(--steel); border-top: 0; border-radius: 0 0 7px 7px; background: var(--page); }
+  .wide .lip { width: 30px; }
+  .wide .tube { width: 26px; height: calc(var(--vh, 40px) - 8px); border-radius: 0 0 6px 6px; }
+  .liquid { display: block; width: 100%; background: var(--st-3); }
+  .most .liquid { background: color-mix(in srgb, var(--st-3) 55%, white); }  /* a lighter teal in both themes */
+  .some .liquid { background: var(--st-2); }
+  .demo .liquid { background: var(--slot-demo); }  /* a training set's vials are violet, never the outcome colours */
+  .demo .n b { color: var(--ink-2); font-weight: 560; }
+  /* a thin highlight down the glass */
+  .shine { position: absolute; left: 2px; top: 3px; bottom: 6px; width: 2px; border-radius: 1px; background: var(--page); opacity: 0.4; }
+  .held .tube { border: 1.5px dashed var(--ink); border-top: 0; }
+  .untried .tube { border-color: var(--rack); }
+  .untried.held .tube { border-color: var(--ink-2); }
+  .untried .lip { background: var(--rack); }
+  .n { margin-top: 4px; height: 0.9rem; font-size: 0.7rem; line-height: 1; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -0.01em; }
+  .n b { font-weight: 680; color: var(--ink); }
+  .none .n b { color: var(--critical-text); }
+  .untried .n { color: var(--steel); }
+</style>

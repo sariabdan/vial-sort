@@ -1,0 +1,33 @@
+---
+// One numbered section of the home page's story: the number and a one-word label in a left gutter, the heading and
+// the content beside it. The label is also what the "On this page" bar shows for the section.
+interface Props { no: string; label: string; title: string; id: string }
+const { no, label, title, id } = Astro.props;
+---
+<section class="chapter" id={id}>
+  <div class="story chapter-grid">
+    <p class="tag" aria-hidden="true"><span class="no">{no}</span><span class="label">{label}</span></p>
+    <div class="body">
+      <h2 data-nav={label}>{title}</h2>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .chapter { padding-block: clamp(2.6rem, 6vw, 4.2rem); }
+  .chapter-grid { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 0 clamp(1.2rem, 3vw, 2.4rem); border-top: 2px solid var(--ink); padding-top: 1.4rem; }
+  .tag { display: grid; align-content: start; gap: 0.2rem; margin: 0; }
+  .no { font-size: var(--step-3); font-weight: 680; font-stretch: 112%; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .label { font-size: var(--step--1); color: var(--ink-2); }
+  h2 { font-size: var(--step-3); max-width: 24ch; margin-bottom: 1rem; }
+  .body { min-width: 0; }
+  .body > :global(p) { max-width: 60ch; }
+  .body > :global(p + p) { margin-top: 0.8em; }
+  @media (max-width: 52rem) {
+    .chapter-grid { grid-template-columns: minmax(0, 1fr); }
+    .tag { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 0.6rem; }
+    .no { font-size: var(--step-2); }
+    h2 { font-size: var(--step-2); }
+  }
+</style>

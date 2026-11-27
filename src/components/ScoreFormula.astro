@@ -1,6 +1,6 @@
 ---
 // The score as formulas, typeset (src/lib/score.ts computes it). Shown under the Score table on Results and in
-// "How a run is scored" on Experiments, so both pages show the same math.
+// "The score of a run" on Testing (method.astro), so both pages show the same math.
 import TeX from './TeX.astro';
 
 const SET = (slots: string[]) => `\\{${slots.map((s) => `\\text{${s}}`).join(', ')}\\}`;

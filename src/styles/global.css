@@ -11,6 +11,7 @@
   --grid: #dfe5e9;
   --rule: #d3dae0;
   --focus: #2a78d6;
+  --accent: #1c5cab;  /* the one emphasis colour of the home page's story: numbers, section numbers, the key phrase */
 
   /* the three vial colours, sampled from the cameras; vials and slots only, never chart series */
   --vial-red: #c9302c;
@@ -75,7 +76,7 @@
   :root:not([data-theme='light']) {
     color-scheme: dark;
     --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
-    --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
+    --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5; --accent: #6da7ec;
     --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd; --vial-neutral: #9aa5ae;
     --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181; --m-isaac: #a07de0;
     --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
@@ -95,7 +96,7 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
   --page: #151b20; --raise: #1b232a; --ink: #e3e8ec; --ink-2: #b6c0c8; --steel: #9aa5ae;
-  --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5;
+  --rack: #3a444c; --grid: #262f36; --rule: #2e3840; --focus: #3987e5; --accent: #6da7ec;
   --vial-red: #e2564f; --vial-lime: #bfcc3a; --vial-cyan: #2db6bd;
   --m-pi05: #3987e5; --m-flux: #d95926; --m-groot: #199e70; --m-pi0: #c98500; --m-act: #d55181; --m-isaac: #a07de0;
   --o4-1: #184f95; --o4-2: #2a78d6; --o4-3: #6da7ec; --o4-4: #b7d3f6;
@@ -138,6 +139,7 @@ h3 { font-size: var(--step-1); font-weight: 600; line-height: 1.25; }
 p { margin: 0; max-width: var(--measure); }
 p + p { margin-top: 0.8em; }
 .lead { font-size: var(--step-1); line-height: 1.45; color: var(--ink-2); max-width: 52ch; }
+@media (max-width: 40rem) { .lead { font-size: var(--step-0); } }  /* on a phone the opening paragraph must not fill the first screen */
 .note { font-size: var(--step--1); color: var(--ink-2); line-height: 1.5; }
 .num { font-variant-numeric: tabular-nums; }
 
@@ -145,10 +147,15 @@ p + p { margin-top: 0.8em; }
 .move { font-stretch: 125%; font-weight: 640; letter-spacing: 0.01em; white-space: nowrap; }
 
 .wrap { max-width: var(--wide); margin-inline: auto; padding-inline: var(--gutter); }
+.story { max-width: var(--wide); margin-inline: auto; padding-inline: var(--gutter); }  /* the home page's numbered sections, as wide as every other page */
 .section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .section + .section { border-top: 1px solid var(--rule); }
 .section > .wrap > h2 { margin-bottom: 0.6rem; }
 .section > .wrap > h2 + p { margin-bottom: 1.6rem; color: var(--ink-2); }
+
+/* no flash of what a script is about to hide or arrange (the class is set in the head of src/layouts/Base.astro) */
+.js [data-init-off] { display: none !important; }
+.js [data-await] { visibility: hidden; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -175,6 +182,80 @@ table.data th, table.data td { text-align: left; padding: 0.32rem 0.9rem 0.32rem
 table.data th { font-weight: 600; color: var(--ink); border-bottom-color: var(--rule); }
 table.data td.r, table.data th.r { text-align: right; }
 .table-scroll { overflow-x: auto; position: relative; } /* relative: visually-hidden text inside a scrolled table must not widen the page */
+
+/* ── "On this page": the section bar of a long page (markup and script in src/layouts/Base.astro) ───────── */
+:root { --onpage-h: 0px; }
+:root.has-onpage { --onpage-h: 2.9rem; }  /* what sticks under it (Results' rail) starts below the bar */
+.onpage { position: sticky; top: 0; z-index: 5; background: var(--page); border-bottom: 1px solid var(--rule); font-size: var(--step--1); }
+.onpage[hidden] { display: none; }
+.onpage-row { display: flex; align-items: center; gap: 1.2rem; min-height: var(--onpage-h); }
+.onpage ul { position: relative; display: flex; flex: 1; min-width: 0; flex-wrap: nowrap; gap: 0 1.4rem; list-style: none; margin: 0; padding: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+.onpage ul::-webkit-scrollbar { display: none; }
+.onpage li a { display: block; max-width: 24ch; overflow: hidden; text-overflow: ellipsis; padding-block: 0.55rem; color: var(--ink-2); text-decoration: none; }
+.onpage li a:hover { color: var(--ink); }
+.onpage li a[aria-current] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+.onpage-top { flex: none; color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+.onpage-top:hover { color: var(--ink); }
+.onpage-toggle { display: none; }
+main h2, main .doc-body h1, main [id] { scroll-margin-top: calc(var(--onpage-h) + 1.2rem); }
+@media (max-width: 52rem) {
+  .onpage-toggle { display: flex; flex: 1; min-width: 0; align-items: baseline; gap: 0.5rem; font: inherit; color: var(--ink); background: none; border: 0; padding: 0.55rem 0; cursor: pointer; text-align: left; }
+  .onpage-word { font-weight: 600; white-space: nowrap; }
+  .onpage-word::after { content: ' ▾'; }
+  .onpage[data-open] .onpage-word::after { content: ' ▴'; }
+  .onpage-now { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .onpage ul { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; white-space: normal; max-height: 70vh; overflow-y: auto;
+               background: var(--page); border-bottom: 1px solid var(--rule); padding: 0.2rem var(--gutter) 0.8rem; box-shadow: 0 0.6rem 1rem rgb(0 0 0 / 0.12); }
+  .onpage[data-open] ul { display: flex; }
+  .onpage li a { max-width: none; white-space: normal; padding-block: 0.45rem; }
+  .onpage li a[aria-current] { box-shadow: inset 2px 0 0 var(--ink); padding-left: 0.7rem; }
+}
+
+/* ── panel pages (Data, Models, Training, Method; Results has its own copy in src/pages/results.astro) ──────
+   A page that is a panel to scan, not text to read: a slim title row, smaller type, and tabs instead of stacked
+   sections. The markup is a [data-tabset] with [data-t] buttons and [data-p] panels; the script in
+   src/layouts/Base.astro switches them and keeps the open tab in the address. */
+.panel-page { --gutter: 1rem; padding-block: 0.9rem 2.5rem; font-size: 0.95rem; line-height: 1.45; }
+.panel-page .note { font-size: 0.85rem; line-height: 1.4; }
+.panel-page p { max-width: 46rem; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1rem; padding-bottom: 0.5rem; margin-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
+.panel-head h1 { font-size: var(--step-1); }
+.panel-head p { max-width: none; }
+.tabstrip { display: flex; flex-wrap: wrap; gap: 0.3rem; border-bottom: 1px solid var(--rule); margin-bottom: 0.9rem; }
+.tabstrip button { font: inherit; font-weight: 560; color: var(--ink-2); background: none; border: 0; border-bottom: 3px solid transparent; padding: 0.35rem 0.7rem; margin-bottom: -1px; cursor: pointer; }
+.tabstrip button:hover { color: var(--ink); }
+.tabstrip button[aria-selected='true'] { color: var(--ink); border-bottom-color: var(--ink); }
+[data-p][hidden] { display: none; }
+.panel-page h2 { font-size: 1.15rem; margin: 0 0 0.4rem; }
+.panel-page h3 { font-size: 1rem; margin: 1.2rem 0 0.35rem; }
+.panel-page table.data { font-size: 0.88rem; }
+/* In place of a long paragraph: short points, each a bold line and a sentence or two; numbers as big figures; a
+   process as a row of steps with arrows between them. Used on Data, Method and Training. */
+.points { list-style: none; margin: 0.8rem 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.8rem 1.1rem; max-width: 66rem; }
+.points > li { display: grid; gap: 0.2rem; align-content: start; padding-top: 0.45rem; border-top: 2px solid var(--ink); }
+.points > li.pass { border-top-color: var(--st-3); }  /* not .ok / .bad: those are the status words with a tick or a cross */
+.points > li.fail { border-top-color: var(--st-1); }
+.points > li.quiet { border-top-color: var(--rack); }
+.points b { font-weight: 650; line-height: 1.25; }
+.points .big { font-size: 1.6rem; font-weight: 680; font-stretch: 112%; line-height: 1; font-variant-numeric: tabular-nums; }
+.points span { font-size: 0.84rem; color: var(--ink-2); line-height: 1.4; }
+.flow { list-style: none; margin: 0.8rem 0; padding: 0; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.5rem 1.5rem; max-width: 66rem; counter-reset: flow; }
+.flow > li { position: relative; flex: 1 1 10rem; display: grid; gap: 0.2rem; align-content: start; padding: 0.55rem 0.7rem 0.6rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); counter-increment: flow; }
+.flow > li + li::before { content: '→'; position: absolute; left: -1.15rem; top: 50%; transform: translateY(-50%); color: var(--steel); }
+.flow b { font-weight: 650; line-height: 1.25; }
+.flow b::before { content: counter(flow) '  '; color: var(--steel); font-variant-numeric: tabular-nums; }
+.flow span { font-size: 0.84rem; color: var(--ink-2); line-height: 1.4; }
+.flow.plain b::before { content: none; }
+
+/* a side list and a view beside it, as on Results */
+.panel-split { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: 0.4rem 1.4rem; align-items: start; }
+@media (max-width: 56rem) { .panel-split { grid-template-columns: minmax(0, 1fr); } }
+
+/* a long lookup table folded behind one line that says what is in it */
+details.fold { margin-top: 1rem; }
+details.fold > summary { cursor: pointer; width: fit-content; font-weight: 560; padding: 0.35rem 0.9rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--raise); }
+details.fold > summary:hover { border-color: var(--steel); }
+details.fold[open] > summary { margin-bottom: 0.4rem; }
 
 .quiet-btn {
   font: inherit; font-size: var(--step--1); color: var(--ink); background: none; cursor: pointer;
