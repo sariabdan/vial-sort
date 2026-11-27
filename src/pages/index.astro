@@ -2,24 +2,15 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import OctoberTiles from '../components/OctoberTiles.astro';
-import Clip from '../components/Clip.astro';
-import media from '../data/media.json';
 import october from '../data/october.json';
 import results from '../data/results.json';
-import registry from '../data/registry.json';
 import datasets from '../data/datasets.json';
 import { url, HF, CODE, visualizer } from '../lib/site';
 
 const cov = october.coverage;
 const hub = new Set(datasets.models.map((m) => m.name));
 const checkpoints = ['vial-sort-pi05-ws100-canon-12000', 'vial-sort-pi05-ws100-allcams-12000', 'vial-sort-flux3-ws100-30000'].filter((n) => hub.has(n));
-// the rollouts the home page shows: the full models, not the short fine-tunes, newest model first
-const shown = registry.models.filter((m) => !m.probe && media.featured.some((f) => f.model_id === m.id))
-  .sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''));
-const clipsOf = (id: string) => media.featured.filter((f) => f.model_id === id);
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const newest = results.tiles.pi05;
-const vial = (f: { vial?: string | null }) => (f.vial ?? 'neutral') as 'red' | 'lime' | 'cyan' | 'neutral';
 const USER_HF = 'sari-abdan';
 const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 ---
@@ -33,35 +24,11 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
   <section class="section">
     <div class="wrap">
       <h2>What the rollouts show</h2>
-      <p>
-        {`The runs of October and November, ${results.total} rollouts, a rollout being one autonomous attempt at one command. They are scored from ` +
-          `the arm's motion` + (results.noted_models.length ? `, except ${results.noted_models.join(' and ')}, scored from the operator's notes at the robot. ` : '. ') +
-          `The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}
-      </p>
+      <p>{`The newest π0.5 model, ${newest.name}, grasps the right vial. Putting it in the right slot is the open problem.`}</p>
       <OctoberTiles />
-      <p class="note after">
-        These are small counts from test runs, not a person-scored evaluation, and they should not be set beside
-        the <a href={url('previous/results/')}>August evaluation</a>. <a href={url('results/')}>Compare every model and checkpoint</a>.
+      <p class="after">
+        <a href={url('results/')}>{`Every model and checkpoint, ${results.total} rollouts, with videos`}</a>{` · `}<a href={url('experiments/#caveats')}>what the numbers cannot say</a>
       </p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>Rollouts from the October and November models</h2>
-      <p>{`Every camera the model saw, at once. One rollout per model here, the one that ended best; each model's three, one of each outcome, are on `}<a href={url('results/')}>Results</a>{` and `}<a href={url('experiments/')}>Experiments</a>{`. They loop: click one to pause it, double-click or use its button for full screen.`}</p>
-      {shown.map((m) => (
-        <>
-          <h3 class="model"><span class="dot" style={`background: var(--m-${m.model})`}></span>{m.name}<span class="note">{FAMILY[m.family]}</span></h3>
-          <div class="clips">
-            {clipsOf(m.id).slice(0, 1).map((f) => (
-              <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-                vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={vial(f)} used={f.used} outcome={f.stage} kind={f.kind} />
-            ))}
-          </div>
-        </>
-      ))}
-      <p class="after"><a href={url('experiments/')}>What each model is and how it was tested</a> · <a href={url('training/')}>How each one trained</a></p>
     </div>
   </section>
 
@@ -71,7 +38,7 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
         <h2>The setup</h2>
         <p>
           The arm is an SO-101, a 3D-printed six-joint design, built as a pair: a person moves the leader arm and
-          the follower copies it. That is how the 100 demonstrations were recorded.
+          the follower copies it. That is how the demonstrations were recorded.
         </p>
         <p>
           {`Five cameras record at ${cov.fps} frames a second: one overhead, two across the table at different heights, one ` +
@@ -79,10 +46,8 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
             `only the colour images.`}
         </p>
         <p>
-          π0.5 is fine-tuned in full from <code>lerobot/pi05_base</code>: the vision encoder and the whole
-          vision–language model train, for 12,000 steps at batch size 16. FLUX 3 Action is fine-tuned with LoRA and
-          sees two of the cameras, overhead and wrist; its training loss covers both predicted video and actions.
-          Every model has a name, and the <a href={url('experiments/')}>Experiments page</a> says which is which.
+          {`Three kinds of model learn from these demonstrations: π0.5, FLUX 3 Action and Isaac 0.5. Each run has a name on ` +
+            `this site, and the `}<a href={url('experiments/')}>Experiments page</a>{` says what each is and how it was set up.`}
         </p>
         <p><a href={url('datasets/')}>How the data was recorded and worded</a></p>
       </div>
@@ -104,7 +69,7 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
         </li>
         <li>
           <a href={url('datasets/')}>The robot recordings</a>
-          <span class="note">{`${datasets.datasets.filter((d) => d.kind === 'rollout').length} October sessions with all five cameras, on Hugging Face.`}</span>
+          <span class="note">{`${datasets.datasets.filter((d) => d.kind === 'rollout').length} sessions, each with every camera its model saw, on Hugging Face.`}</span>
         </li>
         {checkpoints.length > 0 && (
           <li>
@@ -134,9 +99,6 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
 
 <style>
   .after { margin-top: 1.6rem; }
-  .model { margin: 2.4rem 0 1rem; font-size: var(--step-1); display: flex; align-items: baseline; gap: 0.6rem; }
-  .model .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; align-self: center; }
-  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.2rem clamp(1.2rem, 3vw, 2.5rem); }
   .setup { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
   .setup h2 { margin-bottom: 0.9rem; }
   .rig { margin: 0; }
@@ -154,6 +116,6 @@ const cams = ['top_down', 'left_top', 'left_bottom', 'right', 'wrist'];
   .big { display: inline-block; text-decoration: none; font-size: var(--step-1); padding: 0.45rem 1.4rem; background: var(--raise); border-color: var(--steel); }
   code { font-family: inherit; font-weight: 560; }
   @media (max-width: 52rem) {
-    .setup, .clips { grid-template-columns: minmax(0, 1fr); }
+    .setup { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

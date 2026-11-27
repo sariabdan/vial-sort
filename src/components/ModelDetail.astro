@@ -1,46 +1,17 @@
 ---
-// One model described in full: what it is, what it saw, every hyperparameter with its meaning, how each
-// checkpoint did on the robot, move by move, and what happened. Everything comes from models.yaml and the
-// build; a model added there gets this section with no page change.
+// One model described in full: what it is, what it saw, every hyperparameter with its meaning, and what happened while
+// it was built. How it did on the robot is on Results, linked from here (one home for every result). Everything comes
+// from models.yaml and the build; a model added there gets this section with no page change.
 import experiments from '../data/experiments.json';
-import media from '../data/media.json';
 import CameraChips from './CameraChips.astro';
-import Clip from './Clip.astro';
-import Term from './Term.astro';
-import ScoreTable from './ScoreTable.astro';
-import { HF, moveLabel, url } from '../lib/site';
+import { HF, url } from '../lib/site';
 
 type Model = (typeof experiments.models)[number];
 interface Props { m: Model }
 const { m } = Astro.props;
-const stages = experiments.stages;
-const rows = experiments.rows.filter((r) => r.model === m.id);
-const clips = (media.featured as { model_id?: string }[]).filter((f) => f.model_id === m.id) as (typeof media.featured)[number][];
-const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
-const k = (n: number) => (n >= 1000 && n % 1000 === 0 ? `${n / 1000}k` : String(n));
+// the "On the robot …" notes are results: Results shows them with the model's moves
+const story = m.notes.filter((n) => !/^On the robot/i.test(n.title));
 const left = m.left_out as Record<string, number>;
-const leftText = [
-  left.short && `${left.short} ended within 3 seconds`,
-  left.unreadable && `${left.unreadable} had a command the scorer cannot read`,
-  left.earlier_scene && `${left.earlier_scene} ran on an earlier layout of the table`,
-  left.restart && `${left.restart} were restarts of a move the operator noted once`,
-].filter(Boolean).join(', ');
-// A row scored from the operator's notes (notes/*.yaml) lists every noted move in the order it was run.
-const OUTCOME: Record<string, string> = {
-  placed: 'In the slot', drop_missed: 'Dropped beside the asked slot', off_slot: 'Let go at another slot',
-  never_let_go: 'Never let go', no_grasp: 'Never picked it up', wrong_vial: 'Took another vial',
-};
-const stageIdx = (key: string) => stages.findIndex((s) => s.key === key);
-const fromOf = (move: string) => move.split('->')[0];
-// the day a noted rollout was recorded, from its take id (<step>_<yyyymmdd>_<hhmmss>_t<n>): a row opens each day
-const dayOf = (take: string) => {
-  const m = take.match(/_(\d{4})(\d{2})(\d{2})_\d{6}_t\d+$/);
-  return m ? new Date(`${m[1]}-${m[2]}-${m[3]}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '';
-};
-const endedText = (ended: string | null, move: string) =>
-  ended === null ? '–' : ended === 'source' ? `still in ${fromOf(move)}` : ended === 'bin' ? 'the bin'
-    : ended.includes('/') ? `between ${ended.replace('/', ' and ')}` : ended;
-const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b : a)).key : null;
 ---
 <article class="model" data-model={m.id} id={m.id}>
   <header>
@@ -52,121 +23,16 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
     <div><dt>Started from</dt><dd>{m.base}</dd></div>
     <div><dt>Trained on</dt><dd>{m.data}</dd></div>
     <div><dt>Cameras it saw</dt><dd><CameraChips used={m.cams} note={m.cams_note} /></dd></div>
-    {m.steps && <div><dt>Steps</dt><dd class="num">{m.steps.toLocaleString('en-GB')}</dd></div>}
-    {m.passes && <div><dt>Passes over the data</dt><dd class="num">{m.passes}</dd></div>}
-    {m.hours && <div><dt>Training time</dt><dd class="num">{`${m.hours} h`}</dd></div>}
-    {m.mem_gb && <div><dt>Peak GPU memory</dt><dd class="num">{`${m.mem_gb} GB`}</dd></div>}
     {m.hub && <div><dt>Weights</dt><dd><a href={`${HF}/sari-abdan/${m.hub}`}>on Hugging Face</a></dd></div>}
   </dl>
-
-  <h4>On the robot</h4>
-  {rows.length ? (
-    <>
-      <p class="note">
-        {`Scored rollouts only, one row per checkpoint and mode, never pooled. Left out for this model: ${leftText || 'none'}.`}
-      </p>
-      {rows.filter((r) => r.scored_by === 'notes').map((r) => (
-        <p class="note">{`${r.short} is scored from the operator's notes at the robot, not read from the arm: one rollout per noted ` +
-          `move${r.restarts ? `, its ${r.restarts} restart${r.restarts === 1 ? '' : 's'} counted inside the move` : ''}. A vial that ended in ` +
-          `the asked slot counts as in the asked slot; one dropped in front of or behind it, put in another slot or never let go counts ` +
-          `as not in the asked slot; one never picked up, as never picked it up.`}</p>
-      ))}
-      {rows.filter((r) => r.untrained).map((r) => (
-        <p class="note">{`Of the ${r.rollouts} rollouts at ${r.short}, ${r.untrained.rollouts} ${r.untrained.rollouts === 1 ? 'was' : 'were'} on moves no demonstration ` +
-          `it trained on contains (${Object.keys(r.untrained.moves).length <= 8 ? Object.keys(r.untrained.moves).map((k) => k.replace('->', ' → ')).join(', ')
-            : `${Object.keys(r.untrained.moves).length} different moves${r.noted_moves ? ', all in the table below' : ''}`}). Of those ${r.untrained.rollouts}, the right vial was picked up in ` +
-          `${r.untrained.grasped_right} and it ended in the asked slot in ${r.untrained.released}.`}</p>
-      ))}
-      <div class="table-scroll">
-        <table class="data stages">
-          <thead>
-            <tr>
-              <th>Checkpoint</th><th class="r"><Term k="n">Rollouts</Term></th>
-              {stages.map((s, i) => <th class="r"><i class="sw" style={`background: var(--st-${i + 1})`}></i>{s.label}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr>
-                <td>{r.short}</td><td class="r num">{r.rollouts}</td>
-                {stages.map((s) => <td class:list={['r', 'num', !r.stages[s.key as keyof typeof r.stages] && 'zero']}>{r.stages[s.key as keyof typeof r.stages]}</td>)}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="score-head">Score <a href={url('experiments/#score')}>(how it works)</a></p>
-      <ScoreTable rows={rows.map((r) => ({ key: r.key, label: r.short, by_destination: r.by_destination }))} first="Checkpoint" />
-
-      <h4>Move by move</h4>
-      <p class="note">
-        {`Each move this model was asked, with the number of demonstrations of that exact move in the training data. One block per checkpoint; the one with the most rollouts is open.` +
-          (rows.some((r) => r.noted_moves) ? ` A checkpoint scored from the operator's notes lists every noted move in the order it was run, with the note as written.` : '')}
-      </p>
-      <div class="moves">
-        {rows.map((r) => r.noted_moves ? (
-          <details open={r.key === biggest}>
-            <summary>{`${r.short}: ${r.noted_moves.length} moves as noted at the robot, ${r.noted_moves.filter((x) => x.trained).length} of them trained`}</summary>
-            <div class="table-scroll">
-              <table class="data noted">
-                <thead>
-                  <tr>
-                    <th class="r">#</th><th>Move</th><th class="r">Demonstrations</th><th>What happened</th><th class="ended">Where the vial ended</th><th>The operator's note</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {r.noted_moves.map((mv, i) => (
-                    <>
-                    {(i === 0 || dayOf(mv.take) !== dayOf(r.noted_moves[i - 1].take)) && (
-                      <tr class="day"><th colspan="6" scope="rowgroup">{`On the robot, ${dayOf(mv.take)}`}</th></tr>
-                    )}
-                    <tr class:list={[!mv.trained && 'untrained']}>
-                      <td class="r num">{mv.n}</td>
-                      <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">never trained on</span>}</td>
-                      <td class="r num">{mv.demos}</td>
-                      <td class="what-col"><i class="sw" style={`background: var(--st-${stageIdx(mv.stage) + 1})`}></i>{OUTCOME[mv.outcome] ?? mv.outcome}
-                        {mv.attempts > 1 && <span class="tag">{`${mv.attempts} rollouts, the last one counted`}</span>}</td>
-                      <td class="ended">{endedText(mv.ended, mv.move)}</td>
-                      <td class="said">{`“${mv.note}”`}</td>
-                    </tr>
-                    </>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
-        ) : (
-          <details open={r.key === biggest}>
-            <summary>{`${r.short}: ${r.rollouts} rollouts, ${r.moves.length} move${r.moves.length === 1 ? '' : 's'}`}</summary>
-            <div class="table-scroll">
-              <table class="data stages">
-                <thead>
-                  <tr>
-                    <th>Move</th><th class="r">Demonstrations</th><th class="r">Rollouts</th>
-                    {stages.map((s, i) => <th class="r"><i class="sw" style={`background: var(--st-${i + 1})`}></i>{s.label}</th>)}
-                  </tr>
-                </thead>
-                <tbody>
-                  {r.moves.map((mv) => (
-                    <tr>
-                      <td class="move">{moveLabel(mv.move)}</td><td class="r num">{mv.demos}</td><td class="r num">{mv.rollouts}</td>
-                      {stages.map((s) => <td class:list={['r', 'num', !mv.stages[s.key as keyof typeof mv.stages] && 'zero']}>{mv.stages[s.key as keyof typeof mv.stages]}</td>)}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </details>
-        ))}
-      </div>
-    </>
-  ) : (
-    <p>
-      {m.scored
+  <p class="results-link">
+    {m.has_loss && <><a href={url('training/')}>{`How it trained: ${m.hours} h, ${m.mem_gb} GB →`}</a>{m.rows.length ? ' · ' : ''}</>}
+    {m.rows.length
+      ? <a href={`${url('results/')}?r=${m.rows.join(',')}#h-score`}>{`Its results on the robot, ${m.rollouts} rollouts →`}</a>
+      : m.scored
         ? 'This model was never run on the robot.'
-        : `Its rollouts ran on an earlier layout of the table, which the scorer cannot read, so none are scored here (${left.earlier_scene ?? 0} rollouts, ${left.short ?? 0} too short).`}
-    </p>
-  )}
+        : `Its rollouts ran on an earlier layout of the table, which the scorer cannot read, so none are scored (${left.earlier_scene ?? 0} rollouts).`}
+  </p>
 
   <h4>Hyperparameters</h4>
   <p class="note">{`Read from ${m.hyper_source}.`}</p>
@@ -185,12 +51,16 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
     </div>
   )) : <p>No record of the settings survives.</p>}
 
-  <h4>What happened</h4>
-  <div class="story">
-    {m.notes.map((n) => (
-      <div><h5>{n.title}</h5><p>{n.text}</p></div>
-    ))}
-  </div>
+  {story.length > 0 && (
+    <>
+      <h4>What happened</h4>
+      <div class="story">
+        {story.map((n) => (
+          <div><h5>{n.title}</h5><p>{n.text}</p></div>
+        ))}
+      </div>
+    </>
+  )}
 
   {m.camera_choice && (
     <>
@@ -208,19 +78,6 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
       </div>
     </>
   )}
-
-  {clips.length > 0 && (
-    <>
-      <h4>Rollouts to watch</h4>
-      <div class="clips">
-        {clips.map((f) => (
-          <Clip src={f.src} poster={f.poster} w={f.w} h={f.h} caption={f.caption} move={f.move}
-            vialAt={f.at ?? undefined} missAt={f.miss ?? undefined} vial={(f.vial ?? 'neutral') as 'red'} used={(f as { used?: string[] }).used ?? m.cams}
-            outcome={f.stage} kind={(f as { kind?: string }).kind} />
-        ))}
-      </div>
-    </>
-  )}
 </article>
 
 <style>
@@ -232,22 +89,9 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   .facts div { display: grid; gap: 0.1rem; align-content: start; }
   .facts dt { font-size: var(--step--1); color: var(--ink-2); }
   .facts dd { margin: 0; font-weight: 520; }
+  .results-link { margin-top: 1rem; font-weight: 560; }
   h4 { font-size: var(--step-1); font-stretch: 112%; font-weight: 600; margin: 2.2rem 0 0.5rem; }
   h5 { font-size: var(--step-0); font-weight: 620; margin: 0 0 0.3rem; }
-  .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: -0.05rem; }
-  .stages th { font-size: var(--step--1); vertical-align: bottom; }
-  table.stages { width: auto; min-width: min(100%, 40rem); }  /* a few numbers: keep them near their labels on a wide page */
-  .zero { color: var(--steel); }
-  .noted td { vertical-align: top; }
-  .noted .what-col, .noted .ended { white-space: nowrap; }
-  .noted .said { color: var(--ink-2); font-size: var(--step--1); min-width: 16rem; }
-  .noted .tag { display: block; font-size: 0.95rem; color: var(--ink-2); white-space: nowrap; }
-  .noted .what-col .tag { margin-left: 1.15rem; }
-  .noted tr.untrained td { background: var(--raise); }
-  .noted tr.day th { text-align: left; font-weight: 620; padding-top: 1.1rem; border-bottom: 1px solid var(--rule); }
-  .moves { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
-  .moves details { min-width: 0; }
-  .moves summary { cursor: pointer; font-weight: 560; padding-block: 0.3rem; }
   .hyper { margin-top: 1rem; }
   .hyper h5 { color: var(--ink-2); font-weight: 560; font-size: var(--step--1); text-transform: none; }
   .hyp th { font-weight: 560; text-align: left; white-space: nowrap; width: 1%; padding-right: 1.2rem; }
@@ -256,8 +100,4 @@ const biggest = rows.length ? rows.reduce((a, b) => (b.rollouts > a.rollouts ? b
   .story { display: grid; gap: 1.1rem; max-width: var(--measure); }
   .cam-choice th[scope='row'] { text-align: left; white-space: nowrap; }
   .cam-choice td { vertical-align: top; min-width: 9rem; }
-  .clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem clamp(1.2rem, 3vw, 2.5rem); margin-top: 0.8rem; }
-  @media (max-width: 52rem) { .clips { grid-template-columns: minmax(0, 1fr); } }
-  .score-head { margin-top: 1.4rem; font-weight: 600; }
-  .score-head a { font-weight: 400; }
 </style>

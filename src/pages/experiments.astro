@@ -1,16 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
 import ModelDetail from '../components/ModelDetail.astro';
+import ModelTable from '../components/ModelTable.astro';
 import StageLegend from '../components/StageLegend.astro';
 import CameraChips from '../components/CameraChips.astro';
 import Term from '../components/Term.astro';
+import TeX from '../components/TeX.astro';
 import ScoreFormula from '../components/ScoreFormula.astro';
 import experiments from '../data/experiments.json';
 import results from '../data/results.json';
 import { GLOSSARY, GLOSSARY_ORDER } from '../lib/glossary';
 import { url, HF, andList, demoSet } from '../lib/site';
-import { scoreRun, pctOf, verdictText, RACK_SLOTS, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
+import { scoreRun, pctOf, verdictText, workedPart, workedTex, totalTex, medianShare, pooled, RACK_SLOTS, TRAINED_SLOTS,
+  HELD_OUT_SLOTS, MIN_PER_SLOT, PASS_MARK, WEAK_AT } from '../lib/score';
 
+// Experiments explains, Results shows. Every definition, rule and caveat lives here once; Results links to the anchors
+// #scored, #score, #read and #caveats. No result is shown here except the one run the score is worked out on.
 const models = experiments.models;
 const FAMILY = { pi05: 'π0.5', flux3: 'FLUX 3 Action', isaac: 'Isaac 0.5' } as Record<string, string>;
 const scored = results.total;
@@ -20,24 +25,32 @@ const onSet = (set: string) => models.filter((m) => demoSet(m.data) === set).len
 const noted = andList(results.noted_models);
 const sessions = new Set(experiments.rows.flatMap((r) => r.sessions)).size;
 const nameOf = (run: string) => models.find((m) => m.run === run)?.name ?? run;
-// the worked example under "How a run is scored": the run with the most rollouts
-const ex = [...results.rows].sort((a, b) => b.rollouts - a.rollouts)[0];
+const rows = results.rows;
+// the run the score is worked out on: the newest one scored from the operator's notes
+const ex = [...rows].filter((r) => r.scored_by === 'notes').sort((a, b) => (b.days.at(-1) ?? '').localeCompare(a.days.at(-1) ?? ''))[0]
+  ?? [...rows].sort((a, b) => b.rollouts - a.rollouts)[0];
 const exScore = scoreRun(ex.by_destination);
-const exSlots = RACK_SLOTS.filter((s) => ex.by_destination[s as keyof typeof ex.by_destination])
-  .map((s) => { const v = ex.by_destination[s as keyof typeof ex.by_destination] as { rollouts: number; released: number }; return `${s} ${v.released}/${v.rollouts}`; });
+const exTr = workedPart(ex.by_destination, TRAINED_SLOTS), exHo = workedPart(ex.by_destination, HELD_OUT_SLOTS);
+const exTex = [workedTex('Trained', exTr), workedTex('Held-out', exHo), totalTex([exTr, exHo], exScore.total)].filter(Boolean) as string[];
+const exPool = pooled(ex.by_destination);
+const exMedian = medianShare(ex.by_destination);
+const exZeros = RACK_SLOTS.filter((s) => {
+  const v = ex.by_destination[s as keyof typeof ex.by_destination] as { rollouts: number; released: number } | undefined;
+  return v?.rollouts && !v.released;
+});
 const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b.last_day ?? '').localeCompare(a.last_day ?? ''))[0] ?? models[0];
 ---
 <Base
   page="experiments"
   title="Experiments"
-  description="How the rollouts were run and scored, every model described in full with its hyperparameters, and the words used on this site, defined before any result."
+  description="How the rollouts were run and scored, how to read the results, what the numbers cannot say, every model described in full with its hyperparameters, and the words used on this site."
 >
   <section class="section">
     <div class="wrap">
       <h1>Experiments</h1>
       <p class="lead">
-        Everything about how the models were tested comes before the results: how a rollout is run, how it is scored,
-        what each model is, and what each word means.
+        {`How the models were tested and scored, how to read the results, and what each model is. The numbers themselves are on `}
+        <a href={url('results/')}>Results</a>.
       </p>
     </div>
   </section>
@@ -67,12 +80,8 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
           </li>
           <li>Each session is stored as a LeRobot dataset with the cameras the model saw, one episode per rollout, and uploaded to Hugging Face.</li>
         </ol>
-        <p class="note">
-          {`These were test runs made during development, not a planned evaluation: ${sessions} sessions, uneven in the moves tried, ` +
-            `with no fixed number of rollouts per move.`}
-        </p>
       </div>
-      <div>
+      <div id="scored">
         <h2>How a rollout is scored</h2>
         <p>
           {`The `}<Term k="scorer">scorer</Term>{` reads the arm’s joint angles. It finds each moment the gripper closed on something ` +
@@ -90,7 +99,8 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
         {noted && (
           <p class="note">
             {`${noted} are scored from the operator's notes at the robot instead of the scorer: one rollout per noted move, the ` +
-              `outcome as written, restarts counted inside their move. Their move tables below list every note as written.`}
+              `outcome as written, restarts counted inside their move, and a vial dropped in front of or behind the slot counts as ` +
+              `not in it. Results lists every note as written, under Move by move.`}
           </p>
         )}
         <p class="note">
@@ -107,8 +117,7 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
       <h2>How a run is scored</h2>
       <p>
         {`A run is one model at one checkpoint in one mode. Its score is built slot by slot, so every place on the table counts ` +
-          `the same however many rollouts went there. This is the score on the Results page and in each model's entry below. `}
-        <a href={url('results/#score-ref')}>The Results page works it out with each run's own numbers</a>{`, with a table of where every vial ended.`}
+          `the same however many rollouts went there. It is the score of the `}<a href={url('results/#h-score')}>Results table</a>{`.`}
       </p>
       <ol class="steps">
         <li>For each of the 12 rack slots as the destination: the share of its rollouts that ended in the asked slot.</li>
@@ -129,13 +138,28 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
         </li>
         <li>
           {`A slot where half or fewer of the rollouts ended in the asked slot is a `}<Term k="weak">weak slot</Term>{`. ` +
-            `The score tables list them worst first, so it shows where the score is lost.`}
+            `The score table lists them worst first, so it shows where the score is lost.`}
         </li>
       </ol>
       <ScoreFormula />
+
+      <h3>In machine-learning words</h3>
+      <p>
+        {`For a slot s, a true positive `}<TeX tex={String.raw`\mathrm{TP}_s`} />{` is a rollout asked to end in s whose vial ended in s; ` +
+          `a false negative `}<TeX tex={String.raw`\mathrm{FN}_s`} />{` is one asked for s whose vial ended anywhere else: at another ` +
+          `slot, beside s, still in the gripper, or never picked up. There are no true negatives: every rollout asks for some slot. ` +
+          `Pooling every rollout instead of averaging the slots (plain accuracy) would let the slots a run was tried at most decide ` +
+          `its score: ${ex.label} has ${exPool.got} of ${exPool.n} pooled (${pctOf(exPool.got / exPool.n)}) against ` +
+          `${pctOf(exScore.total)} balanced.`}
+      </p>
+      <TeX tex={String.raw`\text{balanced accuracy} = \frac{1}{12} \sum_{s \in S} \text{recall}_s \qquad ` +
+        String.raw`\text{plain accuracy} = \frac{\sum_{s \in S} \mathrm{TP}_s}{\sum_{s \in S} \left(\mathrm{TP}_s + \mathrm{FN}_s\right)}`} display />
+      <TeX tex={`\\text{pass} \\iff n_s \\ge ${MIN_PER_SLOT} \\text{ for every } s \\in S \\text{ and } \\text{Total} \\ge ${PASS_MARK * 100}\\,\\% ` +
+        `\\qquad \\text{weak}(s) \\iff \\text{share}(s) \\le ${WEAK_AT * 100}\\,\\%`} display />
       <p class="note">
-        {`The mean, not the median: the median hides slots that fail. Seven slots at 80% and five at 0% have a median of 80% ` +
-          `but a mean of 47%.`}
+        {`The mean, not the median: the median hides slots that fail. Seven slots at 80% and five at 0% have a median of 80% but a ` +
+          `mean of 47%` + (exMedian !== null ? `; ${ex.label}'s own ${exScore.tried} slot shares have a median of ${Math.round(exMedian)}% ` +
+          `against a mean of ${pctOf(exScore.total)}${exZeros.length ? `, because ${exZeros.length} of its slots are at 0%` : ''}.` : '.')}
       </p>
       <p class="note">
         {`The ${PASS_MARK * 100}% bar is on the mean, not on every slot, because ${MIN_PER_SLOT} rollouts still leave room for ` +
@@ -143,9 +167,44 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
           `really 80% good everywhere would show at least one slot below 7 of 10 about four times in five. The mean of 120 ` +
           `rollouts evens that out.`}
       </p>
-      <p class="note">
-        {`For example, ${ex.label}: ${exSlots.join(', ')}. Total accuracy ${pctOf(exScore.total)}, trained slots ` +
-          `${pctOf(exScore.trained)}, held-out slots ${pctOf(exScore.held)}. ${verdictText(exScore)}.`}
+
+      <h3>Worked out on one run</h3>
+      <p>
+        {`${ex.label}, the newest run scored from the operator's notes. Each share sits over its slot and its count, ` +
+          `in the asked slot of all rollouts asked for that slot.`}
+      </p>
+      {exTex.map((t) => <TeX tex={t} display />)}
+      <p class="note">{`${verdictText(exScore)}.`}</p>
+
+      <h3 id="read">How to read the results</h3>
+      <p>
+        {`The slot maps draw the table as it is: the left rack, the bin and the right rack, slots 1 to 6 in each. A filled circle ` +
+          `is a slot with something there; the number under it is what counts: rollouts that got through out of those tried there, ` +
+          `or, on the maps of the training set, demonstrations. A dashed ring marks a held-out slot, one the training set never ` +
+          `used in that role: slots 2 and 5 as a source, and 2, 4 and 5 as a destination.`}
+      </p>
+      <p>
+        {`For rows scored from the operator's notes, a `}<Term k="confusion">confusion matrix</Term>{` shows where every vial ended. ` +
+          `A row is the slot asked for; a column is where the vial ended: at a slot (in it, or beside it when it was not the asked ` +
+          `slot), beside the asked slot, still held, or never picked up. The outlined cell on the diagonal counts the rollouts that ` +
+          `ended in the asked slot, and the rest of the row are its misses. Recall, on the right, is the share the score uses. `}
+        <Term k="precision">Precision</Term>{`, at the bottom, is how many of the vials that ended at a slot were asked to end there; ` +
+          `a false positive `}<TeX tex={String.raw`\mathrm{FP}_s`} />{` is a vial that ended at s while another slot was asked. ` +
+          `Rows scored from the arm have no matrix: the arm cannot see where the vial ended.`}
+      </p>
+      <TeX tex={String.raw`\text{precision}_s = \frac{\mathrm{TP}_s}{\mathrm{TP}_s + \mathrm{FP}_s}`} display />
+    </div>
+  </section>
+
+  <section class="section" id="caveats">
+    <div class="wrap">
+      <h2>What the numbers cannot say</h2>
+      <p>
+        {`They are small. The biggest run has ${Math.max(...rows.map((r) => r.rollouts))} rollouts and many have one to five, so one ` +
+          `more good or bad rollout moves a run a long way. The runs are not a controlled comparison: they differ in training data, ` +
+          `length and mode. These were test runs made during development, not a planned evaluation: ${sessions} sessions, uneven in ` +
+          `the moves tried, with no fixed number of rollouts per move. For a person-scored evaluation of a different, earlier system ` +
+          `see `}<a href={url('previous/results/')}>the August evaluation</a>{`; the two should not be compared.`}
       </p>
     </div>
   </section>
@@ -172,7 +231,7 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
                 <td class="what">{m.base}</td>
                 <td><CameraChips used={m.cams} note={m.cams_note} compact /></td>
                 <td class="r num">{m.steps?.toLocaleString('en-GB') ?? '–'}</td>
-                <td class="r num">{m.scored ? m.rollouts : 'not scored'}</td>
+                <td class="r num">{m.rows.length ? <a href={`${url('results/')}?r=${m.rows.join(',')}#h-score`}>{m.rollouts}</a> : m.scored ? '–' : 'not scored'}</td>
                 <td>{m.hub ? <a href={`${HF}/sari-abdan/${m.hub}`}>Hugging Face</a> : <span class="note">not published</span>}</td>
               </tr>
             ))}
@@ -181,15 +240,18 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
       </div>
       <p class="note after">
         {`${nameOf('pi05-noop')} and ${nameOf('pi05-trim2')} were short fine-tunes of ${nameOf('pi05-allcams')} made to test one idea each, and their checkpoints ` +
-          `are deleted. ${nameOf('flux-flux25')} is the first FLUX run, on one task; its rollouts are not scored.`}
+          `are deleted. ${nameOf('flux-flux25')} is the first FLUX run, on one task; its rollouts are not scored. The August policies are with the `}
+        <a href={url('previous/')}>previous work</a>.
       </p>
+      <h3>Planned next, and considered</h3>
+      <ModelTable eras={['planned', 'considered']} />
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <h2>One model in full</h2>
-      <p>Pick a model. Its settings, its checkpoints, every move it was asked and what happened to it are on this page and nowhere else.</p>
+      <p>Pick a model: what it is, what it saw, every setting with its meaning, and what happened while it was built. Its rollouts are on Results.</p>
       <div class="picker" role="tablist" aria-label="Model" hidden data-picker>
         {models.map((m) => (
           <button type="button" role="tab" class="pick" data-pick={m.id} aria-selected={m.id === dflt.id ? 'true' : 'false'}>
@@ -243,8 +305,11 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
   .two h2 { margin-bottom: 0.9rem; }
   .steps { margin: 1rem 0; padding-left: 1.3rem; display: grid; gap: 0.6rem; max-width: var(--measure); }
   .after { margin-top: 1rem; }
+  #score h3 { font-size: var(--step-1); margin: 2.2rem 0 0.5rem; }
+  #score p { max-width: var(--measure); }
   .lookup th[scope='row'] { white-space: nowrap; }
   .lookup .what { font-size: var(--step--1); color: var(--ink-2); min-width: 12rem; }
+  h3 { font-size: var(--step-1); margin: 2rem 0 0.6rem; }
   .picker { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
   .picker[hidden] { display: none; }
   .pick {

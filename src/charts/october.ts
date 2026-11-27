@@ -61,17 +61,15 @@ function draw() {
   document.getElementById('slots-empty')!.hidden = chosen.length > 0;
   document.getElementById('slots-more')!.hidden = chosen.length <= MAX_MAPS;
 
-  // the score worked out with each ticked row's numbers (every one), and its confusion matrix (the first four)
-  all('.calc-row').forEach((el) => (el.hidden = !state.has(el.dataset.row!)));
-  document.getElementById('calc-empty')!.hidden = chosen.length > 0;
-  let matrices = 0;
-  all('.cm-row').forEach((el) => {
-    const on = state.has(el.dataset.row!) && matrices < MAX_MAPS;
+  // move by move: the first four ticked, like the maps
+  let moves = 0;
+  all('.mv-row').forEach((el) => {
+    const on = state.has(el.dataset.row!) && moves < MAX_MAPS;
     el.hidden = !on;
-    if (on) matrices++;
+    if (on) moves++;
   });
-  document.getElementById('cm-empty')!.hidden = chosen.length > 0;
-  document.getElementById('cm-more')!.hidden = chosen.length <= MAX_MAPS;
+  document.getElementById('mv-empty')!.hidden = chosen.length > 0;
+  document.getElementById('mv-more')!.hidden = chosen.length <= MAX_MAPS;
 
   // rollouts to watch
   let clips = 0;

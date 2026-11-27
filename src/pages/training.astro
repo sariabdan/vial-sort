@@ -1,12 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import ModelTable from '../components/ModelTable.astro';
-import StageLegend from '../components/StageLegend.astro';
 import Figure from '../components/Figure.astro';
 import Term from '../components/Term.astro';
 import training from '../data/training.json';
 import gate from '../data/gate.json';
-import results from '../data/results.json';
 import registry from '../data/registry.json';
 import { url, MODELS } from '../lib/site';
 
@@ -16,29 +13,28 @@ const last = gc[gc.length - 1];
 const leavesHome = gc.every((g) => g.go_ok === g.go_of);
 const bestDest = Math.max(...gc.map((g) => g.dest_frames));
 const sourceFrom = (gc.find((g, i) => gc.slice(i).every((h) => h.source)) ?? last).step;
-const newest = results.tiles.pi05;
 const gated = reg('pi05-canon')!;
 const nameOf = (run: string) => reg(run)?.name ?? run;
 const k = (s: number) => `${s / 1000}k`;
-const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => n + x.takes, 0);
+// a model's rows on Results: its rollouts are shown there, not here
+const resultsOf = (run: string) => { const m = reg(run); return m && m.rows.length ? `${url('results/')}?r=${m.rows.join(',')}#h-score` : null; };
 ---
 <Base
   page="training"
   title="Training"
-  description="How each model's loss fell, what its checkpoints did on the robot, and an offline test of what the newest π0.5 model reads from its command."
+  description="How each model's training loss fell, and offline tests of what a π0.5 model reads from its command."
 >
   <section class="section">
     <div class="wrap">
       <h1>Training</h1>
       <p class="lead">
-        How each model’s training loss fell, and, under it, how every checkpoint that was tried on the robot did. Settings are on the
-        {` `}<a href={url('experiments/')}>Experiments page</a>, and the rollouts are compared on the <a href={url('results/')}>Results page</a>.
+        {`How each model’s training loss fell, and offline tests of what a model reads from its command. What each model is and its ` +
+          `settings are on `}<a href={url('experiments/')}>Experiments</a>{`; how it did on the robot is on `}<a href={url('results/')}>Results</a>{`.`}
       </p>
       <p class="intro">
-        {`There is no validation loss: every demonstration has its own wording, so the curve cannot show when a model starts to memorise. The robot is the only test, ` +
-          `and the squares under each curve show how far each rollout got. They are scored from the operator's notes where a session has them, otherwise from the arm, as explained under `}<a href={url('experiments/')}>Experiments</a>.
+        {`There is no validation loss: every demonstration has its own wording, so the curve cannot show when a model starts to ` +
+          `memorise. The robot is the only test.`}
       </p>
-      <StageLegend inline />
     </div>
   </section>
 
@@ -49,7 +45,10 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
         <div class="wrap">
           <header class="run-head">
             <h2><i style={`background: ${MODELS[run.model].color}`}></i>{m.name}<span class="note">{MODELS[run.model].label}</span></h2>
-            <p>{`${m.what}.`}</p>
+            <p class="run-links">
+              <a href={`${url('experiments/')}#${m.id}`}>What it is and its settings</a>
+              {resultsOf(run.id) && <>{' · '}<a href={resultsOf(run.id)!}>Its rollouts on the robot</a></>}
+            </p>
             <dl class="facts">
               <div><dt>Steps</dt><dd class="num">{k(run.steps)}</dd></div>
               <div><dt>Training time</dt><dd class="num">{run.hours} h</dd></div>
@@ -58,15 +57,6 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
             </dl>
           </header>
           <div class="chart" data-chart={`loss-${run.id}`} style="min-height: 160px"></div>
-          {run.robot.length ? (
-            <>
-              <p class="panel-label">{`On the robot: ${takesOf(run)} scored rollouts, one square each`}</p>
-              <div class="chart" data-chart={`robot-${run.id}`} style="min-height: 80px"></div>
-              <p class="note">Several columns at one checkpoint are separate sessions: sync, RTC, or EMA weights. Hover a square for the session. The table for each checkpoint is on <a href={`${url('experiments/')}#${m.id}`}>{m.name}’s Experiments entry</a>.</p>
-            </>
-          ) : (
-            <p class="note panel-label">Its rollouts ran on an earlier layout of the table that the scorer cannot read, so they are not scored here.</p>
-          )}
         </div>
       </section>
     );
@@ -119,10 +109,6 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
           </tbody>
         </table>
       </div>
-      <p class="note after-gate">
-        {`The robot shows the same split. ${newest.name} at ${newest.short} picked up the right vial in ${newest.grasped_right} of ${newest.rollouts} rollouts and put it in ` +
-          `the asked slot in ${newest.released}. See `}<a href={url('results/')}>the results</a>.
-      </p>
     </div>
   </section>
 
@@ -130,11 +116,10 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
     <div class="wrap">
       <h2>Why the destination is not followed</h2>
       <p>
-        On 21 October a probe on training frames answered “underfit, overfit, or what?”: neither. It is a shortcut built
-        into how the 100 demonstrations were recorded. Each run of five was recorded in one sitting with one destination,
-        and the bin moved and the light changed between sittings, so the camera picture alone says which sitting a frame
-        is from, and the sitting says the destination. The source changed in every demonstration within a sitting, so the
-        picture could not give it away; that is why the source slot was learned and the destination was not.
+        {`On 21 October a probe on training frames answered “underfit, overfit, or what?”: neither. The model had learned a shortcut ` +
+          `from how the 100 demonstrations were recorded, one destination per sitting (`}<a href={url('datasets/#ws220')}>on the Data page</a>{`): ` +
+          `the camera picture says which sitting a frame is from, and the sitting says the destination. The source changed within a ` +
+          `sitting, so the picture could not give it away; that is why the source slot was learned and the destination was not.`}
       </p>
       <div class="table-scroll">
         <table class="data">
@@ -162,21 +147,12 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
       <p>
         {`${nameOf('pi05-noop')} and ${nameOf('pi05-trim2')} are quick fine-tunes of ${nameOf('pi05-allcams')} at 12k. Both train on demonstrations with the idle start and end cut, and replace the first ` +
           `frames with views of the arm with nobody near it; the second uses a corrected cut. They test the finding of the 19 October probes: the 12k checkpoint often waited ` +
-          `at its start pose because it had learned the operator leaning in as its cue to move.`}
+          `at its start pose because it had learned the operator leaning in as its cue to move. `}
+        {['pi05-noop', 'pi05-trim2'].map((r, i) => resultsOf(r) && <>{i ? ' · ' : ''}<a href={resultsOf(r)!}>{`${nameOf(r)} on the robot`}</a></>)}
       </p>
-      <div class="chart probes" data-chart="robot-probes" style="min-height: 220px"></div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <h2>Every model of this work, and what comes next</h2>
-      <p>
-        {`Cells say “not logged” where a run happened and no record of the number exists, and a dash where a policy was never trained. The August policies are with the `}<a href={url('previous/')}>previous work</a>.
-      </p>
-      <ModelTable eras={['after', 'planned', 'considered']} />
-    </div>
-  </section>
 </Base>
 
 <script>
@@ -192,9 +168,8 @@ const takesOf = (r: (typeof training.runs)[number]) => r.robot.reduce((n, x) => 
   .facts div { display: grid; }
   .facts dt { font-size: var(--step--1); color: var(--ink-2); }
   .facts dd { margin: 0; font-weight: 560; }
-  .panel-label { margin-top: 1rem; font-size: var(--step--1); color: var(--ink); font-weight: 560; }
+  .run-links { margin-top: 0.4rem; }
   .chart { max-width: 64rem; }  /* the curves stop short of the right edge on wide screens */
-  .probes { max-width: 34rem; margin-top: 1.4rem; }
   .gate { margin-top: 1.4rem; }
   .gate th[scope='row'] { font-weight: 560; min-width: 18rem; max-width: 26rem; }
   .gate .def { display: block; font-weight: 400; color: var(--ink-2); font-size: var(--step--1); margin-top: 0.2rem; line-height: 1.45; }

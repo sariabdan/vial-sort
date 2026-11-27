@@ -18,7 +18,7 @@ const trained = (r: Row) => r.era === 'paper' || r.era === 'after';
 const robot = (r: Row) => {
   const t = r.robot as null | { rollouts?: number; complete?: number; takes?: number; released?: number; right_vial?: number };
   if (t?.rollouts != null) return `${t.complete} of ${t.rollouts} rollouts complete, scored by a person.`;
-  if (t?.takes != null) return `${t.takes} scored rollouts. Each checkpoint has its own row on the Experiments page.`;
+  if (t?.takes != null) return `${t.takes} scored rollouts. Each checkpoint has its own row on the Results page.`;
   return null;
 };
 ---

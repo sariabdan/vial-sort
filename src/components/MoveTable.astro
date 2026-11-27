@@ -1,0 +1,95 @@
+---
+// Every move one row (model + checkpoint + mode) was asked on the robot, for Results' "Move by move". A row scored
+// from the operator's notes lists each noted move in the order it was run, with the note as written; a row scored
+// from the arm lists each move with how far its rollouts got.
+import experiments from '../data/experiments.json';
+import { moveLabel } from '../lib/site';
+
+type Row = (typeof experiments.rows)[number];
+interface Props { r: Row }
+const { r } = Astro.props;
+const stages = experiments.stages;
+const OUTCOME: Record<string, string> = {
+  placed: 'In the slot', drop_missed: 'Dropped beside the asked slot', off_slot: 'Let go at another slot',
+  never_let_go: 'Never let go', no_grasp: 'Never picked it up', wrong_vial: 'Took another vial',
+};
+const stageIdx = (key: string) => stages.findIndex((s) => s.key === key);
+const fromOf = (move: string) => move.split('->')[0];
+// the day a noted rollout was recorded, from its take id (<step>_<yyyymmdd>_<hhmmss>_t<n>): a row opens each day
+const dayOf = (take: string) => {
+  const m = take.match(/_(\d{4})(\d{2})(\d{2})_\d{6}_t\d+$/);
+  return m ? new Date(`${m[1]}-${m[2]}-${m[3]}T12:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '';
+};
+const endedText = (ended: string | null, move: string) =>
+  ended === null ? '–' : ended === 'source' ? `still in ${fromOf(move)}` : ended === 'bin' ? 'the bin'
+    : ended.includes('/') ? `between ${ended.replace('/', ' and ')}` : ended;
+const noted = r.noted_moves;
+---
+{noted ? (
+  <details open class="mt">
+    <summary>{`${noted.length} moves as noted at the robot, ${noted.filter((x) => x.trained).length} of them trained`}</summary>
+    <div class="table-scroll">
+      <table class="data noted">
+        <thead>
+          <tr><th class="r">#</th><th>Move</th><th class="r">Demonstrations</th><th>What happened</th><th class="ended">Where the vial ended</th><th>The operator's note</th></tr>
+        </thead>
+        <tbody>
+          {noted.map((mv, i) => (
+            <>
+              {(i === 0 || dayOf(mv.take) !== dayOf(noted[i - 1].take)) && (
+                <tr class="day"><th colspan="6" scope="rowgroup">{`On the robot, ${dayOf(mv.take)}`}</th></tr>
+              )}
+              <tr class:list={[!mv.trained && 'untrained']}>
+                <td class="r num">{mv.n}</td>
+                <td class="move">{moveLabel(mv.move)}{!mv.trained && <span class="tag">never trained on</span>}</td>
+                <td class="r num">{mv.demos}</td>
+                <td class="what-col"><i class="sw" style={`background: var(--st-${stageIdx(mv.stage) + 1})`}></i>{OUTCOME[mv.outcome] ?? mv.outcome}
+                  {mv.attempts > 1 && <span class="tag">{`${mv.attempts} rollouts, the last one counted`}</span>}</td>
+                <td class="ended">{endedText(mv.ended, mv.move)}</td>
+                <td class="said">{`“${mv.note}”`}</td>
+              </tr>
+            </>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+) : (
+  <details open class="mt">
+    <summary>{`${r.rollouts} rollouts, ${r.moves.length} move${r.moves.length === 1 ? '' : 's'}, scored from the arm`}</summary>
+    <div class="table-scroll">
+      <table class="data stages">
+        <thead>
+          <tr>
+            <th>Move</th><th class="r">Demonstrations</th><th class="r">Rollouts</th>
+            {stages.map((s, i) => <th class="r"><i class="sw" style={`background: var(--st-${i + 1})`}></i>{s.label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {r.moves.map((mv) => (
+            <tr>
+              <td class="move">{moveLabel(mv.move)}</td><td class="r num">{mv.demos}</td><td class="r num">{mv.rollouts}</td>
+              {stages.map((s) => <td class:list={['r', 'num', !mv.stages[s.key as keyof typeof mv.stages] && 'zero']}>{mv.stages[s.key as keyof typeof mv.stages]}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+)}
+
+<style>
+  .mt { min-width: 0; margin-top: 0.6rem; }
+  .mt summary { cursor: pointer; font-weight: 560; padding-block: 0.3rem; }
+  .sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 3px; margin-right: 0.4rem; vertical-align: -0.05rem; }
+  .stages th { font-size: var(--step--1); vertical-align: bottom; }
+  table.stages { width: auto; min-width: min(100%, 40rem); }
+  .zero { color: var(--steel); }
+  .noted td { vertical-align: top; }
+  .noted .what-col, .noted .ended { white-space: nowrap; }
+  .noted .said { color: var(--ink-2); font-size: var(--step--1); min-width: 16rem; }
+  .noted .tag { display: block; font-size: 0.95rem; color: var(--ink-2); white-space: nowrap; }
+  .noted .what-col .tag { margin-left: 1.15rem; }
+  .noted tr.untrained td { background: var(--raise); }
+  .noted tr.day th { text-align: left; font-weight: 620; padding-top: 1.1rem; border-bottom: 1px solid var(--rule); }
+</style>
