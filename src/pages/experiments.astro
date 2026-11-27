@@ -4,6 +4,7 @@ import ModelDetail from '../components/ModelDetail.astro';
 import StageLegend from '../components/StageLegend.astro';
 import CameraChips from '../components/CameraChips.astro';
 import Term from '../components/Term.astro';
+import ScoreFormula from '../components/ScoreFormula.astro';
 import experiments from '../data/experiments.json';
 import results from '../data/results.json';
 import { GLOSSARY, GLOSSARY_ORDER } from '../lib/glossary';
@@ -131,6 +132,7 @@ const dflt = [...models].filter((m) => m.rollouts && !m.probe).sort((a, b) => (b
             `The score tables list them worst first, so it shows where the score is lost.`}
         </li>
       </ol>
+      <ScoreFormula />
       <p class="note">
         {`The mean, not the median: the median hides slots that fail. Seven slots at 80% and five at 0% have a median of 80% ` +
           `but a mean of 47%.`}

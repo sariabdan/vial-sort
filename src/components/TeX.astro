@@ -1,0 +1,19 @@
+---
+// A formula typeset at build time by KaTeX: real math on the page (fractions, sums, subscripts) in KaTeX's own fonts,
+// with MathML beside it for screen readers. No script runs in the browser. `display` puts it on its own line.
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+interface Props { tex: string; display?: boolean }
+const { tex, display = false } = Astro.props;
+const html = katex.renderToString(tex, { displayMode: display, throwOnError: true, output: 'htmlAndMathml', strict: 'error' });
+---
+{display ? <div class="math-display" set:html={html} /> : <span class="math-inline" set:html={html} />}
+
+<style is:global>
+  /* a long formula scrolls inside its own line instead of widening the page */
+  .math-display { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding: 0.15rem 0 0.15rem 1rem; }
+  .math-display .katex-display { margin: 0.55rem 0; text-align: left; }
+  .math-display .katex-display > .katex { text-align: left; }
+  .katex { font-size: 1.1em; color: inherit; }
+</style>

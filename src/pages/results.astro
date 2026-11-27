@@ -5,12 +5,14 @@ import ScoreTable from '../components/ScoreTable.astro';
 import StageLegend from '../components/StageLegend.astro';
 import Clip from '../components/Clip.astro';
 import Term from '../components/Term.astro';
+import TeX from '../components/TeX.astro';
+import ScoreFormula from '../components/ScoreFormula.astro';
 import results from '../data/results.json';
 import registry from '../data/registry.json';
 import media from '../data/media.json';
 import { moveLabel, url } from '../lib/site';
 import { slotDemos, slotGot, untrainedSlots, byBounds, type SlotMap } from '../lib/rackmaps';
-import { scoreRun, pctOf, num1, workedPart, workedLine, medianShare, pooled, MIN_PER_SLOT, PASS_MARK, WEAK_AT,
+import { scoreRun, pctOf, workedPart, workedTex, totalTex, medianShare, pooled, MIN_PER_SLOT, PASS_MARK, WEAK_AT,
   RACK_SLOTS, TRAINED_SLOTS, HELD_OUT_SLOTS } from '../lib/score';
 
 const rows = results.rows;
@@ -49,14 +51,6 @@ const count = (r: (typeof rows)[number], key: string) => r.stages[key as keyof t
 const qualified = rows.filter((r) => scoreRun(r.by_destination).verdict !== 'disqualified').length;
 
 // ── How the score is calculated (top) and The score, step by step (bottom) ──
-const formula = [
-  'share(slot) = rollouts that ended in the slot ÷ rollouts asked to end there',
-  '            = the slot\'s recall: TP ÷ (TP + FN)',
-  'Total       = mean of the 12 shares, the bin left out',
-  '            = balanced accuracy',
-  'Trained     = mean of the shares of slots 1, 3 and 6 of both racks',
-  'Held-out    = mean of the shares of slots 2, 4 and 5 of both racks',
-].join('\n');
 const notTried = (missing: string[], of: number) =>
   missing.length && missing.length < of ? ` (not tried: ${missing.join(', ')})` : '';
 type Conf = Record<string, Record<string, number>>;
@@ -158,22 +152,21 @@ const medianText = medEx
               `there that ended in it, which is the slot's `}<Term k="recall">recall</Term>{`, then the mean of the 12. Every slot counts ` +
               `the same however many rollouts went there, and the bin is left out.`}
           </p>
-          <pre class="formula">{formula}</pre>
+          <ScoreFormula />
           {rows.map((r) => {
             const tr = workedPart(r.by_destination, TRAINED_SLOTS), ho = workedPart(r.by_destination, HELD_OUT_SLOTS);
-            const n = tr.count + ho.count;
+            const parts = [
+              { tex: workedTex('Trained', tr), what: 'Trained slots', missing: notTried(tr.missing, 6) },
+              { tex: workedTex('Held-out', ho), what: 'Held-out slots', missing: notTried(ho.missing, 6) },
+            ];
+            const total = totalTex([tr, ho], scoreRun(r.by_destination).total);
             return (
               <div class="calc-row" data-row={r.key}>
                 <p class="calc-name"><i style={`background: var(--m-${r.family})`}></i>{r.label}</p>
-                <dl class="calc-parts">
-                  <dt>Trained slots (1, 3, 6)</dt><dd><code>{workedLine(tr)}</code>{notTried(tr.missing, 6)}</dd>
-                  <dt>Held-out slots (2, 4, 5)</dt><dd><code>{workedLine(ho)}</code>{notTried(ho.missing, 6)}</dd>
-                  <dt>Total</dt>
-                  <dd>
-                    <code>{n ? `(${num1(tr.sum)} + ${num1(ho.sum)}) ÷ ${n} = ${num1((tr.sum + ho.sum) / n)}%` : 'no slot tried'}</code>{' '}
-                    {n > 0 && <strong>{`rounded: ${pctOf(scoreRun(r.by_destination).total)}`}</strong>}
-                  </dd>
-                </dl>
+                {parts.map((x) => x.tex
+                  ? <><TeX tex={x.tex} display />{x.missing && <p class="calc-note">{`${x.what}${x.missing}.`}</p>}</>
+                  : <p class="calc-note">{`${x.what}: no slot tried.`}</p>)}
+                {total && <TeX tex={total} display />}
               </div>
             );
           })}
@@ -316,19 +309,22 @@ const medianText = medEx
         <p>{`What every word of the score means, from one rollout to the verdict, and then where every vial of the ticked rows ended.`}</p>
         <ol class="ref-steps">
           <li>
-            <strong>One rollout asks for one slot.</strong>{` For a slot S, a true positive (TP) is a rollout asked to end in S whose ` +
-              `vial ended in S. A false negative (FN) is a rollout asked for S whose vial ended anywhere else: at another slot, ` +
-              `beside S, still in the gripper, or never picked up. There are no true negatives: every rollout asks for some slot, so ` +
-              `doing nothing is never the right answer.`}
+            <strong>One rollout asks for one slot.</strong>{` For a slot s, a true positive `}<TeX tex={String.raw`\mathrm{TP}_s`} />{` is a rollout ` +
+              `asked to end in s whose vial ended in s. A false negative `}<TeX tex={String.raw`\mathrm{FN}_s`} />{` is a rollout asked for s whose vial ` +
+              `ended anywhere else: at another slot, beside s, still in the gripper, or never picked up. There are no true negatives: ` +
+              `every rollout asks for some slot, so doing nothing is never the right answer.`}
           </li>
           <li>
-            <strong>{`A slot's share is its `}<Term k="recall">recall</Term>.</strong>{` TP ÷ (TP + FN): the number under each ` +
-              `destination in `}<a href="#h-slot">Slot by slot</a>{`, and the Recall column of the tables below.`}
+            <strong>{`A slot's share is its `}<Term k="recall">recall</Term>.</strong>{` It is the number under each destination in `}
+            <a href="#h-slot">Slot by slot</a>{`, and the Recall column of the tables below.`}
+            <TeX tex={String.raw`\text{recall}_s = \text{share}(s) = \frac{\mathrm{TP}_s}{\mathrm{TP}_s + \mathrm{FN}_s}`} display />
           </li>
           <li>
             <strong>{`The total is the `}<Term k="balanced">balanced accuracy</Term>.</strong>{` The mean of the 12 recalls, the bin left ` +
-              `out. Pooling every rollout instead (plain accuracy) would let the slots a run was tried at most decide its score. ` +
-              (pooledText ? `${pooledText}.` : '')}
+              `out. Pooling every rollout instead (plain accuracy) would let the slots a run was tried at most decide its score.`}
+            <TeX tex={String.raw`\text{balanced accuracy} = \frac{1}{12} \sum_{s \in S} \text{recall}_s \qquad ` +
+              String.raw`\text{plain accuracy} = \frac{\sum_{s \in S} \mathrm{TP}_s}{\sum_{s \in S} \left(\mathrm{TP}_s + \mathrm{FN}_s\right)}`} display />
+            {pooledText && <span>{`${pooledText}.`}</span>}
           </li>
           <li>
             <strong>Trained and held-out.</strong>{` The same mean over slots 1, 3 and 6 of both racks, the destinations the ` +
@@ -338,6 +334,8 @@ const medianText = medEx
           <li>
             <strong>Pass and weak.</strong>{` A run passes with at least ${MIN_PER_SLOT} rollouts at every one of the 12 slots and a ` +
               `total of at least ${PASS_MARK * 100}%. A slot at ${WEAK_AT * 100}% or below is weak.`}
+            <TeX tex={`\\text{pass} \\iff n_s \\ge ${MIN_PER_SLOT} \\text{ for every } s \\in S \\text{ and } \\text{Total} \\ge ${PASS_MARK * 100}\\,\\% ` +
+              `\\qquad \\text{weak}(s) \\iff \\text{share}(s) \\le ${WEAK_AT * 100}\\,\\%`} display />
           </li>
           <li>
             <strong>The mean, not the median.</strong>{` ${medianText}`}
@@ -351,8 +349,9 @@ const medianText = medEx
             `beside the asked slot, still held, or never picked up. The outlined cell on the diagonal counts the rollouts that ` +
             `ended in the asked slot (TP); the rest of the row are its misses (FN). Recall, on the right, is the share the score ` +
             `uses. `}<Term k="precision">Precision</Term>{`, at the bottom, is how many of the vials that ended at a slot were ` +
-            `asked to end there.`}
+            `asked to end there; a false positive `}<TeX tex={String.raw`\mathrm{FP}_s`} />{` is a vial that ended at s while another slot was asked.`}
         </p>
+        <TeX tex={String.raw`\text{precision}_s = \frac{\mathrm{TP}_s}{\mathrm{TP}_s + \mathrm{FP}_s}`} display />
         <ul class="legend cm-key">
           {HEAT.concat(1).map((b, i) => <li><i style={`background: var(--ob-${i + 1})`}></i>{`up to ${Math.round(b * 100)}% of the row`}</li>)}
           <li><i class="k-diag"></i>{`the asked slot`}</li>
@@ -493,19 +492,12 @@ const medianText = medEx
   .calc { margin-top: 1.8rem; padding-top: 1.3rem; border-top: 1px dashed var(--rule); }
   .calc h3, #score-ref h3 { font-size: var(--step-1); margin: 0 0 0.5rem; }
   #score-ref h3 { margin-top: 2rem; }
-  .formula { margin: 0.7rem 0 1.1rem; padding: 0.7rem 0.9rem; background: var(--raise); border: 1px solid var(--rule); border-radius: 6px;
-             font-size: var(--step--1); line-height: 1.65; overflow-x: auto; white-space: pre; }
   .calc-row { margin: 1rem 0; }
   .calc-row[hidden], .cm-row[hidden] { display: none; }
   .calc-name { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem; font-weight: 650; margin-bottom: 0.35rem; }
   .calc-name i { width: 0.75rem; height: 0.75rem; border-radius: 50%; flex: none; align-self: center; }
   .calc-name .sub { font-weight: 400; color: var(--ink-2); }
-  .calc-parts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 0.3rem 1.1rem; margin: 0; font-size: var(--step--1); }
-  .calc-parts dt { color: var(--ink-2); }
-  .calc-parts dd { margin: 0; }
-  .calc-parts code { white-space: normal; font-size: inherit; }
-  .calc-parts strong { margin-left: 0.6rem; font-size: var(--step-0); white-space: nowrap; }
-  @media (max-width: 40rem) { .calc-parts { grid-template-columns: minmax(0, 1fr); } .calc-parts dd { margin-bottom: 0.4rem; } }
+  .calc-note { margin: 0 0 0.3rem 1rem; font-size: var(--step--1); color: var(--ink-2); }
 
   /* The score, step by step (bottom) */
   .ref-steps { display: grid; gap: 0.7rem; padding-left: 1.4rem; margin: 0.8rem 0 0; }

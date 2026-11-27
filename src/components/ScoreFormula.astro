@@ -1,0 +1,28 @@
+---
+// The score as formulas, typeset (src/lib/score.ts computes it). Shown under the Score table on Results and in
+// "How a run is scored" on Experiments, so both pages show the same math.
+import TeX from './TeX.astro';
+
+const SET = (slots: string[]) => `\\{${slots.map((s) => `\\text{${s}}`).join(', ')}\\}`;
+const formulas = [
+  String.raw`\text{share}(s) \;=\; \frac{\text{rollouts that ended in } s}{\text{rollouts asked to end in } s} \;=\; \frac{\mathrm{TP}_s}{\mathrm{TP}_s + \mathrm{FN}_s} \;=\; \text{recall}_s`,
+  String.raw`\text{Total} \;=\; \frac{1}{12} \sum_{s \in S} \text{share}(s) \;=\; \text{balanced accuracy}, \qquad S = ` +
+    String.raw`\{\text{L1}, \dots, \text{L6}, \text{R1}, \dots, \text{R6}\}`,
+  String.raw`\text{Trained} \;=\; \frac{1}{6} \sum_{s \in S_{\text{trained}}} \text{share}(s), \qquad S_{\text{trained}} = ` +
+    SET(['L1', 'L3', 'L6', 'R1', 'R3', 'R6']),
+  String.raw`\text{Held-out} \;=\; \frac{1}{6} \sum_{s \in S_{\text{held-out}}} \text{share}(s), \qquad S_{\text{held-out}} = ` +
+    SET(['L2', 'L4', 'L5', 'R2', 'R4', 'R5']),
+];
+---
+<div class="score-formula">
+  {formulas.map((f) => <TeX tex={f} display />)}
+  <p class="note">
+    {`The bin is not in S. For a run not tried at every slot, the sums run over the slots it was tried at, and 12 and 6 ` +
+      `become the number of those slots.`}
+  </p>
+</div>
+
+<style>
+  .score-formula { margin: 0.8rem 0 1.2rem; padding: 0.5rem 0.9rem 0.7rem; background: var(--raise); border: 1px solid var(--rule); border-radius: 6px; }
+  .score-formula .note { margin: 0.3rem 0 0; font-size: var(--step--1); color: var(--ink-2); }
+</style>

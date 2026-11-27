@@ -68,6 +68,24 @@ export const workedLine = (p: WorkedPart) =>
   p.count ? `(${p.slots.map((x) => `${x.s} ${x.got}/${x.n} = ${num1(x.pct)}`).join(' + ')}) ÷ ${p.count} = ` +
             `${num1(p.sum)} ÷ ${p.count} = ${num1(p.mean!)}%` : 'no slot tried';
 
+/** The same, as TeX for <TeX> (the shares are percentages, so % is written once, on the result): every share labelled with its slot and count under a brace, then the mean.
+ *  null when no slot of the part was tried. */
+export function workedTex(name: string, p: WorkedPart): string | null {
+  if (!p.count) return null;
+  const terms = p.slots.map((x) => `\\underbrace{${num1(x.pct)}}_{\\text{${x.s} ${x.got}/${x.n}}}`).join(' + ');
+  return `\\text{${name}} = \\frac{${terms}}{${p.count}} = \\frac{${num1(p.sum)}}{${p.count}} = ${num1(p.mean!)}\\,\\%`;
+}
+
+/** The total as TeX: the parts' sums over the number of slots tried, then the rounded score of the Score table. */
+export function totalTex(parts: WorkedPart[], total: number | null): string | null {
+  const used = parts.filter((p) => p.count);
+  const n = used.reduce((a, p) => a + p.count, 0);
+  if (!n || total === null) return null;
+  const sum = used.reduce((a, p) => a + p.sum, 0);
+  return `\\text{Total} = \\frac{${used.map((p) => num1(p.sum)).join(' + ')}}{${n}} = ${num1(sum / n)}\\,\\% ` +
+         `\\approx ${Math.round(total * 100)}\\,\\%`;
+}
+
 /** The median of a run's slot shares (in percent), to show what the mean is chosen over. */
 export function medianShare(by: ByDestination): number | null {
   const v = RACK_SLOTS.filter((s) => by[s]?.rollouts).map((s) => (100 * by[s].released) / by[s].rollouts).sort((a, b) => a - b);

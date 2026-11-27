@@ -17,16 +17,24 @@ from pathlib import Path
 class Text(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.parts, self.skip = [], 0
+        self.parts, self.skip, self.katex = [], 0, 0
 
+    # typeset formulas (src/components/TeX.astro) are not prose: skip their MathML and KaTeX's drawn copy, whose
+    # spans hold single symbols and the TeX source, like code
     def handle_starttag(self, tag, attrs):
-        self.skip += tag in ("script", "style", "pre", "code")
+        self.skip += tag in ("script", "style", "pre", "code", "math")
+        if self.katex:
+            self.katex += tag == "span"
+        elif tag == "span" and "katex-html" in (dict(attrs).get("class") or "").split():
+            self.katex = 1
 
     def handle_endtag(self, tag):
-        self.skip -= tag in ("script", "style", "pre", "code")
+        self.skip -= tag in ("script", "style", "pre", "code", "math")
+        if self.katex and tag == "span":
+            self.katex -= 1
 
     def handle_data(self, data):
-        if not self.skip:
+        if not self.skip and not self.katex:
             self.parts.append(data)
 
 
