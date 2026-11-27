@@ -232,6 +232,16 @@
    "released": 1,
    "scored_by": "arm"
   },
+  "isaac": {
+   "key": "isaac-expert-21000-sync",
+   "name": "Isaac 0.5 Expert",
+   "label": "Isaac 0.5 Expert · 21k · sync",
+   "short": "21k · sync",
+   "rollouts": 42,
+   "grasped_right": 41,
+   "released": 20,
+   "scored_by": "notes"
+  },
   "gate": {
    "checkpoints": 12,
    "dest_passed": 0,

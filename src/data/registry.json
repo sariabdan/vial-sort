@@ -1,6 +1,43 @@
 {
  "models": [
   {
+   "id": "isaac-expert",
+   "name": "Isaac 0.5 Expert",
+   "family": "isaac",
+   "model": "isaac",
+   "run": "isaac-i21k",
+   "what": "Isaac 0.5 (Perceptron) with only its action expert trained, on the 220 demonstrations minus 8 held out, from two cameras",
+   "base": "PerceptronAI/Isaac-0.5-SO100_101",
+   "data": "vial-sort-slots-220 minus 8 held out, idle start and end cut, operator removed from the wrist camera's start frames, one sentence per move",
+   "frames": 108253,
+   "cams": [
+    "top_down",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": false,
+   "scored": true,
+   "steps": 21000,
+   "hours": 13.0,
+   "step_s": 2.22,
+   "mem_gb": 88.1,
+   "passes": 2.33,
+   "has_loss": true,
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "restart": 3
+   },
+   "last_day": "20261127",
+   "rows": [
+    "isaac-expert-21000-sync"
+   ],
+   "rollouts": 42,
+   "checkpoints": [
+    21000
+   ]
+  },
+  {
    "id": "plain-bagel",
    "name": "Plain Bagel",
    "family": "pi05",

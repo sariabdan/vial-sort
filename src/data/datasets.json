@@ -1150,6 +1150,86 @@
    "model": "Plain Bagel"
   },
   {
+   "id": "sari-abdan/rollout_isaac_021000_20261125_204715",
+   "name": "rollout_isaac_021000_20261125_204715",
+   "kind": "rollout",
+   "updated": "2026-11-25",
+   "episodes": 4,
+   "frames": 2482,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": null
+  },
+  {
+   "id": "sari-abdan/rollout_isaac_021000_20261125_215208",
+   "name": "rollout_isaac_021000_20261125_215208",
+   "kind": "rollout",
+   "updated": "2026-11-25",
+   "episodes": 15,
+   "frames": 8335,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Isaac 0.5 Expert"
+  },
+  {
+   "id": "sari-abdan/rollout_isaac_021000_20261126_235922",
+   "name": "rollout_isaac_021000_20261126_235922",
+   "kind": "rollout",
+   "updated": "2026-11-26",
+   "episodes": 12,
+   "frames": 7864,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Isaac 0.5 Expert"
+  },
+  {
+   "id": "sari-abdan/rollout_isaac_021000_20261127_002528",
+   "name": "rollout_isaac_021000_20261127_002528",
+   "kind": "rollout",
+   "updated": "2026-11-26",
+   "episodes": 4,
+   "frames": 1761,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Isaac 0.5 Expert"
+  },
+  {
+   "id": "sari-abdan/rollout_isaac_021000_20261127_003026",
+   "name": "rollout_isaac_021000_20261127_003026",
+   "kind": "rollout",
+   "updated": "2026-11-26",
+   "episodes": 14,
+   "frames": 8155,
+   "fps": 30,
+   "cameras": [
+    "top_down",
+    "wrist"
+   ],
+   "format": "v3.0",
+   "private": false,
+   "model": "Isaac 0.5 Expert"
+  },
+  {
    "id": "sari-abdan/vial-sort-v1-static",
    "name": "vial-sort-v1-static",
    "kind": "training",

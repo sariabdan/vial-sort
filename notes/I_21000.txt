@@ -1,0 +1,83 @@
+I 21000: isaac 0.5 expert
+
+# ── Block 1, vial at L1 (5) ──
+1: L1 R2: success
+2: L1 R3: success
+3: L1 R4: put in R3
+4: L1 R5: wrong vial (took L3), put in R4
+5: L1 R2: success
+
+# ── Block 2, vial at R1 (5) ──
+6: R1 L2: success
+7: R1 L3: success
+8: R1 L4: missed drop (dropped in front of L3)
+9: R1 L5: put in L3
+10: R1 L2: success
+
+# ── Block 3, vial at L3 (5) ──
+11: L3 R2: success
+12: L3 R6: success
+13: L3 R4: missed drop in front of R3
+14: L3 R5: missed drop in front of R4
+15: L3 R4: missed drop in front of R3
+
+# ── Block 4, vial at R3 (5) ── then check: 3 or fewer of the 16 held-out (2, 4, 5) in the asked slot -> stop
+16: R3 L2: success
+17: R3 L6: success
+18: R3 L4: put in L3
+19: R3 L5: put in L3
+20: R3 L4: put in L3
+
+# ── Block 5, vial at L4 (5) ──
+21: L4 R2: success
+22: L4 R1: success
+23: L4 R4: dropped behind R4
+24: L4 R5: missed drop in front of R3
+25: L4 R5: put in R3
+
+# ── Block 6, vial at R4 (5) ──
+26: R4 L2: success
+27: R4 L1: success
+28: R4 L4: put in L3
+29: R4 L5: put in L3
+30: R4 L5: put in L4
+
+# ── Block 7, vial at L6 (6) ──
+31: L6 R2: missed drop in front of R2
+32: L6 R1: success
+33: L6 R4: missed drop in front of R3
+34: L6 R3: missed drop in front of R3
+35: L6 R5: missed drop in front of R3
+36: L6 R6: success
+
+# ── Block 8, vial at R6 (6) ──
+37: R6 L2: success
+38: R6 L1: success
+39: R6 L4: put in L3
+40: R6 L3: success
+41: R6 L5: dropped behind L4
+42: R6 L6: success
+
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+# HOW TO WRITE A LINE. Every line of this guide starts with #, so the scoring script skips it.
+#
+#   <n>: <source> <destination>: <what happened>
+#
+#   A slot is a side and a number: L = left rack, R = right rack, 1-6 with 1 nearest the arm, or bin.
+#   Left and right are seen from the follower arm (the left rack is the TOP rack in the top camera).
+#   Write the side with the number (R3, not "slot 3"); the one exception is "stuck between slot 3 and 4".
+#
+#   What happened                     Write                                     Example
+#   ended in the asked slot           success                                   1: L1 R2: success
+#   ended in another slot             put in <slot>                             3: L1 R4: put in R3
+#   fell in front of / behind a slot  missed drop in front of <slot>            13: L3 R4: missed drop in front of R3
+#                                     dropped behind <slot>                     7: R1 L6: dropped behind L6
+#   never picked the vial up          didn't grasp                              8: R1 L3: didn't grasp
+#   picked up another vial            wrong vial (took <slot>), put in <slot>   4: L1 R5: wrong vial (took L3), put in R4
+#   held it and never let go          never let go                              9: L3 R6: never let go
+#   stuck between two slots           stuck between slot <a> and <b>            9: L3 R5: stuck between slot 3 and 4
+#   needed a second try               <first try>, then <final result>          5: L1 R2: didn't grasp, then success
+#   restarted, not the model's fault  <result> (restart: <why>)                 6: R1 L2: success (restart: vial knocked over)
+#
+#   Only the part after the last "then" is scored.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────

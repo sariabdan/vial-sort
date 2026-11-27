@@ -83,6 +83,31 @@
    "source": "LeRobot docs/source/molmoact2.mdx, allenai.org/blog/molmoact2, ee/DEPTH_PLAN.md"
   },
   {
+   "id": "isaac-i21k",
+   "model": "isaac",
+   "era": "after",
+   "name": "Isaac 0.5 Expert",
+   "trained": "Isaac 0.5 (Perceptron) with only its action expert trained, on the 220 demonstrations minus 8 held out, from two cameras",
+   "data": "vial-sort-slots-220 minus 8 held out, idle start and end cut, operator removed from the wrist camera's start frames, one sentence per move",
+   "steps": "21k",
+   "time": "13.0 h",
+   "memory": "88.1 GB",
+   "step_s": 2.22,
+   "robot": {
+    "takes": 42,
+    "released": 20,
+    "right_vial": 41,
+    "stages": {
+     "no_grasp": 1,
+     "carried": 21,
+     "released": 20
+    }
+   },
+   "rate_hz": null,
+   "verdict": null,
+   "source": "training log"
+  },
+  {
    "id": "pi05-a16k",
    "model": "pi05",
    "era": "after",

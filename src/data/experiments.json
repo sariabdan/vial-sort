@@ -1,6 +1,215 @@
 {
  "models": [
   {
+   "id": "isaac-expert",
+   "name": "Isaac 0.5 Expert",
+   "family": "isaac",
+   "model": "isaac",
+   "run": "isaac-i21k",
+   "what": "Isaac 0.5 (Perceptron) with only its action expert trained, on the 220 demonstrations minus 8 held out, from two cameras",
+   "base": "PerceptronAI/Isaac-0.5-SO100_101",
+   "data": "vial-sort-slots-220 minus 8 held out, idle start and end cut, operator removed from the wrist camera's start frames, one sentence per move",
+   "frames": 108253,
+   "cams": [
+    "top_down",
+    "wrist"
+   ],
+   "cams_note": null,
+   "hub": null,
+   "probe": false,
+   "scored": true,
+   "steps": 21000,
+   "hours": 13.0,
+   "step_s": 2.22,
+   "mem_gb": 88.1,
+   "passes": 2.33,
+   "has_loss": true,
+   "notes": [
+    {
+     "title": "How it was trained",
+     "text": "24 to 25 November, on the workstation's RTX PRO 6000 (96 GB), in 13 hours: 21,000 steps at batch 12 (2.33 passes over the data), 2.2 s per step, 88 GB of GPU memory. Isaac has 36 billion parameters; training all of them needs far more memory than these GPUs have, so only its action expert trained (0.58 billion), and the vision encoder and language model stayed as Perceptron released them. The action expert's flow loss fell from 0.041 to 0.003. Its checkpoint has two camera slots, so it saw the wrist and top_down cameras only, where π0.5 sees all five. Eight demonstrations were held out of training to score it offline."
+    },
+    {
+     "title": "On the robot, 25 to 27 November",
+     "text": "42 moves, scored from the operator's notes: eight blocks of five or six moves, each block from one source slot (L1, R1, L3, R3, L4, R4, L6 and R6) to the other rack, 30 of them to slots 2, 4 and 5, which no demonstration used as a destination. The vial ended in the asked slot in 20 of the 42. To slots 1, 3 and 6, the destinations it trained on: 11 of 12. To slot 2: 9 of 10, on both racks. To slots 4 and 5: 0 of 20; it put the vial in slot 3 fifteen times and in slot 4 five times, never in slot 5. It picked up the right vial in 41 of the 42. The bin and the source slots 2 and 5 were not tried. It plans 60 actions in about half a second and runs 30 of them, about 21 actions a second on the arm. Its first test session (4 moves on 25 November, before the sheet) has no notes and is not counted."
+    },
+    {
+     "title": "Tested without the robot",
+     "text": "On the 8 demonstrations held out of training, its predicted next second is 2.8° off per joint on average, against 5.2° for holding still and 8.4° for the checkpoint before this training; the gripper opened or closed the right way 19 times in 21. The four saved checkpoints, 5,250 to 21,000 steps, score within 0.15° of each other, and the last one was kept."
+    }
+   ],
+   "camera_choice": null,
+   "hyper": [
+    {
+     "group": "What trains",
+     "rows": [
+      [
+       "Starting weights",
+       "PerceptronAI/Isaac-0.5-SO100_101",
+       "Perceptron's Isaac 0.5, already fine-tuned by them on SO-100 and SO-101 arms."
+      ],
+      [
+       "Parameters trained",
+       "The action expert only",
+       "About 0.58 billion of the model's 36 billion parameters receive gradients: the part that turns what the model sees into joint targets. The vision encoder and the language model stay as Perceptron released them."
+      ],
+      [
+       "Precision",
+       "bfloat16, the trained part kept in 32-bit floats",
+       "Number format of the computation, and of the weights that train."
+      ]
+     ]
+    },
+    {
+     "group": "Optimiser",
+     "rows": [
+      [
+       "Optimiser",
+       "AdamW",
+       "The update rule."
+      ],
+      [
+       "Peak learning rate",
+       "5e-05",
+       "The step size at its largest, for the action expert."
+      ],
+      [
+       "Betas",
+       "0.9, 0.95",
+       "How strongly AdamW remembers past gradients."
+      ],
+      [
+       "Weight decay",
+       "0",
+       "A pull of the weights toward zero."
+      ],
+      [
+       "Gradient clipping",
+       "1",
+       "Largest allowed size of one update's gradient."
+      ]
+     ]
+    },
+    {
+     "group": "Learning-rate schedule",
+     "rows": [
+      [
+       "Shape",
+       "Linear warm-up, then cosine decay",
+       "The learning rate rises, then falls smoothly."
+      ],
+      [
+       "Warm-up steps",
+       "200",
+       "Steps over which the rate rises to its peak."
+      ],
+      [
+       "Decay steps",
+       "21,000",
+       "Steps over which it falls to the final rate."
+      ],
+      [
+       "Final learning rate",
+       "5e-06",
+       "The rate at the end of the decay: a tenth of the peak."
+      ]
+     ]
+    },
+    {
+     "group": "Batches and length",
+     "rows": [
+      [
+       "Batch size",
+       "12",
+       "Frames per optimiser step."
+      ],
+      [
+       "Steps",
+       "21,000",
+       "Optimiser steps. Checkpoints were saved every 5,250."
+      ],
+      [
+       "Passes over the data",
+       "2.33",
+       "Steps × batch size ÷ frames in the training data."
+      ],
+      [
+       "Validation split",
+       "8 demonstrations held out",
+       "They were left out of training and scored offline: the predicted next second against what the demonstration did."
+      ]
+     ]
+    },
+    {
+     "group": "What it sees and predicts",
+     "rows": [
+      [
+       "Cameras",
+       "top_down, wrist",
+       "The checkpoint has exactly two camera slots, so it sees two of the five cameras."
+      ],
+      [
+       "Image size",
+       "256 × 256",
+       "Each camera image is resized to this many pixels."
+      ],
+      [
+       "Action chunk",
+       "60 actions",
+       "Future joint targets one forward pass predicts (2 s at 30 Hz); on the arm the first 30 run before it plans again."
+      ],
+      [
+       "Denoising steps",
+       "10",
+       "Steps the action expert takes to turn noise into a chunk when running."
+      ],
+      [
+       "Clock",
+       "seconds since the start",
+       "Each prediction is also told how long the rollout has been running."
+      ],
+      [
+       "Normalisation",
+       "state and action by quantiles, Isaac's ranges widened to fit",
+       "The checkpoint's own 1st and 99th percentiles are kept, widened only where this data reaches further, so the joint values mean what they meant to it before."
+      ]
+     ]
+    },
+    {
+     "group": "Image augmentation",
+     "rows": [
+      [
+       "Augmentation",
+       "colour jitter (brightness ±20%, contrast ±20%, saturation ±50%, hue ±0.05), sharpness, and a small shift and rotation (≤5% and ±5°); up to 3 applied to each image",
+       "Random changes to each training image."
+      ]
+     ]
+    },
+    {
+     "group": "Reproducibility",
+     "rows": [
+      [
+       "Seed",
+       "1,000",
+       "Fixes the random choices."
+      ]
+     ]
+    }
+   ],
+   "hyper_source": "the train_config.json saved with the checkpoint",
+   "left_out": {
+    "restart": 3
+   },
+   "last_day": "20261127",
+   "rows": [
+    "isaac-expert-21000-sync"
+   ],
+   "rollouts": 42,
+   "checkpoints": [
+    21000
+   ]
+  },
+  {
    "id": "plain-bagel",
    "name": "Plain Bagel",
    "family": "pi05",
@@ -2654,6 +2863,1237 @@
       "no_grasp": 1,
       "carried": 0,
       "released": 0
+     }
+    }
+   ]
+  },
+  {
+   "key": "isaac-expert-21000-sync",
+   "model": "isaac-expert",
+   "name": "Isaac 0.5 Expert",
+   "family": "isaac",
+   "step": 21000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Isaac 0.5 Expert · 21k · sync",
+   "short": "21k · sync",
+   "rollouts": 42,
+   "grasped_right": 41,
+   "lifted": 41,
+   "released": 20,
+   "seen_in_slot": 20,
+   "stages": {
+    "no_grasp": 1,
+    "carried": 21,
+    "released": 20
+   },
+   "days": [
+    "20261125",
+    "20261126",
+    "20261127"
+   ],
+   "sessions": [
+    "021000_20261125_215208",
+    "021000_20261126_235922",
+    "021000_20261127_002528",
+    "021000_20261127_003026"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 3
+    },
+    "L3": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "L4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "L6": {
+     "rollouts": 6,
+     "grasped_right": 6,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 3
+    },
+    "R3": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "R6": {
+     "rollouts": 6,
+     "grasped_right": 6,
+     "released": 4
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "L2": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
+    },
+    "L3": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "L4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "L5": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "R2": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 4
+    },
+    "R3": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "R5": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    }
+   },
+   "untrained": {
+    "rollouts": 30,
+    "grasped_right": 29,
+    "lifted": 29,
+    "released": 9,
+    "seen_in_slot": 9,
+    "stages": {
+     "no_grasp": 1,
+     "carried": 20,
+     "released": 9
+    },
+    "moves": {
+     "L1->R2": 2,
+     "L1->R4": 1,
+     "L1->R5": 1,
+     "L3->R2": 1,
+     "L3->R4": 2,
+     "L3->R5": 1,
+     "L4->R2": 1,
+     "L4->R4": 1,
+     "L4->R5": 2,
+     "L6->R2": 1,
+     "L6->R4": 1,
+     "L6->R5": 1,
+     "R1->L2": 2,
+     "R1->L4": 1,
+     "R1->L5": 1,
+     "R3->L2": 1,
+     "R3->L4": 2,
+     "R3->L5": 1,
+     "R4->L2": 1,
+     "R4->L4": 1,
+     "R4->L5": 2,
+     "R6->L2": 1,
+     "R6->L4": 1,
+     "R6->L5": 1
+    }
+   },
+   "scored_by": "notes",
+   "restarts": 3,
+   "train_set": "vial-sort-slots-220 minus 8 held out",
+   "noted_moves": [
+    {
+     "n": "1",
+     "move": "L1->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t0"
+    },
+    {
+     "n": "2",
+     "move": "L1->R3",
+     "trained": true,
+     "demos": 9,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t1"
+    },
+    {
+     "n": "3",
+     "move": "L1->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "021000_20261125_215208_t2"
+    },
+    {
+     "n": "4",
+     "move": "L1->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "wrong_vial",
+     "stage": "no_grasp",
+     "ended": "source",
+     "retried": false,
+     "attempts": 1,
+     "note": "wrong vial (took L3), put in R4",
+     "take": "021000_20261125_215208_t3"
+    },
+    {
+     "n": "5",
+     "move": "L1->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t4"
+    },
+    {
+     "n": "6",
+     "move": "R1->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t5"
+    },
+    {
+     "n": "7",
+     "move": "R1->L3",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t6"
+    },
+    {
+     "n": "8",
+     "move": "R1->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop (dropped in front of L3)",
+     "take": "021000_20261125_215208_t7"
+    },
+    {
+     "n": "9",
+     "move": "R1->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261125_215208_t8"
+    },
+    {
+     "n": "10",
+     "move": "R1->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t9"
+    },
+    {
+     "n": "11",
+     "move": "L3->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t10"
+    },
+    {
+     "n": "12",
+     "move": "L3->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261125_215208_t11"
+    },
+    {
+     "n": "13",
+     "move": "L3->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261125_215208_t12"
+    },
+    {
+     "n": "14",
+     "move": "L3->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R4",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R4",
+     "take": "021000_20261125_215208_t13"
+    },
+    {
+     "n": "15",
+     "move": "L3->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261125_215208_t14"
+    },
+    {
+     "n": "16",
+     "move": "R3->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261126_235922_t0"
+    },
+    {
+     "n": "17",
+     "move": "R3->L6",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261126_235922_t1"
+    },
+    {
+     "n": "18",
+     "move": "R3->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261126_235922_t2"
+    },
+    {
+     "n": "19",
+     "move": "R3->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261126_235922_t3"
+    },
+    {
+     "n": "20",
+     "move": "R3->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261126_235922_t4"
+    },
+    {
+     "n": "21",
+     "move": "L4->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261126_235922_t5"
+    },
+    {
+     "n": "22",
+     "move": "L4->R1",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261126_235922_t6"
+    },
+    {
+     "n": "23",
+     "move": "L4->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "drop_missed",
+     "stage": "carried",
+     "ended": "R4",
+     "retried": false,
+     "attempts": 1,
+     "note": "dropped behind R4",
+     "take": "021000_20261126_235922_t7"
+    },
+    {
+     "n": "24",
+     "move": "L4->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261126_235922_t8"
+    },
+    {
+     "n": "25",
+     "move": "L4->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in R3",
+     "take": "021000_20261126_235922_t9"
+    },
+    {
+     "n": "26",
+     "move": "R4->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261126_235922_t10"
+    },
+    {
+     "n": "27",
+     "move": "R4->L1",
+     "trained": true,
+     "demos": 9,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 2,
+     "note": "success",
+     "take": "021000_20261127_002528_t0"
+    },
+    {
+     "n": "28",
+     "move": "R4->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261127_002528_t1"
+    },
+    {
+     "n": "29",
+     "move": "R4->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261127_002528_t2"
+    },
+    {
+     "n": "30",
+     "move": "R4->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L4",
+     "retried": false,
+     "attempts": 2,
+     "note": "put in L4",
+     "take": "021000_20261127_003026_t0"
+    },
+    {
+     "n": "31",
+     "move": "L6->R2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "drop_missed",
+     "stage": "carried",
+     "ended": "R2",
+     "retried": false,
+     "attempts": 2,
+     "note": "missed drop in front of R2",
+     "take": "021000_20261127_003026_t2"
+    },
+    {
+     "n": "32",
+     "move": "L6->R1",
+     "trained": true,
+     "demos": 6,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t3"
+    },
+    {
+     "n": "33",
+     "move": "L6->R4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261127_003026_t4"
+    },
+    {
+     "n": "34",
+     "move": "L6->R3",
+     "trained": true,
+     "demos": 4,
+     "outcome": "drop_missed",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261127_003026_t5"
+    },
+    {
+     "n": "35",
+     "move": "L6->R5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "R3",
+     "retried": false,
+     "attempts": 1,
+     "note": "missed drop in front of R3",
+     "take": "021000_20261127_003026_t6"
+    },
+    {
+     "n": "36",
+     "move": "L6->R6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "R6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t7"
+    },
+    {
+     "n": "37",
+     "move": "R6->L2",
+     "trained": false,
+     "demos": 0,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L2",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t8"
+    },
+    {
+     "n": "38",
+     "move": "R6->L1",
+     "trained": true,
+     "demos": 5,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L1",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t9"
+    },
+    {
+     "n": "39",
+     "move": "R6->L4",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "put in L3",
+     "take": "021000_20261127_003026_t10"
+    },
+    {
+     "n": "40",
+     "move": "R6->L3",
+     "trained": true,
+     "demos": 8,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L3",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t11"
+    },
+    {
+     "n": "41",
+     "move": "R6->L5",
+     "trained": false,
+     "demos": 0,
+     "outcome": "off_slot",
+     "stage": "carried",
+     "ended": "L4",
+     "retried": false,
+     "attempts": 1,
+     "note": "dropped behind L4",
+     "take": "021000_20261127_003026_t12"
+    },
+    {
+     "n": "42",
+     "move": "R6->L6",
+     "trained": true,
+     "demos": 4,
+     "outcome": "placed",
+     "stage": "released",
+     "ended": "L6",
+     "retried": false,
+     "attempts": 1,
+     "note": "success",
+     "take": "021000_20261127_003026_t13"
+    }
+   ],
+   "moves": [
+    {
+     "move": "L1->R2",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 2,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "L3->R4",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 2,
+      "released": 0
+     }
+    },
+    {
+     "move": "L4->R5",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 2,
+      "released": 0
+     }
+    },
+    {
+     "move": "R1->L2",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 2,
+     "seen_in_slot": 2,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 2
+     }
+    },
+    {
+     "move": "R3->L4",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 2,
+      "released": 0
+     }
+    },
+    {
+     "move": "R4->L5",
+     "demos": 0,
+     "rollouts": 2,
+     "grasped_right": 2,
+     "lifted": 2,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 2,
+      "released": 0
+     }
+    },
+    {
+     "move": "L1->R3",
+     "demos": 9,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L1->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L1->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 0,
+     "lifted": 0,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 1,
+      "carried": 0,
+      "released": 0
+     }
+    },
+    {
+     "move": "L3->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L3->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L3->R6",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L4->R1",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L4->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L4->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R1",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "L6->R2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R3",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "L6->R6",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R1->L3",
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R1->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R1->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R3->L2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R3->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R3->L6",
+     "demos": 6,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L1",
+     "demos": 9,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R4->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R6->L1",
+     "demos": 5,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R6->L2",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R6->L3",
+     "demos": 8,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
+     }
+    },
+    {
+     "move": "R6->L4",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R6->L5",
+     "demos": 0,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 0,
+     "seen_in_slot": 0,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 1,
+      "released": 0
+     }
+    },
+    {
+     "move": "R6->L6",
+     "demos": 4,
+     "rollouts": 1,
+     "grasped_right": 1,
+     "lifted": 1,
+     "released": 1,
+     "seen_in_slot": 1,
+     "stages": {
+      "no_grasp": 0,
+      "carried": 0,
+      "released": 1
      }
     }
    ]

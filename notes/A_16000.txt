@@ -109,3 +109,27 @@ A 16000: plain bagel
 80: R2 L4: success
 81: R2 L5: missed pickup
 82: R2 L6: success
+
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+# HOW TO WRITE A LINE. Every line of this guide starts with #, so the scoring script skips it.
+#
+#   <n>: <source> <destination>: <what happened>
+#
+#   A slot is a side and a number: L = left rack, R = right rack, 1-6 with 1 nearest the arm, or bin.
+#   Left and right are seen from the follower arm (the left rack is the TOP rack in the top camera).
+#   Write the side with the number (R3, not "slot 3"); the one exception is "stuck between slot 3 and 4".
+#
+#   What happened                     Write                                     Example
+#   ended in the asked slot           success                                   1: L1 R2: success
+#   ended in another slot             put in <slot>                             3: L1 R4: put in R3
+#   fell in front of / behind a slot  missed drop in front of <slot>            13: L3 R4: missed drop in front of R3
+#                                     dropped behind <slot>                     7: R1 L6: dropped behind L6
+#   never picked the vial up          didn't grasp                              8: R1 L3: didn't grasp
+#   picked up another vial            wrong vial (took <slot>), put in <slot>   4: L1 R5: wrong vial (took L3), put in R4
+#   held it and never let go          never let go                              9: L3 R6: never let go
+#   stuck between two slots           stuck between slot <a> and <b>            9: L3 R5: stuck between slot 3 and 4
+#   needed a second try               <first try>, then <final result>          5: L1 R2: didn't grasp, then success
+#   restarted, not the model's fault  <result> (restart: <why>)                 6: R1 L2: success (restart: vial knocked over)
+#
+#   Only the part after the last "then" is scored.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────

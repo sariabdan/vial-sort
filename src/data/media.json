@@ -1,6 +1,72 @@
 {
  "featured": [
   {
+   "take": "021000_20261127_003026_t11",
+   "model": "isaac",
+   "model_id": "isaac-expert",
+   "row": "isaac-expert-21000-sync",
+   "used": [
+    "top_down",
+    "wrist"
+   ],
+   "move": "R6->L3",
+   "stage": "released",
+   "kind": "Success: in the asked slot",
+   "caption": "Isaac 0.5 Expert at 21k steps, 27 Nov 2026. The operator's note: “success”.",
+   "vial": null,
+   "at": "L3",
+   "miss": null,
+   "src": "media/takes/021000_20261127_003026_t11.mp4",
+   "poster": "media/takes/021000_20261127_003026_t11.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 15.83
+  },
+  {
+   "take": "021000_20261127_003026_t5",
+   "model": "isaac",
+   "model_id": "isaac-expert",
+   "row": "isaac-expert-21000-sync",
+   "used": [
+    "top_down",
+    "wrist"
+   ],
+   "move": "L6->R3",
+   "stage": "carried",
+   "kind": "Missed drop: beside the asked slot",
+   "caption": "Isaac 0.5 Expert at 21k steps, 27 Nov 2026. The operator's note: “missed drop in front of R3”.",
+   "vial": null,
+   "at": "R3",
+   "miss": null,
+   "src": "media/takes/021000_20261127_003026_t5.mp4",
+   "poster": "media/takes/021000_20261127_003026_t5.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 16.9
+  },
+  {
+   "take": "021000_20261125_215208_t3",
+   "model": "isaac",
+   "model_id": "isaac-expert",
+   "row": "isaac-expert-21000-sync",
+   "used": [
+    "top_down",
+    "wrist"
+   ],
+   "move": "L1->R5",
+   "stage": "no_grasp",
+   "kind": "Failed pickup: took another vial",
+   "caption": "Isaac 0.5 Expert at 21k steps, 25 Nov 2026. The operator's note: “wrong vial (took L3), put in R4”.",
+   "vial": null,
+   "at": "source",
+   "miss": null,
+   "src": "media/takes/021000_20261125_215208_t3.mp4",
+   "poster": "media/takes/021000_20261125_215208_t3.jpg",
+   "w": 960,
+   "h": 360,
+   "secs": 12.13
+  },
+  {
    "take": "016000_20261109_005026_t2",
    "model": "pi05",
    "model_id": "plain-bagel",

@@ -1,0 +1,311 @@
+# Written by scripts/notes_to_yaml.py from notes/I_21000.txt: the operator's notes, one entry per noted move.
+# scripts/build_data.py scores these sessions from this file: one rollout per move, the result on its last take,
+# earlier takes counted as restarts. Fix a misreading here by hand; re-running the script needs --force.
+#
+# outcome:
+#   placed        the vial ended in the asked slot
+#   drop_missed   let go at the asked slot, the vial ended beside it (in front, behind, on the rack)
+#   off_slot      let go at another slot (ended says which)
+#   never_let_go  carried the vial and never let go
+#   no_grasp      never picked the asked vial up
+#   wrong_vial    picked up another vial
+# ended: where the vial ended (a slot, bin, source = it never left, A/B = stuck between two slots, null = unknown)
+# retried: the note says it took more than one try
+model: isaac-expert
+source: notes/I_21000.txt
+sessions: ["021000_20261125_215208", "021000_20261126_235922", "021000_20261127_002528", "021000_20261127_003026"]
+moves:
+  - n: "1"
+    move: L1->R2
+    outcome: placed
+    ended: R2
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t0"]
+  - n: "2"
+    move: L1->R3
+    outcome: placed
+    ended: R3
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t1"]
+  - n: "3"
+    move: L1->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["021000_20261125_215208_t2"]
+  - n: "4"
+    move: L1->R5
+    outcome: wrong_vial
+    ended: source
+    retried: false
+    note: "wrong vial (took L3), put in R4"
+    takes: ["021000_20261125_215208_t3"]
+  - n: "5"
+    move: L1->R2
+    outcome: placed
+    ended: R2
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t4"]
+  - n: "6"
+    move: R1->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t5"]
+  - n: "7"
+    move: R1->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t6"]
+  - n: "8"
+    move: R1->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "missed drop (dropped in front of L3)"
+    takes: ["021000_20261125_215208_t7"]
+  - n: "9"
+    move: R1->L5
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261125_215208_t8"]
+  - n: "10"
+    move: R1->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t9"]
+  - n: "11"
+    move: L3->R2
+    outcome: placed
+    ended: R2
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t10"]
+  - n: "12"
+    move: L3->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["021000_20261125_215208_t11"]
+  - n: "13"
+    move: L3->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261125_215208_t12"]
+  - n: "14"
+    move: L3->R5
+    outcome: off_slot
+    ended: R4
+    retried: false
+    note: "missed drop in front of R4"
+    takes: ["021000_20261125_215208_t13"]
+  - n: "15"
+    move: L3->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261125_215208_t14"]
+  - n: "16"
+    move: R3->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t0"]
+  - n: "17"
+    move: R3->L6
+    outcome: placed
+    ended: L6
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t1"]
+  - n: "18"
+    move: R3->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261126_235922_t2"]
+  - n: "19"
+    move: R3->L5
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261126_235922_t3"]
+  - n: "20"
+    move: R3->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261126_235922_t4"]
+  - n: "21"
+    move: L4->R2
+    outcome: placed
+    ended: R2
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t5"]
+  - n: "22"
+    move: L4->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t6"]
+  - n: "23"
+    move: L4->R4
+    outcome: drop_missed
+    ended: R4
+    retried: false
+    note: "dropped behind R4"
+    takes: ["021000_20261126_235922_t7"]
+  - n: "24"
+    move: L4->R5
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261126_235922_t8"]
+  - n: "25"
+    move: L4->R5
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "put in R3"
+    takes: ["021000_20261126_235922_t9"]
+  - n: "26"
+    move: R4->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t10"]
+  - n: "27"
+    move: R4->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["021000_20261126_235922_t11", "021000_20261127_002528_t0"]
+  - n: "28"
+    move: R4->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261127_002528_t1"]
+  - n: "29"
+    move: R4->L5
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261127_002528_t2"]
+  - n: "30"
+    move: R4->L5
+    outcome: off_slot
+    ended: L4
+    retried: false
+    note: "put in L4"
+    takes: ["021000_20261127_002528_t3", "021000_20261127_003026_t0"]
+  - n: "31"
+    move: L6->R2
+    outcome: drop_missed
+    ended: R2
+    retried: false
+    note: "missed drop in front of R2"
+    takes: ["021000_20261127_003026_t1", "021000_20261127_003026_t2"]
+  - n: "32"
+    move: L6->R1
+    outcome: placed
+    ended: R1
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t3"]
+  - n: "33"
+    move: L6->R4
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261127_003026_t4"]
+  - n: "34"
+    move: L6->R3
+    outcome: drop_missed
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261127_003026_t5"]
+  - n: "35"
+    move: L6->R5
+    outcome: off_slot
+    ended: R3
+    retried: false
+    note: "missed drop in front of R3"
+    takes: ["021000_20261127_003026_t6"]
+  - n: "36"
+    move: L6->R6
+    outcome: placed
+    ended: R6
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t7"]
+  - n: "37"
+    move: R6->L2
+    outcome: placed
+    ended: L2
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t8"]
+  - n: "38"
+    move: R6->L1
+    outcome: placed
+    ended: L1
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t9"]
+  - n: "39"
+    move: R6->L4
+    outcome: off_slot
+    ended: L3
+    retried: false
+    note: "put in L3"
+    takes: ["021000_20261127_003026_t10"]
+  - n: "40"
+    move: R6->L3
+    outcome: placed
+    ended: L3
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t11"]
+  - n: "41"
+    move: R6->L5
+    outcome: off_slot
+    ended: L4
+    retried: false
+    note: "dropped behind L4"
+    takes: ["021000_20261127_003026_t12"]
+  - n: "42"
+    move: R6->L6
+    outcome: placed
+    ended: L6
+    retried: false
+    note: "success"
+    takes: ["021000_20261127_003026_t13"]

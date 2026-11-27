@@ -378,6 +378,183 @@
    "train_set": "vial-sort-slots-100"
   },
   {
+   "key": "isaac-expert-21000-sync",
+   "model": "isaac-expert",
+   "name": "Isaac 0.5 Expert",
+   "family": "isaac",
+   "step": 21000,
+   "mode": "sync",
+   "ema": false,
+   "label": "Isaac 0.5 Expert · 21k · sync",
+   "short": "21k · sync",
+   "rollouts": 42,
+   "grasped_right": 41,
+   "lifted": 41,
+   "released": 20,
+   "seen_in_slot": 20,
+   "stages": {
+    "no_grasp": 1,
+    "carried": 21,
+    "released": 20
+   },
+   "days": [
+    "20261125",
+    "20261126",
+    "20261127"
+   ],
+   "sessions": [
+    "021000_20261125_215208",
+    "021000_20261126_235922",
+    "021000_20261127_002528",
+    "021000_20261127_003026"
+   ],
+   "by_source": {
+    "L1": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 3
+    },
+    "L3": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "L4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "L6": {
+     "rollouts": 6,
+     "grasped_right": 6,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 3
+    },
+    "R3": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 2
+    },
+    "R6": {
+     "rollouts": 6,
+     "grasped_right": 6,
+     "released": 4
+    }
+   },
+   "by_destination": {
+    "L1": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "L2": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 5
+    },
+    "L3": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "L4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "L5": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "L6": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "R1": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    },
+    "R2": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 4
+    },
+    "R3": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 1
+    },
+    "R4": {
+     "rollouts": 5,
+     "grasped_right": 5,
+     "released": 0
+    },
+    "R5": {
+     "rollouts": 5,
+     "grasped_right": 4,
+     "released": 0
+    },
+    "R6": {
+     "rollouts": 2,
+     "grasped_right": 2,
+     "released": 2
+    }
+   },
+   "untrained": {
+    "rollouts": 30,
+    "grasped_right": 29,
+    "lifted": 29,
+    "released": 9,
+    "seen_in_slot": 9,
+    "stages": {
+     "no_grasp": 1,
+     "carried": 20,
+     "released": 9
+    },
+    "moves": {
+     "L1->R2": 2,
+     "L1->R4": 1,
+     "L1->R5": 1,
+     "L3->R2": 1,
+     "L3->R4": 2,
+     "L3->R5": 1,
+     "L4->R2": 1,
+     "L4->R4": 1,
+     "L4->R5": 2,
+     "L6->R2": 1,
+     "L6->R4": 1,
+     "L6->R5": 1,
+     "R1->L2": 2,
+     "R1->L4": 1,
+     "R1->L5": 1,
+     "R3->L2": 1,
+     "R3->L4": 2,
+     "R3->L5": 1,
+     "R4->L2": 1,
+     "R4->L4": 1,
+     "R4->L5": 2,
+     "R6->L2": 1,
+     "R6->L4": 1,
+     "R6->L5": 1
+    }
+   },
+   "scored_by": "notes",
+   "restarts": 3,
+   "train_set": "vial-sort-slots-220 minus 8 held out"
+  },
+  {
    "key": "mango-chutney-4000-sync",
    "model": "mango-chutney",
    "name": "Mango Chutney",
@@ -1761,12 +1938,14 @@
   }
  ],
  "noted_models": [
+  "Isaac 0.5 Expert",
   "Plain Bagel",
   "Mango Pudding"
  ],
  "defaults": [
   "plain-bagel-16000-sync",
-  "crispy-falafel-30000-sync"
+  "crispy-falafel-30000-sync",
+  "isaac-expert-21000-sync"
  ],
  "eye": {
   "in_slot": 11,
@@ -1795,6 +1974,16 @@
    "released": 1,
    "scored_by": "arm"
   },
+  "isaac": {
+   "key": "isaac-expert-21000-sync",
+   "name": "Isaac 0.5 Expert",
+   "label": "Isaac 0.5 Expert · 21k · sync",
+   "short": "21k · sync",
+   "rollouts": 42,
+   "grasped_right": 41,
+   "released": 20,
+   "scored_by": "notes"
+  },
   "gate": {
    "checkpoints": 12,
    "dest_passed": 0,
@@ -1803,8 +1992,8 @@
    "source_from": 5000
   }
  },
- "total": 245,
- "untrained": 62,
+ "total": 287,
+ "untrained": 92,
  "demo_sets": {
   "vial-sort-slots-220": {
    "episodes": 220,
@@ -1826,6 +2015,28 @@
     "R3": 32,
     "R6": 27,
     "bin": 41
+   }
+  },
+  "vial-sort-slots-220 minus 8 held out": {
+   "episodes": 212,
+   "per_source": {
+    "L1": 26,
+    "L3": 23,
+    "L4": 25,
+    "L6": 24,
+    "R1": 29,
+    "R3": 26,
+    "R4": 30,
+    "R6": 29
+   },
+   "per_destination": {
+    "L1": 35,
+    "L3": 28,
+    "L6": 24,
+    "R1": 27,
+    "R3": 32,
+    "R6": 26,
+    "bin": 40
    }
   },
   "vial-sort-slots-100": {
@@ -1855,6 +2066,6 @@
   "short": 11,
   "unreadable": 2,
   "earlier_scene": 11,
-  "restart": 17
+  "restart": 20
  }
 }
