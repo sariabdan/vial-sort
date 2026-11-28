@@ -3,7 +3,7 @@ title = "Evaluation"
 brand_sub = "the score · why · stages · notes or arm · left out · the rollout · the 12-move gate · caveats"
 description = "How a model is tested on the arm and scored: the score of a run, the three outcome stages, scoring from the operator's notes or from the arm, the 12-move gate and what the numbers cannot say."
 components = ["toc", "nav", "filelinks", "code"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["The score", "#the-score-of-a-run"], ["Why this score", "#why-it-is-built-this-way"], ["Three stages", "#the-three-outcome-stages"], ["Notes or arm", "#how-a-rollout-is-scored"], ["Left out", "#what-is-scored-and-what-is-left-out"], ["A rollout", "#how-a-rollout-is-run"], ["12-move gate", "#the-12-move-gate"], ["Cannot say", "#what-the-numbers-cannot-say"], ["Disagreements", "#where-sources-disagree"]]
 +++
 
@@ -16,7 +16,7 @@ toc = [["The score", "#the-score-of-a-run"], ["Why this score", "#why-it-is-buil
 
 <p class="bs-lead">For each rack slot, the score takes the share of rollouts asked to end there that ended in the asked slot, and averages those shares; the bin is left out.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-score">
 <svg class="inline-fig" viewBox="0 0 520 520" role="img" aria-label="The share of rollouts in the asked slot at each of the 12 rack slots, for Isaac 0.5 Expert at 21k in sync mode. Left rack: L1 2 of 2, L2 5 of 5, L3 2 of 2, L4 0 of 5, L5 0 of 5, L6 2 of 2. Right rack: R1 2 of 2, R2 4 of 5, R3 1 of 2, R4 0 of 5, R5 0 of 5, R6 2 of 2. A dashed line marks the 70% pass mark.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -90,7 +90,7 @@ toc = [["The score", "#the-score-of-a-run"], ["Why this score", "#why-it-is-buil
 
 <p class="bs-lead">A per-slot mean stops the slots tried most from deciding the score, and a bar on the mean keeps luck at ten rollouts from failing a good model.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-why-mean">
 <svg class="inline-fig" viewBox="0 0 520 418" role="img" aria-label="Top: twelve slot shares, seven at 80% and five at 0%. Their median is 80%, their mean 47%. Bottom: for a model that really works 80% of the time at every slot, the chance that one slot scores 6 of 10 or less is 0.121, and the chance that at least one of 12 slots scores below 7 of 10 is 0.79.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -151,7 +151,7 @@ toc = [["The score", "#the-score-of-a-run"], ["Why this score", "#why-it-is-buil
 
 <p class="bs-lead">A rollout counts at the furthest stage it reached, and a vial dropped beside the asked slot is a failure like one put in another slot.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-stages">
 <svg class="inline-fig" viewBox="0 0 520 330" role="img" aria-label="The six outcomes a note can be read as, and the stage each counts as. placed is In the asked slot. drop_missed, off_slot and never_let_go are Picked up, not in the asked slot. no_grasp and wrong_vial are Never picked it up.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -197,7 +197,7 @@ toc = [["The score", "#the-score-of-a-run"], ["Why this score", "#why-it-is-buil
 
 <p class="bs-lead">A run is scored one way only: from what the operator saw and wrote at the robot, or from the arm's joint angles by a scorer that a person's eye check sometimes overrules.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols fig-right">
 <div class="bs-part bs-teal"><span class="bs-label">From the operator's notes</span><h3>Isaac 0.5 Expert, Plain Bagel, Mango Pudding</h3><ul>
 <li>The operator types one line per move, <code>&lt;n&gt;: &lt;source&gt; &lt;destination&gt;: &lt;what happened&gt;</code>.</li>
 <li><code>scripts/notes_to_yaml.py</code> reads only the part after the last "then" and applies fixed rules in order; a note no rule reads stops the script, "so nothing is guessed".</li>
@@ -255,7 +255,7 @@ A slot is a side and a number: L or R, 1–6 with 1 nearest the arm, or `bin`. T
 
 <p class="bs-lead">Every rollout over 3 s with a readable command is scored, moves no demonstration contains included; a noted move counts once, so its earlier takes are restarts.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-left-out">
 <svg class="inline-fig" viewBox="0 0 520 386" role="img" aria-label="Rollouts left out of the counts: 20 restarts of a move noted once, 11 that ended within 3 seconds, 11 from the earlier table layout of 7 October and 2 whose command the scorer cannot read. Isaac's first session, 4 takes, is not counted at all.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -297,7 +297,7 @@ A slot is a side and a number: L or R, 1–6 with 1 nearest the arm, or `bin`. T
 
 <p class="bs-lead">The follower arm starts every rollout from the pose every demonstration started from, the model drives it from the cameras and joint angles, and each session is stored as a LeRobot dataset.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-rates">
 <svg class="inline-fig" viewBox="0 0 520 356" role="img" aria-label="Actions a second on the arm against the target of 30: pi 0.5 in sync mode about 24 to 26, Isaac 0.5 in sync mode about 21, Crispy Falafel on FLUX 15.5 in the one session whose rate was logged, and Sweet Corn on FLUX 15.3 on 7 October.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -341,7 +341,7 @@ A slot is a side and a number: L or R, 1–6 with 1 nearest the arm, or `bin`. T
 
 <p class="bs-lead">The 12-move gate keeps the vial layout fixed and changes only the destination in the command, so a model that reads the destination off the cameras cannot pass.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-gate">
 <svg class="inline-fig" viewBox="0 0 520 480" role="img" aria-label="The 12-move gate in the Lab notes. Mango Pudding: placed right 5 of 12, right slot counting missed drops 7 of 12 against a pass of 9, right vial picked up 10 of 12 against a pass of 11. Plain Bagel: 7, 9 and 11 of 12.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">

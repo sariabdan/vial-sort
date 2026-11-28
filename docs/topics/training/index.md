@@ -3,7 +3,7 @@ title = "Training"
 brand_sub = "the destination shortcut · the offline gate · the scaling fix · the cluster · the probes · the runs · the data · disagreements"
 description = "How the models were trained and tested without the robot: why the first models read the destination off the picture, the scaling mismatch and its fix, the cluster retrains, the offline probes and the loss curves."
 components = ["toc", "nav", "filelinks"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-picture"], ["Offline gate", "#the-offline-gate-of-mango-rice"], ["The scaling fix", "#normalisation-and-the-quantile-pinning"], ["The cluster", "#the-retrains-on-the-university-cluster"], ["Cluster probes", "#the-probes-of-the-cluster-retrains"], ["The runs", "#the-runs"], ["The data", "#data-preparation-that-training-depends-on"], ["Disagreements", "#where-sources-disagree"]]
 +++
 
@@ -16,7 +16,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">Asked for another destination, Mango Rice followed the words 19% of the time; shown another demonstration's camera images, it followed the cameras 81% of the time.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-probe">
 <svg class="inline-fig" viewBox="0 0 520 636" role="img" aria-label="The destination probe of 21 October, on Mango Rice at 12k and at 2k steps, on training frames. Replays its own demonstration's destination: 100% and 88%. Another source vial named: goes there 94% and 94%. Another destination named: follows it 19% and 31%. No command: follows the other destination 19% and 27%. All five camera images from the other demonstration: follows the cameras 81% and 75%. Joint positions from the other demonstration: 10% and 15%.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -76,7 +76,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">Every 1,000 steps a checkpoint of Mango Rice was shown recorded frames without the robot; it left home every time, but read the destination on 0 of 7 frames at every checkpoint.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-gate">
 <svg class="inline-fig" viewBox="0 0 520 482" role="img" aria-label="The offline gate of Mango Rice at every checkpoint from 1k to 12k steps. Leaves home: 9 of 9 frames at every checkpoint. Reach follows the source: passes at 2k and from 5k on, fails at 1k, 3k and 4k. Binds the two numbers to their roles: fails at every checkpoint. Reads the destination: 0 of 7 frames at every checkpoint.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -227,7 +227,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">A fine-tune keeps the scale of the model it starts from, so when the merged data stretched the gripper's range from 37.4° to 50.8°, every gripper command Mango Lassi inherited came out wider.</p>
 
-<div class="bs-grid g2">
+<div class="fig-pair">
 <figure id="fig-commands">
 <svg class="inline-fig" viewBox="0 0 520 374" role="img" aria-label="Gripper commands Mango Rice meant, and what they became with the wider scale of the merged data: 5.0 degrees became 6.8, 8.0 became 10.9 and 12.0 became 16.3.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -292,7 +292,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">Both runs trained every weight of π0.5 on the 220 demonstrations, 16,000 steps at batch 16, one per A100 80 GB card, at 4.8 s a step.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-cluster">
 <svg class="inline-fig" viewBox="0 0 520 256" role="img" aria-label="The two retrains on the university cluster. Mango Pudding ran from Friday 6 November 13:41 to Saturday 7 November 11:18; Plain Bagel from Saturday 01:34 to Saturday 23:10, each on its own A100.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -335,7 +335,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">Three probes ran on checkpoints 8,000 and 10,000 to 16,000 of both runs; they were flat across checkpoints, so the last one was kept.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-shortcut">
 <svg class="inline-fig" viewBox="0 0 520 528" role="img" aria-label="probe_shortcut on the two cluster retrains: the share of frames, 1 second after the grasp, where the model follows the swapped episode, as a range over checkpoints 8,000 and 10,000 to 16,000. Prompt names another destination: Mango Pudding 12 to 21%, Plain Bagel 12 to 21%. No prompt: 31 to 33% and 21 to 42%. Four scene cameras swapped: 62 to 65% and 46 to 58%. All five cameras swapped: 75 to 83% and 71 to 79%. Source, another vial named, at the start frame: 81 to 94% and 88 to 94%.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -401,7 +401,7 @@ toc = [["The shortcut", "#why-the-first-models-read-the-destination-off-the-pict
 
 <p class="bs-lead">Plain Bagel and Mango Pudding both end at a loss of 0.009 from different starting weights, and their results on the arm differ widely.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-loss">
 <svg class="inline-fig" viewBox="0 0 520 620" role="img" aria-label="Start loss at step 100, hollow, and end loss, filled, of the eight runs with a loss curve, on a log scale. pi 0.5: Spicy Chicken 0.125 to 0.009, Mango Rice 0.105 to 0.007, Mango Lassi 0.069 to 0.014, Mango Pudding 0.085 to 0.009, Plain Bagel 0.099 to 0.009. Isaac 0.5 Expert 0.041 to 0.003. FLUX 3 Action: Crispy Falafel 0.2342 to 0.088, Sweet Corn 0.2668 to 0.085.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">

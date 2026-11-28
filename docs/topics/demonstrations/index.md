@@ -3,7 +3,7 @@ title = "Demonstrations"
 brand_sub = "the two sets · why the 220 · which moves · the wording · the batches · training copies · published · disagreements"
 description = "The demonstrations the models learned from: the 100 and the 220, why the 220 were recorded the way they were, which moves they cover, how the commands are worded and the copies the models trained on."
 components = ["toc", "nav", "filelinks", "panel-switcher"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220-were-recorded-the-way-they-were"], ["Which moves", "#coverage-move-by-move"], ["Wording", "#how-the-commands-are-worded"], ["The batches", "#camera-differences-between-batches"], ["Training copies", "#training-copies-of-the-sets"], ["Published", "#where-the-data-is-published"], ["Disagreements", "#where-the-sources-disagree"]]
 +++
 
@@ -16,7 +16,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">A demonstration is one move recorded while a person drives the leader arm; the 220 keep 70 of the 100 and add 51 recorded on 28 October and 99 on 3 November.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-sets">
 <svg class="inline-fig" viewBox="0 0 520 300" role="img" aria-label="What the two training sets are made of. The 100, recorded on 14 October: 70 kept in the 220 and 30, too dark, left out. The 220: those 70 from the 100, 51 recorded on 28 October and 99 on 3 November with the depth stream; the 150 new ones were recorded with three destinations per layout.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -63,7 +63,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">When every scene of a sitting goes to the same place, the picture names the destination and a model need not read the command; three commands on one layout leave it nothing else.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-contrast">
 <svg class="inline-fig" viewBox="0 0 520 504" role="img" aria-label="Top: in the 100, every scene of one sitting goes to the same destination, so the picture gives the destination away. Bottom: in the 150 new demonstrations, one layout is recorded three times with three commands and three destinations, so only the command can tell them apart.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -124,7 +124,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">Slots 2 and 5 are never a source and slots 2, 4 and 5 never a destination in either set; the 220 cover every other move between trained slots except L1 → L6 and L4 → L3.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-coverage">
 <div class="panel-switcher" data-panel-switcher data-panel-default="ws220">
 <div class="panel-switcher-controls" role="group" aria-label="Demonstration set shown">
@@ -292,7 +292,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">A command names the source by slot and rack and the destination by slot and rack or the bin, never by colour, and the k-th demonstration of a move gets the k-th combination, so repeats are phrased differently.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-wordings">
 <svg class="inline-fig" viewBox="0 0 520 432" role="img" aria-label="The wording pools of the 100: 6 verbs, times 4 objects, times 5 slot forms by 4 rack forms for the source and again for the destination, times 4 sentence forms, gives 38,400 wordings of one rack-to-rack move; with 5 bin names in place of the destination, 9,600 for a move to the bin. The 100 recorded 100 wordings, one per demonstration, at most 4 for one move.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -345,7 +345,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">The old 70 were recorded in fading light, with the across-the-table camera in another place and with a flatter wrist at release than the 150 new ones.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-release">
 <svg class="inline-fig" viewBox="0 0 520 238" role="img" aria-label="The wrist pitch at release: the old 70 released with a flatter wrist, wrist_flex minus 28 to minus 43 degrees, than the batches of 28 October and 3 November, minus 42 to minus 61.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -384,7 +384,7 @@ toc = [["The two sets", "#the-two-training-sets"], ["Why the 220", "#why-the-220
 
 <p class="bs-lead">The cleaned copy of the 220 has 113,010 of its 141,735 frames: the idle start and end of each demonstration are cut, the operator is removed from the start frames and each move has one sentence.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-copies">
 <svg class="inline-fig" viewBox="0 0 520 596" role="img" aria-label="Frames of each copy the models trained on. The 100 as recorded, 58,650, for Spicy Chicken and Crispy Falafel. The first trim, 42,089, for Pretzel One. Trimmed at the let-go and cleaned, 46,361, for Pretzel Two and Mango Rice. The 220 as published, 141,735, not trained on as published. The 220 cleaned, 113,010, for Plain Bagel, Mango Pudding and Mango Lassi. The 220 minus 8, 108,253, for Isaac 0.5 Expert.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">

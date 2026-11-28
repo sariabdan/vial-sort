@@ -3,7 +3,7 @@ title = "Results"
 brand_sub = "no run passed · 100 against 220 · far slots · open problems · disagreements · where the numbers live"
 description = "What came out of the arm tests: no run has passed the gate yet, the newer demonstrations made the destination follow the command, and where the per-run numbers live."
 components = ["toc", "nav", "filelinks"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["No run passed", "#readings-at-commit-8065309"], ["100 against 220", "#the-100-against-the-220"], ["On the robot", "#what-each-model-did-on-the-robot-as-written"], ["Not solved", "#what-is-not-solved"], ["Disagreements", "#where-sources-disagree"], ["Where the numbers live", "#where-the-results-live"]]
 +++
 
@@ -16,7 +16,7 @@ toc = [["No run passed", "#readings-at-commit-8065309"], ["100 against 220", "#t
 
 <p class="bs-lead">At commit <code>8065309</code> the data held 22 runs and 287 scored rollouts, and every run was disqualified because no run had 10 rollouts at any of the 12 rack slots.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-no-pass">
 <svg class="inline-fig" viewBox="0 0 520 330" role="img" aria-label="Top: the most rollouts any run had at one rack slot was 9, short of the 10 the pass mark needs at every slot. Bottom: of the 335 takes in the data, 287 were scored, 44 were left out and 4 belong to no run.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif" font-size="24">
@@ -57,7 +57,7 @@ toc = [["No run passed", "#readings-at-commit-8065309"], ["100 against 220", "#t
 
 <p class="bs-lead">On the same 31 moves, Plain Bagel, trained from the base model on the 220 demonstrations, put 21 vials in the asked slot; Mango Pudding, continued from the 100-demonstration model, put 11.</p>
 
-<div class="bs-grid g2">
+<div class="fig-pair">
 <figure id="fig-three-runs">
 <svg class="inline-fig" viewBox="0 0 540 330" role="img" aria-label="The three pi 0.5 runs the home page compares. Mango Rice, 12k, sync, was trained on the 100 demonstrations. Mango Pudding, 16k, sync, continued from Mango Rice on the 220. Plain Bagel, 16k, sync, was trained from the base model on the 220.">
 <defs><marker id="fig-three-runs-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a9b4c2"/></marker></defs>
@@ -114,7 +114,7 @@ toc = [["No run passed", "#readings-at-commit-8065309"], ["100 against 220", "#t
 
 <p class="bs-lead">Isaac 0.5 Expert put 15 of the 20 vials asked for slot 4 or 5 at slot 3, and Plain Bagel's held-out right-rack slots pull toward the middle.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-pulls">
 <svg class="inline-fig" viewBox="0 0 500 372" role="img" aria-label="Two rows of six slots. Isaac 0.5 Expert: of 20 rollouts asked for slot 4 or 5, 15 ended at slot 3 and none at slot 5. Plain Bagel, right rack: asked R2 it went to R1 three times; asked R4, to R3 four times of five.">
 <defs><marker id="fig-pulls-head" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ffa657"/></marker></defs>

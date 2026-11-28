@@ -3,7 +3,7 @@ title = "Models"
 brand_sub = "the family tree · the shared recipe · October · November · Isaac · FLUX · earlier and planned · disagreements"
 description = "Every model of the project: what it started from, what it was trained on, what it saw, its settings and what it showed on the arm."
 components = ["toc", "nav", "filelinks"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["The family tree", "#all-models"], ["Shared recipe", "#the-shared-pi05-recipe"], ["October", "#spicy-chicken"], ["November", "#mango-lassi"], ["Isaac", "#isaac-05-expert"], ["FLUX", "#crispy-falafel"], ["Earlier and planned", "#the-august-policies"], ["Disagreements", "#where-sources-disagree"]]
 +++
 
@@ -16,7 +16,7 @@ toc = [["The family tree", "#all-models"], ["Shared recipe", "#the-shared-pi05-r
 
 <p class="bs-lead">The π0.5, Isaac 0.5 and FLUX 3 Action models were all fine-tuned on the project's demonstrations; Plain Bagel, with 82, has the most scored rollouts.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-family">
 <svg class="inline-fig" viewBox="0 0 520 884" role="img" aria-label="The family tree of the twelve trained models, with the scored rollouts of each. From the pi 0.5 base weights: Spicy Chicken, on the 100 demonstrations as recorded, 12k steps, 27 rollouts; its probes Pretzel One, 361 steps, 3 rollouts, and Pretzel Two, 500 steps, 17 rollouts; Mango Rice, on a cleaned copy of the 100, 12k steps, 10 rollouts; from Mango Rice, Mango Lassi on the 220, 4k steps, 37 rollouts, with Mango Sorbet, ranges set back, 11, and Mango Chutney, gripper set back, 7; and Mango Pudding on the 220, 16k steps, 31 rollouts; Plain Bagel from the base on the 220, 16k steps, 82 rollouts. From Isaac 0.5 for SO-100 and SO-101: Isaac 0.5 Expert on the 220 minus 8, 21k steps, 42 rollouts. From FLUX 3 Action for SO-101: Crispy Falafel on the 100 with two cameras, 30k steps, 20 rollouts, and Sweet Corn on one task, 10k steps, none scored.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -149,7 +149,7 @@ The table gives the settings in which the runs differ, as each model's section o
 
 <p class="bs-lead">Spicy Chicken froze at home, two short probes found why, and Mango Rice, trained from the base on a cleaned copy of the 100 demonstrations, moved but read the destination off the picture.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-october">
 <svg class="inline-fig" viewBox="0 0 520 582" role="img" aria-label="The October pi 0.5 runs in order. Spicy Chicken, 15 to 16 October, froze at home because it had learned the operator leaning in as its cue to move. With the start frames swapped, Pretzel One, 19 October, left home but let go too early, because the trim cut at the first loosening of the gripper. Trimmed at the real let-go, Pretzel Two, 19 October, left home, and its destinations landed at slot 3 whatever the digit. A new run from the base, Mango Rice, 21 October, leaves home at every checkpoint, and its reach follows the source slot, never the destination.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -198,7 +198,7 @@ The table gives the settings in which the runs differ, as each model's section o
 
 <p class="bs-lead">Merging the datasets widened the gripper's scaling range, so Mango Lassi's closing commands came out too open; with the ranges pinned, Mango Pudding and Plain Bagel took the destination from the command.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-ranges">
 <svg class="inline-fig" viewBox="0 0 520 400" role="img" aria-label="The top of the range used to scale each joint. Gripper: 37.4 degrees before the datasets merged, the value pinned, against 50.8 degrees after the datasets merged, in Mango Lassi. Wrist flex: 31.5 degrees in Mango Lassi, set back to 43.2 degrees.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -240,7 +240,7 @@ The table gives the settings in which the runs differ, as each model's section o
 
 <p class="bs-lead">Of 42 moves scored from the operator's notes it put 20 in the asked slot: almost every one to slots 1, 2, 3 and 6, and none of the 20 to slots 4 and 5.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-isaac">
 <svg class="inline-fig" viewBox="0 0 520 438" role="img" aria-label="Isaac 0.5 Expert. On the robot, 25 to 27 November, in the asked slot: slots 1, 3 and 6, 11 of 12; slot 2, 9 of 10; slots 4 and 5, 0 of 20. Offline, on the 8 held-out demonstrations, its predicted next second is 2.8 degrees off per joint, against 5.2 for holding still and 8.4 for the checkpoint before this training.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">
@@ -289,7 +289,7 @@ The table gives the settings in which the runs differ, as each model's section o
 
 <p class="bs-lead">Crispy Falafel, a LoRA fine-tune that sees the overhead and wrist cameras, put the vial in the asked slot in 1 of 4 rollouts at 30,000 steps, and ran at 15.5 actions a second against 30.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-flux">
 <svg class="inline-fig" viewBox="0 0 520 478" role="img" aria-label="Top: the picture FLUX sees is divided into 8 by 8 cells, and one rack of six slots covers about two of them. Bottom: Crispy Falafel ran at 15.5 actions a second on the arm, against a target of 30.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif">

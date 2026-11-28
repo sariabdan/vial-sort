@@ -1,0 +1,26 @@
+/* Layout for the vial-sort pages for people: a drawn figure beside its text.
+   The kit's bs-grid g2 gives a figure half the chapter; with the navigation docked at
+   about 1024 px that half is too narrow to keep the figure's labels at 11 px or more.
+   .fig-cols gives the figure three fifths of the row, .fig-cols.fig-right puts the
+   figure's column on the right, and .fig-pair holds two figures side by side only when
+   the chapter is wide enough for both; narrower, each figure gets the full width.
+   Reader chapter cards are size containers, so the rows follow the card's width. */
+.fig-cols, .fig-pair { display: grid; gap: 14px; margin: 18px 0; align-items: start; }
+.fig-cols { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.fig-cols.fig-right { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+.fig-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fig-cols > *, .fig-pair > * { min-width: 0; }
+.fig-cols figure, .fig-pair figure { margin: 0; min-width: 0; }
+.fig-pair figure { max-width: 560px; }
+@container (max-width: 620px) {
+  .fig-cols, .fig-cols.fig-right { grid-template-columns: minmax(0, 1fr); }
+}
+@container (max-width: 1000px) {
+  .fig-pair { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 900px) {
+  body:not(.reader-enabled) .fig-cols, body:not(.reader-enabled) .fig-cols.fig-right { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 1320px) {
+  body:not(.reader-enabled) .fig-pair { grid-template-columns: minmax(0, 1fr); }
+}

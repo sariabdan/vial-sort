@@ -3,7 +3,7 @@ title = "The task and the rig"
 brand_sub = "the task · the arm · racks and slots · cameras · commands · earlier rigs"
 description = "What the robot is asked to do and the hardware it does it with: the arm pair, the racks and their slots, the vials, the five cameras and the earlier rigs."
 components = ["toc", "nav", "filelinks", "lightbox", "panel-switcher"]
-page_css = ["build-sheet.css"]
+page_css = ["build-sheet.css", "../site/assets/figure-columns.css"]
 toc = [["The task", "#the-task"], ["The arm", "#the-arm"], ["Five cameras", "#the-five-cameras"], ["Who sees what", "#which-models-see-which-cameras"], ["Commands", "#what-a-command-looks-like"], ["Earlier rigs", "#earlier-rigs"], ["Not verified", "#not-verified"]]
 +++
 
@@ -176,7 +176,7 @@ toc = [["The task", "#the-task"], ["The arm", "#the-arm"], ["Five cameras", "#th
 
 <p class="bs-lead">The π0.5 models take all five colour cameras, Isaac 0.5 Expert and Crispy Falafel take two, and no model is trained on depth.</p>
 
-<div class="bs-grid g2">
+<div class="fig-cols">
 <figure id="fig-camera-matrix" class="fig-switch">
 <svg class="inline-fig fig-wide" viewBox="0 0 600 400" role="img" aria-label="A matrix of cameras against models. The pi 0.5 models see top_down, left_top, left_bottom, right and wrist. Isaac 0.5 Expert and Crispy Falafel see top_down and wrist. Sweet Corn sees left, from the earlier camera layout, and wrist. No model sees rs_depth.">
 <g font-family="'IBM Plex Sans',system-ui,sans-serif" font-size="22" font-weight="600" fill="#e6edf3" text-anchor="middle">

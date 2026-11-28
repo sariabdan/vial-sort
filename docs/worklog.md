@@ -2,6 +2,12 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Figures on the pages for people keep their labels at 11 px with the navigation docked
+
+With the navigation docked at 1024 × 768, the reader's default above 900 px, a figure in the kit's half-width column (`bs-grid g2`) was too narrow: the coordinator measured labels at 10.7 px on four pages. The six pages for people now load `docs/site/assets/figure-columns.css`. A drawn figure beside its text gets three fifths of the row (`fig-cols`, or `fig-cols fig-right` when its column is on the right), and two figures side by side (`fig-pair`) stand next to each other only when the chapter card is wider than 1000 px, each at most 560 px wide. Below a 620 px card both stack, as the kit's grid does. No figure, label or text changed.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser, every chapter by its hash, every tab of a figure included; label size is font size times rendered width over viewBox width. Smallest label per case, over all six pages: 14.3 px at 1024 × 768 with the navigation docked, 18.1 px at 1024 × 768 with it closed, 14.2 px in Two chapters view at 1600 × 1000, 11.7 px at 375 × 812; no sideways overflow in any case. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Demonstrations gets a page for people
 
 `docs/topics/demonstrations/index.md` explains the [demonstrations record](topics/demonstrations/demonstrations.md) in eight chapters, in the Task and rig pattern: the two sets, why the 220 were recorded the way they were, which moves they cover, how the commands are worded, the batches, the training copies, where the sets are published, and the disagreements. Its figures draw only what the record states: what the two sets are made of, one destination per sitting against one layout with three destinations, which moves each set covers (in tabs, drawn from the record's held-out rules and move counts, not from per-move counts), the wording pools and the wordings they multiply to, the wrist pitch at release by batch, and the frames of each training copy. The page prints no Hugging Face address, because the account carries a person's user name.
