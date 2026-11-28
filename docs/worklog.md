@@ -2,6 +2,14 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: the results record points at the data instead of copying it
+
+The [results record](topics/results/results.md) copied the generated data: four tables of 22 runs, the confusion matrices, the accounts of each model and the home page's "What is not solved" values, as a snapshot of commit 8065309. A copy goes stale with every rebuild of the data, and the kit's documentation rules give every fact one home. The record now says where each kind of result lives (`src/data/results.json` keys, `src/data/rollouts.json`, `src/data/experiments.json`, `scoreRun` and `weakSlots` in `src/lib/score.ts`, the sort in `src/pages/results.astro`) and that the website build is the reproduction of the scores. Its readings of the data are kept as a dated list at commit 8065309; the comparison, the Lab notes' findings, "Where sources disagree" and "Not verified" are kept. The scores computed by a one-off script outside the repository are no longer stated as current; the record says so.
+
+Rechecked against `src/data/` at this commit, unchanged since 8065309: 22 runs, 287 scored rollouts, at most 9 rollouts at one rack slot, 5 runs tried at a held-out destination, 61 sessions and 335 takes.
+
+Checks: `docsite.py build` and `lint --strict` with 0 warnings, in a clean worktree with only this change. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: known defects back in their owning record, terms list in the development conventions
 
 `docs/open/defects.md` was a second list of owed work beside open work, which the kit's documentation rules do not allow ("Do not create a generic archive, review collection or second status system"). Its defects of the website, the scripts and the documentation site are now a section of the [website record](topics/website/website.md#known-defects), with their wording unchanged. Every defect keeps its own line in [open work](open/OPEN.md), now linking that section, so they stay as easy to see as the owner asked. The file was removed at the owner's request to fix it.
