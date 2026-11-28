@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Models gets a page for people
+
+`docs/topics/models/index.md` explains the [models record](topics/models/models.md) in eight chapters, in the Task and rig pattern: the family tree, the shared π0.5 recipe, the October runs, the November retrains, Isaac 0.5 Expert, FLUX 3 Action, the August and planned models, and the disagreements. Its figures draw only what the record states: what each model started from and was trained on, with its scored rollouts as read at commit 8065309; the October runs from Spicy Chicken's freeze to Mango Rice; the gripper and wrist ranges behind the 4 Nov grasp failures; Isaac 0.5 Expert by destination and offline; and FLUX's 8 by 8 picture grid against one rack. The page prints no Hugging Face address, because those addresses carry a person's user name.
+
+The menu entry "Models" opens the page and the record moves to the slug `models-record`. The 24 anchors of the old `models.html` resolve on the page; the chapter on the shared recipe has the ASCII id `the-shared-pi05-recipe` and keeps the old anchor with "π" as a span inside it.
+
+Points the page author found in the record and left to it: Mango Chutney's story says the wrist pitch range changed by 8%, while the q99 patch it describes goes from 31.5 to 43.2; the record does not say how the two figures relate. The table of all models gives Hugging Face addresses under a person's user name, which a page may not print.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser in One chapter view at 375 × 812, 1024 × 768 and 1600 × 1000: no sideways overflow; no text below 11 px; no figure label cut off or overlapping another; smallest figure label, font size times scale, 11.7 px at 375, 11.9 px at 1024 and 22.9 px at 1600. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Evaluation gets a page for people
 
 `docs/topics/evaluation/index.md` explains the [evaluation record](topics/evaluation/evaluation.md) in nine chapters, in the Task and rig pattern: the score, why it is built this way, the three outcome stages, scoring from notes or from the arm, what is left out, how a rollout is run, the 12-move gate, what the numbers cannot say, and the disagreements. Its figures draw only what the record states: the score worked out on Isaac 0.5 Expert slot by slot, the mean against the median and the binomial argument for a bar on the mean, the outcome kinds and their stages, the eye checks, what is left out, the actions a second on the arm, and the 12-move gate of 8 and 9 Nov.
