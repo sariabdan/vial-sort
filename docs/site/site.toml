@@ -1,0 +1,29 @@
+title = "Vial sort"
+gh_repo = "https://github.com/Cognitive-Software-Labs/vial-sort"
+gh_ref = "main"
+chapter_reader = true
+# Every tracked Markdown file under docs/ becomes a page, listed in the
+# sidebar's Reference section, unless it starts with +++ frontmatter. To list
+# more, name the folders or single files in reference_roots, such as
+# ["docs", "experiments", "README.md"]. A private repository with a public
+# site publishes the listed files: declare what must stay private in
+# [publication], or set `reference_listing = false` to list only
+# [[source_pages]] tables.
+# reference_listing = false
+# reference_roots = ["docs"]
+# Every project sets tooling_roots; [] states that it has no tooling yet.
+# Once it names a folder, such as ["tools/"], every tracked file or folder
+# directly under it needs a row in docs/CAPABILITY_MAP.md, and lint checks its
+# generated Imported by column. capability_map names the map when it lives
+# elsewhere; a tool that imports from a folder under experiment_roots warns.
+tooling_roots = ["scripts/"]
+# capability_map = "docs/CAPABILITY_MAP.md"
+# experiment_roots = ["experiments/"]
+# Lint compiles every formula on the built pages with the kit's KaTeX, which
+# runs in Node.js. Without Node it prints a note and skips the check. With
+# this setting lint fails without Node, so a hosted check cannot skip it.
+# formula_check_required = true
+
+[[nav]]
+label = "Home"
+file = "index.html"

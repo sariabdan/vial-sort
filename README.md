@@ -1,43 +1,25 @@
-# Astro Starter Kit: Minimal
+# Vial sort
+
+The website of the vial-sort project: a low-cost SO-101 arm moves small vials between two racks and a bin, following a command that names the slot to take the vial from and where to put it. The site reports the data, the models, the training and the results.
+
+Live site: https://cognitive-software-labs.github.io/vial-sort/
+
+This repository holds the site, the scripts that build its data, and the project documentation. The training, evaluation and robot code lives in a separate repository for now.
+
+## Run it
+
+Needs Node.js 22.23.4 or later.
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321/vial-sort/
+npm run build    # writes dist/
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Every push to `main` publishes the site to GitHub Pages.
 
-## 🚀 Project Structure
+## Before changing anything
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- The numbers on the pages come from `src/data/*.json`, which scripts generate. Do not edit those files by hand.
+- `docs/PROJECT_CONTEXT.md` has the repository map and every command; `docs/topics/website/website.md` explains how the site is built and its conventions.
+- `AGENTS.md` tells coding agents which rule to read before each kind of action. The rules come from the documentation kit in `.docs-kit/`, a Git submodule: run `git submodule update --init` after cloning.

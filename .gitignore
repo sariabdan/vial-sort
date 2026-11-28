@@ -25,3 +25,11 @@ pnpm-debug.log*
 
 # local paths and API cache from scripts/build_data.py, never published
 build/
+
+# documentation kit (.docs-kit): its environment and generated site
+.build/
+.venv/
+__pycache__/
+# left by a publish that was killed; they hold unlocked pages
+.docsite-publish-*/
+.docsite-plain-*/
