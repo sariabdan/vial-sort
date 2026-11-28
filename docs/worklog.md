@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Task and rig gets a page for people, the first with the chapter reader
+
+The owner asked for pages for people so the documentation uses the kit's chapter reader. Until now every menu entry was a record shown whole, which never gets the reader, so the reader was on in `docs/site/site.toml` and used by no page. `docs/topics/task-and-rig/index.md` is the first such page: seven chapters (the task, the arm, the five cameras, who sees what, commands, earlier rigs, not verified), with a rack schematic, a demonstrate-train-run flow, the rig photograph, the camera stills in tabs, a camera-by-model matrix and a command diagram, all drawn from the [task and rig record](topics/task-and-rig/task-and-rig.md). It says that the record was written by AI and not yet reviewed by a person.
+
+The menu entry "Task and rig" opens the page. The record stays a registered source page under the new slug `task-and-rig-record`, because one slug belongs to one page; the comment in `site.toml` states the pattern for the other topics. The 14 anchors of the old `task-and-rig.html` still resolve on the page. Figures 1 and 5 carry a second, narrower drawing that the page shows below 360 px of figure width, so that their labels stay at 11 px or more on a phone.
+
+Points the page author found in the record and left to it: the record does not say where the racks and the bin sit on the table, and the overhead still shows the bin beyond one rack, not between them; the rig photograph's "Rack 1" and "Rack 2" are not mapped to left and right; "mode" is used in the definition of a session without being defined; no table lists what the figures' colours mean. Whether the page gets slide faces is the owner's question; it has none.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser at 375 × 812, 1024 × 768 and 1600 × 1000 in the reader's dark theme: no sideways overflow; smallest figure label, font size times scale, Figure 1 16, 28.5 and 41.4 px, Figure 5 13, 13.6 and 24.6 px. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: the demonstrations, models and training records point at the data instead of copying it
 
 The [demonstrations](topics/demonstrations/demonstrations.md), [models](topics/models/models.md) and [training](topics/training/training.md) records copied generated data row by row as a snapshot of commit 8065309, as the results record did before. A copy goes stale with every rebuild of the data, and the kit's documentation rules give every fact one home. Each copied table is now a map: which file and key hold the values, what the fields mean, and which page or script shows or produces them. Section headings are unchanged, so their anchors still resolve.

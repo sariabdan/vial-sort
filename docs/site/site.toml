@@ -30,10 +30,12 @@ tooling_roots = ["scripts/"]
 pages = ["index.html"]
 
 # The project's records, each at a short address and in the menu.
+# A record that has a page for people keeps its own address, <topic>-record.html;
+# the topic's slug and its menu entry belong to the page (docs/topics/<topic>/index.md).
 [[source_pages]]
 source = "docs/topics/task-and-rig/task-and-rig.md"
-slug = "task-and-rig"
-description = "The task, the arm, the racks, the slots and the five cameras."
+slug = "task-and-rig-record"
+description = "The record behind the Task and rig page: the task, the arm, the racks, the slots and the five cameras."
 
 [[source_pages]]
 source = "docs/topics/demonstrations/demonstrations.md"
