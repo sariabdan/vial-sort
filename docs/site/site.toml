@@ -39,8 +39,8 @@ description = "The record behind the Task and rig page: the task, the arm, the r
 
 [[source_pages]]
 source = "docs/topics/demonstrations/demonstrations.md"
-slug = "demonstrations"
-description = "The recorded demonstration sets, their commands and their coverage."
+slug = "demonstrations-record"
+description = "The record behind the Demonstrations page: the two sets, their batches, wordings, coverage and training copies."
 
 [[source_pages]]
 source = "docs/topics/models/models.md"

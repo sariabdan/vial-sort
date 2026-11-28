@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Demonstrations gets a page for people
+
+`docs/topics/demonstrations/index.md` explains the [demonstrations record](topics/demonstrations/demonstrations.md) in eight chapters, in the Task and rig pattern: the two sets, why the 220 were recorded the way they were, which moves they cover, how the commands are worded, the batches, the training copies, where the sets are published, and the disagreements. Its figures draw only what the record states: what the two sets are made of, one destination per sitting against one layout with three destinations, which moves each set covers (in tabs, drawn from the record's held-out rules and move counts, not from per-move counts), the wording pools and the wordings they multiply to, the wrist pitch at release by batch, and the frames of each training copy. The page prints no Hugging Face address, because the account carries a person's user name.
+
+The menu entry "Demonstrations" opens the page and the record moves to the slug `demonstrations-record`. The 19 anchors of the old `demonstrations.html` resolve on the page, among them the two that the Task and rig page links.
+
+Points the page author found in the record and left to it: the record names the Hugging Face account by a person's user name, which a page may not print. Figure 3 relies on the record's statement that L1 → L6 and L4 → L3 are the only moves between trained slots without a demonstration; with 32 and 48 moves that statement fixes every cell, but the record does not say so in one place.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser in One chapter view at 375 × 812, 1024 × 768 and 1600 × 1000, both tabs of Figure 3 included: no sideways overflow; no text below 11 px; no figure label cut off or overlapping another; smallest figure label, font size times scale, 11.7 px at 375, 11.9 px at 1024 and 22.9 px at 1600. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Training gets a page for people
 
 `docs/topics/training/index.md` explains the [training record](topics/training/training.md) in eight chapters, in the Task and rig pattern: why the first models read the destination off the picture, Mango Rice's offline gate, the scaling mismatch and its fix, the cluster retrains, their probes, the runs and their losses, the data changes training depends on, and the disagreements. Its figures draw only what the record states: the destination probe of 21 October, the offline gate checkpoint by checkpoint, the gripper commands before and after the wider scale, the grasp of the three 4 Nov versions, the two cluster runs on a time line, `probe_shortcut` on both retrains, and the start and end loss of the eight runs with a curve.
