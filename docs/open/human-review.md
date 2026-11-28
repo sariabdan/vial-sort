@@ -9,7 +9,7 @@ Until a record is reviewed, treat it as a careful summary of the repository's fi
 | Record | What a reviewer who knows the project should check |
 |---|---|
 | [Task and rig](../topics/task-and-rig/task-and-rig.md) | The arm, the racks and slots, the camera names and positions, the earlier rigs |
-| [Demonstrations](../topics/demonstrations/demonstrations.md) | The two sets, the batches, the coverage tables, the mapping of local dataset names to published ones, which is inferred |
+| [Demonstrations](../topics/demonstrations/demonstrations.md) | The two sets, the batches, the coverage of moves (now read from `src/data/october.json` and `src/data/ws220.json`), the mapping of local dataset names to published ones, which is inferred |
 | [Models](../topics/models/models.md) | Every model's origin, data, cameras and settings; that "base12k" is Mango Rice, which is inferred |
 | [Training](../topics/training/training.md) | The runs, the cluster retrains, the quantile pinning, what each probe tests and found |
 | [Evaluation](../topics/evaluation/evaluation.md) | How a session is really run, the scoring rules, the 12-move gate, the operator's rule of 24 November |
