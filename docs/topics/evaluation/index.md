@@ -251,7 +251,7 @@ A slot is a side and a number: L or R, 1–6 with 1 nearest the arm, or `bin`. T
 <section class="card" id="what-is-scored-and-what-is-left-out">
 <span id="resets-restarts-and-retries"></span>
 
-## 287 rollouts in 22 runs were scored; restarts are most of what was left out
+## 287 rollouts in 22 runs were scored; restarts are the largest group left out
 
 <p class="bs-lead">Every rollout over 3 s with a readable command is scored, moves no demonstration contains included; a noted move counts once, so its earlier takes are restarts.</p>
 
