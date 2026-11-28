@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Evaluation gets a page for people
+
+`docs/topics/evaluation/index.md` explains the [evaluation record](topics/evaluation/evaluation.md) in nine chapters, in the Task and rig pattern: the score, why it is built this way, the three outcome stages, scoring from notes or from the arm, what is left out, how a rollout is run, the 12-move gate, what the numbers cannot say, and the disagreements. Its figures draw only what the record states: the score worked out on Isaac 0.5 Expert slot by slot, the mean against the median and the binomial argument for a bar on the mean, the outcome kinds and their stages, the eye checks, what is left out, the actions a second on the arm, and the 12-move gate of 8 and 9 Nov.
+
+The menu entry "Evaluation" opens the page and the record moves to the slug `evaluation-record`. The 28 anchors of the old `evaluation.html` resolve on the page, as chapter ids or as spans inside the chapter that explains them.
+
+Points the page author found in the record and left to it: the glossary's rollout ends "until it stops or the session ends", while how a rollout is run says it ends when a person stops it or a camera drops off the bus; π0.5's rate is stated only for sync mode.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser in One chapter view at 375 × 812, 1024 × 768 and 1600 × 1000: no sideways overflow; no text below 11 px; no figure label cut off or overlapping another; smallest figure label, font size times scale, 11.7 px at 375, 11.9 px at 1024 and 22.9 px at 1600. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Results gets a page for people
 
 `docs/topics/results/index.md` explains the [results record](topics/results/results.md) in six chapters, in the Task and rig pattern: no run passed, 100 against 220 demonstrations, on the robot, not solved, disagreements, and where the numbers live. Its figures draw only what the record states: the most rollouts at one slot against the 10 needed and the split of the 335 takes, the three runs the home page compares, Plain Bagel against Mango Pudding on the same 31 moves, and where the vial ended when a far or held-out slot was asked for, all as readings at commit 8065309. The page copies no run table; it links the website's Results page for the live numbers.

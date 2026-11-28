@@ -54,8 +54,8 @@ description = "The training runs, the retrains and the offline probes."
 
 [[source_pages]]
 source = "docs/topics/evaluation/evaluation.md"
-slug = "evaluation"
-description = "How a rollout is run, noted and scored."
+slug = "evaluation-record"
+description = "The record behind the Evaluation page: how a rollout is run, noted and scored, the score's definition and the 12-move gate."
 
 [[source_pages]]
 source = "docs/topics/results/results.md"
