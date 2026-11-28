@@ -2,6 +2,14 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: known defects back in their owning record, terms list in the development conventions
+
+`docs/open/defects.md` was a second list of owed work beside open work, which the kit's documentation rules do not allow ("Do not create a generic archive, review collection or second status system"). Its defects of the website, the scripts and the documentation site are now a section of the [website record](topics/website/website.md#known-defects), with their wording unchanged. Every defect keeps its own line in [open work](open/OPEN.md), now linking that section, so they stay as easy to see as the owner asked. The file was removed at the owner's request to fix it.
+
+The kit's records rule asks for one list of renamed terms in the development conventions. [`docs/development/conventions.md`](development/conventions.md) now holds it: the terms with several names and the record that defines each, and the three names that need a decision ("held out", the page name of the camera `left_bottom`, the third vial colour), which were defects before. Open work routes each of those three to the conventions.
+
+Checks: `docsite.py build` and `lint --strict`. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: the documentation becomes the project's, with six subject records
 
 Wrote the records of the project itself: task and rig, demonstrations, models, training, evaluation and results, each from the website's pages, `models.yaml`, the operator's notes, the Lab notes and the generated data under `src/data/` as of commit `8065309`. No number was re-derived from logs or recordings, which are not in this repository; the results table was recomputed from `src/data/results.json` with the definition in `src/lib/score.ts` and matches the website for the two runs compared (Isaac 0.5 Expert 61%, Plain Bagel 47%). Each record lists where its sources disagree. The documentation home, the project context and `README.md` now describe the project, not the website. The documentation menu lists the records and an entry that leads back to the website; the "Lab notes" menu button is gone and the notes stay reachable from the records and the Reference list. Why: the owner pointed out on 2026-11-28 that the repository is about vial-sort and the website is only its public face.

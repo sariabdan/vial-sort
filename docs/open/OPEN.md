@@ -16,21 +16,25 @@ Routes only. The linked owner holds the checklist, rationale and evidence.
 
 - What could not be verified without the recordings and the `~/lerobot` checkout: [website record, not verified](../topics/website/website.md#not-verified).
 - Each Lab note needs its inputs and run output, or a statement of where they are: [Lab notes, what these records lack](../experiments/experiments.md#what-these-records-lack).
-- The model accounts, the Lab notes and the generated data state different counts: [known defects](defects.md#the-model-accounts-and-the-generated-data-disagree).
+- The model accounts, the Lab notes and the generated data state different counts: [website record, known defects](../topics/website/website.md#the-model-accounts-and-the-generated-data-disagree).
 
 ## Defects on the website
 
-- The hero text names π0.5 as the latest work: [known defects](defects.md#hero-text-names-π05-as-the-latest-work).
-- The Data page names one missing move, the data has two: [known defects](defects.md#data-page-names-one-missing-move-the-data-has-two).
-- "Destination only from the command" is said of all 220 demonstrations: [known defects](defects.md#destination-only-from-the-command-is-said-of-all-220-demonstrations).
-- The Testing page counts one logged FLUX rate, the data has two: [known defects](defects.md#testing-page-counts-one-logged-flux-rate-the-data-has-two).
-- "Code on GitHub" leads to a repository without the current code: [known defects](defects.md#code-on-github-leads-to-a-repository-without-the-current-code).
-- "Held out" means two things: [known defects](defects.md#held-out-means-two-things).
-- One camera and one vial colour have several names: [known defects](defects.md#one-camera-and-one-vial-colour-have-several-names).
+- The hero text names π0.5 as the latest work: [website record, known defects](../topics/website/website.md#hero-text-names-π05-as-the-latest-work).
+- The Data page names one missing move, the data has two: [website record, known defects](../topics/website/website.md#data-page-names-one-missing-move-the-data-has-two).
+- "Destination only from the command" is said of all 220 demonstrations: [website record, known defects](../topics/website/website.md#destination-only-from-the-command-is-said-of-all-220-demonstrations).
+- The Testing page counts one logged FLUX rate, the data has two: [website record, known defects](../topics/website/website.md#testing-page-counts-one-logged-flux-rate-the-data-has-two).
+- "Code on GitHub" leads to a repository without the current code: [website record, known defects](../topics/website/website.md#code-on-github-leads-to-a-repository-without-the-current-code).
+
+## Names that need a decision
+
+- "Held out" means two things; the owner decides which keeps the term: [development conventions](../development/conventions.md#held-out-means-two-things).
+- The camera `left_bottom` has two page names; someone who knows the rig decides: [development conventions](../development/conventions.md#the-camera-left_bottom-has-two-page-names).
+- The third vial colour has three names; someone who knows the rig decides: [development conventions](../development/conventions.md#the-third-vial-colour-has-three-names).
 
 ## Defects in scripts and the documentation site
 
-- A compiled Python file is tracked in Git and needs the owner's go to be removed: [known defects](defects.md#a-compiled-python-file-is-tracked-in-git).
-- `scripts/shoot.mjs` lists a page that does not exist: [known defects](defects.md#scriptsshootmjs-lists-a-page-that-does-not-exist).
-- `scripts/upload_hf.py` describes itself wrongly: [known defects](defects.md#scriptsupload_hfpy-describes-itself-wrongly).
-- Wide tables scroll sideways in the documentation reader: [known defects](defects.md#wide-tables-scroll-sideways-in-the-reader).
+- A compiled Python file is tracked in Git and needs the owner's go to be removed: [website record, known defects](../topics/website/website.md#a-compiled-python-file-is-tracked-in-git).
+- `scripts/shoot.mjs` lists a page that does not exist: [website record, known defects](../topics/website/website.md#scriptsshootmjs-lists-a-page-that-does-not-exist).
+- `scripts/upload_hf.py` describes itself wrongly: [website record, known defects](../topics/website/website.md#scriptsupload_hfpy-describes-itself-wrongly).
+- Wide tables scroll sideways in the documentation reader: [website record, known defects](../topics/website/website.md#wide-tables-scroll-sideways-in-the-reader).

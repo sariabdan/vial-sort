@@ -21,7 +21,7 @@ Until a record is reviewed, treat it as a careful summary of the repository's fi
 ## What the review should settle
 
 - Each record's sections "Where sources disagree" and "Not verified": for every row, which source is right, or the missing fact.
-- The [known defects](defects.md), for those that need someone who knows the rig or the sessions.
+- The [known defects](../topics/website/website.md#known-defects) and the [names that need a decision](../development/conventions.md#named-in-conflicting-ways-a-decision-is-owed), for those that need someone who knows the rig or the sessions.
 - Anything a record states that is wrong, missing or misleading. The agents could only read what is in this repository; they had no recordings, logs or code.
 
 ## Recording the review
