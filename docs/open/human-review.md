@@ -13,7 +13,7 @@ Until a record is reviewed, treat it as a careful summary of the repository's fi
 | [Models](../topics/models/models.md) | Every model's origin, data, cameras and settings; that "base12k" is Mango Rice, which is inferred |
 | [Training](../topics/training/training.md) | The runs, the cluster retrains, the quantile pinning, what each probe tests and found |
 | [Evaluation](../topics/evaluation/evaluation.md) | How a session is really run, the scoring rules, the 12-move gate, the operator's rule of 24 November |
-| [Results](../topics/results/results.md) | That the table matches what was observed at the robot |
+| [Results](../topics/results/results.md) | That the readings at commit 8065309 and `src/data/results.json` match what was observed at the robot |
 | [Lab notes](../experiments/experiments.md) | That the four notes survived their move unchanged in meaning |
 | [Website](../topics/website/website.md) | The pipeline steps and the publishing description |
 | [Moving the code here](../topics/code-migration/code-migration.md) | Whether the breakdown fits the code as it is on the workstation |
