@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Training gets a page for people
+
+`docs/topics/training/index.md` explains the [training record](topics/training/training.md) in eight chapters, in the Task and rig pattern: why the first models read the destination off the picture, Mango Rice's offline gate, the scaling mismatch and its fix, the cluster retrains, their probes, the runs and their losses, the data changes training depends on, and the disagreements. Its figures draw only what the record states: the destination probe of 21 October, the offline gate checkpoint by checkpoint, the gripper commands before and after the wider scale, the grasp of the three 4 Nov versions, the two cluster runs on a time line, `probe_shortcut` on both retrains, and the start and end loss of the eight runs with a curve.
+
+The menu entry "Training" opens the page and the record moves to the slug `training-record`. The 24 anchors of the old `training.html` resolve on the page.
+
+Points the page author found in the record and left to it: none beyond the record's own lists of disagreements and unverified points; the offline gate's insertion and gripper errors are stated only at the first and last checkpoint, so the page cannot draw their fall.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser in One chapter view at 375 × 812, 1024 × 768 and 1600 × 1000: no sideways overflow; no text below 11 px; no figure label cut off or overlapping another; smallest figure label, font size times scale, 11.7 px at 375, 11.9 px at 1024 and 22.9 px at 1600. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Models gets a page for people
 
 `docs/topics/models/index.md` explains the [models record](topics/models/models.md) in eight chapters, in the Task and rig pattern: the family tree, the shared π0.5 recipe, the October runs, the November retrains, Isaac 0.5 Expert, FLUX 3 Action, the August and planned models, and the disagreements. Its figures draw only what the record states: what each model started from and was trained on, with its scored rollouts as read at commit 8065309; the October runs from Spicy Chicken's freeze to Mango Rice; the gripper and wrist ranges behind the 4 Nov grasp failures; Isaac 0.5 Expert by destination and offline; and FLUX's 8 by 8 picture grid against one rack. The page prints no Hugging Face address, because those addresses carry a person's user name.

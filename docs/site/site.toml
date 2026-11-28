@@ -49,8 +49,8 @@ description = "The record behind the Models page: every model, what it started f
 
 [[source_pages]]
 source = "docs/topics/training/training.md"
-slug = "training"
-description = "The training runs, the retrains and the offline probes."
+slug = "training-record"
+description = "The record behind the Training page: the runs, the scaling fix, the cluster retrains and the offline probes."
 
 [[source_pages]]
 source = "docs/topics/evaluation/evaluation.md"
