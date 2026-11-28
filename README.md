@@ -1,12 +1,13 @@
 # Vial sort
 
-The website of the vial-sort project: a low-cost SO-101 arm moves small vials between two racks and a bin, following a command that names the slot to take the vial from and where to put it. The site reports the data, the models, the training and the results.
+A low-cost SO-101 arm moves small vials between two racks and a bin, following a command that names the slot to take the vial from and where to put it. Models are trained on recorded demonstrations and tested on the arm.
 
-Live site: https://cognitive-software-labs.github.io/vial-sort/
+- Website, with the data, models, training and results: https://cognitive-software-labs.github.io/vial-sort/
+- Documentation, with the project's records and Lab notes: https://cognitive-software-labs.github.io/vial-sort/docs/
 
-This repository holds the site, the scripts that build its data, and the project documentation. The training, evaluation and robot code lives in a separate repository for now.
+This repository holds the project's records (`docs/`), the generated data of every run, the operator's notes, the model descriptions, and the website. The training, evaluation and robot code lives in a separate repository for now.
 
-## Run it
+## Run the website
 
 Needs Node.js 22.23.4 or later.
 

@@ -29,12 +29,47 @@ tooling_roots = ["scripts/"]
 [publication]
 pages = ["index.html"]
 
+# The project's records, each at a short address and in the menu.
+[[source_pages]]
+source = "docs/topics/task-and-rig/task-and-rig.md"
+slug = "task-and-rig"
+description = "The task, the arm, the racks, the slots and the five cameras."
+
+[[source_pages]]
+source = "docs/topics/demonstrations/demonstrations.md"
+slug = "demonstrations"
+description = "The recorded demonstration sets, their commands and their coverage."
+
+[[source_pages]]
+source = "docs/topics/models/models.md"
+slug = "models"
+description = "Every model: what it started from, what it saw and its settings."
+
+[[source_pages]]
+source = "docs/topics/training/training.md"
+slug = "training"
+description = "The training runs, the retrains and the offline probes."
+
+[[source_pages]]
+source = "docs/topics/evaluation/evaluation.md"
+slug = "evaluation"
+description = "How a rollout is run, noted and scored."
+
+[[source_pages]]
+source = "docs/topics/results/results.md"
+slug = "results"
+description = "Every run with its counts and score, as a dated snapshot."
+
+[[source_pages]]
+source = "docs/topics/website/website.md"
+slug = "website"
+description = "How the public website is built, checked and published."
+
 # The Lab notes keep the page names their old website addresses had.
 [[source_pages]]
 source = "docs/experiments/experiments.md"
 slug = "lab-notes"
 description = "Dated records of arm tests and retrains, newest first."
-pinned = true
 
 [[source_pages]]
 source = "docs/experiments/2026-11-09-a16000-arm-test/a16000-arm-test.md"
@@ -57,5 +92,41 @@ label = "Home"
 file = "index.html"
 
 [[nav]]
-label = "Lab notes"
-file = "lab-notes.html"
+label = "Task and rig"
+file = "task-and-rig.html"
+group = "project"
+
+[[nav]]
+label = "Demonstrations"
+file = "demonstrations.html"
+group = "project"
+
+[[nav]]
+label = "Models"
+file = "models.html"
+group = "project"
+
+[[nav]]
+label = "Training"
+file = "training.html"
+group = "project"
+
+[[nav]]
+label = "Evaluation"
+file = "evaluation.html"
+group = "project"
+
+[[nav]]
+label = "Results"
+file = "results.html"
+group = "project"
+
+[[nav]]
+label = "The website"
+file = "website.html"
+group = "repository"
+
+# The menu takes only pages of this site, so this entry is a page that forwards to the public website.
+[[nav]]
+label = "← Back to the website"
+file = "to-website.html"

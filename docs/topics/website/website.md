@@ -2,7 +2,7 @@
 
 ## Scope
 
-This record owns how the public site is built, where its numbers come from, the conventions its pages follow, how it is published and its known defects. It does not own the experiments themselves: what was trained and tested is reported on the site's pages and in the [Lab notes](../../experiments/experiments.md).
+This record owns how the public site is built, where its numbers come from, the conventions its pages follow, and how it is published. Its defects are listed in [known defects](../../open/defects.md). It does not own the experiments themselves: what was trained and tested is reported on the site's pages and in the [Lab notes](../../experiments/experiments.md).
 
 ## How the site is built
 
@@ -82,11 +82,7 @@ Whichever is chosen, the change is made in `curation.yaml` (the `hero` entry) an
 
 ## Known defects
 
-- `scripts/__pycache__/upload_hf.cpython-312.pyc` is tracked in Git. It is compiled output, not source. Removing it from Git needs the person's go.
-- The "Code on GitHub" link in `src/lib/site.ts` points to `Cognitive-Software-Labs/lerebot`, whose last commit is from 2026-09-22 and which lacks the October work the site reports. The [code migration plan](../code-migration/code-migration.md) owns the fix.
-- The hero's text still says the latest work trains π0.5, while the newest run on the site is Isaac 0.5 Expert.
-- `scripts/shoot.mjs` lists `paper/` among its default pages; no such page exists in `src/pages/`.
-- A Lab note with wide tables scrolls sideways by about 100 px in the documentation reader at a pane 1,000 px wide. Seen on `a16000-arm-test-9nov.html` on 2026-11-28.
+The defects of the website, the scripts and the documentation site are listed in [known defects](../../open/defects.md), each with its own line in [open work](../../open/OPEN.md).
 
 ## Not verified
 
@@ -95,9 +91,8 @@ What could not be done or checked on the Windows development machine, because th
 - **The data pipeline was never run here.** `scripts/build_data.py`, `build_ws220.py`, `notes_to_yaml.py`, `make_clips.py`, `make_cams.py`, `annotate_setup.py`, `update_site.py` and `upload_hf.py` were read, not executed. That `src/data/*.json` and `public/media/` match what the scripts would write today is assumed.
 - **`scripts/check_text.py` was not run** on any build made here. The pages changed on 2026-11-27 and 2026-11-28 were checked by eye for glued words, not by the script.
 - **The hero video's properties** come from `src/data/media.json`, `curation.yaml` and `scripts/make_clips.py`. The file itself was not probed, and the 640 × 480 size of the source recording is taken from a comment in `make_clips.py`.
-- **The summary band's wording for Isaac 0.5 Expert.** The band says 92% for "the slots the demonstrations used as a destination" and 30% for the others. `src/lib/score.ts` splits the slots the same fixed way for every run. Isaac was trained on the 220 demonstrations minus 8 held out; whether that fixed split describes its training set was not checked against the dataset.
+- **The summary band's wording for Isaac 0.5 Expert.** The band says 92% for "the slots the demonstrations used as a destination" and 30% for the others. `src/lib/score.ts` splits the slots the same fixed way for every run. Isaac was trained on the 220 demonstrations minus 8 held out. The [evaluation record](../evaluation/evaluation.md) concludes from `demo_sets` in `src/data/results.json` that the fixed split matches all three training sets; that was not checked against the dataset itself.
 - **"Trained from the base model on the 220"** in the home page's Results chapter is a fixed sentence about Plain Bagel, not read from the data.
 - **Where the current code is.** That the workstation's `~/lerobot` checkout holds the October and November code is inferred from the remote repository lacking it.
 - **The Lab notes' sources.** No number in them was checked against the session logs, sheets or tools they cite; see [what these records lack](../../experiments/experiments.md#what-these-records-lack).
 - **The full-screen icon's hover state** was not seen: the preview could not produce a real pointer hover.
-- **The deploy workflow as rewritten on 2026-11-28 has not run.** Its steps were run by hand on Windows; its first run on GitHub is its test.

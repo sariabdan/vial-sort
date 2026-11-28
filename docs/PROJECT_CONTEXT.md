@@ -1,12 +1,25 @@
 # Project context
 
-This repository is the website of the vial-sort project: a low-cost SO-101 arm that moves vials between two racks and a bin on a spoken-style command. The site reports the data, the models, the training and the results. It is published at `https://cognitive-software-labs.github.io/vial-sort/`.
+This is the repository of the vial-sort project: a low-cost SO-101 arm moves small vials between two racks and a bin, following a command that names the slot to take the vial from and where to put it. Models are trained on recorded demonstrations and tested on the arm.
 
-The repository holds the site, the scripts that turn results into the site's data, and that generated data. The training, evaluation and robot code is not here. It lives in a separate checkout that the scripts expect at `~/lerobot`; [moving the project's code here](topics/code-migration/code-migration.md) is open work.
+The repository holds the project's knowledge and its public face: these records, the generated data of every run, the operator's notes, the model descriptions, and the website that presents them at `https://cognitive-software-labs.github.io/vial-sort/`. The training, evaluation and robot code is not here yet. It lives in a separate checkout that the scripts expect at `~/lerobot`; [moving it here](topics/code-migration/code-migration.md) is open work.
+
+## The project's records
+
+| Subject | Record |
+|---|---|
+| The task, the arm, the racks and the cameras | [Task and rig](topics/task-and-rig/task-and-rig.md) |
+| The recorded demonstrations and their commands | [Demonstrations](topics/demonstrations/demonstrations.md) |
+| Every model: what it started from, what it saw, its settings | [Models](topics/models/models.md) |
+| The training runs and the offline probes | [Training](topics/training/training.md) |
+| How a model is tested on the arm and scored | [Evaluation](topics/evaluation/evaluation.md) |
+| What came out, run by run | [Results](topics/results/results.md) |
+| Dated arm tests and retrains | [Lab notes](experiments/experiments.md) |
+| The website: how it is built and published | [Website](topics/website/website.md) |
 
 ## Read first
 
-Follow the [task routes](../AGENTS.md#read-before-the-relevant-action) before the action they govern. The [website record](topics/website/website.md) owns how the site is built, where its numbers come from and its page conventions.
+Follow the [task routes](../AGENTS.md#read-before-the-relevant-action) before the action they govern. For work on the website, the [website record](topics/website/website.md) owns how it is built, where its numbers come from and its page conventions.
 
 ## Repository map
 

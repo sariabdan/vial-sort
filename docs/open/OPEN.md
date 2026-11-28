@@ -2,13 +2,35 @@
 
 Routes only. The linked owner holds the checklist, rationale and evidence.
 
+## Work owed
+
+- No person has checked the documentation; Sari Abdan reviews it: [review by a person](human-review.md#what-to-review).
 - Hero video: its resolution is too low and it needs replacing: [website record, hero video](../topics/website/website.md#hero-video).
 - Move the project's code here, step 1: get the current code off the workstation and onto GitHub: [code migration, step 1](../topics/code-migration/code-migration.md#step-1-publish-the-current-state).
 - Move the project's code here, step 2: inventory what is the project's own and what is upstream LeRobot: [code migration, step 2](../topics/code-migration/code-migration.md#step-2-inventory).
 - Move the project's code here, step 3: decide the layout, the history and the LeRobot dependency: [code migration, step 3](../topics/code-migration/code-migration.md#step-3-decisions-for-the-person).
 - Move the project's code here, step 4: move it in slices, each with its record: [code migration, step 4](../topics/code-migration/code-migration.md#step-4-move-in-slices).
 - Move the project's code here, step 5: repoint the site's scripts and links, then retire the old repository: [code migration, step 5](../topics/code-migration/code-migration.md#step-5-repoint-and-retire).
-- Check on the workstation what could not be verified without the recordings and the `~/lerobot` checkout: [website record, not verified](../topics/website/website.md#not-verified).
-- Give each Lab note its inputs and run output, or a statement of where they are: [Lab notes, what these records lack](../experiments/experiments.md#what-these-records-lack).
-- Watch the first run of the rewritten deploy workflow and fix what fails: [website record, publishing](../topics/website/website.md#publishing).
-- A tracked `scripts/__pycache__` file needs the person's go to be removed from Git: [website record, known defects](../topics/website/website.md#known-defects).
+
+## To check on the workstation
+
+- What could not be verified without the recordings and the `~/lerobot` checkout: [website record, not verified](../topics/website/website.md#not-verified).
+- Each Lab note needs its inputs and run output, or a statement of where they are: [Lab notes, what these records lack](../experiments/experiments.md#what-these-records-lack).
+- The model accounts, the Lab notes and the generated data state different counts: [known defects](defects.md#the-model-accounts-and-the-generated-data-disagree).
+
+## Defects on the website
+
+- The hero text names π0.5 as the latest work: [known defects](defects.md#hero-text-names-π05-as-the-latest-work).
+- The Data page names one missing move, the data has two: [known defects](defects.md#data-page-names-one-missing-move-the-data-has-two).
+- "Destination only from the command" is said of all 220 demonstrations: [known defects](defects.md#destination-only-from-the-command-is-said-of-all-220-demonstrations).
+- The Testing page counts one logged FLUX rate, the data has two: [known defects](defects.md#testing-page-counts-one-logged-flux-rate-the-data-has-two).
+- "Code on GitHub" leads to a repository without the current code: [known defects](defects.md#code-on-github-leads-to-a-repository-without-the-current-code).
+- "Held out" means two things: [known defects](defects.md#held-out-means-two-things).
+- One camera and one vial colour have several names: [known defects](defects.md#one-camera-and-one-vial-colour-have-several-names).
+
+## Defects in scripts and the documentation site
+
+- A compiled Python file is tracked in Git and needs the owner's go to be removed: [known defects](defects.md#a-compiled-python-file-is-tracked-in-git).
+- `scripts/shoot.mjs` lists a page that does not exist: [known defects](defects.md#scriptsshootmjs-lists-a-page-that-does-not-exist).
+- `scripts/upload_hf.py` describes itself wrongly: [known defects](defects.md#scriptsupload_hfpy-describes-itself-wrongly).
+- Wide tables scroll sideways in the documentation reader: [known defects](defects.md#wide-tables-scroll-sideways-in-the-reader).

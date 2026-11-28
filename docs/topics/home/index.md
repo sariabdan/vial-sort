@@ -1,10 +1,10 @@
 +++
 title = "Vial sort: project documentation"
 slug = "index"
-brand_sub = "the website · its data pipeline · open work"
+brand_sub = "task and rig · demonstrations · models · training · evaluation · results"
 reader = false
 raw = true
-page_only = "landing page of the documentation site; it states no rule of its own"
+page_only = "landing page of the documentation; it states no rule of its own"
 components = ["nav", "filelinks"]
 page_css = ["build-sheet.css", "home.css"]
 toc = []
@@ -13,16 +13,16 @@ toc = []
 <div class="home">
 <header class="home-hero">
 <div>
-<h1>How the vial-sort site is built, and what is still owed</h1>
-<p>This repository holds the project's website, the scripts that turn results into its data, and these records. The training and robot code is not here yet.</p>
+<h1>A low-cost arm sorts vials on a spoken-style command</h1>
+<p>An SO-101 arm moves small vials between two racks and a bin. Each command names the slot to take the vial from and where to put it. These records hold what the project knows: the rig, the demonstrations, the models, how they were trained and tested, and what came out.</p>
 <div class="home-cta">
-<a href="../topics/website/website.md">Read the website record</a>
-<a class="alt" href="../open/OPEN.md">See the open work</a>
+<a href="https://cognitive-software-labs.github.io/vial-sort/">← The project website</a>
+<a class="alt" href="../open/OPEN.md">Open work</a>
 </div>
 </div>
 <div class="home-now-grid">
-<div class="now-card"><strong>No number is typed by hand</strong><span>Pages read generated JSON; a number changes in the notes or a script, never in a page.</span></div>
-<div class="now-card"><strong>A push to main publishes</strong><span>GitHub Pages rebuilds the public site on every push; there is no staging site.</span></div>
+<div class="now-card"><strong>Records first</strong><span>Each subject has one record that states the facts with their sources. The website explains them for readers.</span></div>
+<div class="now-card"><strong>The code is not here yet</strong><span>Training and robot code lives in a second repository. Moving it here is open work.</span></div>
 </div>
 </header>
 <section class="home-now" aria-label="Documentation topics">

@@ -6,11 +6,19 @@ each action.
 
 ## Current documentation
 
-- [Website record](topics/website/website.md): how the site is built, where its numbers come from, its page conventions, how it is published and its known defects.
+- [Task and rig](topics/task-and-rig/task-and-rig.md): the task, the arm, the racks, the slots and the cameras.
+- [Demonstrations](topics/demonstrations/demonstrations.md): the recorded demonstration sets, their commands and their coverage.
+- [Models](topics/models/models.md): every model, what it started from, what it saw and its settings.
+- [Training](topics/training/training.md): the training runs, the retrains and the offline probes.
+- [Evaluation](topics/evaluation/evaluation.md): how a rollout is run, noted and scored.
+- [Results](topics/results/results.md): every run with its counts and score, as a dated snapshot.
+- [Website record](topics/website/website.md): how the site is built, where its numbers come from, its page conventions, and how it is published.
 - [Lab notes](experiments/experiments.md): the dated records of arm tests and retrains, and what they lack as experiment records.
 - [Moving the project's code here](topics/code-migration/code-migration.md): the plan for bringing the training, evaluation and robot code into this repository. A working document; deleted when the move has landed.
 - [Capability map](CAPABILITY_MAP.md): what each script does and its state.
 - [Open work](open/OPEN.md): routes to unfinished owners.
+- [Review by a person](open/human-review.md): no person has read these records yet; who reviews them and what to check.
+- [Known defects](open/defects.md): what is wrong or inconsistent on the website, in the scripts and in the documentation site, not yet fixed.
 - [Worklog](worklog.md): append-only chronology.
 - [Home source](topics/home/index.md): the landing page of the documentation site.
 
@@ -19,7 +27,8 @@ each action.
 | Subject | Home |
 |---|---|
 | A fact about the website: a page, a component, a convention, the pipeline | [Website record](topics/website/website.md); split it into a named file beside it when a part grows |
-| A new subject, such as training or the robot runtime once their code is here | `docs/topics/<topic>/<topic>.md` |
+| A fact about the rig, the data, a model, training, testing or a result | The matching record above |
+| A new subject, such as the robot runtime once its code is here | `docs/topics/<topic>/<topic>.md` |
 | Something owed | One line in [open work](open/OPEN.md), linking the record that owns it |
 | What landed and when | [Worklog](worklog.md) |
 | A dated arm test or retrain | `docs/experiments/<date>-<subject>/`, listed in [Lab notes](experiments/experiments.md) |
