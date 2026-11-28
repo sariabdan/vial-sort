@@ -24,6 +24,38 @@ tooling_roots = ["scripts/"]
 # this setting lint fails without Node, so a hosted check cannot skip it.
 # formula_check_required = true
 
+# The documentation site is published with the public website, under /vial-sort/docs/
+# (.github/workflows/deploy.yml). Everything under docs/ is public by the owner's decision of 2026-11-28.
+[publication]
+pages = ["index.html"]
+
+# The Lab notes keep the page names their old website addresses had.
+[[source_pages]]
+source = "docs/experiments/experiments.md"
+slug = "lab-notes"
+description = "Dated records of arm tests and retrains, newest first."
+pinned = true
+
+[[source_pages]]
+source = "docs/experiments/2026-11-09-a16000-arm-test/a16000-arm-test.md"
+slug = "a16000-arm-test-9nov"
+
+[[source_pages]]
+source = "docs/experiments/2026-11-08-b16000-arm-test/b16000-arm-test.md"
+slug = "b16000-arm-test-8nov"
+
+[[source_pages]]
+source = "docs/experiments/2026-11-07-retrains-on-the-cluster/retrains-on-the-cluster.md"
+slug = "retrains-on-the-cluster-7nov"
+
+[[source_pages]]
+source = "docs/experiments/2026-11-04-b4000-arm-test/b4000-arm-test.md"
+slug = "b4000-arm-test-4nov"
+
 [[nav]]
 label = "Home"
 file = "index.html"
+
+[[nav]]
+label = "Lab notes"
+file = "lab-notes.html"

@@ -33,3 +33,4 @@ __pycache__/
 # left by a publish that was killed; they hold unlocked pages
 .docsite-publish-*/
 .docsite-plain-*/
+_docs/

@@ -10,7 +10,7 @@ interface Props {
 }
 const { title, description, page } = Astro.props;
 // in the order the work went: what was recorded, how the models were trained on it, what each model is, how they
-// were tested, what came out, then the dated notes (src/pages/docs/*.md) for the work after the October pages.
+// were tested, what came out, then the project documentation with the dated Lab notes (docs/, built by the documentation kit and published under docs/).
 // The glossary is linked from the footer.
 const nav = [
   { key: 'datasets', href: 'datasets/', label: 'Data' },
@@ -18,7 +18,7 @@ const nav = [
   { key: 'models', href: 'models/', label: 'Models' },
   { key: 'method', href: 'method/', label: 'Testing' },
   { key: 'results', href: 'results/', label: 'Results' },
-  { key: 'docs', href: 'docs/', label: 'Lab notes' },
+  { key: 'docs', href: 'docs/', label: 'Docs' },
 ];
 // the August work, one level down; the sub-navigation shows only inside it
 const previous = [

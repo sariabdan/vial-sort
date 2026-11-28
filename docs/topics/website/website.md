@@ -2,15 +2,15 @@
 
 ## Scope
 
-This record owns how the public site is built, where its numbers come from, the conventions its pages follow, how it is published and its known defects. It does not own the experiments themselves: what was trained and tested is reported on the site's pages and in the Lab notes under `src/pages/docs/`.
+This record owns how the public site is built, where its numbers come from, the conventions its pages follow, how it is published and its known defects. It does not own the experiments themselves: what was trained and tested is reported on the site's pages and in the [Lab notes](../../experiments/experiments.md).
 
 ## How the site is built
 
-The site is static. Astro 7 turns the `.astro` pages and the Markdown Lab notes under `src/pages/` into HTML at build time; there is no server at runtime. `astro build` wrote 17 pages on 2026-11-28. The base path is `/vial-sort`, set in `astro.config.mjs`, so every internal address goes through `url()` in `src/lib/site.ts`.
+The site is static. Astro 7 turns the `.astro` pages under `src/pages/` into HTML at build time; there is no server at runtime. `astro build` wrote 12 pages on 2026-11-28, after the Lab notes moved to the documentation. The base path is `/vial-sort`, set in `astro.config.mjs`, so every internal address goes through `url()` in `src/lib/site.ts`.
 
 There is no theme and no UI library. The look comes from `src/styles/global.css` and the scoped styles of each component. The only visual dependencies are the Archivo font, Observable Plot and D3 for charts, and KaTeX for formulas.
 
-Astro 7 processes Markdown with its own processor: `markdown.rehypePlugins` in the configuration is rejected unless `@astrojs/markdown-remark` is installed. `src/layouts/Doc.astro` therefore folds long tables itself, by rendering the slot and rewriting the HTML.
+Astro 7 processes Markdown with its own processor: `markdown.rehypePlugins` in the configuration is rejected unless `@astrojs/markdown-remark` is installed. The site has no Markdown pages since 2026-11-28, so this matters only if one is added again.
 
 ## Where the numbers come from
 
@@ -43,9 +43,18 @@ The site is read in a browser pane of about 1024×768. A page is judged by what 
 
 ## Publishing
 
-`.github/workflows/deploy.yml` builds with Node 24 and publishes to GitHub Pages on every push to `main`. The address is `https://cognitive-software-labs.github.io/vial-sort/`.
+`.github/workflows/deploy.yml` runs on every push to `main`. It builds the website with Node 24 into `dist/`, builds and strictly lints this documentation with Python 3.12, exports it with `docsite.py publish`, copies the export into `dist/docs/` and publishes `dist/` to GitHub Pages.
 
-The workflow's comment says the data is regenerated with `make site`. No Makefile exists in the repository; the command is `scripts/update_site.py`.
+| Address | What is there |
+|---|---|
+| `https://cognitive-software-labs.github.io/vial-sort/` | The website |
+| `…/vial-sort/docs/` | This documentation; every file under `docs/` is public, by the owner's decision of 2026-11-28 ("its public is fine") |
+| `…/vial-sort/docs/lab-notes.html` | The Lab notes |
+| `…/vial-sort/docs/<old name>/` | Redirects from the four Lab-note addresses used until 2026-11-28, kept in `public/docs/` |
+
+A failing documentation lint therefore stops the publication of the website too.
+
+The local dev server (`npm run dev`) serves only the website: `/vial-sort/docs/` exists only in a built and merged `dist/`. The [project context](../../PROJECT_CONTEXT.md#the-combined-site) has the commands.
 
 ## Hero video
 
@@ -74,7 +83,21 @@ Whichever is chosen, the change is made in `curation.yaml` (the `hero` entry) an
 ## Known defects
 
 - `scripts/__pycache__/upload_hf.cpython-312.pyc` is tracked in Git. It is compiled output, not source. Removing it from Git needs the person's go.
-- The deploy workflow's comment names `make site`, which does not exist.
 - The "Code on GitHub" link in `src/lib/site.ts` points to `Cognitive-Software-Labs/lerebot`, whose last commit is from 2026-09-22 and which lacks the October work the site reports. The [code migration plan](../code-migration/code-migration.md) owns the fix.
 - The hero's text still says the latest work trains π0.5, while the newest run on the site is Isaac 0.5 Expert.
 - `scripts/shoot.mjs` lists `paper/` among its default pages; no such page exists in `src/pages/`.
+- A Lab note with wide tables scrolls sideways by about 100 px in the documentation reader at a pane 1,000 px wide. Seen on `a16000-arm-test-9nov.html` on 2026-11-28.
+
+## Not verified
+
+What could not be done or checked on the Windows development machine, because the `~/lerobot` checkout, the recordings, ffmpeg and the workstation's Python environment are not there. Each item stays open until someone with those files checks it.
+
+- **The data pipeline was never run here.** `scripts/build_data.py`, `build_ws220.py`, `notes_to_yaml.py`, `make_clips.py`, `make_cams.py`, `annotate_setup.py`, `update_site.py` and `upload_hf.py` were read, not executed. That `src/data/*.json` and `public/media/` match what the scripts would write today is assumed.
+- **`scripts/check_text.py` was not run** on any build made here. The pages changed on 2026-11-27 and 2026-11-28 were checked by eye for glued words, not by the script.
+- **The hero video's properties** come from `src/data/media.json`, `curation.yaml` and `scripts/make_clips.py`. The file itself was not probed, and the 640 × 480 size of the source recording is taken from a comment in `make_clips.py`.
+- **The summary band's wording for Isaac 0.5 Expert.** The band says 92% for "the slots the demonstrations used as a destination" and 30% for the others. `src/lib/score.ts` splits the slots the same fixed way for every run. Isaac was trained on the 220 demonstrations minus 8 held out; whether that fixed split describes its training set was not checked against the dataset.
+- **"Trained from the base model on the 220"** in the home page's Results chapter is a fixed sentence about Plain Bagel, not read from the data.
+- **Where the current code is.** That the workstation's `~/lerobot` checkout holds the October and November code is inferred from the remote repository lacking it.
+- **The Lab notes' sources.** No number in them was checked against the session logs, sheets or tools they cite; see [what these records lack](../../experiments/experiments.md#what-these-records-lack).
+- **The full-screen icon's hover state** was not seen: the preview could not produce a real pointer hover.
+- **The deploy workflow as rewritten on 2026-11-28 has not run.** Its steps were run by hand on Windows; its first run on GitHub is its test.

@@ -7,6 +7,7 @@ each action.
 ## Current documentation
 
 - [Website record](topics/website/website.md): how the site is built, where its numbers come from, its page conventions, how it is published and its known defects.
+- [Lab notes](experiments/experiments.md): the dated records of arm tests and retrains, and what they lack as experiment records.
 - [Moving the project's code here](topics/code-migration/code-migration.md): the plan for bringing the training, evaluation and robot code into this repository. A working document; deleted when the move has landed.
 - [Capability map](CAPABILITY_MAP.md): what each script does and its state.
 - [Open work](open/OPEN.md): routes to unfinished owners.
@@ -21,7 +22,7 @@ each action.
 | A new subject, such as training or the robot runtime once their code is here | `docs/topics/<topic>/<topic>.md` |
 | Something owed | One line in [open work](open/OPEN.md), linking the record that owns it |
 | What landed and when | [Worklog](worklog.md) |
-| A dated arm-test write-up for the public site | `src/pages/docs/`, not here |
+| A dated arm test or retrain | `docs/experiments/<date>-<subject>/`, listed in [Lab notes](experiments/experiments.md) |
 
 ## Shared practices
 

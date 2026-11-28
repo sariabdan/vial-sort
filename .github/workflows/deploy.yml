@@ -1,5 +1,6 @@
-# Build the site and publish it to GitHub Pages on every push to main.
-# Media and src/data/*.json are committed; they are regenerated locally with `make site`.
+# Build the site and the project documentation and publish both to GitHub Pages on every push to main.
+# Media and src/data/*.json are committed; they are regenerated on the workstation with scripts/update_site.py.
+# The documentation (docs/, built by the kit in .docs-kit) is published under /vial-sort/docs/.
 name: Deploy to GitHub Pages
 on:
   push:
@@ -14,9 +15,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: withastro/action@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
+      - name: Build the website
+        run: |
+          npm ci
+          npm run build
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and check the documentation
+        run: |
+          python -m pip install -r .docs-kit/requirements.txt
+          python .docs-kit/docsite.py build --project .
+          python .docs-kit/docsite.py lint --project . --strict
+          python .docs-kit/docsite.py publish --project . --out _docs
+      - name: Put the documentation under docs/ of the site
+        run: cp -r _docs/. dist/docs/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
   deploy:
     needs: build
     runs-on: ubuntu-latest

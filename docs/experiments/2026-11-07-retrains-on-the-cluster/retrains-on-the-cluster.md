@@ -1,19 +1,18 @@
----
-layout: ../../layouts/Doc.astro
-title: "Retraining π0.5 on a university cluster, 6–7 Nov"
-date: "2026-11-07"
-description: "Two full fine-tunes on the 220 contrastive demonstrations, one from the earlier checkpoint and one from the pi05 base, trained side by side on two 80 GB A100 GPUs in 12-hour jobs."
-models:
-  - { id: plain-bagel, was: "A" }
-  - { id: mango-pudding, was: "B" }
-points:
-  - "Two full fine-tunes of π0.5 on the same 220 demonstrations, 16,000 steps each: B from the 12k checkpoint of the 100-demonstration run, A from the public pi05_base."
-  - "Both finished at a loss of about 0.009."
-  - "Both use the original normalisation percentiles, pinned for all six joints."
-  - "4.8 seconds per step on one 80 GB A100; each run took two chained 12-hour jobs."
-  - "The offline probes were flat across checkpoints, so none beat the final one."
----
+# Retraining π0.5 on a university cluster, 6–7 Nov
 
+Dated 2026-11-07. Two full fine-tunes on the 220 contrastive demonstrations, one from the earlier checkpoint and one from the pi05 base, trained side by side on two 80 GB A100 GPUs in 12-hour jobs.
+
+Models in this note, by the name the website uses: Plain Bagel (called "A" here); Mango Pudding (called "B" here).
+
+## In short
+
+- Two full fine-tunes of π0.5 on the same 220 demonstrations, 16,000 steps each: B from the 12k checkpoint of the 100-demonstration run, A from the public pi05_base.
+- Both finished at a loss of about 0.009.
+- Both use the original normalisation percentiles, pinned for all six joints.
+- 4.8 seconds per step on one 80 GB A100; each run took two chained 12-hour jobs.
+- The offline probes were flat across checkpoints, so none beat the final one.
+
+## Session
 ## The two runs
 
 Both train every weight of π0.5 on the same 220 demonstrations (113,010 frames after the idle start and end are trimmed), with the operator-free starts, batch 16, 16,000 steps (2.3 passes over the data) and a checkpoint every 1,000 steps. The image colour and shift augmentations are the same as before.
@@ -40,9 +39,9 @@ B had first been trained for 4,000 steps on the merged dataset and lost its gras
 
 ## Reading list
 
-- [Arm test, 4 Nov: B at 4000 steps](../b4000-arm-test-4nov/)
-- [Arm test, 8–9 Nov: B at 16000 steps](../b16000-arm-test-8nov/)
-- [Arm test, 9 Nov: A at 16000 steps, against B](../a16000-arm-test-9nov/)
+- [Arm test, 4 Nov: B at 4000 steps](../2026-11-04-b4000-arm-test/b4000-arm-test.md)
+- [Arm test, 8–9 Nov: B at 16000 steps](../2026-11-08-b16000-arm-test/b16000-arm-test.md)
+- [Arm test, 9 Nov: A at 16000 steps, against B](../2026-11-09-a16000-arm-test/a16000-arm-test.md)
 
 ## Data and models on Hugging Face
 
