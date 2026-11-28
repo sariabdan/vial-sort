@@ -2,6 +2,16 @@
 
 Append-only chronology, newest entries first. Keep detailed evidence in its producing experiment or topic.
 
+## 2026-11-28: Results gets a page for people
+
+`docs/topics/results/index.md` explains the [results record](topics/results/results.md) in six chapters, in the Task and rig pattern: no run passed, 100 against 220 demonstrations, on the robot, not solved, disagreements, and where the numbers live. Its figures draw only what the record states: the most rollouts at one slot against the 10 needed and the split of the 335 takes, the three runs the home page compares, Plain Bagel against Mango Pudding on the same 31 moves, and where the vial ended when a far or held-out slot was asked for, all as readings at commit 8065309. The page copies no run table; it links the website's Results page for the live numbers.
+
+The menu entry "Results" opens the page and the record moves to the slug `results-record`. The 9 anchors of the old `results.html` resolve on the page. The chapter that compares the 100 and the 220 demonstrations has the ASCII id `the-100-against-the-220`, and the old anchor, which contains "π", is a span inside it: the kit's reader did not route to a chapter whose own id holds a non-ASCII character, and moved that chapter to the end.
+
+Points the page author found in the record and left to it: the reading of Isaac 0.5 Expert's far slots does not say which rack; the reading "asked R2, it went to R1 three times" gives no count of tries; the record does not say what Mango Rice was trained from, only on what.
+
+Checks: `docsite.py build`, `lint --strict` with 0 warnings and `build --check-reader`. In the browser in One chapter view at 375 × 812, 1024 × 768 and 1600 × 1000: no sideways overflow; no text below 11 px; smallest figure label, font size times scale, 12.2 px at 375, 12.4 px at 1024 and 23.8 px at 1600. The commit that contains this entry is its source identity.
+
 ## 2026-11-28: Task and rig gets a page for people, the first with the chapter reader
 
 The owner asked for pages for people so the documentation uses the kit's chapter reader. Until now every menu entry was a record shown whole, which never gets the reader, so the reader was on in `docs/site/site.toml` and used by no page. `docs/topics/task-and-rig/index.md` is the first such page: seven chapters (the task, the arm, the five cameras, who sees what, commands, earlier rigs, not verified), with a rack schematic, a demonstrate-train-run flow, the rig photograph, the camera stills in tabs, a camera-by-model matrix and a command diagram, all drawn from the [task and rig record](topics/task-and-rig/task-and-rig.md). It says that the record was written by AI and not yet reviewed by a person.

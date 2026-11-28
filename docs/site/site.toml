@@ -59,8 +59,8 @@ description = "How a rollout is run, noted and scored."
 
 [[source_pages]]
 source = "docs/topics/results/results.md"
-slug = "results"
-description = "Every run with its counts and score, as a dated snapshot."
+slug = "results-record"
+description = "The record behind the Results page: where every run's numbers live, the dated readings and where sources disagree."
 
 [[source_pages]]
 source = "docs/topics/website/website.md"
