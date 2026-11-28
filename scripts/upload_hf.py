@@ -204,7 +204,7 @@ This is a modified version of π0.5 (lerobot/pi05_base, itself built on PaliGemm
 
 NOV_RUNS = ("pi05-b4k", "pi05-b4k-q37", "pi05-b4k-q37g", "pi05-b16k", "pi05-a16k")
 GEMMA_NOTICE_220 = GEMMA_NOTICE.replace("on 100 vial-sorting demonstrations", "on 220 vial-sorting demonstrations")
-SITE_URL = "https://sariabdan.github.io/vial-sort"
+SITE_URL = "https://cognitive-software-labs.github.io/vial-sort"
 
 
 def ws220_card(run_id, ckpt, extra):

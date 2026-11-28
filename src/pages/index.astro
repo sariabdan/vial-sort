@@ -1,12 +1,13 @@
 ---
-// The home page tells the whole project on one page: a summary card, three numbers, then eight numbered sections
-// with one picture, chart or video each. Everything detailed lives on the reference pages (Data, Training, Models,
+// The home page tells the whole project on one page: the hero, a summary band with three numbers, then five numbered
+// sections with one picture, chart or video each, built from the same parts as the other pages (steps, points, vials). Everything detailed lives on the reference pages (Data, Training, Models,
 // Testing, Results, Lab notes), which the last section lists. Every number here is read from the same data files as
 // those pages; none is typed in.
 import Base from '../layouts/Base.astro';
 import Chapter from '../components/Chapter.astro';
 import Hero from '../components/Hero.astro';
 import Clip from '../components/Clip.astro';
+import SlotVials from '../components/SlotVials.astro';
 import october from '../data/october.json';
 import ws220 from '../data/ws220.json';
 import results from '../data/results.json';
@@ -19,11 +20,16 @@ import { PROBE } from '../lib/probe';
 
 const cov = october.coverage;
 const rows = results.rows;
+const demoSets = results.demo_sets as Record<string, { per_source: Record<string, number>; per_destination: Record<string, number> }>;
 const stages = results.stages;
 const t = results.tiles;
-const p = t.pi05;
-const newest = rows.find((r) => r.key === p.key)!;
+// the newest run overall, in the order the Results page lists runs (latest day first, then the bigger run)
+const board = [...rows].sort((a, b) => (b.days.at(-1) ?? '').localeCompare(a.days.at(-1) ?? '') || b.rollouts - a.rollouts);
+const newest = board[0];
 const score = scoreRun(newest.by_destination);
+// the newest run of the π0.5 models, which chapters 02 and 03 compare
+const newestPi = board.find((r) => r.family === 'pi05')!;
+const scorePi = scoreRun(newestPi.by_destination);
 const anyPassed = rows.some((r) => scoreRun(r.by_destination).verdict === 'passed');
 // a model's row with the most rollouts
 const biggest = (model: string) => rows.filter((r) => r.model === model).sort((a, b) => b.rollouts - a.rollouts)[0];
@@ -33,7 +39,7 @@ const first = biggest(nameOf('pi05-canon')!.id), fromFirst = biggest(nameOf('pi0
 const compared = [
   { r: first, how: 'trained on the 100 demonstrations' },
   { r: fromFirst, how: `continued from ${first.name}, on the 220` },
-  { r: newest, how: 'trained from the base model on the 220' },
+  { r: newestPi, how: 'trained from the base model on the 220' },
 ].filter((x) => x.r);
 const clips = ['released', 'carried', 'no_grasp']
   .map((s) => media.featured.find((f) => f.row === newest.key && f.stage === s)).filter((f) => !!f);
@@ -62,114 +68,119 @@ const refs = [
     <div class="story">
       <div class="tldr">
         <p class="tldr-tag">In short</p>
-        <p class="tldr-main">
-          {`The newest model, ${p.name}, picks up the right vial in ${p.grasped_right} of ${p.rollouts} moves and `}
-          <strong>{`puts it in the asked slot in ${p.released}`}</strong>.
-        </p>
-        <div class="tldr-cols">
+        <div class="tldr-grid">
           <div>
-            <p class="eyebrow">What works</p>
-            <p>{`To the slots the demonstrations used as a destination, the vial ends in the asked slot `}<strong>{pctOf(score.trained)}</strong>{` of the time.`}</p>
+            <p class="tldr-main">
+              {`The newest model, ${newest.name}, picks up the right vial in ${newest.grasped_right} of ${newest.rollouts} moves and `}
+              <strong>{`puts it in the asked slot in ${newest.stages.released}`}</strong>.
+            </p>
+            <p class="note stats-note">{`${newest.label}, ${newest.scored_by === 'notes' ? "scored from the operator's notes at the robot" : 'scored from the arm'}. `}<a href={url('method/#score')}>How the score is built</a></p>
           </div>
-          <div>
-            <p class="eyebrow">What is open</p>
-            <p>{`To the slots no demonstration used as a destination it is `}<strong>{pctOf(score.held)}</strong>{anyPassed ? '.' : `, and no run has reached the pass mark of ${PASS_MARK * 100}% yet.`}</p>
-          </div>
+          <ul class="stats">
+            <li class="pass"><span class="big">{pctOf(score.trained)}</span><b>What works</b><span>in the asked slot, for the slots the demonstrations used as a destination.</span></li>
+            <li class="fail"><span class="big">{pctOf(score.held)}</span><b>What is open</b><span>for the slots no demonstration used as a destination.</span></li>
+            <li><span class="big">{pctOf(score.total)}</span><b>Its score</b><span>{`the mean over the 12 rack slots; a run passes at ${PASS_MARK * 100}%${anyPassed ? '' : ', and none has yet'}.`}</span></li>
+          </ul>
         </div>
       </div>
-
-      <ul class="stats">
-        <li><span class="big">{p.grasped_right}<span class="of">{` of ${p.rollouts}`}</span></span><span>moves in which it picked up the right vial</span></li>
-        <li><span class="big">{p.released}<span class="of">{` of ${p.rollouts}`}</span></span><span>moves that ended with the vial in the asked slot</span></li>
-        <li><span class="big">{pctOf(score.total)}</span><span>{`its score, the mean over the 12 rack slots; a run passes at ${PASS_MARK * 100}%`}</span></li>
-      </ul>
-      <p class="note stats-note">{`${p.label}, ${p.scored_by === 'notes' ? "scored from the operator's notes at the robot" : 'scored from the arm'}. `}<a href={url('method/#score')}>How the score is built</a></p>
     </div>
   </section>
 
   <Chapter no="01" label="Setup and data" id="setup" title="A 3D-printed arm, five cameras, 220 demonstrations">
     <div class="setup">
       <div>
-        <p>
-          The arm is an SO-101, a 3D-printed six-joint design, built as a leader and a follower. Every model on
-          this site came out of the same three steps.
-        </p>
-        <ol class="steps">
-          <li><strong>Demonstrate</strong><span>A person moves the leader arm and the follower copies it, while five cameras record.</span></li>
-          <li><strong>Train</strong><span>Three kinds of model learn from the demonstrations: π0.5, FLUX 3 Action and Isaac 0.5.</span></li>
-          <li><strong>Run</strong><span>The model reads the cameras and the joint angles and drives the six joints. Nobody steers it.</span></li>
+        <p>The arm is an SO-101, a 3D-printed six-joint design, built as a leader and a follower. Every model on this site came out of the same three steps.</p>
+        <ol class="flow">
+          <li><b>Demonstrate</b><span>A person moves the leader arm and the follower copies it, while five cameras record.</span></li>
+          <li><b>Train</b><span>Three kinds of model learn from the demonstrations: π0.5, FLUX 3 Action and Isaac 0.5.</span></li>
+          <li><b>Run</b><span>The model reads the cameras and the joint angles and drives the six joints. Nobody steers it.</span></li>
         </ol>
-        <p class="cams-intro">{`Every demonstration is one move, seen by five cameras at ${cov.fps} frames a second.`}</p>
-        <ul class="cams">
+        <ul class="cams" aria-label={`The five camera views, recorded at ${cov.fps} frames a second`}>
           {cams.map((c) => (
-            <li><img src={url(`img/cams/${c}.webp`)} width="640" height="480" loading="lazy" alt={`The ${CAMERA_NAMES[c]} camera's view of the table`} /><span class="note">{CAMERA_NAMES[c]}</span></li>
+            <li><img src={url(`img/cams/${c}.webp`)} width="640" height="480" loading="lazy" alt={`The ${CAMERA_NAMES[c]} camera's view of the table`} /><span>{CAMERA_NAMES[c]}</span></li>
           ))}
         </ul>
         <ul class="facts">
           <li><strong>{ws220.episodes}</strong> demonstrations</li>
           <li><strong>{ws220.moves}</strong> different moves</li>
           <li><strong>{ws220.minutes}</strong> minutes</li>
-          <li><strong>{ws220.same_rack}</strong> inside one rack</li>
+          <li><strong>{cov.fps}</strong> frames a second, five cameras</li>
         </ul>
-        <p class="more"><a href={url('datasets/')}>How the data was recorded and worded →</a>{' · '}<a href={url('models/')}>What each model is →</a></p>
+        <p class="more"><a href={url('datasets/')}>The data in full →</a>{' · '}<a href={url('models/')}>What each model is →</a></p>
       </div>
       <figure class="rig">
         <img src={url('img/setup_current.webp')} width="1362" height="1599" loading="lazy"
           alt="The current rig, labelled: the right, top-down, left-top and left-bottom cameras on stands and an arm above the table, the wrist camera on the follower arm, two racks with coloured vials, the bin, the follower arm on the left and the leader arm in the foreground." />
-        <figcaption class="note">The current rig, with every part labelled: the five cameras, the two racks, the bin, the follower arm that does the work and the leader arm a person moves.</figcaption>
+        <figcaption class="note">The current rig: the five cameras, the two racks, the bin, the follower arm that does the work and the leader arm a person moves.</figcaption>
       </figure>
     </div>
   </Chapter>
 
   <Chapter no="02" label="The problem" id="problem" title="The first models read the destination off the picture">
-    <p>{`The first ${cov.episodes} demonstrations were recorded one destination per sitting, so the picture gave the destination away. In the newer ones one layout is recorded three times, to three different destinations.`}</p>
-    <p>{`${first.name}, trained on the ${cov.episodes}, reached for the vial the command named. Where to put it, it took from the camera images: each sitting had one destination, and the picture says which sitting it is.`}</p>
-    <figure class="chart-card">
-      <figcaption>{`A probe on training frames of ${first.name}: how often the arm does what the row says`}</figcaption>
-      <div class="hbars">
-        {PROBE.filter((x) => x.short).map((x) => (
-          <div class="hbar">
-            <span class="hbar-label">{x.short}</span>
-            <span class="hbar-track"><i style={`width: ${x.at12k}%`}></i></span>
-            <span class="hbar-n num">{x.at12k}%</span>
-          </div>
-        ))}
+    <div class="split">
+      <div>
+        <p>{`The first ${cov.episodes} demonstrations were recorded one destination per sitting. ${first.name}, trained on them, reached for the vial the command named, but took where to put it from the camera images:`}</p>
+        <ol class="flow plain">
+          <li><b>The camera picture</b><span>says which sitting a frame is from.</span></li>
+          <li><b>The sitting</b><span>says the destination, because each sitting had only one.</span></li>
+          <li><b>The destination</b><span>is read off the picture, not the command.</span></li>
+        </ol>
+        <p>{`In the newer demonstrations one layout is recorded three times, to three different destinations, so only the command can tell them apart.`}</p>
+        <p class="more"><a href={url('training/#why')}>The offline tests in full →</a></p>
       </div>
-    </figure>
-    <p>{`In the offline test, ${t.gate.dest_passed} of its ${t.gate.checkpoints} checkpoints read the destination slot from the command.`}</p>
-    <p class="more"><a href={url('training/')}>The offline tests in full →</a></p>
+      <figure class="chart-card">
+        <figcaption>{`A probe on training frames of ${first.name}: how often the arm does what the row says`}</figcaption>
+        <div class="hbars">
+          {PROBE.filter((x) => x.short).map((x) => (
+            <div class="hbar">
+              <span class="hbar-label">{x.short}</span>
+              <span class="hbar-track"><i style={`width: ${x.at12k}%`}></i></span>
+              <span class="hbar-n num">{x.at12k}%</span>
+            </div>
+          ))}
+        </div>
+        <p class="note">{`In the offline test, ${t.gate.dest_passed} of its ${t.gate.checkpoints} checkpoints read the destination slot from the command.`}</p>
+      </figure>
+    </div>
   </Chapter>
 
   <Chapter no="03" label="Results" id="results" title="With the new data, the destination follows the command">
-    <p>{`${newest.name}, trained from the base model on the ${ws220.episodes}, put the vial in the asked slot in ${newest.stages.released} of ${newest.rollouts} moves.`}</p>
-    <figure class="chart-card">
-      <figcaption>How far each model's rollouts got</figcaption>
-      <ul class="legend">
-        {stages.map((s, i) => <li><i style={`background: var(--st-${i + 1})`}></i>{s.label}</li>)}
-      </ul>
-      <div class="sbars">
-        {compared.map(({ r, how }) => (
-          <div class="sbar">
-            <span class="sbar-label"><strong>{r.name}</strong><span class="note">{how}</span></span>
-            <span class="sbar-track">
-              {stages.map((s, i) => {
-                const n = r.stages[s.key as keyof typeof r.stages];
-                return n > 0 && <i style={`flex: ${n}; background: var(--st-${i + 1}); color: var(--stt-${i + 1})`}>{n}</i>;
-              })}
-            </span>
-            <span class="sbar-n num">{`n = ${r.rollouts}`}</span>
-          </div>
-        ))}
-      </div>
-    </figure>
-    <h3 class="sub">What is not solved</h3>
-    <ul class="open">
-      <li><strong>Unseen destinations.</strong>{` ${pctOf(score.held)} on the slots no demonstration used as a destination, against ${pctOf(score.trained)} on the others.`}</li>
-      <li><strong>The pass mark.</strong>{anyPassed ? ` A run passes at ${PASS_MARK * 100}% with at least 10 rollouts at every slot.` : ` No run has reached ${PASS_MARK * 100}% with at least 10 rollouts at every slot.`}</li>
-      <li><strong>Small numbers.</strong>{` The biggest run has ${maxRun} rollouts and many have a handful, so one rollout moves a run a long way.`}</li>
+    <p>{`${newestPi.name}, trained from the base model on the ${ws220.episodes}, put the vial in the asked slot in ${newestPi.stages.released} of ${newestPi.rollouts} moves. Each row below is one run, drawn as on the Results page: a vial per slot, filled to the share of rollouts that got through.`}</p>
+    <ul class="legend vkey" aria-label="How to read the vials">
+      <li><i class="kv k3"><i></i></i>all</li>
+      <li><i class="kv k2"><i></i></i>half or more</li>
+      <li><i class="kv k1"><i></i></i>under half</li>
+      <li><i class="kv k0"><i></i></i>none</li>
+      <li><i class="kv kn"><i></i></i>not tried</li>
+      <li><i class="kv kh"><i></i></i>never demonstrated that way</li>
     </ul>
-    <p class="note caveat">These are test runs made during development, not a planned evaluation. <a href={url('method/#caveats')}>What the numbers cannot say</a></p>
-    <p class="more"><a href={url('results/')}>{`Every model, score and move: ${results.total} rollouts →`}</a>{' · '}<a href={url('docs/')}>The dated notes of each arm test →</a></p>
+    <div class="res-split"><div class="res-rows">
+    <div class="hrows">
+      <div class="hrow hhead" aria-hidden="true">
+        <div class="hcap"><p><b>Picked up from</b><span>the slot the vial started in</span></p><div class="caps"><span class="c6">left rack</span><span class="c6">right rack</span></div></div>
+        <div class="hcap"><p><b>Placed into</b><span>the slot the command asked for</span></p><div class="caps"><span class="c6">left rack</span><span class="cb">bin</span><span class="c6">right rack</span></div></div>
+      </div>
+      {compared.map(({ r, how }) => (
+        <div class="hrow">
+          <p class="hwho">
+            <i style={`background: var(--m-${r.family})`}></i><b>{r.name}</b><span>{how}</span>
+            <b class="num sc">{pctOf(scoreRun(r.by_destination).total)}</b>
+            <span>{`${r.stages.released} of ${r.rollouts} in the asked slot`}</span>
+          </p>
+          <SlotVials bySource={r.by_source} byDestination={r.by_destination} demos={r.train_set ? demoSets[r.train_set] : null} label={r.label} />
+        </div>
+      ))}
+    </div>
+    <p class="more"><a href={url('results/')}>{`Compare any of the ${rows.length} runs, with video: ${results.total} rollouts →`}</a></p>
+    </div><div class="res-open">
+    <h3 class="sub">What is not solved</h3>
+    <ul class="points">
+      <li class="fail"><b>Unseen destinations</b><span>{`${pctOf(scorePi.held)} on the slots no demonstration used as a destination, against ${pctOf(scorePi.trained)} on the others.`}</span></li>
+      <li><b>The pass mark</b><span>{anyPassed ? `A run passes at ${PASS_MARK * 100}% with at least 10 rollouts at every slot.` : `No run has reached ${PASS_MARK * 100}% with at least 10 rollouts at every slot.`}</span></li>
+      <li><b>Small numbers</b><span>{`The biggest run has ${maxRun} rollouts and many have a handful, so one rollout moves a run a long way.`}</span></li>
+      <li class="quiet"><b>Not a planned evaluation</b><span>These are test runs made during development. <a href={url('method/#caveats')}>What the numbers cannot say</a></span></li>
+    </ul>
+    </div></div>
   </Chapter>
 
   <Chapter no="04" label="Clips" id="clips" title="Rollouts on video">
@@ -192,85 +203,104 @@ const refs = [
 </Base>
 
 <style>
-  .top { padding-block: 0.5rem clamp(1.5rem, 4vw, 2.5rem); }
-  .setup { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
-  .setup p { max-width: 60ch; }
-  .cams-intro { margin-top: 1.8rem; }
-  .sub { font-size: var(--step-1); margin: 2rem 0 0.8rem; }
-  .caveat { margin-top: 1.2rem; }
+  .top { padding-block: 0.4rem 0.8rem; }
+  .more { margin-top: 1rem; font-weight: 560; }
+  .ext { font-weight: 400; }
+  .sub { font-size: var(--step-1); margin: 1.6rem 0 0.2rem; }
 
-  .tldr { position: relative; max-width: 62rem; padding: clamp(1.6rem, 4vw, 2.4rem) clamp(1.2rem, 4vw, 2.4rem) clamp(1.4rem, 3vw, 2rem);
-          border: 1.5px solid var(--ink); border-radius: 8px; background: var(--raise); box-shadow: 0.45rem 0.45rem 0 var(--accent); }
-  .tldr-tag { position: absolute; top: -0.95rem; left: 1.4rem; margin: 0; padding: 0.1rem 0.7rem; font-size: var(--step--1); font-weight: 680; font-stretch: 112%;
+  /* in short: the sentence on the left, three numbers on the right, in one band */
+  .tldr { position: relative; padding: 1.5rem clamp(1rem, 3vw, 1.8rem) 1.2rem; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--raise); box-shadow: 0.4rem 0.4rem 0 var(--accent); }
+  .tldr-tag { position: absolute; top: -0.9rem; left: 1.2rem; margin: 0; padding: 0.05rem 0.7rem; font-size: 0.95rem; font-weight: 680; font-stretch: 112%;
               letter-spacing: 0.04em; text-transform: uppercase; background: var(--accent); color: var(--page); border: 1.5px solid var(--ink); border-radius: 5px; }
-  .tldr-main { font-size: clamp(1.45rem, 3vw, var(--step-3)); line-height: 1.22; font-weight: 620; font-stretch: 108%; max-width: 30ch; }
-  .tldr-main strong, .tldr-cols strong { color: var(--accent); font-weight: inherit; }
-  .tldr-cols strong { font-weight: 680; }
-  .tldr-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(1.5rem, 4vw, 3rem); margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); }
-  .tldr-cols > div + div { border-left: 1px solid var(--rule); padding-left: clamp(1.5rem, 4vw, 3rem); }
-  .eyebrow { font-size: 0.95rem; font-weight: 680; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+  .tldr-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 1rem clamp(1.2rem, 3vw, 2.4rem); align-items: start; }
+  .tldr-main { font-size: clamp(1.25rem, 2.3vw, var(--step-2)); line-height: 1.22; font-weight: 620; font-stretch: 108%; max-width: none; }
+  .tldr-main strong { color: var(--accent); font-weight: inherit; }
+  .stats-note { margin-top: 0.7rem; }
+  .stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem 1.2rem; }
+  .stats li { display: grid; align-content: start; gap: 0.15rem; padding-top: 0.5rem; border-top: 3px solid var(--ink); font-size: var(--step--1); line-height: 1.35; color: var(--ink-2); }
+  .stats li.pass { border-top-color: var(--st-3); }
+  .stats li.fail { border-top-color: var(--st-1); }
+  .stats .big { font-size: var(--step-4); font-weight: 680; font-stretch: 112%; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .stats b { color: var(--ink); font-weight: 650; }
 
-  .stats { max-width: 62rem; list-style: none; margin: clamp(2.4rem, 5vw, 3.4rem) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--ink); }
-  .stats li { display: grid; align-content: start; gap: 0.4rem; padding: 1.1rem clamp(1rem, 3vw, 2rem) 0 0; color: var(--ink-2); line-height: 1.4; }
-  .stats li + li { border-left: 1px solid var(--rule); padding-left: clamp(1rem, 3vw, 2rem); }
-  .big { font-size: var(--step-5); font-weight: 680; font-stretch: 112%; line-height: 1; color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .of { font-size: var(--step-1); font-weight: 560; color: var(--ink); }
-  .stats-note { margin-top: 1rem; }
-
-  .more { margin-top: 1.4rem; font-weight: 560; }
-  .steps { list-style: none; counter-reset: step; margin: 1.6rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-  .steps li { counter-increment: step; display: grid; align-content: start; gap: 0.3rem; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
-  .steps li::before { content: counter(step); display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 50%; background: var(--ink); color: var(--page); font-weight: 680; font-size: var(--step--1); margin-bottom: 0.3rem; }
-  .steps strong { font-size: var(--step-1); font-stretch: 112%; }
-  .steps span { color: var(--ink-2); font-size: var(--step--1); line-height: 1.45; }
-  .rig { margin: 0; max-width: 34rem; }
-  .rig img { width: 100%; height: auto; border-radius: 6px; }
-  .rig figcaption { margin-top: 0.6rem; }
-
-  .cams { list-style: none; margin: 0.8rem 0 1.2rem; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; }
-  .cams li { display: grid; gap: 0.25rem; }
+  .setup { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.2rem clamp(1.5rem, 3vw, 3rem); align-items: start; }
+  .rig { margin: 0; width: min-content; }
+  .rig img { display: block; height: clamp(19rem, 26vw, 24rem); width: auto; max-width: none; border-radius: 6px; }  /* sized by height, so it stays level with the steps and cameras beside it */
+  .rig figcaption { margin-top: 0.5rem; }
+  .cams { list-style: none; margin: 1rem 0 0.8rem; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.5rem; }
+  .cams li { display: grid; gap: 0.2rem; font-size: 0.85rem; color: var(--ink-2); line-height: 1.2; }
   .cams img { width: 100%; height: auto; border-radius: 4px; background: var(--raise); }
-  .cams .note { font-size: 0.95rem; }
-  .facts { list-style: none; margin: 1.5rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; }
-  .facts li { padding: 0.35rem 0.9rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--raise); color: var(--ink-2); font-size: var(--step--1); }
+  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .facts li { padding: 0.2rem 0.75rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--raise); color: var(--ink-2); font-size: 0.95rem; }
   .facts strong { color: var(--ink); font-variant-numeric: tabular-nums; }
 
-  .chart-card { margin: 1.6rem 0; padding: 1.2rem clamp(1rem, 3vw, 1.6rem) 1.4rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); max-width: 52rem; }
-  .chart-card figcaption { font-weight: 620; font-stretch: 108%; margin-bottom: 0.9rem; }
-  .hbars { display: grid; gap: 0.9rem; }
-  .hbar { display: grid; grid-template-columns: minmax(0, 1fr) 3.6rem; gap: 0.25rem 0.8rem; align-items: center; }
-  .hbar-label { grid-column: 1 / -1; font-size: var(--step--1); color: var(--ink-2); }
-  .hbar-track { height: 1.5rem; background: var(--grid); border-radius: 4px; overflow: hidden; }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.2rem clamp(1.5rem, 3vw, 3rem); align-items: start; }
+  .split p + p { margin-top: 0.7rem; }
+  .chart-card { margin: 0; padding: 1rem 1.2rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
+  .chart-card figcaption { font-weight: 620; font-stretch: 108%; margin-bottom: 0.8rem; line-height: 1.3; }
+  .chart-card .note { margin-top: 0.9rem; }
+  .hbars { display: grid; gap: 0.8rem; }
+  .hbar { display: grid; grid-template-columns: minmax(0, 1fr) 3.4rem; gap: 0.2rem 0.8rem; align-items: center; }
+  .hbar-label { grid-column: 1 / -1; font-size: 0.95rem; color: var(--ink-2); line-height: 1.3; }
+  .hbar-track { height: 1.2rem; background: var(--grid); border-radius: 4px; overflow: hidden; }
   .hbar-track i { display: block; height: 100%; background: var(--accent); border-radius: 4px 0 0 4px; }
   .hbar-n { font-weight: 680; text-align: right; }
-  .sbars { display: grid; gap: 1rem; }
-  .sbar { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 4.2rem; gap: 0.3rem 0.9rem; align-items: center; }
-  .sbar-label { display: grid; line-height: 1.3; }
-  .sbar-label .note { font-size: 0.95rem; }
-  .sbar-track { display: flex; gap: 2px; height: 2.4rem; }
-  .sbar-track i { display: grid; place-items: center; min-width: 1.4rem; font-style: normal; font-weight: 680; font-variant-numeric: tabular-nums; }
-  .sbar-track i:first-child { border-radius: 4px 0 0 4px; }
-  .sbar-track i:last-child { border-radius: 0 4px 4px 0; }
-  .sbar-track i:only-child { border-radius: 4px; }
-  .sbar-n { color: var(--ink-2); font-size: var(--step--1); text-align: right; white-space: nowrap; }
 
-  .clips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem clamp(1rem, 2.5vw, 1.8rem); margin-top: 1.4rem; }
-  .open { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; max-width: 60ch; }
-  .open li { padding-left: 1rem; border-left: 3px solid var(--accent); color: var(--ink-2); }
-  .open strong { color: var(--ink); }
-  .refs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 0.9rem; }
-  .refs li { display: grid; gap: 0.2rem; align-content: start; padding: 1rem 1.1rem 1.1rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
-  .refs a { font-size: var(--step-1); font-stretch: 112%; font-weight: 620; width: fit-content; }
-  .ext { font-weight: 400; }
+  /* the three runs as rows of vials, as on Results (src/components/SlotVials.astro), with its key above them */
+  .vkey { margin: 0.9rem 0 0.6rem; font-size: 0.9rem; gap: 0.25rem 0.9rem; color: var(--ink-2); }
+  .vkey .kv { display: flex; align-items: flex-end; overflow: hidden; box-sizing: border-box; width: 9px; height: 18px; border: 1.25px solid var(--steel); border-top: 0; border-radius: 0 0 5px 5px; background: var(--page); }
+  .vkey .kv i { display: block; width: 100%; height: 100%; border-radius: 0; background: var(--st-3); }
+  .vkey .k2 i { height: 65%; background: color-mix(in srgb, var(--st-3) 55%, white); }
+  .vkey .k1 i { height: 30%; background: var(--st-2); }
+  .vkey .k0 i, .vkey .kn i, .vkey .kh i { height: 0; }
+  .vkey .kn { border-color: var(--rack); }
+  .vkey .kh { border: 1.5px dashed var(--ink); border-top: 0; }
+  /* on a wide screen the open points sit beside the rows instead of under them */
+  .res-rows, .res-open { min-width: 0; }
+  @media (min-width: 84rem) {
+    .res-split { display: grid; grid-template-columns: minmax(0, 46rem) minmax(0, 1fr); gap: 0 clamp(2rem, 3vw, 3.5rem); align-items: start; }
+    .res-open .sub { margin-top: 0; }
+    .res-open .points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .hrows { container-type: inline-size; --vw: 24px; --vh: 38px; --vgap: 12px; --vbin: 34px; display: grid;
+           --from: calc(12 * var(--vw) + var(--vgap)); --into: calc(12 * var(--vw) + var(--vbin) + 2 * var(--vgap)); }
+  .hrow { display: grid; grid-template-columns: var(--from) var(--into); gap: 0.35rem 1.6rem; align-items: end; justify-content: start; padding: 0.6rem 0 0.5rem; border-top: 1px solid var(--rule); }
+  .hhead { border-top: 0; padding: 0 0 0.3rem; }
+  .hwho { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.6rem; margin: 0; max-width: none; font-size: 0.95rem; color: var(--ink-2); }
+  .hwho i { width: 0.65rem; height: 0.65rem; border-radius: 50%; align-self: center; }
+  .hwho b { color: var(--ink); font-weight: 650; }
+  .hwho .sc { font-size: 1.3rem; font-weight: 680; font-stretch: 112%; margin-left: 0.6rem; }
+  .hcap p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.5rem; margin: 0 0 0.25rem; max-width: none; font-size: 0.95rem; }
+  .hcap p b { font-weight: 650; }
+  .hcap p span { font-size: 0.8rem; color: var(--ink-2); }
+  .caps { display: flex; gap: var(--vgap); font-size: 0.72rem; color: var(--steel); line-height: 1; }
+  .caps .c6 { width: calc(6 * var(--vw)); }
+  .caps .cb { width: var(--vbin); text-align: center; }
+  @container (max-width: 40rem) { .hrows { --vw: 21px; --vgap: 10px; --vbin: 30px; } }
+  @container (max-width: 35rem) { .hrow { grid-template-columns: minmax(0, 1fr); } .hhead { display: none; } }
 
+  .clips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem clamp(1rem, 2.5vw, 1.8rem); margin-top: 1rem; }
+  /* on the home page the steps sit in a narrow column: one step per line, name left and what it does right, instead
+     of cards that wrap two and one */
+  .flow { flex-direction: column; flex-wrap: nowrap; gap: 0.3rem; }
+  .flow > li { flex: none; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 0 0.8rem; align-items: baseline; padding-block: 0.4rem 0.45rem; }
+  .flow > li + li::before { content: '↓'; left: -1.1rem; top: -0.15rem; }
+  .points { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   @media (max-width: 52rem) {
-    .tldr-cols, .steps, .refs, .clips, .setup { grid-template-columns: minmax(0, 1fr); }
-    .tldr-cols > div + div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); margin-top: 1rem; padding-top: 1rem; }
+    .points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flow > li { grid-template-columns: minmax(0, 1fr); }
+  }
+  .refs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: 0.7rem; }
+  .refs li { display: grid; gap: 0.15rem; align-content: start; padding: 0.7rem 0.9rem 0.8rem; border: 1px solid var(--rule); border-radius: 8px; background: var(--raise); }
+  .refs a { font-size: 1.15rem; font-stretch: 112%; font-weight: 620; width: fit-content; }
+  .refs .note { font-size: 0.9rem; }
+
+  @media (max-width: 62rem) { .tldr-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 52rem) {
+    .setup, .split, .clips { grid-template-columns: minmax(0, 1fr); }
     .stats { grid-template-columns: minmax(0, 1fr); }
-    .stats li + li { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); margin-top: 1rem; }
-    .big { font-size: var(--step-4); }
     .cams { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .sbar { grid-template-columns: minmax(0, 1fr) 4.2rem; }
-    .sbar-label { grid-column: 1 / -1; }
+    .rig { width: auto; max-width: 26rem; }
+    .rig img { width: 100%; height: auto; }
   }
 </style>

@@ -24,27 +24,24 @@ interface Props {
 const { src, poster, w, h, caption, move, vialAt, missAt, vial, label, used, outcome, kind } = Astro.props;
 const STAGE_NUM: Record<string, number> = { no_grasp: 1, carried: 2, released: 3 };
 ---
-<figure class="clip">
-  {kind && (
-    <p class="kind"><i style={outcome && STAGE_NUM[outcome] ? `background: var(--st-${STAGE_NUM[outcome]})` : undefined}></i>{kind}</p>
+<figure class="clip" style={outcome && STAGE_NUM[outcome] ? `--oc: var(--st-${STAGE_NUM[outcome]})` : undefined}>
+  {(kind || move) && (
+    <p class="clip-top">
+      {kind && <span class="kind"><i></i>{kind}</span>}
+      {move && <span class="move">{moveLabel(move)}</span>}
+    </p>
   )}
   <div class="frame">
     <video src={url(src)} poster={url(poster)} width={w} height={h} muted loop playsinline data-auto preload="metadata"
       aria-label={label ?? `Recorded rollout, ${moveLabel(move)}`}></video>
-    <button type="button" class="fs" data-fullscreen aria-label="Show this video full screen">Full screen</button>
+    <button type="button" class="fs" data-fullscreen aria-label="Show this video full screen" title="Full screen">Full screen</button>
   </div>
   <figcaption>
-    {move && (
-      <div class="clip-head">
-        <span class="move">{moveLabel(move)}</span>
-        <RackGlyph asked={move} vialAt={vialAt} missAt={missAt} vial={vial} />
-      </div>
-    )}
+    {move && <RackGlyph asked={move} vialAt={vialAt} missAt={missAt} vial={vial} />}
     <p>{caption}</p>
     {used && <p class="cams"><span class="note">Cameras the model saw: </span><CameraChips used={used} /></p>}
   </figcaption>
 </figure>
-
 <script>
   // The vial on each card's small rack moves while its video plays: from the slot it started in to where it ended
   // (the asked slot, another slot, held over one, or nowhere when it was never picked up), lifted over the racks on
@@ -76,17 +73,20 @@ const STAGE_NUM: Record<string, number> = { no_grasp: 1, carried: 2, released: 3
 </script>
 
 <style>
-  .clip { margin: 0; display: grid; gap: 0.7rem; align-content: start; }
-  .kind { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step-0); font-weight: 620; color: var(--ink); margin: 0; }
-  .kind i { width: 0.95rem; height: 0.95rem; border-radius: 3px; flex: none; background: var(--steel); }
-  .frame { position: relative; }
-  video { width: 100%; height: auto; background: var(--raise); border-radius: 4px; }
-  /* the asked move in words, then the racks at the full width of the card (they were a 12rem thumbnail beside it) */
-  .clip-head { display: grid; gap: 0.3rem; margin-bottom: 0.4rem; }
-  .clip-head .move { font-size: var(--step-1); }
-  .clip-head :global(.rack-glyph) { max-width: 30rem; }
-  .clip-head :global(.rack-glyph .slot), .clip-head :global(.rack-glyph .bin) { stroke-width: 1.6; }
-  .clip-head :global(.rack-glyph .arc) { stroke-width: 1.8; opacity: 1; }
-  p { font-size: var(--step--1); color: var(--ink-2); }
-  .cams { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin-top: 0.5rem; }
+  /* a card: the outcome and the asked move on one line, the video, the racks at the card's full width, the note.
+     The top edge carries the outcome's colour. */
+  .clip { --oc: var(--steel); margin: 0; display: grid; gap: 0.55rem; align-content: start; padding: 0.65rem 0.7rem 0.75rem;
+          border: 1px solid var(--rule); border-top: 3px solid var(--oc); border-radius: 10px; background: var(--raise); }
+  .clip-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.1rem 0.8rem; margin: 0; color: var(--ink); }
+  .kind { display: inline-flex; align-items: baseline; gap: 0.45rem; font-size: 0.95rem; font-weight: 620; line-height: 1.25; }
+  .kind i { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none; background: var(--oc); }
+  .clip-top .move { font-size: 1.05rem; white-space: nowrap; }
+  .frame { position: relative; line-height: 0; }
+  video { display: block; width: 100%; height: auto; background: var(--page); border-radius: 6px; cursor: pointer; }
+  figcaption { display: grid; gap: 0.4rem; }
+  figcaption :global(.rack-glyph) { max-width: 30rem; }
+  figcaption :global(.rack-glyph .slot), figcaption :global(.rack-glyph .bin) { stroke-width: 1.6; }
+  figcaption :global(.rack-glyph .arc) { stroke-width: 1.8; opacity: 1; }
+  figcaption p { font-size: 0.86rem; line-height: 1.45; color: var(--ink-2); margin: 0; }
+  .cams { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; }
 </style>

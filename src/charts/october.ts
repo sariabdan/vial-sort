@@ -3,8 +3,11 @@
 // order they were ticked, letters them A, B, C and so on, switches the tabs, and keeps the
 // selection, the tab and the demonstrations switch in the URL (?r=key,key&v=tab&d=0).
 import results from '../data/results.json';
+import { topRunKey } from '../lib/score';
 
 const rows = results.rows;
+// the page opens on the run with the highest score (the same choice src/pages/results.astro renders visible)
+const START = [topRunKey(rows)];
 const MAX = rows.length;  // the runs are rows now, so any number can be ticked
 const byKey = new Map(rows.map((r) => [r.key, r]));
 const all = (sel: string, root: ParentNode = document) => [...root.querySelectorAll<HTMLElement>(sel)];
@@ -20,7 +23,7 @@ const startHash = location.hash;
 const params = new URLSearchParams(location.search);
 const fromUrl = params.get('r');
 // ordered: the order of ticking is the order of the columns
-let state: string[] = (fromUrl === null ? results.defaults : fromUrl.split(',').filter((k) => byKey.has(k))).slice(0, MAX);
+let state: string[] = (fromUrl === null ? START : fromUrl.split(',').filter((k) => byKey.has(k))).slice(0, MAX);
 let tab = FROM_HASH[location.hash] ?? (TABS.includes(params.get('v') ?? '') ? params.get('v')! : TABS[0]);
 let stage = 'released';
 const demoBox = document.getElementById('show-demos') as HTMLInputElement;
@@ -83,7 +86,7 @@ function draw() {
 
   // url
   const q = new URLSearchParams(location.search);
-  if (state.join() === results.defaults.slice(0, MAX).join()) q.delete('r'); else q.set('r', state.join(','));
+  if (state.join() === START.join()) q.delete('r'); else q.set('r', state.join(','));
   if (tab === TABS[0]) q.delete('v'); else q.set('v', tab);
   if (demosOn) q.delete('d'); else q.set('d', '0');
   try { history.replaceState(null, '', `${location.pathname}${q.toString() ? `?${q}` : ''}`); } catch (e) {}

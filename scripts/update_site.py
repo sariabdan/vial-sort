@@ -36,7 +36,7 @@ import yaml
 SITE = Path(__file__).resolve().parents[1]
 LR = Path(os.environ.get("LEROBOT", Path.home() / "lerobot"))
 PY = sys.executable
-SITE_URL = "https://sariabdan.github.io/vial-sort/"
+SITE_URL = "https://cognitive-software-labs.github.io/vial-sort/"
 OUTPUTS = ("notes/", "src/data/", "public/media/")  # what this script writes and publishes
 NOTE_STAGE = {"placed": "released", "drop_missed": "carried", "off_slot": "carried", "never_let_go": "carried",  # = build_data.py
               "no_grasp": "no_grasp", "wrong_vial": "no_grasp"}

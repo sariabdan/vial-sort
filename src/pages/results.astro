@@ -9,7 +9,7 @@ import experiments from '../data/experiments.json';
 import media from '../data/media.json';
 import { moveLabel, url, demoSet, sentences } from '../lib/site';
 import { byBounds } from '../lib/rackmaps';
-import { pctOf, scoreRun, weakSlots, verdictText, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
+import { pctOf, scoreRun, weakSlots, verdictText, topRunKey, MIN_PER_SLOT, PASS_MARK } from '../lib/score';
 
 // Results shows results only. What a word means, how a rollout or a run is scored, and what the numbers cannot say are
 // explained once, on Testing (method.astro), and linked from here.
@@ -19,6 +19,8 @@ import { pctOf, scoreRun, weakSlots, verdictText, MIN_PER_SLOT, PASS_MARK } from
 // same two columns of vials, so the slots line up down the page and any number of runs can be compared.
 // src/charts/october.ts shows, orders and letters the rows and switches the tabs; every run's row is in the page.
 const rows = results.rows;
+// the page opens on the run with the highest score; src/charts/october.ts makes the same choice
+const START = topRunKey(rows);
 // newest first, then the bigger run
 const board = [...rows].sort((a, b) => (b.days.at(-1) ?? '').localeCompare(a.days.at(-1) ?? '') || b.rollouts - a.rollouts);
 // one group per model, newest model first; inside a group its newest run leads and the rest fold under it
@@ -185,7 +187,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
             const about = `${r.label}. ${verdictText(s)}. Weak slots: ${weak.length ? weak.join(', ') : 'none'}. Scored from ${r.scored_by === 'notes' ? 'the operator’s notes' : 'the arm'}.` +
               (r.train_set ? ` Trained on ${r.train_set}.` : '');
             return (
-              <div class="rt-row col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+              <div class="rt-row col" data-row={r.key} data-init-off={r.key !== START || undefined}>
                 <div class="rt-who" title={about}>
                   <p class="col-head">
                     <button type="button" class="grip" aria-label={`Move ${r.label}: drag it, or press the up or down arrow key`} title="Drag to reorder">
@@ -227,7 +229,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
         </div>
         <div class="cols wide vids">
           {rows.map((r) => (
-            <div class="col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+            <div class="col" data-row={r.key} data-init-off={r.key !== START || undefined}>
               <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></p>
               {clips.filter((f) => f.row === r.key).map((f) => (
                 <div class="clip-wrap" data-stage={f.stage} data-init-off={f.stage !== 'released' || undefined}>
@@ -245,7 +247,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
         <h2 class="visually-hidden">What happened on the robot</h2>
         <div class="cols stacked">
           {rows.map((r) => (
-            <div class="col" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+            <div class="col" data-row={r.key} data-init-off={r.key !== START || undefined}>
               <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span></p>
               {storyOf(r).length > 0
                 ? storyOf(r).map((n) => <div class="acct"><p class="acct-title">{n.title}</p><ul class="said">{sentences(n.text).map((s) => <li>{s}</li>)}</ul></div>)
@@ -262,7 +264,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
           {rows.map((r) => {
             const e = expRow.get(r.key);
             return (
-              <div class="wide-row" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+              <div class="wide-row" data-row={r.key} data-init-off={r.key !== START || undefined}>
                 <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span><span class="note">{`${r.rollouts} rollouts`}</span></p>
                 {e ? <MoveTable r={e} /> : <p class="note">No move list for this run.</p>}
               </div>
@@ -281,7 +283,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
           {rows.map((r) => {
             const c = r.confusion as Conf | null;
             return (
-              <div class="wide-row" data-row={r.key} data-init-off={!results.defaults.includes(r.key) || undefined}>
+              <div class="wide-row" data-row={r.key} data-init-off={r.key !== START || undefined}>
                 <p class="col-head"><b class="letter"></b><i style={`background: var(--m-${r.family})`}></i><span>{r.label}</span><span class="note">{`${r.rollouts} rollouts`}</span></p>
                 {c ? (
                     <div class="table-scroll">
@@ -418,6 +420,7 @@ const storyOf = (r: (typeof rows)[number]) => biggestOf.get(r.model)?.key === r.
   .panel { scroll-margin-top: 4rem; }
   .cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(11.5rem, 1fr)); gap: 1rem 1rem; align-items: start; overflow-x: auto; position: relative; }
   .cols.wide { grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .cols.vids { grid-template-columns: repeat(2, minmax(0, 1fr)); }  /* two videos to a row at most, so each stays large */
   .col { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem; align-content: start; }
   .col p, .wide-row p { max-width: none; margin-top: 0; }
   .col-head { display: flex; align-items: center; gap: 0.4rem; font-weight: 620; padding-bottom: 0.3rem; border-bottom: 2px solid var(--ink); line-height: 1.25; }

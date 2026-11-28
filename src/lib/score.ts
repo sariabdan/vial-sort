@@ -111,3 +111,8 @@ export function weakSlots(by: ByDestination): string[] {
     .sort((a, b) => share(a) - share(b) || by[b].rollouts - by[a].rollouts)
     .map((s) => `${s} ${by[s].released}/${by[s].rollouts}`);
 }
+
+/** The run the Results page opens on: the highest score, and among equals the one with the most rollouts. */
+export function topRunKey(rows: { key: string; rollouts: number; by_destination: ByDestination }[]): string {
+  return [...rows].sort((a, b) => scoreRun(b.by_destination).total - scoreRun(a.by_destination).total || b.rollouts - a.rollouts)[0].key;
+}
